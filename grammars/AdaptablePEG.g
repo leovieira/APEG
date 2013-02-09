@@ -88,17 +88,22 @@ type :
 // Definition of the right side of a APEG
 // This rule defines that the CHOICE operator has the lowest precedence 
 // The precedence of CHOICE operator is 1
-// CHOICE is an associative operator. we decided for right association because it may be faster to interpret
+// CHOICE is an associative operator. We decided for right association because it may be faster to interpret
 peg_expr :
-  ((peg_seq -> peg_seq) | ( -> LAMBDA))
+  peg_seq 
   ('/' peg_expr -> ^(CHOICE peg_seq peg_expr)
   |
+    -> peg_seq
   )
   ;
 
 // This rule defines a sequence operator: e1 e2 
 // The precedence of sequence operator is 2
-peg_seq : peg_unary_op+ -> ^(SEQ peg_unary_op+);
+peg_seq : 
+  peg_unary_op+ -> ^(SEQ peg_unary_op+)
+  |
+    -> LAMBDA
+  ;
 
 
 // This rule defines the operators with precedence 4 and 3  
@@ -122,6 +127,10 @@ peg_unary_op :
    t4='&' peg_factor -> ^(AND_LOOKAHEAD[$t4,"AND_LOOKAHEAD"] peg_factor)
    |
    t5='!' peg_factor -> ^(NOT_LOOKAHEAD[$t5,"NOT_LOOKAHEAD"] peg_factor)
+   |
+   t6='{?' cond '}' -> ^(COND[$t6,"COND"] cond)
+   |
+   t7='{' assign+ '}' -> ^(ASSIGNLIST[$t7,"ASSIGNLIST"] assign+)
    ;
 
 // This rule defines the others operator and basic exprtessions
@@ -150,19 +159,15 @@ peg_factor :
      )
   |
   '(' peg_expr ')' -> peg_expr
-  |
-  t1='{?' cond '}' -> ^(COND[$t1,"COND"] cond)
-  |
-  t2='{' assign+ '}' -> ^(ASSIGNLIST[$t2,"ASSIGNLIST"] assign+)
-  /*|
-   -> LAMBDA*/
   ;
 
 class_factor:
   '[' range+ ']';
 
 range:
-   LITERAL_CHAR '-' LITERAL_CHAR -> ^(RANGE LITERAL_CHAR LITERAL_CHAR);
+   t1=LETTER '-' t2=LETTER -> ^(RANGE $t1 $t2)
+   |
+   t1=DIGIT '-' t2=DIGIT -> ^(RANGE $t1 $t2);
 
 assign :
   ID t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] ID expr)
@@ -274,4 +279,5 @@ REAL_NUMBER :
   ;
 fragment EXPONENT : ('e'|'E') ('+'|'-')? DIGIT+ ;
 WS : (' ' | '\t' | '\r' | '\n') { skip(); } ;
-
+COMMENT : '/*' . * '*/' { skip(); } ;
+LINE_COMMENT : '//' ~('\n'|'\r')* '\r'? '\n' { skip(); } ;

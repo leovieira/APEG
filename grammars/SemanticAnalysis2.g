@@ -13,7 +13,7 @@ import semantics.*;
 
 @treeparser::members {
 
-    Grammar tab;
+    Grammar grammar;
     NonTerminal currNT;
     
     private boolean mMessageCollectionEnabled = false;
@@ -92,15 +92,15 @@ import semantics.*;
     
 }
 
-grammarDef[Grammar t] :
-    { tab = t; }
+grammarDef[Grammar g] :
+    { grammar = g; }
     rule+
     ;
 
 rule 
   : 
   ^(RULE ID
-    { currNT = tab.getNonTerminal($ID.text); }
+    { currNT = grammar.getNonTerminal($ID.text); }
     ^(LIST varDecl*)
     ^(LIST varDecl*)
     ^(LIST varDecl*)
@@ -122,6 +122,8 @@ peg_expr
   String message = null;
 }
   :
+  LAMBDA
+  |
   ^(CHOICE peg_expr peg_expr)
   |
   ^(SEQ peg_expr+)
@@ -131,10 +133,12 @@ peg_expr
   ^(NONTERM
       ID
       {
-        nt = tab.getNonTerminal($ID.text);
+        nt = grammar.getNonTerminal($ID.text);
         if (nt == null) {
-          emitErrorMessage($ID.token, "Symbol not found");
+          emitErrorMessage($ID.token, "Symbol not found: " + $ID.text);
         }
+        SemanticNode sm = (SemanticNode) $ID;
+        sm.setSymbol(nt);
       }
       ^(LIST 
         (
@@ -172,6 +176,12 @@ peg_expr
   |
   ^(NOT_LOOKAHEAD peg_expr)
   |
+  ^(OPTIONAL peg_expr)
+  |
+  ^(ONE_REPEAT peg_expr)
+  |
+  ^(AND_LOOKAHEAD peg_expr)
+  |
   ^(COND expr)
   |
   ^(ASSIGNLIST assign+)
@@ -180,7 +190,18 @@ peg_expr
 actPars : ^(LIST expr*);
 
 assign :
-  ^(ASSIGN ID expr)
+  ^(ASSIGN
+  ID
+    {
+      Attribute at = currNT.getAttribute($ID.text);
+      if (at == null) {
+        emitErrorMessage($ID.token, "Attribute not found: " + $ID.text);
+      } else {
+        SemanticNode sm = (SemanticNode) $ID;
+        sm.setSymbol(at);
+      }
+    }
+  expr)
   ; 
 
 expr :
@@ -212,9 +233,13 @@ number : INT_NUMBER | REAL_NUMBER ;
 designator :
   ID
     {
-      if (currNT.getAttribute($ID.text) == null) {
+      Attribute at = currNT.getAttribute($ID.text);
+      if (at == null) {
         emitErrorMessage($ID.token, "Attribute not found: " + $ID.text);
-      }
+      } else {
+	      SemanticNode sm = (SemanticNode) $ID;
+	      sm.setSymbol(at);
+	    }
     }
   |
   ^(DOT designator ID)

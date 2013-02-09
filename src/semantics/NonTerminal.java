@@ -8,6 +8,7 @@ public class NonTerminal extends Symbol {
 	
 	private int numParam;
 	private int numRet;
+	private int numLocal;
 	private ArrayList<Attribute> attrs = new ArrayList<Attribute>();
 	private CommonTree pegExpr;
 	
@@ -27,8 +28,25 @@ public class NonTerminal extends Symbol {
 		return attrs.size();
 	}
 	
-	public Attribute getAttribute(int i) {
+	public Attribute getParam(int i) {
+		if (i >= getNumParam()) {
+			throw new Error("Wrong index at getParam");
+		}
 		return attrs.get(i);
+	}
+	
+	public Attribute getReturn(int i) {
+		if (i >= getNumRet()) {
+			throw new Error("Wrong index at getReturn");
+		}
+		return attrs.get(i + getNumParam());
+	}
+	
+	public Attribute getLocal(int i) {
+		if (i >= getNumLocal()) {
+			throw new Error("Wrong index at getLocal");
+		}
+		return attrs.get(i + getNumParam() + getNumRet());
 	}
 	
 	public Attribute getAttribute(String  name) {
@@ -44,13 +62,21 @@ public class NonTerminal extends Symbol {
 		if (getAttribute(name) != null) {
 			return null;
 		}
-		Attribute a = new Attribute(name, type, category);
-		attrs.add(a);
 		if (category == Attribute.Category.PARAM) {
+			if (numRet > 0 || numLocal > 0) {
+				throw new Error("Inhereted attributes must come before synthesized and local attributes");
+			}
 			++numParam;
 		} else if (category == Attribute.Category.RETURN) {
+			if (numLocal > 0) {
+				throw new Error("Synthesized attributes must come before local attributes");
+			}
 			++numRet;
+		} else if (category == Attribute.Category.LOCAL) {
+			++numLocal;
 		}
+		Attribute a = new Attribute(name, type, category, attrs.size());
+		attrs.add(a);
 		return a;
 	}
 
@@ -59,6 +85,10 @@ public class NonTerminal extends Symbol {
 	}
 
 	public int getNumRet() {
+		return numRet;
+	}
+
+	public int getNumLocal() {
 		return numRet;
 	}
 

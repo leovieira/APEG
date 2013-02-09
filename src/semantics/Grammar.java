@@ -16,14 +16,11 @@ public class Grammar {
 	private FileReader input;
 	private ArrayList<Character> buf;
 //	private int currPos;
-	private EvalExpr evalExpr;
 	Stack<Environment> environments;
 	
 	public Grammar() {
 		buf = new ArrayList<Character>();
-		evalExpr = new EvalExpr();
 		environments = new Stack<Environment>();
-		environments.push(new Environment());
 	}
 	
 	public Environment currEnvironment() {
@@ -73,12 +70,18 @@ public class Grammar {
 		return pos + s.length();
 	}
 
-	public Environment buildEnvironment(NonTerminal nt) {
-		Environment env = new Environment();
-		for (int i = 0; i < nt.numAttrs(); ++i) {
-			Attribute at = nt.getAttribute(i);
-			env.setValue(at.getName(), null);
+	public int execute(String nontermName) throws Exception {
+		NonTerminal nt = getNonTerminal(nontermName);
+		if (nt == null) {
+			throw new Exception("Nonterminal not found: " + nontermName);
 		}
+		Environment env = buildEnvironment(nt);
+		environments.push(env);
+		return process(nt.getPegExpr(), -1);
+	}
+	
+	public Environment buildEnvironment(NonTerminal nt) {
+		Environment env = new Environment(nt.numAttrs());
 		return env;
 	}
 	
@@ -89,23 +92,22 @@ public class Grammar {
 		
 		case AdaptablePEGLexer.NONTERM: {
 			// I suppose there are 2 children
-			CommonTree t = (CommonTree) tree.getChild(0); // name of nonterminal
-			String nameNT = t.token.getText();
-			t = (CommonTree) tree.getChild(1); // list of arguments
-			NonTerminal nt = getNonTerminal(nameNT);
+			NonTerminal nt = (NonTerminal) ((SemanticNode) tree.getChild(0)).getSymbol(); // name of nonterminal
+			CommonTree t = (CommonTree) tree.getChild(1); // list of arguments
 			Environment env = buildEnvironment(nt);
 			for (int i = 0; i < nt.getNumParam(); ++i) {
-				Object x = evalExpr.eval((CommonTree)t.getChild(i), env);
-				env.setValue(nt.getAttribute(i).getName(), x);
+				Object x = eval((CommonTree)t.getChild(i));
+				env.setValue(i, x);
 			}
 			environments.push(env);
 			int ret = process(nt.getPegExpr(), pos);
 			environments.pop();
 			if (ret >= 0) {
-				for (int i = 0; i < nt.getNumRet(); ++i) {
-					Object x = env.getValue(nt.getAttribute(i + nt.getNumParam()).getName());
-					String name = ((CommonTree) t.getChild(i + nt.getNumParam())).token.getText();
-					currEnvironment().setValue(name, x);
+				int first = nt.getNumParam();
+				int last = first + nt.getNumRet();
+				for (int i = first; i < last; ++i) {
+					Object x = env.getValue(i);
+					currEnvironment().setValue(i, x);
 				}
 			}
 			return ret;
@@ -132,6 +134,26 @@ public class Grammar {
 			}
 			return ret;
 		}
+		
+		case AdaptablePEGLexer.REPEAT: {
+			// I suppose there is exactly one child
+			CommonTree t = (CommonTree) tree.getChild(0);
+			int ret = pos;
+			int ret1 = ret;
+			while (true) {
+				ret1 = process(t, ret1);
+				if (ret1 < 0) {
+					return ret;
+				}
+				ret = ret1;
+			}
+		}
+		
+		case AdaptablePEGLexer.COND: {
+			// I suppose there is exactly one child
+			CommonTree t = (CommonTree) tree.getChild(0);
+			Object x = eval(t);
+		}
 			
 		case AdaptablePEGLexer.CHOICE: {
 			// I suppose there are 2 children
@@ -156,11 +178,10 @@ public class Grammar {
 			
 		case AdaptablePEGLexer.ASSIGN: {
 			// I suppose (until now) first child is only ID
-			CommonTree t = (CommonTree) tree.getChild(0);
-			String varName = t.token.getText();
-			t = (CommonTree) tree.getChild(1);
-			Object r = evalExpr.eval(t, currEnvironment());
-			currEnvironment().setValue(varName, r);
+			SemanticNode left = (SemanticNode) tree.getChild(0);
+			CommonTree right = (CommonTree) tree.getChild(1);
+			Object r = eval(right);
+			currEnvironment().setValue((Attribute) left.getSymbol(), r);
 			return pos;
 		}
 			
@@ -168,6 +189,39 @@ public class Grammar {
 			throw new Exception("Not implemented: " + tree.token.getType());
 		}
 	}
+	
+	
+	private Object eval(CommonTree tree) throws Exception {
+		switch (tree.token.getType()) {
+		
+		case AdaptablePEGLexer.INT_NUMBER: {
+			return new Integer(Integer.parseInt(tree.getText()));
+		}
+
+		case AdaptablePEGLexer.OP_ADD: {
+			//I suppose there are 2 children
+			int i0 = (Integer) eval((CommonTree) tree.getChild(0));
+			int i1 = (Integer) eval((CommonTree) tree.getChild(1));
+			return new Integer(i0 + i1);
+		}
+			
+		case AdaptablePEGLexer.OP_MUL: {
+			//I suppose there are 2 children
+			int i0 = (Integer) eval((CommonTree) tree.getChild(0));
+			int i1 = (Integer) eval((CommonTree) tree.getChild(1));
+			return new Integer(i0 * i1);
+		}
+			
+		case AdaptablePEGLexer.ID: {
+			return currEnvironment().getValue((Attribute) ((SemanticNode) tree).getSymbol());
+		}
+
+		default:
+			throw new Exception("Not implemented: " + tree.token.getType());
+		}
+	}
+
+	
 	
 	public static void main(String args[]) throws Exception {
 		FileReader f = new FileReader("input/teste01.txt");

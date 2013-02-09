@@ -3,12 +3,15 @@
 /*
 This grammar implements a^nb^nc^n of two ways
 First, as usually in PEG and next with attributes
+Finally, I test the range expression
 */
 
 S :
   &(A!'b') 'a'* B !.
   /
   C<n> D<m> {? n == m} E<o> {?m == o}
+  /
+  [a-zA-Z0-9]
   ;
 A :
   'a' A 'b' / ;
@@ -16,16 +19,16 @@ B :
   'b' B 'c' / ;
   
 C returns[int n]:
-  'a' C<m> {n = m+1}
+  'a' C<m> {n = m+1;}
   /
-   {n = 0};
+   {n = 0;};
    
 D returns[int n]:
-  'b' D<m> {n = m+1}
+  'b' D<m> {n = m+1;}
   /
-   {n = 0};
+   {n = 0;};
    
 E returns[int n]:
-  'c' E<m> {n = m+1}
+  'c' E<m> {n = m+1;}
   /
-   {n = 0};
+   {n = 0;};

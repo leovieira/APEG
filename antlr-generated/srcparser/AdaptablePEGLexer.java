@@ -1,4 +1,4 @@
-// $ANTLR 3.5 /home/leo/workspace/APEG/grammars/AdaptablePEG.g 2013-02-09 15:21:25
+// $ANTLR 3.5 /home/leo/workspace/APEG/grammars/AdaptablePEG.g 2013-02-09 19:16:05
 
     package srcparser;
 
@@ -11,8 +11,6 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class AdaptablePEGLexer extends Lexer {
 	public static final int EOF=-1;
-	public static final int T__50=50;
-	public static final int T__51=51;
 	public static final int T__52=52;
 	public static final int T__53=53;
 	public static final int T__54=54;
@@ -27,6 +25,8 @@ public class AdaptablePEGLexer extends Lexer {
 	public static final int T__63=63;
 	public static final int T__64=64;
 	public static final int T__65=65;
+	public static final int T__66=66;
+	public static final int T__67=67;
 	public static final int AND_LOOKAHEAD=4;
 	public static final int ANY=5;
 	public static final int ARRAY_REF=6;
@@ -34,45 +34,47 @@ public class AdaptablePEGLexer extends Lexer {
 	public static final int ASSIGNLIST=8;
 	public static final int CALL=9;
 	public static final int CHOICE=10;
-	public static final int COND=11;
-	public static final int DIGIT=12;
-	public static final int DOT=13;
-	public static final int ESC=14;
-	public static final int EXPONENT=15;
-	public static final int ID=16;
-	public static final int INT_NUMBER=17;
-	public static final int LAMBDA=18;
-	public static final int LETTER=19;
-	public static final int LIST=20;
-	public static final int LITERAL_CHAR=21;
-	public static final int NONTERM=22;
-	public static final int NOT_LOOKAHEAD=23;
-	public static final int ONE_REPEAT=24;
-	public static final int OPTIONAL=25;
-	public static final int OP_ADD=26;
-	public static final int OP_AND=27;
-	public static final int OP_DIV=28;
-	public static final int OP_EQ=29;
-	public static final int OP_GE=30;
-	public static final int OP_GT=31;
-	public static final int OP_LE=32;
-	public static final int OP_LT=33;
-	public static final int OP_MOD=34;
-	public static final int OP_MUL=35;
-	public static final int OP_NE=36;
-	public static final int OP_NOT=37;
-	public static final int OP_OR=38;
-	public static final int OP_SUB=39;
-	public static final int RANGE=40;
-	public static final int REAL_NUMBER=41;
-	public static final int REPEAT=42;
-	public static final int RULE=43;
-	public static final int SEQ=44;
-	public static final int STRING_LITERAL=45;
-	public static final int UNARY_SUB=46;
-	public static final int VARDECL=47;
-	public static final int WS=48;
-	public static final int XDIGIT=49;
+	public static final int COMMENT=11;
+	public static final int COND=12;
+	public static final int DIGIT=13;
+	public static final int DOT=14;
+	public static final int ESC=15;
+	public static final int EXPONENT=16;
+	public static final int ID=17;
+	public static final int INT_NUMBER=18;
+	public static final int LAMBDA=19;
+	public static final int LETTER=20;
+	public static final int LINE_COMMENT=21;
+	public static final int LIST=22;
+	public static final int LITERAL_CHAR=23;
+	public static final int NONTERM=24;
+	public static final int NOT_LOOKAHEAD=25;
+	public static final int ONE_REPEAT=26;
+	public static final int OPTIONAL=27;
+	public static final int OP_ADD=28;
+	public static final int OP_AND=29;
+	public static final int OP_DIV=30;
+	public static final int OP_EQ=31;
+	public static final int OP_GE=32;
+	public static final int OP_GT=33;
+	public static final int OP_LE=34;
+	public static final int OP_LT=35;
+	public static final int OP_MOD=36;
+	public static final int OP_MUL=37;
+	public static final int OP_NE=38;
+	public static final int OP_NOT=39;
+	public static final int OP_OR=40;
+	public static final int OP_SUB=41;
+	public static final int RANGE=42;
+	public static final int REAL_NUMBER=43;
+	public static final int REPEAT=44;
+	public static final int RULE=45;
+	public static final int SEQ=46;
+	public static final int STRING_LITERAL=47;
+	public static final int UNARY_SUB=48;
+	public static final int VARDECL=49;
+	public static final int WS=50;
+	public static final int XDIGIT=51;
 
 	// delegates
 	// delegators
@@ -89,55 +91,15 @@ public class AdaptablePEGLexer extends Lexer {
 	}
 	@Override public String getGrammarFileName() { return "/home/leo/workspace/APEG/grammars/AdaptablePEG.g"; }
 
-	// $ANTLR start "T__50"
-	public final void mT__50() throws RecognitionException {
-		try {
-			int _type = T__50;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:6:7: ( '&' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:6:9: '&'
-			{
-			match('&'); 
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__50"
-
-	// $ANTLR start "T__51"
-	public final void mT__51() throws RecognitionException {
-		try {
-			int _type = T__51;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:7:7: ( '(' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:7:9: '('
-			{
-			match('('); 
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__51"
-
 	// $ANTLR start "T__52"
 	public final void mT__52() throws RecognitionException {
 		try {
 			int _type = T__52;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:8:7: ( ')' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:8:9: ')'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:6:7: ( '&' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:6:9: '&'
 			{
-			match(')'); 
+			match('&'); 
 			}
 
 			state.type = _type;
@@ -154,10 +116,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__53;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:9:7: ( ',' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:9:9: ','
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:7:7: ( '(' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:7:9: '('
 			{
-			match(','); 
+			match('('); 
 			}
 
 			state.type = _type;
@@ -174,10 +136,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__54;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:10:7: ( '.' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:10:9: '.'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:8:7: ( ')' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:8:9: ')'
 			{
-			match('.'); 
+			match(')'); 
 			}
 
 			state.type = _type;
@@ -194,10 +156,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__55;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:11:7: ( ':' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:11:9: ':'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:9:7: ( ',' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:9:9: ','
 			{
-			match(':'); 
+			match(','); 
 			}
 
 			state.type = _type;
@@ -214,10 +176,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__56;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:12:7: ( ';' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:12:9: ';'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:10:7: ( '.' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:10:9: '.'
 			{
-			match(';'); 
+			match('.'); 
 			}
 
 			state.type = _type;
@@ -234,10 +196,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__57;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:13:7: ( '=' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:13:9: '='
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:11:7: ( ':' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:11:9: ':'
 			{
-			match('='); 
+			match(':'); 
 			}
 
 			state.type = _type;
@@ -254,10 +216,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__58;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:14:7: ( '?' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:14:9: '?'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:12:7: ( ';' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:12:9: ';'
 			{
-			match('?'); 
+			match(';'); 
 			}
 
 			state.type = _type;
@@ -274,10 +236,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__59;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:15:7: ( '[' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:15:9: '['
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:13:7: ( '=' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:13:9: '='
 			{
-			match('['); 
+			match('='); 
 			}
 
 			state.type = _type;
@@ -294,10 +256,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__60;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:16:7: ( ']' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:16:9: ']'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:14:7: ( '?' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:14:9: '?'
 			{
-			match(']'); 
+			match('?'); 
 			}
 
 			state.type = _type;
@@ -314,11 +276,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__61;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:17:7: ( 'locals' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:17:9: 'locals'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:15:7: ( '[' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:15:9: '['
 			{
-			match("locals"); 
-
+			match('['); 
 			}
 
 			state.type = _type;
@@ -335,11 +296,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__62;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:18:7: ( 'returns' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:18:9: 'returns'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:16:7: ( ']' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:16:9: ']'
 			{
-			match("returns"); 
-
+			match(']'); 
 			}
 
 			state.type = _type;
@@ -356,10 +316,11 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__63;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:19:7: ( '{' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:19:9: '{'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:17:7: ( 'locals' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:17:9: 'locals'
 			{
-			match('{'); 
+			match("locals"); 
+
 			}
 
 			state.type = _type;
@@ -376,10 +337,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__64;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:20:7: ( '{?' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:20:9: '{?'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:18:7: ( 'returns' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:18:9: 'returns'
 			{
-			match("{?"); 
+			match("returns"); 
 
 			}
 
@@ -397,6 +358,47 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__65;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:19:7: ( '{' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:19:9: '{'
+			{
+			match('{'); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__65"
+
+	// $ANTLR start "T__66"
+	public final void mT__66() throws RecognitionException {
+		try {
+			int _type = T__66;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:20:7: ( '{?' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:20:9: '{?'
+			{
+			match("{?"); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__66"
+
+	// $ANTLR start "T__67"
+	public final void mT__67() throws RecognitionException {
+		try {
+			int _type = T__67;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
 			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:21:7: ( '}' )
 			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:21:9: '}'
 			{
@@ -410,15 +412,15 @@ public class AdaptablePEGLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__65"
+	// $ANTLR end "T__67"
 
 	// $ANTLR start "OP_AND"
 	public final void mOP_AND() throws RecognitionException {
 		try {
 			int _type = OP_AND;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:226:8: ( '&&' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:226:10: '&&'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:231:8: ( '&&' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:231:10: '&&'
 			{
 			match("&&"); 
 
@@ -438,8 +440,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_OR;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:227:7: ( '||' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:227:9: '||'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:232:7: ( '||' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:232:9: '||'
 			{
 			match("||"); 
 
@@ -459,8 +461,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_NOT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:228:8: ( '!' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:228:10: '!'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:233:8: ( '!' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:233:10: '!'
 			{
 			match('!'); 
 			}
@@ -479,8 +481,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_EQ;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:229:7: ( '==' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:229:9: '=='
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:234:7: ( '==' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:234:9: '=='
 			{
 			match("=="); 
 
@@ -500,8 +502,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_LT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:230:7: ( '<' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:230:9: '<'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:235:7: ( '<' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:235:9: '<'
 			{
 			match('<'); 
 			}
@@ -520,8 +522,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_GT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:231:7: ( '>' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:231:9: '>'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:236:7: ( '>' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:236:9: '>'
 			{
 			match('>'); 
 			}
@@ -540,8 +542,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_LE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:232:7: ( '<=' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:232:9: '<='
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:237:7: ( '<=' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:237:9: '<='
 			{
 			match("<="); 
 
@@ -561,8 +563,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_GE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:233:7: ( '>=' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:233:9: '>='
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:238:7: ( '>=' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:238:9: '>='
 			{
 			match(">="); 
 
@@ -582,8 +584,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_NE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:234:7: ( '!=' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:234:9: '!='
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:239:7: ( '!=' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:239:9: '!='
 			{
 			match("!="); 
 
@@ -603,8 +605,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_ADD;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:235:8: ( '+' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:235:10: '+'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:240:8: ( '+' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:240:10: '+'
 			{
 			match('+'); 
 			}
@@ -623,8 +625,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_SUB;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:236:8: ( '-' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:236:10: '-'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:241:8: ( '-' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:241:10: '-'
 			{
 			match('-'); 
 			}
@@ -643,8 +645,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_MUL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:237:8: ( '*' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:237:10: '*'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:242:8: ( '*' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:242:10: '*'
 			{
 			match('*'); 
 			}
@@ -663,8 +665,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_DIV;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:238:8: ( '/' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:238:10: '/'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:243:8: ( '/' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:243:10: '/'
 			{
 			match('/'); 
 			}
@@ -683,8 +685,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_MOD;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:239:8: ( '%' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:239:10: '%'
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:244:8: ( '%' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:244:10: '%'
 			{
 			match('%'); 
 			}
@@ -703,13 +705,13 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = STRING_LITERAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:241:3: ( '\\'' LITERAL_CHAR ( LITERAL_CHAR )* '\\'' )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:241:5: '\\'' LITERAL_CHAR ( LITERAL_CHAR )* '\\''
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:246:3: ( '\\'' LITERAL_CHAR ( LITERAL_CHAR )* '\\'' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:246:5: '\\'' LITERAL_CHAR ( LITERAL_CHAR )* '\\''
 			{
 			match('\''); 
 			mLITERAL_CHAR(); 
 
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:241:23: ( LITERAL_CHAR )*
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:246:23: ( LITERAL_CHAR )*
 			loop1:
 			while (true) {
 				int alt1=2;
@@ -720,7 +722,7 @@ public class AdaptablePEGLexer extends Lexer {
 
 				switch (alt1) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:241:23: LITERAL_CHAR
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:246:23: LITERAL_CHAR
 					{
 					mLITERAL_CHAR(); 
 
@@ -747,7 +749,7 @@ public class AdaptablePEGLexer extends Lexer {
 	// $ANTLR start "LITERAL_CHAR"
 	public final void mLITERAL_CHAR() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:244:3: ( ESC |~ ( '\\'' | '\\\\' ) )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:249:3: ( ESC |~ ( '\\'' | '\\\\' ) )
 			int alt2=2;
 			int LA2_0 = input.LA(1);
 			if ( (LA2_0=='\\') ) {
@@ -765,14 +767,14 @@ public class AdaptablePEGLexer extends Lexer {
 
 			switch (alt2) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:244:5: ESC
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:249:5: ESC
 					{
 					mESC(); 
 
 					}
 					break;
 				case 2 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:245:5: ~ ( '\\'' | '\\\\' )
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:250:5: ~ ( '\\'' | '\\\\' )
 					{
 					if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '&')||(input.LA(1) >= '(' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
 						input.consume();
@@ -796,11 +798,11 @@ public class AdaptablePEGLexer extends Lexer {
 	// $ANTLR start "ESC"
 	public final void mESC() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:247:14: ( '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . ) )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:247:16: '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:252:14: ( '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . ) )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:252:16: '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . )
 			{
 			match('\\'); 
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:248:5: ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:253:5: ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . )
 			int alt3=11;
 			int LA3_0 = input.LA(1);
 			if ( (LA3_0=='n') ) {
@@ -853,61 +855,61 @@ public class AdaptablePEGLexer extends Lexer {
 
 			switch (alt3) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:248:7: 'n'
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:253:7: 'n'
 					{
 					match('n'); 
 					}
 					break;
 				case 2 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:249:7: 'r'
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:254:7: 'r'
 					{
 					match('r'); 
 					}
 					break;
 				case 3 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:250:7: 't'
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:255:7: 't'
 					{
 					match('t'); 
 					}
 					break;
 				case 4 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:251:7: 'b'
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:256:7: 'b'
 					{
 					match('b'); 
 					}
 					break;
 				case 5 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:252:7: 'f'
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:257:7: 'f'
 					{
 					match('f'); 
 					}
 					break;
 				case 6 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:253:7: '\"'
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:258:7: '\"'
 					{
 					match('\"'); 
 					}
 					break;
 				case 7 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:254:7: '\\''
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:259:7: '\\''
 					{
 					match('\''); 
 					}
 					break;
 				case 8 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:255:7: '\\\\'
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:260:7: '\\\\'
 					{
 					match('\\'); 
 					}
 					break;
 				case 9 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:256:7: '>'
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:261:7: '>'
 					{
 					match('>'); 
 					}
 					break;
 				case 10 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:257:7: 'u' XDIGIT XDIGIT XDIGIT XDIGIT
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:262:7: 'u' XDIGIT XDIGIT XDIGIT XDIGIT
 					{
 					match('u'); 
 					mXDIGIT(); 
@@ -921,7 +923,7 @@ public class AdaptablePEGLexer extends Lexer {
 					}
 					break;
 				case 11 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:258:7: .
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:263:7: .
 					{
 					matchAny(); 
 					}
@@ -941,7 +943,7 @@ public class AdaptablePEGLexer extends Lexer {
 	// $ANTLR start "XDIGIT"
 	public final void mXDIGIT() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:261:17: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:266:17: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
 			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:
 			{
 			if ( (input.LA(1) >= '0' && input.LA(1) <= '9')||(input.LA(1) >= 'A' && input.LA(1) <= 'F')||(input.LA(1) >= 'a' && input.LA(1) <= 'f') ) {
@@ -964,7 +966,7 @@ public class AdaptablePEGLexer extends Lexer {
 	// $ANTLR start "LETTER"
 	public final void mLETTER() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:266:17: ( 'a' .. 'z' | 'A' .. 'Z' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:271:17: ( 'a' .. 'z' | 'A' .. 'Z' )
 			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:
 			{
 			if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
@@ -987,7 +989,7 @@ public class AdaptablePEGLexer extends Lexer {
 	// $ANTLR start "DIGIT"
 	public final void mDIGIT() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:267:16: ( '0' .. '9' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:272:16: ( '0' .. '9' )
 			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:
 			{
 			if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
@@ -1012,12 +1014,12 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = ID;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:268:4: ( LETTER ( LETTER | DIGIT )* )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:268:6: LETTER ( LETTER | DIGIT )*
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:273:4: ( LETTER ( LETTER | DIGIT )* )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:273:6: LETTER ( LETTER | DIGIT )*
 			{
 			mLETTER(); 
 
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:268:13: ( LETTER | DIGIT )*
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:273:13: ( LETTER | DIGIT )*
 			loop4:
 			while (true) {
 				int alt4=2;
@@ -1062,10 +1064,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = INT_NUMBER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:269:12: ( ( DIGIT )+ )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:269:14: ( DIGIT )+
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:274:12: ( ( DIGIT )+ )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:274:14: ( DIGIT )+
 			{
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:269:14: ( DIGIT )+
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:274:14: ( DIGIT )+
 			int cnt5=0;
 			loop5:
 			while (true) {
@@ -1114,7 +1116,7 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = REAL_NUMBER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:270:13: ( ( DIGIT )+ ( '.' ( DIGIT )* )? ( EXPONENT )? | '.' ( DIGIT )+ ( EXPONENT )? )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:275:13: ( ( DIGIT )+ ( '.' ( DIGIT )* )? ( EXPONENT )? | '.' ( DIGIT )+ ( EXPONENT )? )
 			int alt12=2;
 			int LA12_0 = input.LA(1);
 			if ( ((LA12_0 >= '0' && LA12_0 <= '9')) ) {
@@ -1132,9 +1134,9 @@ public class AdaptablePEGLexer extends Lexer {
 
 			switch (alt12) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:271:3: ( DIGIT )+ ( '.' ( DIGIT )* )? ( EXPONENT )?
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:276:3: ( DIGIT )+ ( '.' ( DIGIT )* )? ( EXPONENT )?
 					{
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:271:3: ( DIGIT )+
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:276:3: ( DIGIT )+
 					int cnt6=0;
 					loop6:
 					while (true) {
@@ -1167,7 +1169,7 @@ public class AdaptablePEGLexer extends Lexer {
 						cnt6++;
 					}
 
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:271:10: ( '.' ( DIGIT )* )?
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:276:10: ( '.' ( DIGIT )* )?
 					int alt8=2;
 					int LA8_0 = input.LA(1);
 					if ( (LA8_0=='.') ) {
@@ -1175,10 +1177,10 @@ public class AdaptablePEGLexer extends Lexer {
 					}
 					switch (alt8) {
 						case 1 :
-							// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:271:11: '.' ( DIGIT )*
+							// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:276:11: '.' ( DIGIT )*
 							{
 							match('.'); 
-							// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:271:15: ( DIGIT )*
+							// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:276:15: ( DIGIT )*
 							loop7:
 							while (true) {
 								int alt7=2;
@@ -1212,7 +1214,7 @@ public class AdaptablePEGLexer extends Lexer {
 
 					}
 
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:271:24: ( EXPONENT )?
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:276:24: ( EXPONENT )?
 					int alt9=2;
 					int LA9_0 = input.LA(1);
 					if ( (LA9_0=='E'||LA9_0=='e') ) {
@@ -1220,7 +1222,7 @@ public class AdaptablePEGLexer extends Lexer {
 					}
 					switch (alt9) {
 						case 1 :
-							// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:271:24: EXPONENT
+							// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:276:24: EXPONENT
 							{
 							mEXPONENT(); 
 
@@ -1232,10 +1234,10 @@ public class AdaptablePEGLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:273:3: '.' ( DIGIT )+ ( EXPONENT )?
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:278:3: '.' ( DIGIT )+ ( EXPONENT )?
 					{
 					match('.'); 
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:273:7: ( DIGIT )+
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:278:7: ( DIGIT )+
 					int cnt10=0;
 					loop10:
 					while (true) {
@@ -1268,7 +1270,7 @@ public class AdaptablePEGLexer extends Lexer {
 						cnt10++;
 					}
 
-					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:273:14: ( EXPONENT )?
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:278:14: ( EXPONENT )?
 					int alt11=2;
 					int LA11_0 = input.LA(1);
 					if ( (LA11_0=='E'||LA11_0=='e') ) {
@@ -1276,7 +1278,7 @@ public class AdaptablePEGLexer extends Lexer {
 					}
 					switch (alt11) {
 						case 1 :
-							// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:273:14: EXPONENT
+							// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:278:14: EXPONENT
 							{
 							mEXPONENT(); 
 
@@ -1301,8 +1303,8 @@ public class AdaptablePEGLexer extends Lexer {
 	// $ANTLR start "EXPONENT"
 	public final void mEXPONENT() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:275:19: ( ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:275:21: ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:280:19: ( ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:280:21: ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+
 			{
 			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
 				input.consume();
@@ -1312,7 +1314,7 @@ public class AdaptablePEGLexer extends Lexer {
 				recover(mse);
 				throw mse;
 			}
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:275:31: ( '+' | '-' )?
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:280:31: ( '+' | '-' )?
 			int alt13=2;
 			int LA13_0 = input.LA(1);
 			if ( (LA13_0=='+'||LA13_0=='-') ) {
@@ -1335,7 +1337,7 @@ public class AdaptablePEGLexer extends Lexer {
 
 			}
 
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:275:42: ( DIGIT )+
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:280:42: ( DIGIT )+
 			int cnt14=0;
 			loop14:
 			while (true) {
@@ -1382,8 +1384,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:276:4: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:276:6: ( ' ' | '\\t' | '\\r' | '\\n' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:281:4: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:281:6: ( ' ' | '\\t' | '\\r' | '\\n' )
 			{
 			if ( (input.LA(1) >= '\t' && input.LA(1) <= '\n')||input.LA(1)=='\r'||input.LA(1)==' ' ) {
 				input.consume();
@@ -1405,121 +1407,245 @@ public class AdaptablePEGLexer extends Lexer {
 	}
 	// $ANTLR end "WS"
 
+	// $ANTLR start "COMMENT"
+	public final void mCOMMENT() throws RecognitionException {
+		try {
+			int _type = COMMENT;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:282:9: ( '/*' ( . )* '*/' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:282:11: '/*' ( . )* '*/'
+			{
+			match("/*"); 
+
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:282:16: ( . )*
+			loop15:
+			while (true) {
+				int alt15=2;
+				int LA15_0 = input.LA(1);
+				if ( (LA15_0=='*') ) {
+					int LA15_1 = input.LA(2);
+					if ( (LA15_1=='/') ) {
+						alt15=2;
+					}
+					else if ( ((LA15_1 >= '\u0000' && LA15_1 <= '.')||(LA15_1 >= '0' && LA15_1 <= '\uFFFF')) ) {
+						alt15=1;
+					}
+
+				}
+				else if ( ((LA15_0 >= '\u0000' && LA15_0 <= ')')||(LA15_0 >= '+' && LA15_0 <= '\uFFFF')) ) {
+					alt15=1;
+				}
+
+				switch (alt15) {
+				case 1 :
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:282:16: .
+					{
+					matchAny(); 
+					}
+					break;
+
+				default :
+					break loop15;
+				}
+			}
+
+			match("*/"); 
+
+			 skip(); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "COMMENT"
+
+	// $ANTLR start "LINE_COMMENT"
+	public final void mLINE_COMMENT() throws RecognitionException {
+		try {
+			int _type = LINE_COMMENT;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:283:14: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' )
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:283:16: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
+			{
+			match("//"); 
+
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:283:21: (~ ( '\\n' | '\\r' ) )*
+			loop16:
+			while (true) {
+				int alt16=2;
+				int LA16_0 = input.LA(1);
+				if ( ((LA16_0 >= '\u0000' && LA16_0 <= '\t')||(LA16_0 >= '\u000B' && LA16_0 <= '\f')||(LA16_0 >= '\u000E' && LA16_0 <= '\uFFFF')) ) {
+					alt16=1;
+				}
+
+				switch (alt16) {
+				case 1 :
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:
+					{
+					if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '\uFFFF') ) {
+						input.consume();
+					}
+					else {
+						MismatchedSetException mse = new MismatchedSetException(null,input);
+						recover(mse);
+						throw mse;
+					}
+					}
+					break;
+
+				default :
+					break loop16;
+				}
+			}
+
+			// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:283:35: ( '\\r' )?
+			int alt17=2;
+			int LA17_0 = input.LA(1);
+			if ( (LA17_0=='\r') ) {
+				alt17=1;
+			}
+			switch (alt17) {
+				case 1 :
+					// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:283:35: '\\r'
+					{
+					match('\r'); 
+					}
+					break;
+
+			}
+
+			match('\n'); 
+			 skip(); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "LINE_COMMENT"
+
 	@Override
 	public void mTokens() throws RecognitionException {
-		// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:8: ( T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | OP_AND | OP_OR | OP_NOT | OP_EQ | OP_LT | OP_GT | OP_LE | OP_GE | OP_NE | OP_ADD | OP_SUB | OP_MUL | OP_DIV | OP_MOD | STRING_LITERAL | ID | INT_NUMBER | REAL_NUMBER | WS )
-		int alt15=35;
-		alt15 = dfa15.predict(input);
-		switch (alt15) {
+		// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:8: ( T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | OP_AND | OP_OR | OP_NOT | OP_EQ | OP_LT | OP_GT | OP_LE | OP_GE | OP_NE | OP_ADD | OP_SUB | OP_MUL | OP_DIV | OP_MOD | STRING_LITERAL | ID | INT_NUMBER | REAL_NUMBER | WS | COMMENT | LINE_COMMENT )
+		int alt18=37;
+		alt18 = dfa18.predict(input);
+		switch (alt18) {
 			case 1 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:10: T__50
-				{
-				mT__50(); 
-
-				}
-				break;
-			case 2 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:16: T__51
-				{
-				mT__51(); 
-
-				}
-				break;
-			case 3 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:22: T__52
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:10: T__52
 				{
 				mT__52(); 
 
 				}
 				break;
-			case 4 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:28: T__53
+			case 2 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:16: T__53
 				{
 				mT__53(); 
 
 				}
 				break;
-			case 5 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:34: T__54
+			case 3 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:22: T__54
 				{
 				mT__54(); 
 
 				}
 				break;
-			case 6 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:40: T__55
+			case 4 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:28: T__55
 				{
 				mT__55(); 
 
 				}
 				break;
-			case 7 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:46: T__56
+			case 5 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:34: T__56
 				{
 				mT__56(); 
 
 				}
 				break;
-			case 8 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:52: T__57
+			case 6 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:40: T__57
 				{
 				mT__57(); 
 
 				}
 				break;
-			case 9 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:58: T__58
+			case 7 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:46: T__58
 				{
 				mT__58(); 
 
 				}
 				break;
-			case 10 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:64: T__59
+			case 8 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:52: T__59
 				{
 				mT__59(); 
 
 				}
 				break;
-			case 11 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:70: T__60
+			case 9 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:58: T__60
 				{
 				mT__60(); 
 
 				}
 				break;
-			case 12 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:76: T__61
+			case 10 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:64: T__61
 				{
 				mT__61(); 
 
 				}
 				break;
-			case 13 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:82: T__62
+			case 11 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:70: T__62
 				{
 				mT__62(); 
 
 				}
 				break;
-			case 14 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:88: T__63
+			case 12 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:76: T__63
 				{
 				mT__63(); 
 
 				}
 				break;
-			case 15 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:94: T__64
+			case 13 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:82: T__64
 				{
 				mT__64(); 
 
 				}
 				break;
-			case 16 :
-				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:100: T__65
+			case 14 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:88: T__65
 				{
 				mT__65(); 
+
+				}
+				break;
+			case 15 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:94: T__66
+				{
+				mT__66(); 
+
+				}
+				break;
+			case 16 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:100: T__67
+				{
+				mT__67(); 
 
 				}
 				break;
@@ -1656,34 +1782,48 @@ public class AdaptablePEGLexer extends Lexer {
 
 				}
 				break;
+			case 36 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:241: COMMENT
+				{
+				mCOMMENT(); 
+
+				}
+				break;
+			case 37 :
+				// /home/leo/workspace/APEG/grammars/AdaptablePEG.g:1:249: LINE_COMMENT
+				{
+				mLINE_COMMENT(); 
+
+				}
+				break;
 
 		}
 	}
 
 
-	protected DFA15 dfa15 = new DFA15(this);
-	static final String DFA15_eotS =
+	protected DFA18 dfa18 = new DFA18(this);
+	static final String DFA18_eotS =
 		"\1\uffff\1\36\3\uffff\1\37\2\uffff\1\42\3\uffff\2\32\1\46\2\uffff\1\50"+
-		"\1\52\1\54\7\uffff\1\55\7\uffff\2\32\11\uffff\6\32\1\66\1\32\1\uffff\1"+
-		"\70\1\uffff";
-	static final String DFA15_eofS =
-		"\71\uffff";
-	static final String DFA15_minS =
+		"\1\52\1\54\3\uffff\1\57\3\uffff\1\60\7\uffff\2\32\14\uffff\6\32\1\71\1"+
+		"\32\1\uffff\1\73\1\uffff";
+	static final String DFA18_eofS =
+		"\74\uffff";
+	static final String DFA18_minS =
 		"\1\11\1\46\3\uffff\1\60\2\uffff\1\75\3\uffff\1\157\1\145\1\77\2\uffff"+
-		"\3\75\7\uffff\1\56\7\uffff\1\143\1\164\11\uffff\1\141\1\165\1\154\1\162"+
-		"\1\163\1\156\1\60\1\163\1\uffff\1\60\1\uffff";
-	static final String DFA15_maxS =
+		"\3\75\3\uffff\1\52\3\uffff\1\56\7\uffff\1\143\1\164\14\uffff\1\141\1\165"+
+		"\1\154\1\162\1\163\1\156\1\60\1\163\1\uffff\1\60\1\uffff";
+	static final String DFA18_maxS =
 		"\1\175\1\46\3\uffff\1\71\2\uffff\1\75\3\uffff\1\157\1\145\1\77\2\uffff"+
-		"\3\75\7\uffff\1\145\7\uffff\1\143\1\164\11\uffff\1\141\1\165\1\154\1\162"+
-		"\1\163\1\156\1\172\1\163\1\uffff\1\172\1\uffff";
-	static final String DFA15_acceptS =
+		"\3\75\3\uffff\1\57\3\uffff\1\145\7\uffff\1\143\1\164\14\uffff\1\141\1"+
+		"\165\1\154\1\162\1\163\1\156\1\172\1\163\1\uffff\1\172\1\uffff";
+	static final String DFA18_acceptS =
 		"\2\uffff\1\2\1\3\1\4\1\uffff\1\6\1\7\1\uffff\1\11\1\12\1\13\3\uffff\1"+
-		"\20\1\22\3\uffff\1\32\1\33\1\34\1\35\1\36\1\37\1\40\1\uffff\1\43\1\21"+
-		"\1\1\1\5\1\42\1\24\1\10\2\uffff\1\17\1\16\1\31\1\23\1\27\1\25\1\30\1\26"+
-		"\1\41\10\uffff\1\14\1\uffff\1\15";
-	static final String DFA15_specialS =
-		"\71\uffff}>";
-	static final String[] DFA15_transitionS = {
+		"\20\1\22\3\uffff\1\32\1\33\1\34\1\uffff\1\36\1\37\1\40\1\uffff\1\43\1"+
+		"\21\1\1\1\5\1\42\1\24\1\10\2\uffff\1\17\1\16\1\31\1\23\1\27\1\25\1\30"+
+		"\1\26\1\44\1\45\1\35\1\41\10\uffff\1\14\1\uffff\1\15";
+	static final String DFA18_specialS =
+		"\74\uffff}>";
+	static final String[] DFA18_transitionS = {
 			"\2\34\2\uffff\1\34\22\uffff\1\34\1\21\3\uffff\1\30\1\1\1\31\1\2\1\3\1"+
 			"\26\1\24\1\4\1\25\1\5\1\27\12\33\1\6\1\7\1\22\1\10\1\23\1\11\1\uffff"+
 			"\32\32\1\12\1\uffff\1\13\3\uffff\13\32\1\14\5\32\1\15\10\32\1\16\1\20"+
@@ -1710,7 +1850,7 @@ public class AdaptablePEGLexer extends Lexer {
 			"",
 			"",
 			"",
-			"",
+			"\1\55\4\uffff\1\56",
 			"",
 			"",
 			"",
@@ -1722,62 +1862,65 @@ public class AdaptablePEGLexer extends Lexer {
 			"",
 			"",
 			"",
-			"\1\56",
-			"\1\57",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"\1\60",
 			"\1\61",
 			"\1\62",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
 			"\1\63",
 			"\1\64",
 			"\1\65",
-			"\12\32\7\uffff\32\32\6\uffff\32\32",
+			"\1\66",
 			"\1\67",
+			"\1\70",
+			"\12\32\7\uffff\32\32\6\uffff\32\32",
+			"\1\72",
 			"",
 			"\12\32\7\uffff\32\32\6\uffff\32\32",
 			""
 	};
 
-	static final short[] DFA15_eot = DFA.unpackEncodedString(DFA15_eotS);
-	static final short[] DFA15_eof = DFA.unpackEncodedString(DFA15_eofS);
-	static final char[] DFA15_min = DFA.unpackEncodedStringToUnsignedChars(DFA15_minS);
-	static final char[] DFA15_max = DFA.unpackEncodedStringToUnsignedChars(DFA15_maxS);
-	static final short[] DFA15_accept = DFA.unpackEncodedString(DFA15_acceptS);
-	static final short[] DFA15_special = DFA.unpackEncodedString(DFA15_specialS);
-	static final short[][] DFA15_transition;
+	static final short[] DFA18_eot = DFA.unpackEncodedString(DFA18_eotS);
+	static final short[] DFA18_eof = DFA.unpackEncodedString(DFA18_eofS);
+	static final char[] DFA18_min = DFA.unpackEncodedStringToUnsignedChars(DFA18_minS);
+	static final char[] DFA18_max = DFA.unpackEncodedStringToUnsignedChars(DFA18_maxS);
+	static final short[] DFA18_accept = DFA.unpackEncodedString(DFA18_acceptS);
+	static final short[] DFA18_special = DFA.unpackEncodedString(DFA18_specialS);
+	static final short[][] DFA18_transition;
 
 	static {
-		int numStates = DFA15_transitionS.length;
-		DFA15_transition = new short[numStates][];
+		int numStates = DFA18_transitionS.length;
+		DFA18_transition = new short[numStates][];
 		for (int i=0; i<numStates; i++) {
-			DFA15_transition[i] = DFA.unpackEncodedString(DFA15_transitionS[i]);
+			DFA18_transition[i] = DFA.unpackEncodedString(DFA18_transitionS[i]);
 		}
 	}
 
-	protected class DFA15 extends DFA {
+	protected class DFA18 extends DFA {
 
-		public DFA15(BaseRecognizer recognizer) {
+		public DFA18(BaseRecognizer recognizer) {
 			this.recognizer = recognizer;
-			this.decisionNumber = 15;
-			this.eot = DFA15_eot;
-			this.eof = DFA15_eof;
-			this.min = DFA15_min;
-			this.max = DFA15_max;
-			this.accept = DFA15_accept;
-			this.special = DFA15_special;
-			this.transition = DFA15_transition;
+			this.decisionNumber = 18;
+			this.eot = DFA18_eot;
+			this.eof = DFA18_eof;
+			this.min = DFA18_min;
+			this.max = DFA18_max;
+			this.accept = DFA18_accept;
+			this.special = DFA18_special;
+			this.transition = DFA18_transition;
 		}
 		@Override
 		public String getDescription() {
-			return "1:1: Tokens : ( T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | OP_AND | OP_OR | OP_NOT | OP_EQ | OP_LT | OP_GT | OP_LE | OP_GE | OP_NE | OP_ADD | OP_SUB | OP_MUL | OP_DIV | OP_MOD | STRING_LITERAL | ID | INT_NUMBER | REAL_NUMBER | WS );";
+			return "1:1: Tokens : ( T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | OP_AND | OP_OR | OP_NOT | OP_EQ | OP_LT | OP_GT | OP_LE | OP_GE | OP_NE | OP_ADD | OP_SUB | OP_MUL | OP_DIV | OP_MOD | STRING_LITERAL | ID | INT_NUMBER | REAL_NUMBER | WS | COMMENT | LINE_COMMENT );";
 		}
 	}
 

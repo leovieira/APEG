@@ -13,7 +13,7 @@ import semantics.*;
 
 @treeparser::members {
 
-    Grammar tab;
+    Grammar grammar;
     
     private boolean mMessageCollectionEnabled = false;
     private List<String> mMessages;
@@ -91,14 +91,14 @@ import semantics.*;
     
 }
 
-grammarDef[Grammar t] :
-    { tab = t; }
+grammarDef[Grammar g] :
+    { grammar = g; }
     rule+
     ;
 
 rule : ^(RULE ID
     { 
-      NonTerminal nt = tab. addNonTerminal($ID.text);
+      NonTerminal nt = grammar.addNonTerminal($ID.text);
       if (nt == null) {
         emitErrorMessage($ID.token, "Symbol duplicated: " + $ID.text);
       }
@@ -121,6 +121,8 @@ varDecl[NonTerminal nt, Attribute.Category c] :
   ;
 
 peg_expr :
+  LAMBDA
+  |
   ^(CHOICE peg_expr peg_expr)
   |
   ^(SEQ peg_expr+)
@@ -137,6 +139,12 @@ peg_expr :
   ^(REPEAT peg_expr)
   |
   ^(NOT_LOOKAHEAD peg_expr)
+  |
+  ^(OPTIONAL peg_expr)
+  |
+  ^(ONE_REPEAT peg_expr)
+  |
+  ^(AND_LOOKAHEAD peg_expr)
   |
   ^(COND expr)
   |

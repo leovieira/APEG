@@ -95,6 +95,8 @@ varDecl :
   ;
 
 peg_expr :
+  LAMBDA
+  |
   ^(CHOICE peg_expr peg_expr)
   |
   ^(SEQ peg_expr+)
@@ -108,6 +110,12 @@ peg_expr :
   ^(REPEAT peg_expr)
   |
   ^(NOT_LOOKAHEAD peg_expr)
+  |
+  ^(OPTIONAL peg_expr)
+  |
+  ^(ONE_REPEAT peg_expr)
+  |
+  ^(AND_LOOKAHEAD peg_expr)
   |
   ^(COND expr)
   |

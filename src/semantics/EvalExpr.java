@@ -7,7 +7,6 @@ public class EvalExpr {
 
 	private Environment env;
 	
-	
 	public Object eval(CommonTree tree, Environment env) throws Exception {
 		this.env = env;
 		return eval(tree);
@@ -35,7 +34,7 @@ public class EvalExpr {
 		}
 			
 		case AdaptablePEGLexer.ID: {
-			return env.getValue(tree.token.getText());
+			return env.getValue((Attribute) ((SemanticNode) tree).getSymbol());
 		}
 
 		default:

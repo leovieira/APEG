@@ -1,17 +1,14 @@
 package srcparser;
-import java.io.FileReader;
-
-import semantics.EvalExpr;
-import semantics.Grammar;
-import srcparser.*;
-import treeparsers.*;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
-import org.antlr.stringtemplate.StringTemplate;
+
+import semantics.Grammar;
+import treeparsers.AdaptablePEGTree;
+import treeparsers.SemanticAnalysis1;
+import treeparsers.SemanticAnalysis2;
 
 public class Test {
 
