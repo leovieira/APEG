@@ -23,6 +23,10 @@ tokens {
   DOT;
   ARRAY_REF;
   ASSIGN;
+  OPTIONAL;
+  ONE_REPEAT;
+  AND_LOOKAHEAD;
+  LAMBDA;
 }
 
 @parser::header
@@ -34,10 +38,14 @@ tokens {
     package srcparser;
 }
 
+
+// This begins the grammar definition.
+// An APEG grammar is a list of one or more APEG rules
 grammarDef :   
     rule+    
     ;
 
+// A definiton of an APEG rule
 rule :
   ID d1=optDecls d2=optReturn d3=optLocals ':' peg_expr ';'
   -> ^(RULE ID $d1 $d2 $d3 peg_expr)
@@ -49,10 +57,12 @@ optDecls :
     -> LIST
   ;
 
+// This rule defines the list of all inhereted attributes
 decls :
   '[' varDecl (',' varDecl)* ']' -> ^(LIST varDecl*)
   ;
 
+// Thus rule defines the list of synthesized attributes
 optReturn :
   'returns' decls -> decls
   |
@@ -72,7 +82,10 @@ varDecl :
 type :
   ID
   ;
-  
+
+// Definition of the right side of a APEG
+// This rule defines that the CHOICE operator have the lowest precedence 
+// The precedence of CHOICE operator is 1
 peg_expr :
   peg_seq 
   ('/' peg_expr -> ^(CHOICE peg_seq peg_expr)
@@ -88,38 +101,78 @@ peg_expr :
   */
   ;
 
-peg_seq : peg_factor+ -> ^(SEQ peg_factor+);
+// This rule defines a sequence operator: e1 e2 
+// The precedence of sequence operator is 2
+peg_seq : peg_unary_op+ -> ^(SEQ peg_unary_op+);
 
+/* Vladimir, why not describes sequence operator as
+
+peg_seq : peg_unary_op peg_seq;
+
+?
+
+I think this look like more clear, but it have one more level of recursion :( 
+*/
+
+// This rule defines the operators with precedence 4 and 3  
+// e? (Optional with precedence 4
+// e* (Zero-or-more with precedence 4)
+// e+ (One-or-more with precedence 4)
+// &e (And-predicate with precedence 3)
+// !e (Not-predicate with porecedence 3)
+peg_unary_op :
+  peg_factor 
+    (
+      t1='?' -> ^(OPTIONAL[$t1, "OPTIONAL"] peg_factor)
+      |
+      t2='*' -> ^(REPEAT[$t2, "REPEAT"] peg_factor)
+      |
+      t3='+' -> ^(ONE_REPEAT[$t3, "ONE_REPEAT"] peg_factor)
+    )
+   |
+   t4='&' peg_factor -> ^(AND_LOOKAHEAD[$t4,"AND_LOOKAHEAD"] peg_factor)
+   |
+   t5='!' peg_factor -> ^(NOT_LOOKAHEAD[$t5,"NOT_LOOKAHEAD"] peg_factor)
+   ;
+
+// This rule defines the others operator and basic exprtessions
+// ' ' (Character with precedence 5)
+// " " (Literal String with precedence 5)
+// [ ] (Character class with precedence 5)
+// . (Any character with precedence 5)
+// (e) (Grouping with precedence 5)
+// A<...> (non-terminal basic expression)
+// \lambda (empty basic expression)
 peg_factor :
+//  CHAR_LITERAL      <-------- Looking this
+//  |
+// 
+  STRING_LITERAL
+  |
+//  '[' CHARACTAER_CLASS ']'  <--------- Add this
+//  |
+//
   '.' -> ANY
   |
   ID (
-      '[' actPars ']' -> ^(NONTERM ID actPars)
+      '<' actPars '>' -> ^(NONTERM ID actPars)
       |
         -> ^(NONTERM ID LIST)
      )
   |
-  STRING_LITERAL
+  '(' peg_expr ')' -> peg_expr
   |
-  '(' peg_expr ')'
-    (
-      t1='*' -> ^(REPEAT[$t1,"REPEAT"] peg_expr)
-      |
-        -> peg_expr
-    )
+  t1='{?' cond '}' -> ^(COND[$t1,"COND"] cond)
   |
-  t2='!' '(' peg_expr ')' -> ^(NOT_LOOKAHEAD[$t2,"NOT_LOOKAHEAD"] peg_expr)
-  |
-  t3='{?' cond '}' -> ^(COND[$t3,"COND"] cond)
-  |
-  t4='{' assign+ '}' -> ^(ASSIGNLIST[$t4,"ASSIGNLIST"] assign+)
+  t2='{' assign+ '}' -> ^(ASSIGNLIST[$t2,"ASSIGNLIST"] assign+)
+  /*|
+   -> LAMBDA*/
   ;
+
 
 assign :
   ID t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] ID expr)
   ;
-
-
  
 cond : cond2 (OP_OR^ cond2)* ;
 
