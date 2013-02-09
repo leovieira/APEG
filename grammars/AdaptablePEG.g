@@ -27,6 +27,7 @@ tokens {
   ONE_REPEAT;
   AND_LOOKAHEAD;
   LAMBDA;
+  RANGE;
 }
 
 @parser::header
@@ -51,18 +52,19 @@ rule :
   -> ^(RULE ID $d1 $d2 $d3 peg_expr)
 ;
 
+// This rule defines the list of all inhereted attributes
+decls :
+  '[' varDecl (',' varDecl)* ']' -> ^(LIST varDecl*)
+  ;
+
+// This rule defines the list of inhereted attributes
 optDecls :
   decls -> decls
   |
     -> LIST
   ;
 
-// This rule defines the list of all inhereted attributes
-decls :
-  '[' varDecl (',' varDecl)* ']' -> ^(LIST varDecl*)
-  ;
-
-// Thus rule defines the list of synthesized attributes
+// This rule defines the list of synthesized attributes
 optReturn :
   'returns' decls -> decls
   |
@@ -84,35 +86,20 @@ type :
   ;
 
 // Definition of the right side of a APEG
-// This rule defines that the CHOICE operator have the lowest precedence 
+// This rule defines that the CHOICE operator has the lowest precedence 
 // The precedence of CHOICE operator is 1
+// CHOICE is an associative operator. we decided for right association because it may be faster to interpret
 peg_expr :
-  peg_seq 
+  ((peg_seq -> peg_seq) | ( -> LAMBDA))
   ('/' peg_expr -> ^(CHOICE peg_seq peg_expr)
   |
-    -> peg_seq
   )
-
-/*
-  (peg_seq -> peg_seq)
-  (
-    '/' peg_seq -> ^(CHOICE $peg_expr peg_seq)
-  )*
-  */
   ;
 
 // This rule defines a sequence operator: e1 e2 
 // The precedence of sequence operator is 2
 peg_seq : peg_unary_op+ -> ^(SEQ peg_unary_op+);
 
-/* Vladimir, why not describes sequence operator as
-
-peg_seq : peg_unary_op peg_seq;
-
-?
-
-I think this look like more clear, but it have one more level of recursion :( 
-*/
 
 // This rule defines the operators with precedence 4 and 3  
 // e? (Optional with precedence 4
@@ -128,6 +115,8 @@ peg_unary_op :
       t2='*' -> ^(REPEAT[$t2, "REPEAT"] peg_factor)
       |
       t3='+' -> ^(ONE_REPEAT[$t3, "ONE_REPEAT"] peg_factor)
+      |
+             -> peg_factor
     )
    |
    t4='&' peg_factor -> ^(AND_LOOKAHEAD[$t4,"AND_LOOKAHEAD"] peg_factor)
@@ -149,8 +138,8 @@ peg_factor :
 // 
   STRING_LITERAL
   |
-//  '[' CHARACTAER_CLASS ']'  <--------- Add this
-//  |
+  class_factor
+  |
 //
   '.' -> ANY
   |
@@ -169,6 +158,11 @@ peg_factor :
    -> LAMBDA*/
   ;
 
+class_factor:
+  '[' range+ ']';
+
+range:
+   LITERAL_CHAR '-' LITERAL_CHAR -> ^(RANGE LITERAL_CHAR LITERAL_CHAR);
 
 assign :
   ID t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] ID expr)
