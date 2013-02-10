@@ -9,6 +9,8 @@ options {
 @header {
 package treeparsers;
 import semantics.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 }
 
 @treeparser::members {
@@ -62,29 +64,18 @@ import semantics.*;
     public void emitErrorMessage(Token t, String pMessage) {
         emitErrorMessage("line " + t.getLine() + ":" + t.getCharPositionInLine() + " " + pMessage);
     }
-    
-    /**
-     *  Returns collected error messages.
-     *
-     *  @return  A list holding collected error messages or <code>null</code> if
-     *           collecting error messages hasn't been enabled. Of course, this
-     *           list may be empty if no error message has been emited.
-     */
-    public List<String> getMessages() {
-        return mMessages;
-    }
-    
+        
     /**
      *  Tells if parsing has caused any error messages.
      *
      *  @return  <code>true</code> if parsing has caused at least one error message.
      */
     public boolean hasErrors() {
-        return mMessages.size() > 0;
+        return mMessages != null && mMessages.size() > 0;
     }
     
     public void printErrorMessages() {
-      for (String s : getMessages()) {
+      for (String s : mMessages) {
         System.out.println("  " + s);
       }
     }
@@ -93,6 +84,24 @@ import semantics.*;
 
 grammarDef[Grammar g] :
     { grammar = g; }
+    t1=ID
+    ^(FILES 
+      (
+      t2=ID
+        {
+          try {
+	          Class c = Class.forName($t2.text);
+	          for (Method m : c.getDeclaredMethods()) {
+	            if (g.addFunction(m) == null) {
+	              emitErrorMessage($t2.token, "Function name duplicated: " + m.getName() + " in file " + $t2.text);
+	            }
+	          }
+	        } catch (Exception e) {
+            emitErrorMessage($t1.token, "File not found: " + $t1.text);
+	        }
+        }
+      )*
+    )
     rule+
     ;
 
@@ -149,6 +158,8 @@ peg_expr :
   ^(COND expr)
   |
   ^(ASSIGNLIST assign+)
+    |
+  ^(RANGE RANGE_PAIR+)
   ;
 
 actPars : ^(LIST expr*);

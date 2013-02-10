@@ -28,6 +28,7 @@ tokens {
   AND_LOOKAHEAD;
   LAMBDA;
   RANGE;
+  FILES;
 }
 
 @parser::header
@@ -39,12 +40,87 @@ tokens {
     package srcparser;
 }
 
+@members{
+    
+    private boolean mMessageCollectionEnabled = false;
+    private List<String> mMessages;
+
+    /**
+     *  Switches error message collection on or of.
+     *
+     *  The standard destination for parser error messages is <code>System.err</code>.
+     *  However, if <code>true</code> gets passed to this method this default
+     *  behaviour will be switched off and all error messages will be collected
+     *  instead of written to anywhere.
+     *
+     *  The default value is <code>false</code>.
+     *
+     *  @param pNewState  <code>true</code> if error messages should be collected.
+     */
+    public void enableErrorMessageCollection(boolean pNewState) {
+        mMessageCollectionEnabled = pNewState;
+        if (mMessages == null && mMessageCollectionEnabled) {
+            mMessages = new ArrayList<String>();
+        }
+    }
+    
+    /**
+     *  Collects an error message or passes the error message to <code>
+     *  super.emitErrorMessage(...)</code>.
+     *
+     *  The actual behaviour depends on whether collecting error messages
+     *  has been enabled or not.
+     *
+     *  @param pMessage  The error message.
+     */
+     @Override
+    public void emitErrorMessage(String pMessage) {
+        if (mMessageCollectionEnabled) {
+            mMessages.add(pMessage);
+        } else {
+            super.emitErrorMessage(pMessage);
+        }
+    }
+    
+    /**
+     * O token passado como parâmetro (atributo token) é usado
+     * para adicionar a linha e coluna na mensagem de erro.
+     */
+    public void emitErrorMessage(Token t, String pMessage) {
+        emitErrorMessage("line " + t.getLine() + ":" + t.getCharPositionInLine() + " " + pMessage);
+    }
+        
+    /**
+     *  Tells if parsing has caused any error messages.
+     *
+     *  @return  <code>true</code> if parsing has caused at least one error message.
+     */
+    public boolean hasErrors() {
+        return mMessages != null && mMessages.size() > 0;
+    }
+    
+    public void printErrorMessages() {
+      for (String s : mMessages) {
+        System.out.println("  " + s);
+      }
+    }
+
+}
+
 
 // This begins the grammar definition.
 // An APEG grammar is a list of one or more APEG rules
-grammarDef :   
-    rule+    
+grammarDef :
+    'apeg'! ID ';'!
+    functions
+    rule+
     ;
+
+functions :
+  'functions' ID+ ';' -> ^(FILES ID+)
+  |
+    -> ^(FILES )
+  ;
 
 // A definiton of an APEG rule
 rule :
@@ -147,9 +223,8 @@ peg_factor :
 // 
   STRING_LITERAL
   |
-  class_factor
+  '[' RANGE_PAIR+ ']' -> ^(RANGE RANGE_PAIR+)
   |
-//
   '.' -> ANY
   |
   ID (
@@ -160,14 +235,6 @@ peg_factor :
   |
   '(' peg_expr ')' -> peg_expr
   ;
-
-class_factor:
-  '[' range+ ']';
-
-range:
-   t1=LETTER '-' t2=LETTER -> ^(RANGE $t1 $t2)
-   |
-   t1=DIGIT '-' t2=DIGIT -> ^(RANGE $t1 $t2);
 
 assign :
   ID t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] ID expr)
@@ -270,8 +337,9 @@ fragment XDIGIT :
   ;
 fragment LETTER : 'a'..'z' | 'A'..'Z';
 fragment DIGIT : '0'..'9';
-ID : LETTER (LETTER | DIGIT)*;
+ID : LETTER (LETTER | DIGIT | '_')*;
 INT_NUMBER : DIGIT+;
+RANGE_PAIR : LETTER '-' LETTER | DIGIT '-' DIGIT;
 REAL_NUMBER :
   DIGIT+ ('.' DIGIT*)? EXPONENT?
   |

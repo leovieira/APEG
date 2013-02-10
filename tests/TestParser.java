@@ -1,4 +1,4 @@
-package srcparser;
+
 
 import java.io.IOException;
 
@@ -6,12 +6,15 @@ import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 
+import srcparser.AdaptablePEGLexer;
+import srcparser.AdaptablePEGParser;
+
 public class TestParser {
 
 	public static void main(String[] args) throws IOException, RecognitionException {
-		args = new String[2];
-		args[0] = "input/teste01.txt";
-		args[1] = "input/teste02.txt";
+		args = new String[1];
+//		args[0] = "input/teste01.txt";
+		args[0] = "input/teste02.txt";
 		
 		int i = 0;
 		String fileName;

@@ -16,6 +16,7 @@ import semantics.*;
     Grammar grammar;
     NonTerminal currNT;
     
+    
     private boolean mMessageCollectionEnabled = false;
     private List<String> mMessages;
 
@@ -63,29 +64,18 @@ import semantics.*;
     public void emitErrorMessage(Token t, String pMessage) {
         emitErrorMessage("line " + t.getLine() + ":" + t.getCharPositionInLine() + " " + pMessage);
     }
-    
-    /**
-     *  Returns collected error messages.
-     *
-     *  @return  A list holding collected error messages or <code>null</code> if
-     *           collecting error messages hasn't been enabled. Of course, this
-     *           list may be empty if no error message has been emited.
-     */
-    public List<String> getMessages() {
-        return mMessages;
-    }
-    
+        
     /**
      *  Tells if parsing has caused any error messages.
      *
      *  @return  <code>true</code> if parsing has caused at least one error message.
      */
     public boolean hasErrors() {
-        return mMessages.size() > 0;
+        return mMessages != null && mMessages.size() > 0;
     }
-        
+    
     public void printErrorMessages() {
-      for (String s : getMessages()) {
+      for (String s : mMessages) {
         System.out.println("  " + s);
       }
     }
@@ -94,6 +84,7 @@ import semantics.*;
 
 grammarDef[Grammar g] :
     { grammar = g; }
+    ID ^(FILES ID*)
     rule+
     ;
 
@@ -185,6 +176,8 @@ peg_expr
   ^(COND expr)
   |
   ^(ASSIGNLIST assign+)
+  |
+  ^(RANGE RANGE_PAIR+)
   ;
 
 actPars : ^(LIST expr*);

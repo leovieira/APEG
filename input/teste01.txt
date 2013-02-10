@@ -1,13 +1,21 @@
 
+apeg datadependent;
+
+functions Functions1 ;
+
+teste returns[int r] locals[int aux] :
+  digit<r> digit<aux>
+  ;
+
 literal locals[int n] :
-  number<n> strN<n>
+  number<n> '[' strN<n> ']' !.
   ;
 
-number returns[int x2] locals[int x1] :
-  digit<x2> ( digit<x1> { x2 = x2 * 10 + x1; } )*
+number returns[int r] locals[int aux] :
+  digit<r> ( digit<aux> { r = r * 10 + aux; } )*
   ;
 
-strN[int n] : ( {? n > 0 } CHAR { n = n + 1; } )* {? n == 0 } ;
+strN[int n] : ( {? n > 0 } CHAR { n = n - 1; } )* {? n == 0 } ;
 
 digit returns [int x1] :
   '0'  { x1 = 0; }
@@ -24,14 +32,13 @@ digit returns [int x1] :
 
 CHAR : . ;
 
+f locals[int x] : digit<x> ;
 
-
+/*
 a : literal<1, 2>;
 a : {? n > 0 } ;
 b : strN;
 c : strN<1+2>;
 d : digit<1>;
 e locals[int x] : digit<x>;
-
-
- 
+*/

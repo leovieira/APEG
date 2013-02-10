@@ -1,4 +1,4 @@
-// $ANTLR 3.5 /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g 2013-02-08 13:41:49
+// $ANTLR 3.5 /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g 2013-02-10 08:58:52
 
 package treeparsers;
 import semantics.*;
@@ -13,71 +13,86 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class SemanticAnalysis2 extends TreeParser {
 	public static final String[] tokenNames = new String[] {
-		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ANY", "ARRAY_REF", "ASSIGN", 
-		"ASSIGNLIST", "CALL", "CHOICE", "COND", "DIGIT", "DOT", "ESC", "EXPONENT", 
-		"ID", "INT_NUMBER", "LETTER", "LIST", "LITERAL_CHAR", "NONTERM", "NOT_LOOKAHEAD", 
-		"OP_ADD", "OP_AND", "OP_DIV", "OP_EQ", "OP_GE", "OP_GT", "OP_LE", "OP_LT", 
-		"OP_MOD", "OP_MUL", "OP_NE", "OP_NOT", "OP_OR", "OP_SUB", "REAL_NUMBER", 
-		"REPEAT", "RULE", "SEQ", "STRING_LITERAL", "UNARY_SUB", "VARDECL", "WS", 
-		"XDIGIT", "'('", "')'", "','", "'.'", "':'", "';'", "'='", "'['", "']'", 
-		"'locals'", "'returns'", "'{'", "'{?'", "'}'"
+		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "AND_LOOKAHEAD", "ANY", "ARRAY_REF", 
+		"ASSIGN", "ASSIGNLIST", "CALL", "CHOICE", "COMMENT", "COND", "DIGIT", 
+		"DOT", "ESC", "EXPONENT", "FILES", "ID", "INT_NUMBER", "LAMBDA", "LETTER", 
+		"LINE_COMMENT", "LIST", "LITERAL_CHAR", "NONTERM", "NOT_LOOKAHEAD", "ONE_REPEAT", 
+		"OPTIONAL", "OP_ADD", "OP_AND", "OP_DIV", "OP_EQ", "OP_GE", "OP_GT", "OP_LE", 
+		"OP_LT", "OP_MOD", "OP_MUL", "OP_NE", "OP_NOT", "OP_OR", "OP_SUB", "RANGE", 
+		"RANGE_PAIR", "REAL_NUMBER", "REPEAT", "RULE", "SEQ", "STRING_LITERAL", 
+		"UNARY_SUB", "VARDECL", "WS", "XDIGIT", "'&'", "'('", "')'", "','", "'.'", 
+		"':'", "';'", "'='", "'?'", "'['", "']'", "'apeg'", "'functions'", "'locals'", 
+		"'returns'", "'{'", "'{?'", "'}'"
 	};
 	public static final int EOF=-1;
-	public static final int T__45=45;
-	public static final int T__46=46;
-	public static final int T__47=47;
-	public static final int T__48=48;
-	public static final int T__49=49;
-	public static final int T__50=50;
-	public static final int T__51=51;
-	public static final int T__52=52;
-	public static final int T__53=53;
 	public static final int T__54=54;
 	public static final int T__55=55;
 	public static final int T__56=56;
 	public static final int T__57=57;
 	public static final int T__58=58;
-	public static final int ANY=4;
-	public static final int ARRAY_REF=5;
-	public static final int ASSIGN=6;
-	public static final int ASSIGNLIST=7;
-	public static final int CALL=8;
-	public static final int CHOICE=9;
-	public static final int COND=10;
-	public static final int DIGIT=11;
-	public static final int DOT=12;
-	public static final int ESC=13;
-	public static final int EXPONENT=14;
-	public static final int ID=15;
-	public static final int INT_NUMBER=16;
-	public static final int LETTER=17;
-	public static final int LIST=18;
-	public static final int LITERAL_CHAR=19;
-	public static final int NONTERM=20;
-	public static final int NOT_LOOKAHEAD=21;
-	public static final int OP_ADD=22;
-	public static final int OP_AND=23;
-	public static final int OP_DIV=24;
-	public static final int OP_EQ=25;
-	public static final int OP_GE=26;
-	public static final int OP_GT=27;
-	public static final int OP_LE=28;
-	public static final int OP_LT=29;
-	public static final int OP_MOD=30;
-	public static final int OP_MUL=31;
-	public static final int OP_NE=32;
-	public static final int OP_NOT=33;
-	public static final int OP_OR=34;
-	public static final int OP_SUB=35;
-	public static final int REAL_NUMBER=36;
-	public static final int REPEAT=37;
-	public static final int RULE=38;
-	public static final int SEQ=39;
-	public static final int STRING_LITERAL=40;
-	public static final int UNARY_SUB=41;
-	public static final int VARDECL=42;
-	public static final int WS=43;
-	public static final int XDIGIT=44;
+	public static final int T__59=59;
+	public static final int T__60=60;
+	public static final int T__61=61;
+	public static final int T__62=62;
+	public static final int T__63=63;
+	public static final int T__64=64;
+	public static final int T__65=65;
+	public static final int T__66=66;
+	public static final int T__67=67;
+	public static final int T__68=68;
+	public static final int T__69=69;
+	public static final int T__70=70;
+	public static final int T__71=71;
+	public static final int AND_LOOKAHEAD=4;
+	public static final int ANY=5;
+	public static final int ARRAY_REF=6;
+	public static final int ASSIGN=7;
+	public static final int ASSIGNLIST=8;
+	public static final int CALL=9;
+	public static final int CHOICE=10;
+	public static final int COMMENT=11;
+	public static final int COND=12;
+	public static final int DIGIT=13;
+	public static final int DOT=14;
+	public static final int ESC=15;
+	public static final int EXPONENT=16;
+	public static final int FILES=17;
+	public static final int ID=18;
+	public static final int INT_NUMBER=19;
+	public static final int LAMBDA=20;
+	public static final int LETTER=21;
+	public static final int LINE_COMMENT=22;
+	public static final int LIST=23;
+	public static final int LITERAL_CHAR=24;
+	public static final int NONTERM=25;
+	public static final int NOT_LOOKAHEAD=26;
+	public static final int ONE_REPEAT=27;
+	public static final int OPTIONAL=28;
+	public static final int OP_ADD=29;
+	public static final int OP_AND=30;
+	public static final int OP_DIV=31;
+	public static final int OP_EQ=32;
+	public static final int OP_GE=33;
+	public static final int OP_GT=34;
+	public static final int OP_LE=35;
+	public static final int OP_LT=36;
+	public static final int OP_MOD=37;
+	public static final int OP_MUL=38;
+	public static final int OP_NE=39;
+	public static final int OP_NOT=40;
+	public static final int OP_OR=41;
+	public static final int OP_SUB=42;
+	public static final int RANGE=43;
+	public static final int RANGE_PAIR=44;
+	public static final int REAL_NUMBER=45;
+	public static final int REPEAT=46;
+	public static final int RULE=47;
+	public static final int SEQ=48;
+	public static final int STRING_LITERAL=49;
+	public static final int UNARY_SUB=50;
+	public static final int VARDECL=51;
+	public static final int WS=52;
+	public static final int XDIGIT=53;
 
 	// delegates
 	public TreeParser[] getDelegates() {
@@ -99,8 +114,9 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 
-	    Grammar tab;
+	    Grammar grammar;
 	    NonTerminal currNT;
+	    
 	    
 	    private boolean mMessageCollectionEnabled = false;
 	    private List<String> mMessages;
@@ -149,29 +165,18 @@ public class SemanticAnalysis2 extends TreeParser {
 	    public void emitErrorMessage(Token t, String pMessage) {
 	        emitErrorMessage("line " + t.getLine() + ":" + t.getCharPositionInLine() + " " + pMessage);
 	    }
-	    
-	    /**
-	     *  Returns collected error messages.
-	     *
-	     *  @return  A list holding collected error messages or <code>null</code> if
-	     *           collecting error messages hasn't been enabled. Of course, this
-	     *           list may be empty if no error message has been emited.
-	     */
-	    public List<String> getMessages() {
-	        return mMessages;
-	    }
-	    
+	        
 	    /**
 	     *  Tells if parsing has caused any error messages.
 	     *
 	     *  @return  <code>true</code> if parsing has caused at least one error message.
 	     */
 	    public boolean hasErrors() {
-	        return mMessages.size() > 0;
+	        return mMessages != null && mMessages.size() > 0;
 	    }
-	        
+	    
 	    public void printErrorMessages() {
-	      for (String s : getMessages()) {
+	      for (String s : mMessages) {
 	        System.out.println("  " + s);
 	      }
 	    }
@@ -180,28 +185,57 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 	// $ANTLR start "grammarDef"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:95:1: grammarDef[Grammar t] : ( rule )+ ;
-	public final void grammarDef(Grammar t) throws RecognitionException {
+	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:85:1: grammarDef[Grammar g] : ID ^( FILES ( ID )* ) ( rule )+ ;
+	public final void grammarDef(Grammar g) throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:95:23: ( ( rule )+ )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:96:5: ( rule )+
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:85:23: ( ID ^( FILES ( ID )* ) ( rule )+ )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:86:5: ID ^( FILES ( ID )* ) ( rule )+
 			{
-			 tab = t; 
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:97:5: ( rule )+
-			int cnt1=0;
-			loop1:
-			while (true) {
-				int alt1=2;
-				int LA1_0 = input.LA(1);
-				if ( (LA1_0==RULE) ) {
-					alt1=1;
+			 grammar = g; 
+			match(input,ID,FOLLOW_ID_in_grammarDef66); 
+			match(input,FILES,FOLLOW_FILES_in_grammarDef69); 
+			if ( input.LA(1)==Token.DOWN ) {
+				match(input, Token.DOWN, null); 
+				// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:87:16: ( ID )*
+				loop1:
+				while (true) {
+					int alt1=2;
+					int LA1_0 = input.LA(1);
+					if ( (LA1_0==ID) ) {
+						alt1=1;
+					}
+
+					switch (alt1) {
+					case 1 :
+						// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:87:16: ID
+						{
+						match(input,ID,FOLLOW_ID_in_grammarDef71); 
+						}
+						break;
+
+					default :
+						break loop1;
+					}
 				}
 
-				switch (alt1) {
+				match(input, Token.UP, null); 
+			}
+
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:88:5: ( rule )+
+			int cnt2=0;
+			loop2:
+			while (true) {
+				int alt2=2;
+				int LA2_0 = input.LA(1);
+				if ( (LA2_0==RULE) ) {
+					alt2=1;
+				}
+
+				switch (alt2) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:97:5: rule
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:88:5: rule
 					{
-					pushFollow(FOLLOW_rule_in_grammarDef66);
+					pushFollow(FOLLOW_rule_in_grammarDef79);
 					rule();
 					state._fsp--;
 
@@ -209,11 +243,11 @@ public class SemanticAnalysis2 extends TreeParser {
 					break;
 
 				default :
-					if ( cnt1 >= 1 ) break loop1;
-					EarlyExitException eee = new EarlyExitException(1, input);
+					if ( cnt2 >= 1 ) break loop2;
+					EarlyExitException eee = new EarlyExitException(2, input);
 					throw eee;
 				}
-				cnt1++;
+				cnt2++;
 			}
 
 			}
@@ -232,54 +266,23 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 	// $ANTLR start "rule"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:100:1: rule : ^( RULE ID ^( LIST ( varDecl )* ) ^( LIST ( varDecl )* ) ^( LIST ( varDecl )* ) peg_expr ) ;
+	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:91:1: rule : ^( RULE ID ^( LIST ( varDecl )* ) ^( LIST ( varDecl )* ) ^( LIST ( varDecl )* ) peg_expr ) ;
 	public final void rule() throws RecognitionException {
 		CommonTree ID1=null;
 		TreeRuleReturnScope peg_expr2 =null;
 
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:101:3: ( ^( RULE ID ^( LIST ( varDecl )* ) ^( LIST ( varDecl )* ) ^( LIST ( varDecl )* ) peg_expr ) )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:102:3: ^( RULE ID ^( LIST ( varDecl )* ) ^( LIST ( varDecl )* ) ^( LIST ( varDecl )* ) peg_expr )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:92:3: ( ^( RULE ID ^( LIST ( varDecl )* ) ^( LIST ( varDecl )* ) ^( LIST ( varDecl )* ) peg_expr ) )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:93:3: ^( RULE ID ^( LIST ( varDecl )* ) ^( LIST ( varDecl )* ) ^( LIST ( varDecl )* ) peg_expr )
 			{
-			match(input,RULE,FOLLOW_RULE_in_rule87); 
+			match(input,RULE,FOLLOW_RULE_in_rule100); 
 			match(input, Token.DOWN, null); 
-			ID1=(CommonTree)match(input,ID,FOLLOW_ID_in_rule89); 
-			 currNT = tab.getNonTerminal((ID1!=null?ID1.getText():null)); 
-			match(input,LIST,FOLLOW_LIST_in_rule102); 
+			ID1=(CommonTree)match(input,ID,FOLLOW_ID_in_rule102); 
+			 currNT = grammar.getNonTerminal((ID1!=null?ID1.getText():null)); 
+			match(input,LIST,FOLLOW_LIST_in_rule115); 
 			if ( input.LA(1)==Token.DOWN ) {
 				match(input, Token.DOWN, null); 
-				// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:104:12: ( varDecl )*
-				loop2:
-				while (true) {
-					int alt2=2;
-					int LA2_0 = input.LA(1);
-					if ( (LA2_0==VARDECL) ) {
-						alt2=1;
-					}
-
-					switch (alt2) {
-					case 1 :
-						// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:104:12: varDecl
-						{
-						pushFollow(FOLLOW_varDecl_in_rule104);
-						varDecl();
-						state._fsp--;
-
-						}
-						break;
-
-					default :
-						break loop2;
-					}
-				}
-
-				match(input, Token.UP, null); 
-			}
-
-			match(input,LIST,FOLLOW_LIST_in_rule113); 
-			if ( input.LA(1)==Token.DOWN ) {
-				match(input, Token.DOWN, null); 
-				// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:105:12: ( varDecl )*
+				// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:95:12: ( varDecl )*
 				loop3:
 				while (true) {
 					int alt3=2;
@@ -290,9 +293,9 @@ public class SemanticAnalysis2 extends TreeParser {
 
 					switch (alt3) {
 					case 1 :
-						// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:105:12: varDecl
+						// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:95:12: varDecl
 						{
-						pushFollow(FOLLOW_varDecl_in_rule115);
+						pushFollow(FOLLOW_varDecl_in_rule117);
 						varDecl();
 						state._fsp--;
 
@@ -307,10 +310,10 @@ public class SemanticAnalysis2 extends TreeParser {
 				match(input, Token.UP, null); 
 			}
 
-			match(input,LIST,FOLLOW_LIST_in_rule124); 
+			match(input,LIST,FOLLOW_LIST_in_rule126); 
 			if ( input.LA(1)==Token.DOWN ) {
 				match(input, Token.DOWN, null); 
-				// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:106:12: ( varDecl )*
+				// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:96:12: ( varDecl )*
 				loop4:
 				while (true) {
 					int alt4=2;
@@ -321,9 +324,9 @@ public class SemanticAnalysis2 extends TreeParser {
 
 					switch (alt4) {
 					case 1 :
-						// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:106:12: varDecl
+						// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:96:12: varDecl
 						{
-						pushFollow(FOLLOW_varDecl_in_rule126);
+						pushFollow(FOLLOW_varDecl_in_rule128);
 						varDecl();
 						state._fsp--;
 
@@ -338,7 +341,38 @@ public class SemanticAnalysis2 extends TreeParser {
 				match(input, Token.UP, null); 
 			}
 
-			pushFollow(FOLLOW_peg_expr_in_rule134);
+			match(input,LIST,FOLLOW_LIST_in_rule137); 
+			if ( input.LA(1)==Token.DOWN ) {
+				match(input, Token.DOWN, null); 
+				// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:97:12: ( varDecl )*
+				loop5:
+				while (true) {
+					int alt5=2;
+					int LA5_0 = input.LA(1);
+					if ( (LA5_0==VARDECL) ) {
+						alt5=1;
+					}
+
+					switch (alt5) {
+					case 1 :
+						// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:97:12: varDecl
+						{
+						pushFollow(FOLLOW_varDecl_in_rule139);
+						varDecl();
+						state._fsp--;
+
+						}
+						break;
+
+					default :
+						break loop5;
+					}
+				}
+
+				match(input, Token.UP, null); 
+			}
+
+			pushFollow(FOLLOW_peg_expr_in_rule147);
 			peg_expr2=peg_expr();
 			state._fsp--;
 
@@ -363,19 +397,19 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 	// $ANTLR start "varDecl"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:114:1: varDecl : ^( VARDECL id1= ID id2= ID ) ;
+	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:105:1: varDecl : ^( VARDECL id1= ID id2= ID ) ;
 	public final void varDecl() throws RecognitionException {
 		CommonTree id1=null;
 		CommonTree id2=null;
 
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:114:9: ( ^( VARDECL id1= ID id2= ID ) )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:115:3: ^( VARDECL id1= ID id2= ID )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:105:9: ( ^( VARDECL id1= ID id2= ID ) )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:106:3: ^( VARDECL id1= ID id2= ID )
 			{
-			match(input,VARDECL,FOLLOW_VARDECL_in_varDecl156); 
+			match(input,VARDECL,FOLLOW_VARDECL_in_varDecl169); 
 			match(input, Token.DOWN, null); 
-			id1=(CommonTree)match(input,ID,FOLLOW_ID_in_varDecl160); 
-			id2=(CommonTree)match(input,ID,FOLLOW_ID_in_varDecl164); 
+			id1=(CommonTree)match(input,ID,FOLLOW_ID_in_varDecl173); 
+			id2=(CommonTree)match(input,ID,FOLLOW_ID_in_varDecl177); 
 			match(input, Token.UP, null); 
 
 			}
@@ -397,7 +431,7 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 	// $ANTLR start "peg_expr"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:118:1: peg_expr : ( ^( CHOICE peg_expr peg_expr ) | ^( SEQ ( peg_expr )+ ) | ANY | ^( NONTERM ID ^( LIST ( expr )* ) ) | STRING_LITERAL | ^( REPEAT peg_expr ) | ^( NOT_LOOKAHEAD peg_expr ) | ^( COND expr ) | ^( ASSIGNLIST ( assign )+ ) );
+	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:109:1: peg_expr : ( LAMBDA | ^( CHOICE peg_expr peg_expr ) | ^( SEQ ( peg_expr )+ ) | ANY | ^( NONTERM ID ^( LIST ( expr )* ) ) | STRING_LITERAL | ^( REPEAT peg_expr ) | ^( NOT_LOOKAHEAD peg_expr ) | ^( OPTIONAL peg_expr ) | ^( ONE_REPEAT peg_expr ) | ^( AND_LOOKAHEAD peg_expr ) | ^( COND expr ) | ^( ASSIGNLIST ( assign )+ ) | ^( RANGE ( RANGE_PAIR )+ ) );
 	public final SemanticAnalysis2.peg_expr_return peg_expr() throws RecognitionException {
 		SemanticAnalysis2.peg_expr_return retval = new SemanticAnalysis2.peg_expr_return();
 		retval.start = input.LT(1);
@@ -411,70 +445,101 @@ public class SemanticAnalysis2 extends TreeParser {
 		  String message = null;
 
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:124:3: ( ^( CHOICE peg_expr peg_expr ) | ^( SEQ ( peg_expr )+ ) | ANY | ^( NONTERM ID ^( LIST ( expr )* ) ) | STRING_LITERAL | ^( REPEAT peg_expr ) | ^( NOT_LOOKAHEAD peg_expr ) | ^( COND expr ) | ^( ASSIGNLIST ( assign )+ ) )
-			int alt8=9;
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:115:3: ( LAMBDA | ^( CHOICE peg_expr peg_expr ) | ^( SEQ ( peg_expr )+ ) | ANY | ^( NONTERM ID ^( LIST ( expr )* ) ) | STRING_LITERAL | ^( REPEAT peg_expr ) | ^( NOT_LOOKAHEAD peg_expr ) | ^( OPTIONAL peg_expr ) | ^( ONE_REPEAT peg_expr ) | ^( AND_LOOKAHEAD peg_expr ) | ^( COND expr ) | ^( ASSIGNLIST ( assign )+ ) | ^( RANGE ( RANGE_PAIR )+ ) )
+			int alt10=14;
 			switch ( input.LA(1) ) {
+			case LAMBDA:
+				{
+				alt10=1;
+				}
+				break;
 			case CHOICE:
 				{
-				alt8=1;
+				alt10=2;
 				}
 				break;
 			case SEQ:
 				{
-				alt8=2;
+				alt10=3;
 				}
 				break;
 			case ANY:
 				{
-				alt8=3;
+				alt10=4;
 				}
 				break;
 			case NONTERM:
 				{
-				alt8=4;
+				alt10=5;
 				}
 				break;
 			case STRING_LITERAL:
 				{
-				alt8=5;
+				alt10=6;
 				}
 				break;
 			case REPEAT:
 				{
-				alt8=6;
+				alt10=7;
 				}
 				break;
 			case NOT_LOOKAHEAD:
 				{
-				alt8=7;
+				alt10=8;
+				}
+				break;
+			case OPTIONAL:
+				{
+				alt10=9;
+				}
+				break;
+			case ONE_REPEAT:
+				{
+				alt10=10;
+				}
+				break;
+			case AND_LOOKAHEAD:
+				{
+				alt10=11;
 				}
 				break;
 			case COND:
 				{
-				alt8=8;
+				alt10=12;
 				}
 				break;
 			case ASSIGNLIST:
 				{
-				alt8=9;
+				alt10=13;
+				}
+				break;
+			case RANGE:
+				{
+				alt10=14;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 8, 0, input);
+					new NoViableAltException("", 10, 0, input);
 				throw nvae;
 			}
-			switch (alt8) {
+			switch (alt10) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:125:3: ^( CHOICE peg_expr peg_expr )
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:116:3: LAMBDA
 					{
-					match(input,CHOICE,FOLLOW_CHOICE_in_peg_expr186); 
+					match(input,LAMBDA,FOLLOW_LAMBDA_in_peg_expr198); 
+					}
+					break;
+				case 2 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:118:3: ^( CHOICE peg_expr peg_expr )
+					{
+					match(input,CHOICE,FOLLOW_CHOICE_in_peg_expr207); 
 					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_peg_expr_in_peg_expr188);
+					pushFollow(FOLLOW_peg_expr_in_peg_expr209);
 					peg_expr();
 					state._fsp--;
 
-					pushFollow(FOLLOW_peg_expr_in_peg_expr190);
+					pushFollow(FOLLOW_peg_expr_in_peg_expr211);
 					peg_expr();
 					state._fsp--;
 
@@ -482,26 +547,26 @@ public class SemanticAnalysis2 extends TreeParser {
 
 					}
 					break;
-				case 2 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:127:3: ^( SEQ ( peg_expr )+ )
+				case 3 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:120:3: ^( SEQ ( peg_expr )+ )
 					{
-					match(input,SEQ,FOLLOW_SEQ_in_peg_expr200); 
+					match(input,SEQ,FOLLOW_SEQ_in_peg_expr221); 
 					match(input, Token.DOWN, null); 
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:127:9: ( peg_expr )+
-					int cnt5=0;
-					loop5:
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:120:9: ( peg_expr )+
+					int cnt6=0;
+					loop6:
 					while (true) {
-						int alt5=2;
-						int LA5_0 = input.LA(1);
-						if ( (LA5_0==ANY||LA5_0==ASSIGNLIST||(LA5_0 >= CHOICE && LA5_0 <= COND)||(LA5_0 >= NONTERM && LA5_0 <= NOT_LOOKAHEAD)||LA5_0==REPEAT||(LA5_0 >= SEQ && LA5_0 <= STRING_LITERAL)) ) {
-							alt5=1;
+						int alt6=2;
+						int LA6_0 = input.LA(1);
+						if ( ((LA6_0 >= AND_LOOKAHEAD && LA6_0 <= ANY)||LA6_0==ASSIGNLIST||LA6_0==CHOICE||LA6_0==COND||LA6_0==LAMBDA||(LA6_0 >= NONTERM && LA6_0 <= OPTIONAL)||LA6_0==RANGE||LA6_0==REPEAT||(LA6_0 >= SEQ && LA6_0 <= STRING_LITERAL)) ) {
+							alt6=1;
 						}
 
-						switch (alt5) {
+						switch (alt6) {
 						case 1 :
-							// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:127:9: peg_expr
+							// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:120:9: peg_expr
 							{
-							pushFollow(FOLLOW_peg_expr_in_peg_expr202);
+							pushFollow(FOLLOW_peg_expr_in_peg_expr223);
 							peg_expr();
 							state._fsp--;
 
@@ -509,52 +574,54 @@ public class SemanticAnalysis2 extends TreeParser {
 							break;
 
 						default :
-							if ( cnt5 >= 1 ) break loop5;
-							EarlyExitException eee = new EarlyExitException(5, input);
+							if ( cnt6 >= 1 ) break loop6;
+							EarlyExitException eee = new EarlyExitException(6, input);
 							throw eee;
 						}
-						cnt5++;
+						cnt6++;
 					}
 
 					match(input, Token.UP, null); 
 
 					}
 					break;
-				case 3 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:129:3: ANY
+				case 4 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:122:3: ANY
 					{
-					match(input,ANY,FOLLOW_ANY_in_peg_expr212); 
+					match(input,ANY,FOLLOW_ANY_in_peg_expr233); 
 					}
 					break;
-				case 4 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:131:3: ^( NONTERM ID ^( LIST ( expr )* ) )
+				case 5 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:124:3: ^( NONTERM ID ^( LIST ( expr )* ) )
 					{
-					match(input,NONTERM,FOLLOW_NONTERM_in_peg_expr221); 
+					match(input,NONTERM,FOLLOW_NONTERM_in_peg_expr242); 
 					match(input, Token.DOWN, null); 
-					ID3=(CommonTree)match(input,ID,FOLLOW_ID_in_peg_expr229); 
+					ID3=(CommonTree)match(input,ID,FOLLOW_ID_in_peg_expr250); 
 
-					        nt = tab.getNonTerminal((ID3!=null?ID3.getText():null));
+					        nt = grammar.getNonTerminal((ID3!=null?ID3.getText():null));
 					        if (nt == null) {
-					          emitErrorMessage(ID3.token, "Symbol not found");
+					          emitErrorMessage(ID3.token, "Symbol not found: " + (ID3!=null?ID3.getText():null));
 					        }
+					        SemanticNode sm = (SemanticNode) ID3;
+					        sm.setSymbol(nt);
 					      
-					match(input,LIST,FOLLOW_LIST_in_peg_expr246); 
+					match(input,LIST,FOLLOW_LIST_in_peg_expr267); 
 					if ( input.LA(1)==Token.DOWN ) {
 						match(input, Token.DOWN, null); 
-						// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:140:9: ( expr )*
-						loop6:
+						// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:135:9: ( expr )*
+						loop7:
 						while (true) {
-							int alt6=2;
-							int LA6_0 = input.LA(1);
-							if ( (LA6_0==ARRAY_REF||LA6_0==CALL||LA6_0==DOT||(LA6_0 >= ID && LA6_0 <= INT_NUMBER)||(LA6_0 >= OP_ADD && LA6_0 <= REAL_NUMBER)||(LA6_0 >= STRING_LITERAL && LA6_0 <= UNARY_SUB)) ) {
-								alt6=1;
+							int alt7=2;
+							int LA7_0 = input.LA(1);
+							if ( (LA7_0==ARRAY_REF||LA7_0==CALL||LA7_0==DOT||(LA7_0 >= ID && LA7_0 <= INT_NUMBER)||(LA7_0 >= OP_ADD && LA7_0 <= OP_SUB)||LA7_0==REAL_NUMBER||(LA7_0 >= STRING_LITERAL && LA7_0 <= UNARY_SUB)) ) {
+								alt7=1;
 							}
 
-							switch (alt6) {
+							switch (alt7) {
 							case 1 :
-								// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:141:11: expr
+								// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:136:11: expr
 								{
-								pushFollow(FOLLOW_expr_in_peg_expr269);
+								pushFollow(FOLLOW_expr_in_peg_expr290);
 								expr4=expr();
 								state._fsp--;
 
@@ -575,7 +642,7 @@ public class SemanticAnalysis2 extends TreeParser {
 								break;
 
 							default :
-								break loop6;
+								break loop7;
 							}
 						}
 
@@ -596,31 +663,18 @@ public class SemanticAnalysis2 extends TreeParser {
 
 					}
 					break;
-				case 5 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:169:3: STRING_LITERAL
-					{
-					match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_peg_expr320); 
-					}
-					break;
 				case 6 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:171:3: ^( REPEAT peg_expr )
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:164:3: STRING_LITERAL
 					{
-					match(input,REPEAT,FOLLOW_REPEAT_in_peg_expr329); 
-					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_peg_expr_in_peg_expr331);
-					peg_expr();
-					state._fsp--;
-
-					match(input, Token.UP, null); 
-
+					match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_peg_expr341); 
 					}
 					break;
 				case 7 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:173:3: ^( NOT_LOOKAHEAD peg_expr )
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:166:3: ^( REPEAT peg_expr )
 					{
-					match(input,NOT_LOOKAHEAD,FOLLOW_NOT_LOOKAHEAD_in_peg_expr341); 
+					match(input,REPEAT,FOLLOW_REPEAT_in_peg_expr350); 
 					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_peg_expr_in_peg_expr343);
+					pushFollow(FOLLOW_peg_expr_in_peg_expr352);
 					peg_expr();
 					state._fsp--;
 
@@ -629,12 +683,12 @@ public class SemanticAnalysis2 extends TreeParser {
 					}
 					break;
 				case 8 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:175:3: ^( COND expr )
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:168:3: ^( NOT_LOOKAHEAD peg_expr )
 					{
-					match(input,COND,FOLLOW_COND_in_peg_expr353); 
+					match(input,NOT_LOOKAHEAD,FOLLOW_NOT_LOOKAHEAD_in_peg_expr362); 
 					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_expr_in_peg_expr355);
-					expr();
+					pushFollow(FOLLOW_peg_expr_in_peg_expr364);
+					peg_expr();
 					state._fsp--;
 
 					match(input, Token.UP, null); 
@@ -642,25 +696,77 @@ public class SemanticAnalysis2 extends TreeParser {
 					}
 					break;
 				case 9 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:177:3: ^( ASSIGNLIST ( assign )+ )
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:170:3: ^( OPTIONAL peg_expr )
 					{
-					match(input,ASSIGNLIST,FOLLOW_ASSIGNLIST_in_peg_expr365); 
+					match(input,OPTIONAL,FOLLOW_OPTIONAL_in_peg_expr374); 
 					match(input, Token.DOWN, null); 
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:177:16: ( assign )+
-					int cnt7=0;
-					loop7:
+					pushFollow(FOLLOW_peg_expr_in_peg_expr376);
+					peg_expr();
+					state._fsp--;
+
+					match(input, Token.UP, null); 
+
+					}
+					break;
+				case 10 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:172:3: ^( ONE_REPEAT peg_expr )
+					{
+					match(input,ONE_REPEAT,FOLLOW_ONE_REPEAT_in_peg_expr386); 
+					match(input, Token.DOWN, null); 
+					pushFollow(FOLLOW_peg_expr_in_peg_expr388);
+					peg_expr();
+					state._fsp--;
+
+					match(input, Token.UP, null); 
+
+					}
+					break;
+				case 11 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:174:3: ^( AND_LOOKAHEAD peg_expr )
+					{
+					match(input,AND_LOOKAHEAD,FOLLOW_AND_LOOKAHEAD_in_peg_expr398); 
+					match(input, Token.DOWN, null); 
+					pushFollow(FOLLOW_peg_expr_in_peg_expr400);
+					peg_expr();
+					state._fsp--;
+
+					match(input, Token.UP, null); 
+
+					}
+					break;
+				case 12 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:176:3: ^( COND expr )
+					{
+					match(input,COND,FOLLOW_COND_in_peg_expr410); 
+					match(input, Token.DOWN, null); 
+					pushFollow(FOLLOW_expr_in_peg_expr412);
+					expr();
+					state._fsp--;
+
+					match(input, Token.UP, null); 
+
+					}
+					break;
+				case 13 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:178:3: ^( ASSIGNLIST ( assign )+ )
+					{
+					match(input,ASSIGNLIST,FOLLOW_ASSIGNLIST_in_peg_expr422); 
+					match(input, Token.DOWN, null); 
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:178:16: ( assign )+
+					int cnt8=0;
+					loop8:
 					while (true) {
-						int alt7=2;
-						int LA7_0 = input.LA(1);
-						if ( (LA7_0==ASSIGN) ) {
-							alt7=1;
+						int alt8=2;
+						int LA8_0 = input.LA(1);
+						if ( (LA8_0==ASSIGN) ) {
+							alt8=1;
 						}
 
-						switch (alt7) {
+						switch (alt8) {
 						case 1 :
-							// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:177:16: assign
+							// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:178:16: assign
 							{
-							pushFollow(FOLLOW_assign_in_peg_expr367);
+							pushFollow(FOLLOW_assign_in_peg_expr424);
 							assign();
 							state._fsp--;
 
@@ -668,11 +774,46 @@ public class SemanticAnalysis2 extends TreeParser {
 							break;
 
 						default :
-							if ( cnt7 >= 1 ) break loop7;
-							EarlyExitException eee = new EarlyExitException(7, input);
+							if ( cnt8 >= 1 ) break loop8;
+							EarlyExitException eee = new EarlyExitException(8, input);
 							throw eee;
 						}
-						cnt7++;
+						cnt8++;
+					}
+
+					match(input, Token.UP, null); 
+
+					}
+					break;
+				case 14 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:180:3: ^( RANGE ( RANGE_PAIR )+ )
+					{
+					match(input,RANGE,FOLLOW_RANGE_in_peg_expr435); 
+					match(input, Token.DOWN, null); 
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:180:11: ( RANGE_PAIR )+
+					int cnt9=0;
+					loop9:
+					while (true) {
+						int alt9=2;
+						int LA9_0 = input.LA(1);
+						if ( (LA9_0==RANGE_PAIR) ) {
+							alt9=1;
+						}
+
+						switch (alt9) {
+						case 1 :
+							// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:180:11: RANGE_PAIR
+							{
+							match(input,RANGE_PAIR,FOLLOW_RANGE_PAIR_in_peg_expr437); 
+							}
+							break;
+
+						default :
+							if ( cnt9 >= 1 ) break loop9;
+							EarlyExitException eee = new EarlyExitException(9, input);
+							throw eee;
+						}
+						cnt9++;
 					}
 
 					match(input, Token.UP, null); 
@@ -696,29 +837,29 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 	// $ANTLR start "actPars"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:180:1: actPars : ^( LIST ( expr )* ) ;
+	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:183:1: actPars : ^( LIST ( expr )* ) ;
 	public final void actPars() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:180:9: ( ^( LIST ( expr )* ) )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:180:11: ^( LIST ( expr )* )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:183:9: ( ^( LIST ( expr )* ) )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:183:11: ^( LIST ( expr )* )
 			{
-			match(input,LIST,FOLLOW_LIST_in_actPars381); 
+			match(input,LIST,FOLLOW_LIST_in_actPars451); 
 			if ( input.LA(1)==Token.DOWN ) {
 				match(input, Token.DOWN, null); 
-				// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:180:18: ( expr )*
-				loop9:
+				// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:183:18: ( expr )*
+				loop11:
 				while (true) {
-					int alt9=2;
-					int LA9_0 = input.LA(1);
-					if ( (LA9_0==ARRAY_REF||LA9_0==CALL||LA9_0==DOT||(LA9_0 >= ID && LA9_0 <= INT_NUMBER)||(LA9_0 >= OP_ADD && LA9_0 <= REAL_NUMBER)||(LA9_0 >= STRING_LITERAL && LA9_0 <= UNARY_SUB)) ) {
-						alt9=1;
+					int alt11=2;
+					int LA11_0 = input.LA(1);
+					if ( (LA11_0==ARRAY_REF||LA11_0==CALL||LA11_0==DOT||(LA11_0 >= ID && LA11_0 <= INT_NUMBER)||(LA11_0 >= OP_ADD && LA11_0 <= OP_SUB)||LA11_0==REAL_NUMBER||(LA11_0 >= STRING_LITERAL && LA11_0 <= UNARY_SUB)) ) {
+						alt11=1;
 					}
 
-					switch (alt9) {
+					switch (alt11) {
 					case 1 :
-						// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:180:18: expr
+						// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:183:18: expr
 						{
-						pushFollow(FOLLOW_expr_in_actPars383);
+						pushFollow(FOLLOW_expr_in_actPars453);
 						expr();
 						state._fsp--;
 
@@ -726,7 +867,7 @@ public class SemanticAnalysis2 extends TreeParser {
 						break;
 
 					default :
-						break loop9;
+						break loop11;
 					}
 				}
 
@@ -749,16 +890,27 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 	// $ANTLR start "assign"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:182:1: assign : ^( ASSIGN ID expr ) ;
+	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:185:1: assign : ^( ASSIGN ID expr ) ;
 	public final void assign() throws RecognitionException {
+		CommonTree ID5=null;
+
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:182:8: ( ^( ASSIGN ID expr ) )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:183:3: ^( ASSIGN ID expr )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:185:8: ( ^( ASSIGN ID expr ) )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:186:3: ^( ASSIGN ID expr )
 			{
-			match(input,ASSIGN,FOLLOW_ASSIGN_in_assign396); 
+			match(input,ASSIGN,FOLLOW_ASSIGN_in_assign466); 
 			match(input, Token.DOWN, null); 
-			match(input,ID,FOLLOW_ID_in_assign398); 
-			pushFollow(FOLLOW_expr_in_assign400);
+			ID5=(CommonTree)match(input,ID,FOLLOW_ID_in_assign470); 
+
+			      Attribute at = currNT.getAttribute((ID5!=null?ID5.getText():null));
+			      if (at == null) {
+			        emitErrorMessage(ID5.token, "Attribute not found: " + (ID5!=null?ID5.getText():null));
+			      } else {
+			        SemanticNode sm = (SemanticNode) ID5;
+			        sm.setSymbol(at);
+			      }
+			    
+			pushFollow(FOLLOW_expr_in_assign480);
 			expr();
 			state._fsp--;
 
@@ -783,23 +935,23 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 	// $ANTLR start "expr"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:186:1: expr : ( ^( OP_OR expr expr ) | ^( OP_AND expr expr ) | ^( relOp expr expr ) | ^( addOp expr expr ) | ^( mulOp expr expr ) | ^( UNARY_SUB expr ) | ^( OP_NOT expr ) | ^( CALL designator actPars ) | designator | number | STRING_LITERAL );
+	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:200:1: expr : ( ^( OP_OR expr expr ) | ^( OP_AND expr expr ) | ^( relOp expr expr ) | ^( addOp expr expr ) | ^( mulOp expr expr ) | ^( UNARY_SUB expr ) | ^( OP_NOT expr ) | ^( CALL designator actPars ) | designator | number | STRING_LITERAL );
 	public final SemanticAnalysis2.expr_return expr() throws RecognitionException {
 		SemanticAnalysis2.expr_return retval = new SemanticAnalysis2.expr_return();
 		retval.start = input.LT(1);
 
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:186:6: ( ^( OP_OR expr expr ) | ^( OP_AND expr expr ) | ^( relOp expr expr ) | ^( addOp expr expr ) | ^( mulOp expr expr ) | ^( UNARY_SUB expr ) | ^( OP_NOT expr ) | ^( CALL designator actPars ) | designator | number | STRING_LITERAL )
-			int alt10=11;
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:200:6: ( ^( OP_OR expr expr ) | ^( OP_AND expr expr ) | ^( relOp expr expr ) | ^( addOp expr expr ) | ^( mulOp expr expr ) | ^( UNARY_SUB expr ) | ^( OP_NOT expr ) | ^( CALL designator actPars ) | designator | number | STRING_LITERAL )
+			int alt12=11;
 			switch ( input.LA(1) ) {
 			case OP_OR:
 				{
-				alt10=1;
+				alt12=1;
 				}
 				break;
 			case OP_AND:
 				{
-				alt10=2;
+				alt12=2;
 				}
 				break;
 			case OP_EQ:
@@ -809,173 +961,70 @@ public class SemanticAnalysis2 extends TreeParser {
 			case OP_LT:
 			case OP_NE:
 				{
-				alt10=3;
+				alt12=3;
 				}
 				break;
 			case OP_ADD:
 			case OP_SUB:
 				{
-				alt10=4;
+				alt12=4;
 				}
 				break;
 			case OP_DIV:
 			case OP_MOD:
 			case OP_MUL:
 				{
-				alt10=5;
+				alt12=5;
 				}
 				break;
 			case UNARY_SUB:
 				{
-				alt10=6;
+				alt12=6;
 				}
 				break;
 			case OP_NOT:
 				{
-				alt10=7;
+				alt12=7;
 				}
 				break;
 			case CALL:
 				{
-				alt10=8;
+				alt12=8;
 				}
 				break;
 			case ARRAY_REF:
 			case DOT:
 			case ID:
 				{
-				alt10=9;
+				alt12=9;
 				}
 				break;
 			case INT_NUMBER:
 			case REAL_NUMBER:
 				{
-				alt10=10;
+				alt12=10;
 				}
 				break;
 			case STRING_LITERAL:
 				{
-				alt10=11;
+				alt12=11;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 10, 0, input);
+					new NoViableAltException("", 12, 0, input);
 				throw nvae;
 			}
-			switch (alt10) {
+			switch (alt12) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:187:3: ^( OP_OR expr expr )
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:201:3: ^( OP_OR expr expr )
 					{
-					match(input,OP_OR,FOLLOW_OP_OR_in_expr416); 
+					match(input,OP_OR,FOLLOW_OP_OR_in_expr496); 
 					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_expr_in_expr418);
+					pushFollow(FOLLOW_expr_in_expr498);
 					expr();
 					state._fsp--;
 
-					pushFollow(FOLLOW_expr_in_expr420);
-					expr();
-					state._fsp--;
-
-					match(input, Token.UP, null); 
-
-					}
-					break;
-				case 2 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:189:3: ^( OP_AND expr expr )
-					{
-					match(input,OP_AND,FOLLOW_OP_AND_in_expr430); 
-					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_expr_in_expr432);
-					expr();
-					state._fsp--;
-
-					pushFollow(FOLLOW_expr_in_expr434);
-					expr();
-					state._fsp--;
-
-					match(input, Token.UP, null); 
-
-					}
-					break;
-				case 3 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:191:3: ^( relOp expr expr )
-					{
-					pushFollow(FOLLOW_relOp_in_expr444);
-					relOp();
-					state._fsp--;
-
-					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_expr_in_expr446);
-					expr();
-					state._fsp--;
-
-					pushFollow(FOLLOW_expr_in_expr448);
-					expr();
-					state._fsp--;
-
-					match(input, Token.UP, null); 
-
-					}
-					break;
-				case 4 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:193:3: ^( addOp expr expr )
-					{
-					pushFollow(FOLLOW_addOp_in_expr458);
-					addOp();
-					state._fsp--;
-
-					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_expr_in_expr460);
-					expr();
-					state._fsp--;
-
-					pushFollow(FOLLOW_expr_in_expr462);
-					expr();
-					state._fsp--;
-
-					match(input, Token.UP, null); 
-
-					}
-					break;
-				case 5 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:195:3: ^( mulOp expr expr )
-					{
-					pushFollow(FOLLOW_mulOp_in_expr472);
-					mulOp();
-					state._fsp--;
-
-					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_expr_in_expr474);
-					expr();
-					state._fsp--;
-
-					pushFollow(FOLLOW_expr_in_expr476);
-					expr();
-					state._fsp--;
-
-					match(input, Token.UP, null); 
-
-					}
-					break;
-				case 6 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:197:3: ^( UNARY_SUB expr )
-					{
-					match(input,UNARY_SUB,FOLLOW_UNARY_SUB_in_expr486); 
-					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_expr_in_expr488);
-					expr();
-					state._fsp--;
-
-					match(input, Token.UP, null); 
-
-					}
-					break;
-				case 7 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:199:3: ^( OP_NOT expr )
-					{
-					match(input,OP_NOT,FOLLOW_OP_NOT_in_expr498); 
-					match(input, Token.DOWN, null); 
 					pushFollow(FOLLOW_expr_in_expr500);
 					expr();
 					state._fsp--;
@@ -984,16 +1033,119 @@ public class SemanticAnalysis2 extends TreeParser {
 
 					}
 					break;
-				case 8 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:201:3: ^( CALL designator actPars )
+				case 2 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:203:3: ^( OP_AND expr expr )
 					{
-					match(input,CALL,FOLLOW_CALL_in_expr510); 
+					match(input,OP_AND,FOLLOW_OP_AND_in_expr510); 
 					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_designator_in_expr512);
+					pushFollow(FOLLOW_expr_in_expr512);
+					expr();
+					state._fsp--;
+
+					pushFollow(FOLLOW_expr_in_expr514);
+					expr();
+					state._fsp--;
+
+					match(input, Token.UP, null); 
+
+					}
+					break;
+				case 3 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:205:3: ^( relOp expr expr )
+					{
+					pushFollow(FOLLOW_relOp_in_expr524);
+					relOp();
+					state._fsp--;
+
+					match(input, Token.DOWN, null); 
+					pushFollow(FOLLOW_expr_in_expr526);
+					expr();
+					state._fsp--;
+
+					pushFollow(FOLLOW_expr_in_expr528);
+					expr();
+					state._fsp--;
+
+					match(input, Token.UP, null); 
+
+					}
+					break;
+				case 4 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:207:3: ^( addOp expr expr )
+					{
+					pushFollow(FOLLOW_addOp_in_expr538);
+					addOp();
+					state._fsp--;
+
+					match(input, Token.DOWN, null); 
+					pushFollow(FOLLOW_expr_in_expr540);
+					expr();
+					state._fsp--;
+
+					pushFollow(FOLLOW_expr_in_expr542);
+					expr();
+					state._fsp--;
+
+					match(input, Token.UP, null); 
+
+					}
+					break;
+				case 5 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:209:3: ^( mulOp expr expr )
+					{
+					pushFollow(FOLLOW_mulOp_in_expr552);
+					mulOp();
+					state._fsp--;
+
+					match(input, Token.DOWN, null); 
+					pushFollow(FOLLOW_expr_in_expr554);
+					expr();
+					state._fsp--;
+
+					pushFollow(FOLLOW_expr_in_expr556);
+					expr();
+					state._fsp--;
+
+					match(input, Token.UP, null); 
+
+					}
+					break;
+				case 6 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:211:3: ^( UNARY_SUB expr )
+					{
+					match(input,UNARY_SUB,FOLLOW_UNARY_SUB_in_expr566); 
+					match(input, Token.DOWN, null); 
+					pushFollow(FOLLOW_expr_in_expr568);
+					expr();
+					state._fsp--;
+
+					match(input, Token.UP, null); 
+
+					}
+					break;
+				case 7 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:213:3: ^( OP_NOT expr )
+					{
+					match(input,OP_NOT,FOLLOW_OP_NOT_in_expr578); 
+					match(input, Token.DOWN, null); 
+					pushFollow(FOLLOW_expr_in_expr580);
+					expr();
+					state._fsp--;
+
+					match(input, Token.UP, null); 
+
+					}
+					break;
+				case 8 :
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:215:3: ^( CALL designator actPars )
+					{
+					match(input,CALL,FOLLOW_CALL_in_expr590); 
+					match(input, Token.DOWN, null); 
+					pushFollow(FOLLOW_designator_in_expr592);
 					designator();
 					state._fsp--;
 
-					pushFollow(FOLLOW_actPars_in_expr514);
+					pushFollow(FOLLOW_actPars_in_expr594);
 					actPars();
 					state._fsp--;
 
@@ -1002,27 +1154,27 @@ public class SemanticAnalysis2 extends TreeParser {
 					}
 					break;
 				case 9 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:203:3: designator
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:217:3: designator
 					{
-					pushFollow(FOLLOW_designator_in_expr523);
+					pushFollow(FOLLOW_designator_in_expr603);
 					designator();
 					state._fsp--;
 
 					}
 					break;
 				case 10 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:205:3: number
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:219:3: number
 					{
-					pushFollow(FOLLOW_number_in_expr531);
+					pushFollow(FOLLOW_number_in_expr611);
 					number();
 					state._fsp--;
 
 					}
 					break;
 				case 11 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:207:3: STRING_LITERAL
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:221:3: STRING_LITERAL
 					{
-					match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_expr539); 
+					match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_expr619); 
 					}
 					break;
 
@@ -1042,10 +1194,10 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 	// $ANTLR start "number"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:210:1: number : ( INT_NUMBER | REAL_NUMBER );
+	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:224:1: number : ( INT_NUMBER | REAL_NUMBER );
 	public final void number() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:210:8: ( INT_NUMBER | REAL_NUMBER )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:224:8: ( INT_NUMBER | REAL_NUMBER )
 			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:
 			{
 			if ( input.LA(1)==INT_NUMBER||input.LA(1)==REAL_NUMBER ) {
@@ -1072,70 +1224,74 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 	// $ANTLR start "designator"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:212:1: designator : ( ID | ^( DOT designator ID ) | ^( ARRAY_REF designator expr ) );
+	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:226:1: designator : ( ID | ^( DOT designator ID ) | ^( ARRAY_REF designator expr ) );
 	public final void designator() throws RecognitionException {
-		CommonTree ID5=null;
+		CommonTree ID6=null;
 
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:212:12: ( ID | ^( DOT designator ID ) | ^( ARRAY_REF designator expr ) )
-			int alt11=3;
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:226:12: ( ID | ^( DOT designator ID ) | ^( ARRAY_REF designator expr ) )
+			int alt13=3;
 			switch ( input.LA(1) ) {
 			case ID:
 				{
-				alt11=1;
+				alt13=1;
 				}
 				break;
 			case DOT:
 				{
-				alt11=2;
+				alt13=2;
 				}
 				break;
 			case ARRAY_REF:
 				{
-				alt11=3;
+				alt13=3;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 11, 0, input);
+					new NoViableAltException("", 13, 0, input);
 				throw nvae;
 			}
-			switch (alt11) {
+			switch (alt13) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:213:3: ID
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:227:3: ID
 					{
-					ID5=(CommonTree)match(input,ID,FOLLOW_ID_in_designator565); 
+					ID6=(CommonTree)match(input,ID,FOLLOW_ID_in_designator645); 
 
-					      if (currNT.getAttribute((ID5!=null?ID5.getText():null)) == null) {
-					        emitErrorMessage(ID5.token, "Attribute not found: " + (ID5!=null?ID5.getText():null));
-					      }
+					      Attribute at = currNT.getAttribute((ID6!=null?ID6.getText():null));
+					      if (at == null) {
+					        emitErrorMessage(ID6.token, "Attribute not found: " + (ID6!=null?ID6.getText():null));
+					      } else {
+						      SemanticNode sm = (SemanticNode) ID6;
+						      sm.setSymbol(at);
+						    }
 					    
 					}
 					break;
 				case 2 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:220:3: ^( DOT designator ID )
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:238:3: ^( DOT designator ID )
 					{
-					match(input,DOT,FOLLOW_DOT_in_designator580); 
+					match(input,DOT,FOLLOW_DOT_in_designator660); 
 					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_designator_in_designator582);
+					pushFollow(FOLLOW_designator_in_designator662);
 					designator();
 					state._fsp--;
 
-					match(input,ID,FOLLOW_ID_in_designator584); 
+					match(input,ID,FOLLOW_ID_in_designator664); 
 					match(input, Token.UP, null); 
 
 					}
 					break;
 				case 3 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:222:3: ^( ARRAY_REF designator expr )
+					// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:240:3: ^( ARRAY_REF designator expr )
 					{
-					match(input,ARRAY_REF,FOLLOW_ARRAY_REF_in_designator594); 
+					match(input,ARRAY_REF,FOLLOW_ARRAY_REF_in_designator674); 
 					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_designator_in_designator596);
+					pushFollow(FOLLOW_designator_in_designator676);
 					designator();
 					state._fsp--;
 
-					pushFollow(FOLLOW_expr_in_designator598);
+					pushFollow(FOLLOW_expr_in_designator678);
 					expr();
 					state._fsp--;
 
@@ -1159,10 +1315,10 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 	// $ANTLR start "relOp"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:225:1: relOp : ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE );
+	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:243:1: relOp : ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE );
 	public final void relOp() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:225:7: ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:243:7: ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE )
 			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:
 			{
 			if ( (input.LA(1) >= OP_EQ && input.LA(1) <= OP_LT)||input.LA(1)==OP_NE ) {
@@ -1189,10 +1345,10 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 	// $ANTLR start "addOp"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:227:1: addOp : ( OP_ADD | OP_SUB );
+	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:245:1: addOp : ( OP_ADD | OP_SUB );
 	public final void addOp() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:227:7: ( OP_ADD | OP_SUB )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:245:7: ( OP_ADD | OP_SUB )
 			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:
 			{
 			if ( input.LA(1)==OP_ADD||input.LA(1)==OP_SUB ) {
@@ -1219,10 +1375,10 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 	// $ANTLR start "mulOp"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:229:1: mulOp : ( OP_MUL | OP_DIV | OP_MOD );
+	// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:247:1: mulOp : ( OP_MUL | OP_DIV | OP_MOD );
 	public final void mulOp() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:229:7: ( OP_MUL | OP_DIV | OP_MOD )
+			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:247:7: ( OP_MUL | OP_DIV | OP_MOD )
 			// /home/leo/workspace/APEG/grammars/SemanticAnalysis2.g:
 			{
 			if ( input.LA(1)==OP_DIV||(input.LA(1) >= OP_MOD && input.LA(1) <= OP_MUL) ) {
@@ -1250,73 +1406,85 @@ public class SemanticAnalysis2 extends TreeParser {
 
 
 
-	public static final BitSet FOLLOW_rule_in_grammarDef66 = new BitSet(new long[]{0x0000004000000002L});
-	public static final BitSet FOLLOW_RULE_in_rule87 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_ID_in_rule89 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_LIST_in_rule102 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_varDecl_in_rule104 = new BitSet(new long[]{0x0000040000000008L});
-	public static final BitSet FOLLOW_LIST_in_rule113 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_varDecl_in_rule115 = new BitSet(new long[]{0x0000040000000008L});
-	public static final BitSet FOLLOW_LIST_in_rule124 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_varDecl_in_rule126 = new BitSet(new long[]{0x0000040000000008L});
-	public static final BitSet FOLLOW_peg_expr_in_rule134 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_VARDECL_in_varDecl156 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_ID_in_varDecl160 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_ID_in_varDecl164 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_CHOICE_in_peg_expr186 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_peg_expr_in_peg_expr188 = new BitSet(new long[]{0x000001A000300690L});
-	public static final BitSet FOLLOW_peg_expr_in_peg_expr190 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_SEQ_in_peg_expr200 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_peg_expr_in_peg_expr202 = new BitSet(new long[]{0x000001A000300698L});
-	public static final BitSet FOLLOW_ANY_in_peg_expr212 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_NONTERM_in_peg_expr221 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_ID_in_peg_expr229 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_LIST_in_peg_expr246 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_expr_in_peg_expr269 = new BitSet(new long[]{0x0000031FFFC19128L});
-	public static final BitSet FOLLOW_STRING_LITERAL_in_peg_expr320 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_REPEAT_in_peg_expr329 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_peg_expr_in_peg_expr331 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_NOT_LOOKAHEAD_in_peg_expr341 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_peg_expr_in_peg_expr343 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_COND_in_peg_expr353 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_expr_in_peg_expr355 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_ASSIGNLIST_in_peg_expr365 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_assign_in_peg_expr367 = new BitSet(new long[]{0x0000000000000048L});
-	public static final BitSet FOLLOW_LIST_in_actPars381 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_expr_in_actPars383 = new BitSet(new long[]{0x0000031FFFC19128L});
-	public static final BitSet FOLLOW_ASSIGN_in_assign396 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_ID_in_assign398 = new BitSet(new long[]{0x0000031FFFC19120L});
-	public static final BitSet FOLLOW_expr_in_assign400 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_OP_OR_in_expr416 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_expr_in_expr418 = new BitSet(new long[]{0x0000031FFFC19120L});
-	public static final BitSet FOLLOW_expr_in_expr420 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_OP_AND_in_expr430 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_expr_in_expr432 = new BitSet(new long[]{0x0000031FFFC19120L});
-	public static final BitSet FOLLOW_expr_in_expr434 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_relOp_in_expr444 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_expr_in_expr446 = new BitSet(new long[]{0x0000031FFFC19120L});
-	public static final BitSet FOLLOW_expr_in_expr448 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_addOp_in_expr458 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_expr_in_expr460 = new BitSet(new long[]{0x0000031FFFC19120L});
-	public static final BitSet FOLLOW_expr_in_expr462 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_mulOp_in_expr472 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_expr_in_expr474 = new BitSet(new long[]{0x0000031FFFC19120L});
-	public static final BitSet FOLLOW_expr_in_expr476 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_UNARY_SUB_in_expr486 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_expr_in_expr488 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_OP_NOT_in_expr498 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_ID_in_grammarDef66 = new BitSet(new long[]{0x0000000000020000L});
+	public static final BitSet FOLLOW_FILES_in_grammarDef69 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_ID_in_grammarDef71 = new BitSet(new long[]{0x0000000000040008L});
+	public static final BitSet FOLLOW_rule_in_grammarDef79 = new BitSet(new long[]{0x0000800000000002L});
+	public static final BitSet FOLLOW_RULE_in_rule100 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_ID_in_rule102 = new BitSet(new long[]{0x0000000000800000L});
+	public static final BitSet FOLLOW_LIST_in_rule115 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_varDecl_in_rule117 = new BitSet(new long[]{0x0008000000000008L});
+	public static final BitSet FOLLOW_LIST_in_rule126 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_varDecl_in_rule128 = new BitSet(new long[]{0x0008000000000008L});
+	public static final BitSet FOLLOW_LIST_in_rule137 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_varDecl_in_rule139 = new BitSet(new long[]{0x0008000000000008L});
+	public static final BitSet FOLLOW_peg_expr_in_rule147 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_VARDECL_in_varDecl169 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_ID_in_varDecl173 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_ID_in_varDecl177 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_LAMBDA_in_peg_expr198 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_CHOICE_in_peg_expr207 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_peg_expr_in_peg_expr209 = new BitSet(new long[]{0x000348001E101530L});
+	public static final BitSet FOLLOW_peg_expr_in_peg_expr211 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_SEQ_in_peg_expr221 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_peg_expr_in_peg_expr223 = new BitSet(new long[]{0x000348001E101538L});
+	public static final BitSet FOLLOW_ANY_in_peg_expr233 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_NONTERM_in_peg_expr242 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_ID_in_peg_expr250 = new BitSet(new long[]{0x0000000000800000L});
+	public static final BitSet FOLLOW_LIST_in_peg_expr267 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_expr_in_peg_expr290 = new BitSet(new long[]{0x000627FFE00C4248L});
+	public static final BitSet FOLLOW_STRING_LITERAL_in_peg_expr341 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_REPEAT_in_peg_expr350 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_peg_expr_in_peg_expr352 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_NOT_LOOKAHEAD_in_peg_expr362 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_peg_expr_in_peg_expr364 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_OPTIONAL_in_peg_expr374 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_peg_expr_in_peg_expr376 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_ONE_REPEAT_in_peg_expr386 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_peg_expr_in_peg_expr388 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_AND_LOOKAHEAD_in_peg_expr398 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_peg_expr_in_peg_expr400 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_COND_in_peg_expr410 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_expr_in_peg_expr412 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_ASSIGNLIST_in_peg_expr422 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_assign_in_peg_expr424 = new BitSet(new long[]{0x0000000000000088L});
+	public static final BitSet FOLLOW_RANGE_in_peg_expr435 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_RANGE_PAIR_in_peg_expr437 = new BitSet(new long[]{0x0000100000000008L});
+	public static final BitSet FOLLOW_LIST_in_actPars451 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_expr_in_actPars453 = new BitSet(new long[]{0x000627FFE00C4248L});
+	public static final BitSet FOLLOW_ASSIGN_in_assign466 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_ID_in_assign470 = new BitSet(new long[]{0x000627FFE00C4240L});
+	public static final BitSet FOLLOW_expr_in_assign480 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_OP_OR_in_expr496 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_expr_in_expr498 = new BitSet(new long[]{0x000627FFE00C4240L});
 	public static final BitSet FOLLOW_expr_in_expr500 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_CALL_in_expr510 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_designator_in_expr512 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_actPars_in_expr514 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_designator_in_expr523 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_number_in_expr531 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_STRING_LITERAL_in_expr539 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_designator565 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_DOT_in_designator580 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_designator_in_designator582 = new BitSet(new long[]{0x0000000000008000L});
-	public static final BitSet FOLLOW_ID_in_designator584 = new BitSet(new long[]{0x0000000000000008L});
-	public static final BitSet FOLLOW_ARRAY_REF_in_designator594 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_designator_in_designator596 = new BitSet(new long[]{0x0000031FFFC19120L});
-	public static final BitSet FOLLOW_expr_in_designator598 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_OP_AND_in_expr510 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_expr_in_expr512 = new BitSet(new long[]{0x000627FFE00C4240L});
+	public static final BitSet FOLLOW_expr_in_expr514 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_relOp_in_expr524 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_expr_in_expr526 = new BitSet(new long[]{0x000627FFE00C4240L});
+	public static final BitSet FOLLOW_expr_in_expr528 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_addOp_in_expr538 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_expr_in_expr540 = new BitSet(new long[]{0x000627FFE00C4240L});
+	public static final BitSet FOLLOW_expr_in_expr542 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_mulOp_in_expr552 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_expr_in_expr554 = new BitSet(new long[]{0x000627FFE00C4240L});
+	public static final BitSet FOLLOW_expr_in_expr556 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_UNARY_SUB_in_expr566 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_expr_in_expr568 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_OP_NOT_in_expr578 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_expr_in_expr580 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_CALL_in_expr590 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_designator_in_expr592 = new BitSet(new long[]{0x0000000000800000L});
+	public static final BitSet FOLLOW_actPars_in_expr594 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_designator_in_expr603 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_number_in_expr611 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_STRING_LITERAL_in_expr619 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_designator645 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_DOT_in_designator660 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_designator_in_designator662 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_ID_in_designator664 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_ARRAY_REF_in_designator674 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_designator_in_designator676 = new BitSet(new long[]{0x000627FFE00C4240L});
+	public static final BitSet FOLLOW_expr_in_designator678 = new BitSet(new long[]{0x0000000000000008L});
 }
