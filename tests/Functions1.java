@@ -15,6 +15,11 @@ public class Functions1 {
 				System.out.println(m);
 				Object x = m.invoke(null, new Integer(1), 2);
 				System.out.println(x);
+				Object array[] = new Object[2];
+				array[0] = 1;
+				array[1] = 2;
+				x = m.invoke(null, array);
+				System.out.println(x);
 			}
 		}
 	}

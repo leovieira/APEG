@@ -6,7 +6,7 @@ import java.util.Hashtable;
 public class Grammar {
 	
 	private Hashtable<String, NonTerminal> nonTerms = new Hashtable<String, NonTerminal>();
-	private Hashtable<String, Method> functions = new Hashtable<String, Method>();
+	private Hashtable<String, Function> functions = new Hashtable<String, Function>();
 		
 	public Grammar() {
 	}
@@ -24,16 +24,17 @@ public class Grammar {
 		return n;
 	}
 	
-	public Method getFunction(String name) {
+	public Function getFunction(String name) {
 		return functions.get(name);
 	}
 	
-	public Method addFunction(Method m) {
-		if (getFunction(m.getName()) != null) {
+	public Function addFunction(Method method) {
+		if (getFunction(method.getName()) != null) {
 			return null;
 		}
-		functions.put(m.getName(), m);
-		return m;
+		Function f = new Function(method.getName(), method);
+		functions.put(method.getName(), f);
+		return f;
 	}
 
 	

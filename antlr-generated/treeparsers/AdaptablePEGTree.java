@@ -1,4 +1,4 @@
-// $ANTLR 3.5 /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g 2013-02-10 08:58:57
+// $ANTLR 3.5 C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g 2013-02-10 12:56:27
 
 package treeparsers;
 
@@ -109,7 +109,7 @@ public class AdaptablePEGTree extends TreeParser {
 	}
 
 	@Override public String[] getTokenNames() { return AdaptablePEGTree.tokenNames; }
-	@Override public String getGrammarFileName() { return "/home/leo/workspace/APEG/grammars/AdaptablePEGTree.g"; }
+	@Override public String getGrammarFileName() { return "C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g"; }
 
 
 	    
@@ -154,7 +154,7 @@ public class AdaptablePEGTree extends TreeParser {
 	    }
 	    
 	    /**
-	     * O token passado como parï¿½metro (atributo token) ï¿½ usado
+	     * O token passado como parâmetro (atributo token) é usado
 	     * para adicionar a linha e coluna na mensagem de erro.
 	     */
 	    public void emitErrorMessage(Token t, String pMessage) {
@@ -180,17 +180,17 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "grammarDef"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:81:1: grammarDef : ID ^( FILES ( ID )* ) ( rule )+ ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:81:1: grammarDef : ID ^( FILES ( ID )* ) ( rule )+ ;
 	public final void grammarDef() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:81:12: ( ID ^( FILES ( ID )* ) ( rule )+ )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:82:5: ID ^( FILES ( ID )* ) ( rule )+
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:81:12: ( ID ^( FILES ( ID )* ) ( rule )+ )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:82:5: ID ^( FILES ( ID )* ) ( rule )+
 			{
 			match(input,ID,FOLLOW_ID_in_grammarDef60); 
 			match(input,FILES,FOLLOW_FILES_in_grammarDef63); 
 			if ( input.LA(1)==Token.DOWN ) {
 				match(input, Token.DOWN, null); 
-				// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:82:16: ( ID )*
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:82:16: ( ID )*
 				loop1:
 				while (true) {
 					int alt1=2;
@@ -201,7 +201,7 @@ public class AdaptablePEGTree extends TreeParser {
 
 					switch (alt1) {
 					case 1 :
-						// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:82:16: ID
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:82:16: ID
 						{
 						match(input,ID,FOLLOW_ID_in_grammarDef65); 
 						}
@@ -215,7 +215,7 @@ public class AdaptablePEGTree extends TreeParser {
 				match(input, Token.UP, null); 
 			}
 
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:83:5: ( rule )+
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:83:5: ( rule )+
 			int cnt2=0;
 			loop2:
 			while (true) {
@@ -227,7 +227,7 @@ public class AdaptablePEGTree extends TreeParser {
 
 				switch (alt2) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:83:5: rule
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:83:5: rule
 					{
 					pushFollow(FOLLOW_rule_in_grammarDef73);
 					rule();
@@ -260,11 +260,11 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "rule"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:86:1: rule : ^( RULE ID decls decls decls peg_expr ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:86:1: rule : ^( RULE ID decls decls decls peg_expr ) ;
 	public final void rule() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:86:6: ( ^( RULE ID decls decls decls peg_expr ) )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:86:8: ^( RULE ID decls decls decls peg_expr )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:86:6: ( ^( RULE ID decls decls decls peg_expr ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:86:8: ^( RULE ID decls decls decls peg_expr )
 			{
 			match(input,RULE,FOLLOW_RULE_in_rule92); 
 			match(input, Token.DOWN, null); 
@@ -303,16 +303,16 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "decls"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:88:1: decls : ^( LIST ( varDecl )* ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:88:1: decls : ^( LIST ( varDecl )* ) ;
 	public final void decls() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:88:7: ( ^( LIST ( varDecl )* ) )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:88:9: ^( LIST ( varDecl )* )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:88:7: ( ^( LIST ( varDecl )* ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:88:9: ^( LIST ( varDecl )* )
 			{
 			match(input,LIST,FOLLOW_LIST_in_decls115); 
 			if ( input.LA(1)==Token.DOWN ) {
 				match(input, Token.DOWN, null); 
-				// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:88:16: ( varDecl )*
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:88:16: ( varDecl )*
 				loop3:
 				while (true) {
 					int alt3=2;
@@ -323,7 +323,7 @@ public class AdaptablePEGTree extends TreeParser {
 
 					switch (alt3) {
 					case 1 :
-						// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:88:16: varDecl
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:88:16: varDecl
 						{
 						pushFollow(FOLLOW_varDecl_in_decls117);
 						varDecl();
@@ -356,14 +356,14 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "varDecl"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:91:1: varDecl : ^( VARDECL id1= ID id2= ID ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:91:1: varDecl : ^( VARDECL id1= ID id2= ID ) ;
 	public final void varDecl() throws RecognitionException {
 		CommonTree id1=null;
 		CommonTree id2=null;
 
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:91:9: ( ^( VARDECL id1= ID id2= ID ) )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:92:3: ^( VARDECL id1= ID id2= ID )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:91:9: ( ^( VARDECL id1= ID id2= ID ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:92:3: ^( VARDECL id1= ID id2= ID )
 			{
 			match(input,VARDECL,FOLLOW_VARDECL_in_varDecl133); 
 			match(input, Token.DOWN, null); 
@@ -387,10 +387,10 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "peg_expr"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:95:1: peg_expr : ( LAMBDA | ^( CHOICE peg_expr peg_expr ) | ^( SEQ ( peg_expr )+ ) | ANY | ^( NONTERM ID actPars ) | STRING_LITERAL | ^( REPEAT peg_expr ) | ^( NOT_LOOKAHEAD peg_expr ) | ^( OPTIONAL peg_expr ) | ^( ONE_REPEAT peg_expr ) | ^( AND_LOOKAHEAD peg_expr ) | ^( COND expr ) | ^( ASSIGNLIST ( assign )+ ) | ^( RANGE ( RANGE_PAIR )+ ) );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:95:1: peg_expr : ( LAMBDA | ^( CHOICE peg_expr peg_expr ) | ^( SEQ ( peg_expr )+ ) | ANY | ^( NONTERM ID actPars ) | STRING_LITERAL | ^( REPEAT peg_expr ) | ^( NOT_LOOKAHEAD peg_expr ) | ^( OPTIONAL peg_expr ) | ^( ONE_REPEAT peg_expr ) | ^( AND_LOOKAHEAD peg_expr ) | ^( COND expr ) | ^( ASSIGNLIST ( assign )+ ) | ^( RANGE ( RANGE_PAIR )+ ) );
 	public final void peg_expr() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:95:10: ( LAMBDA | ^( CHOICE peg_expr peg_expr ) | ^( SEQ ( peg_expr )+ ) | ANY | ^( NONTERM ID actPars ) | STRING_LITERAL | ^( REPEAT peg_expr ) | ^( NOT_LOOKAHEAD peg_expr ) | ^( OPTIONAL peg_expr ) | ^( ONE_REPEAT peg_expr ) | ^( AND_LOOKAHEAD peg_expr ) | ^( COND expr ) | ^( ASSIGNLIST ( assign )+ ) | ^( RANGE ( RANGE_PAIR )+ ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:95:10: ( LAMBDA | ^( CHOICE peg_expr peg_expr ) | ^( SEQ ( peg_expr )+ ) | ANY | ^( NONTERM ID actPars ) | STRING_LITERAL | ^( REPEAT peg_expr ) | ^( NOT_LOOKAHEAD peg_expr ) | ^( OPTIONAL peg_expr ) | ^( ONE_REPEAT peg_expr ) | ^( AND_LOOKAHEAD peg_expr ) | ^( COND expr ) | ^( ASSIGNLIST ( assign )+ ) | ^( RANGE ( RANGE_PAIR )+ ) )
 			int alt7=14;
 			switch ( input.LA(1) ) {
 			case LAMBDA:
@@ -470,13 +470,13 @@ public class AdaptablePEGTree extends TreeParser {
 			}
 			switch (alt7) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:96:3: LAMBDA
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:96:3: LAMBDA
 					{
 					match(input,LAMBDA,FOLLOW_LAMBDA_in_peg_expr156); 
 					}
 					break;
 				case 2 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:98:3: ^( CHOICE peg_expr peg_expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:98:3: ^( CHOICE peg_expr peg_expr )
 					{
 					match(input,CHOICE,FOLLOW_CHOICE_in_peg_expr165); 
 					match(input, Token.DOWN, null); 
@@ -493,11 +493,11 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 3 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:100:3: ^( SEQ ( peg_expr )+ )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:100:3: ^( SEQ ( peg_expr )+ )
 					{
 					match(input,SEQ,FOLLOW_SEQ_in_peg_expr179); 
 					match(input, Token.DOWN, null); 
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:100:9: ( peg_expr )+
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:100:9: ( peg_expr )+
 					int cnt4=0;
 					loop4:
 					while (true) {
@@ -509,7 +509,7 @@ public class AdaptablePEGTree extends TreeParser {
 
 						switch (alt4) {
 						case 1 :
-							// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:100:9: peg_expr
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:100:9: peg_expr
 							{
 							pushFollow(FOLLOW_peg_expr_in_peg_expr181);
 							peg_expr();
@@ -531,13 +531,13 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 4 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:102:3: ANY
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:102:3: ANY
 					{
 					match(input,ANY,FOLLOW_ANY_in_peg_expr191); 
 					}
 					break;
 				case 5 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:104:3: ^( NONTERM ID actPars )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:104:3: ^( NONTERM ID actPars )
 					{
 					match(input,NONTERM,FOLLOW_NONTERM_in_peg_expr200); 
 					match(input, Token.DOWN, null); 
@@ -551,13 +551,13 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 6 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:106:3: STRING_LITERAL
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:106:3: STRING_LITERAL
 					{
 					match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_peg_expr213); 
 					}
 					break;
 				case 7 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:108:3: ^( REPEAT peg_expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:108:3: ^( REPEAT peg_expr )
 					{
 					match(input,REPEAT,FOLLOW_REPEAT_in_peg_expr222); 
 					match(input, Token.DOWN, null); 
@@ -570,7 +570,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 8 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:110:3: ^( NOT_LOOKAHEAD peg_expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:110:3: ^( NOT_LOOKAHEAD peg_expr )
 					{
 					match(input,NOT_LOOKAHEAD,FOLLOW_NOT_LOOKAHEAD_in_peg_expr234); 
 					match(input, Token.DOWN, null); 
@@ -583,7 +583,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 9 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:112:3: ^( OPTIONAL peg_expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:112:3: ^( OPTIONAL peg_expr )
 					{
 					match(input,OPTIONAL,FOLLOW_OPTIONAL_in_peg_expr246); 
 					match(input, Token.DOWN, null); 
@@ -596,7 +596,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 10 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:114:3: ^( ONE_REPEAT peg_expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:114:3: ^( ONE_REPEAT peg_expr )
 					{
 					match(input,ONE_REPEAT,FOLLOW_ONE_REPEAT_in_peg_expr258); 
 					match(input, Token.DOWN, null); 
@@ -609,7 +609,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 11 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:116:3: ^( AND_LOOKAHEAD peg_expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:116:3: ^( AND_LOOKAHEAD peg_expr )
 					{
 					match(input,AND_LOOKAHEAD,FOLLOW_AND_LOOKAHEAD_in_peg_expr270); 
 					match(input, Token.DOWN, null); 
@@ -622,7 +622,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 12 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:118:3: ^( COND expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:118:3: ^( COND expr )
 					{
 					match(input,COND,FOLLOW_COND_in_peg_expr282); 
 					match(input, Token.DOWN, null); 
@@ -635,11 +635,11 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 13 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:120:3: ^( ASSIGNLIST ( assign )+ )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:120:3: ^( ASSIGNLIST ( assign )+ )
 					{
 					match(input,ASSIGNLIST,FOLLOW_ASSIGNLIST_in_peg_expr294); 
 					match(input, Token.DOWN, null); 
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:120:16: ( assign )+
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:120:16: ( assign )+
 					int cnt5=0;
 					loop5:
 					while (true) {
@@ -651,7 +651,7 @@ public class AdaptablePEGTree extends TreeParser {
 
 						switch (alt5) {
 						case 1 :
-							// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:120:16: assign
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:120:16: assign
 							{
 							pushFollow(FOLLOW_assign_in_peg_expr296);
 							assign();
@@ -673,11 +673,11 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 14 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:122:3: ^( RANGE ( RANGE_PAIR )+ )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:122:3: ^( RANGE ( RANGE_PAIR )+ )
 					{
 					match(input,RANGE,FOLLOW_RANGE_in_peg_expr307); 
 					match(input, Token.DOWN, null); 
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:122:11: ( RANGE_PAIR )+
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:122:11: ( RANGE_PAIR )+
 					int cnt6=0;
 					loop6:
 					while (true) {
@@ -689,7 +689,7 @@ public class AdaptablePEGTree extends TreeParser {
 
 						switch (alt6) {
 						case 1 :
-							// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:122:11: RANGE_PAIR
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:122:11: RANGE_PAIR
 							{
 							match(input,RANGE_PAIR,FOLLOW_RANGE_PAIR_in_peg_expr309); 
 							}
@@ -723,16 +723,16 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "actPars"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:125:1: actPars : ^( LIST ( expr )* ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:125:1: actPars : ^( LIST ( expr )* ) ;
 	public final void actPars() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:125:9: ( ^( LIST ( expr )* ) )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:125:11: ^( LIST ( expr )* )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:125:9: ( ^( LIST ( expr )* ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:125:11: ^( LIST ( expr )* )
 			{
 			match(input,LIST,FOLLOW_LIST_in_actPars323); 
 			if ( input.LA(1)==Token.DOWN ) {
 				match(input, Token.DOWN, null); 
-				// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:125:18: ( expr )*
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:125:18: ( expr )*
 				loop8:
 				while (true) {
 					int alt8=2;
@@ -743,7 +743,7 @@ public class AdaptablePEGTree extends TreeParser {
 
 					switch (alt8) {
 					case 1 :
-						// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:125:18: expr
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:125:18: expr
 						{
 						pushFollow(FOLLOW_expr_in_actPars325);
 						expr();
@@ -776,11 +776,11 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "assign"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:127:1: assign : ^( ASSIGN ID expr ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:127:1: assign : ^( ASSIGN ID expr ) ;
 	public final void assign() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:127:8: ( ^( ASSIGN ID expr ) )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:128:3: ^( ASSIGN ID expr )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:127:8: ( ^( ASSIGN ID expr ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:128:3: ^( ASSIGN ID expr )
 			{
 			match(input,ASSIGN,FOLLOW_ASSIGN_in_assign338); 
 			match(input, Token.DOWN, null); 
@@ -807,10 +807,10 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "expr"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:131:1: expr : ( ^( OP_OR expr expr ) | ^( OP_AND expr expr ) | ^( relOp expr expr ) | ^( addOp expr expr ) | ^( mulOp expr expr ) | ^( UNARY_SUB expr ) | ^( OP_NOT expr ) | ^( CALL designator actPars ) | designator | number | STRING_LITERAL );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:131:1: expr : ( ^( OP_OR expr expr ) | ^( OP_AND expr expr ) | ^( relOp expr expr ) | ^( addOp expr expr ) | ^( mulOp expr expr ) | ^( UNARY_SUB expr ) | ^( OP_NOT expr ) | ^( CALL designator actPars ) | designator | number | STRING_LITERAL );
 	public final void expr() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:131:6: ( ^( OP_OR expr expr ) | ^( OP_AND expr expr ) | ^( relOp expr expr ) | ^( addOp expr expr ) | ^( mulOp expr expr ) | ^( UNARY_SUB expr ) | ^( OP_NOT expr ) | ^( CALL designator actPars ) | designator | number | STRING_LITERAL )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:131:6: ( ^( OP_OR expr expr ) | ^( OP_AND expr expr ) | ^( relOp expr expr ) | ^( addOp expr expr ) | ^( mulOp expr expr ) | ^( UNARY_SUB expr ) | ^( OP_NOT expr ) | ^( CALL designator actPars ) | designator | number | STRING_LITERAL )
 			int alt9=11;
 			switch ( input.LA(1) ) {
 			case OP_OR:
@@ -886,7 +886,7 @@ public class AdaptablePEGTree extends TreeParser {
 			}
 			switch (alt9) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:132:3: ^( OP_OR expr expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:132:3: ^( OP_OR expr expr )
 					{
 					match(input,OP_OR,FOLLOW_OP_OR_in_expr358); 
 					match(input, Token.DOWN, null); 
@@ -903,7 +903,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 2 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:134:3: ^( OP_AND expr expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:134:3: ^( OP_AND expr expr )
 					{
 					match(input,OP_AND,FOLLOW_OP_AND_in_expr372); 
 					match(input, Token.DOWN, null); 
@@ -920,7 +920,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 3 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:136:3: ^( relOp expr expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:136:3: ^( relOp expr expr )
 					{
 					pushFollow(FOLLOW_relOp_in_expr386);
 					relOp();
@@ -940,7 +940,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 4 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:138:3: ^( addOp expr expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:138:3: ^( addOp expr expr )
 					{
 					pushFollow(FOLLOW_addOp_in_expr400);
 					addOp();
@@ -960,7 +960,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 5 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:140:3: ^( mulOp expr expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:140:3: ^( mulOp expr expr )
 					{
 					pushFollow(FOLLOW_mulOp_in_expr414);
 					mulOp();
@@ -980,7 +980,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 6 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:142:3: ^( UNARY_SUB expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:142:3: ^( UNARY_SUB expr )
 					{
 					match(input,UNARY_SUB,FOLLOW_UNARY_SUB_in_expr428); 
 					match(input, Token.DOWN, null); 
@@ -993,7 +993,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 7 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:144:3: ^( OP_NOT expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:144:3: ^( OP_NOT expr )
 					{
 					match(input,OP_NOT,FOLLOW_OP_NOT_in_expr440); 
 					match(input, Token.DOWN, null); 
@@ -1006,7 +1006,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 8 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:146:3: ^( CALL designator actPars )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:146:3: ^( CALL designator actPars )
 					{
 					match(input,CALL,FOLLOW_CALL_in_expr452); 
 					match(input, Token.DOWN, null); 
@@ -1023,7 +1023,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 9 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:148:3: designator
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:148:3: designator
 					{
 					pushFollow(FOLLOW_designator_in_expr465);
 					designator();
@@ -1032,7 +1032,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 10 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:150:3: number
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:150:3: number
 					{
 					pushFollow(FOLLOW_number_in_expr473);
 					number();
@@ -1041,7 +1041,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 11 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:152:3: STRING_LITERAL
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:152:3: STRING_LITERAL
 					{
 					match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_expr481); 
 					}
@@ -1062,11 +1062,11 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "number"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:155:1: number : ( INT_NUMBER | REAL_NUMBER );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:155:1: number : ( INT_NUMBER | REAL_NUMBER );
 	public final void number() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:155:8: ( INT_NUMBER | REAL_NUMBER )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:155:8: ( INT_NUMBER | REAL_NUMBER )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:
 			{
 			if ( input.LA(1)==INT_NUMBER||input.LA(1)==REAL_NUMBER ) {
 				input.consume();
@@ -1092,10 +1092,10 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "designator"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:157:1: designator : ( ID | ^( DOT designator ID ) | ^( ARRAY_REF designator expr ) );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:157:1: designator : ( ID | ^( DOT designator ID ) | ^( ARRAY_REF designator expr ) );
 	public final void designator() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:157:12: ( ID | ^( DOT designator ID ) | ^( ARRAY_REF designator expr ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:157:12: ( ID | ^( DOT designator ID ) | ^( ARRAY_REF designator expr ) )
 			int alt10=3;
 			switch ( input.LA(1) ) {
 			case ID:
@@ -1120,13 +1120,13 @@ public class AdaptablePEGTree extends TreeParser {
 			}
 			switch (alt10) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:158:3: ID
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:158:3: ID
 					{
 					match(input,ID,FOLLOW_ID_in_designator507); 
 					}
 					break;
 				case 2 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:160:3: ^( DOT designator ID )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:160:3: ^( DOT designator ID )
 					{
 					match(input,DOT,FOLLOW_DOT_in_designator516); 
 					match(input, Token.DOWN, null); 
@@ -1140,7 +1140,7 @@ public class AdaptablePEGTree extends TreeParser {
 					}
 					break;
 				case 3 :
-					// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:162:3: ^( ARRAY_REF designator expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:162:3: ^( ARRAY_REF designator expr )
 					{
 					match(input,ARRAY_REF,FOLLOW_ARRAY_REF_in_designator530); 
 					match(input, Token.DOWN, null); 
@@ -1172,11 +1172,11 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "relOp"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:165:1: relOp : ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:165:1: relOp : ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE );
 	public final void relOp() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:165:7: ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:165:7: ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:
 			{
 			if ( (input.LA(1) >= OP_EQ && input.LA(1) <= OP_LT)||input.LA(1)==OP_NE ) {
 				input.consume();
@@ -1202,11 +1202,11 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "addOp"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:167:1: addOp : ( OP_ADD | OP_SUB );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:167:1: addOp : ( OP_ADD | OP_SUB );
 	public final void addOp() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:167:7: ( OP_ADD | OP_SUB )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:167:7: ( OP_ADD | OP_SUB )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:
 			{
 			if ( input.LA(1)==OP_ADD||input.LA(1)==OP_SUB ) {
 				input.consume();
@@ -1232,11 +1232,11 @@ public class AdaptablePEGTree extends TreeParser {
 
 
 	// $ANTLR start "mulOp"
-	// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:169:1: mulOp : ( OP_MUL | OP_DIV | OP_MOD );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:169:1: mulOp : ( OP_MUL | OP_DIV | OP_MOD );
 	public final void mulOp() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:169:7: ( OP_MUL | OP_DIV | OP_MOD )
-			// /home/leo/workspace/APEG/grammars/AdaptablePEGTree.g:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:169:7: ( OP_MUL | OP_DIV | OP_MOD )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEGTree.g:
 			{
 			if ( input.LA(1)==OP_DIV||(input.LA(1) >= OP_MOD && input.LA(1) <= OP_MUL) ) {
 				input.consume();

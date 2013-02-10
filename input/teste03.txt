@@ -1,0 +1,11 @@
+
+apeg testfunction;
+
+functions Functions1 ;
+
+teste : strN<add(1,2)>
+  ;
+
+strN[int n] : ( {? n > 0 } CHAR { n = n - 1; } )* {? n == 0 } ;
+
+CHAR : . ;
