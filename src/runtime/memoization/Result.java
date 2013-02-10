@@ -8,13 +8,11 @@ package runtime.memoization;
 
 import java.util.List;
 
-import semantics.Attribute;
-
 public class Result {
 	private int next_pos;
-	private List<Attribute> returns_attr;
+	private List<Object> returns_attr;
 	
-	public Result(int pos, List<Attribute> attr) {
+	public Result(int pos, List<Object> attr) {
 		this.next_pos = pos;
 		this.returns_attr = attr;
 	}
@@ -27,11 +25,11 @@ public class Result {
 		this.next_pos = next_pos;
 	}
 
-	public List<Attribute> getReturns_attr() {
+	public List<Object> getReturns_attr() {
 		return returns_attr;
 	}
 
-	public void setReturns_attr(List<Attribute> returns_attr) {
+	public void setReturns_attr(List<Object> returns_attr) {
 		this.returns_attr = returns_attr;
 	}
 }

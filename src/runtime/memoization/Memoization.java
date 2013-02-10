@@ -3,9 +3,6 @@ package runtime.memoization;
 import java.util.HashMap;
 import java.util.List;
 
-import semantics.Attribute;
-
-
 /**
  * This class stores the intermediates computations in executions of a APEG
  * @author leo
@@ -34,7 +31,7 @@ public class Memoization {
 	 * @return An object that represent the next position and the values of the 
 	 *         synthesized attributes or null if there is not a memoization
 	 */
-	public Result getMemoization(String nonterminal, List<Attribute> attr, int pos) {
+	public Result getMemoization(String nonterminal, List<Object> attr, int pos) {
 		Entry entry = new Entry(nonterminal, pos, attr);
 		return map.get(entry);
 		
@@ -52,8 +49,8 @@ public class Memoization {
 		return map_pos.get(attr);*/
 	}
 	
-	public Result addMemoization(String nonterminal, List<Attribute> attr, int pos,
-			                    int next_pos, List<Attribute> result_attr) {
+	public Result addMemoization(String nonterminal, List<Object> attr, int pos,
+			                    int next_pos, List<Object> result_attr) {
 		
 		Entry entry = new Entry(nonterminal, pos, attr);
 		Result resp = new Result(next_pos, result_attr);
@@ -83,9 +80,9 @@ public class Memoization {
 	protected class Entry {
 		private String non_term;
 		private int pos;
-		private List<Attribute> inh_attr;
+		private List<Object> inh_attr;
 
-		public Entry(String non_ter, int pos, List<Attribute> attr) {
+		public Entry(String non_ter, int pos, List<Object> attr) {
 			this.non_term = non_ter;
 			this.pos = pos;
 			this.inh_attr = attr;
@@ -107,11 +104,11 @@ public class Memoization {
 			this.non_term = non_term;
 		}
 
-		public List<Attribute> getInh_attr() {
+		public List<Object> getInh_attr() {
 			return inh_attr;
 		}
 
-		public void setInh_attr(List<Attribute> inh_attr) {
+		public void setInh_attr(List<Object> inh_attr) {
 			this.inh_attr = inh_attr;
 		}
 

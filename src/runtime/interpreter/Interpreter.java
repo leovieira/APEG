@@ -1,5 +1,6 @@
 package runtime.interpreter;
 
+import java.util.List;
 import java.io.FileReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -7,6 +8,8 @@ import java.util.Stack;
 
 import org.antlr.runtime.tree.CommonTree;
 
+import runtime.memoization.Memoization;
+import runtime.memoization.Result;
 import semantics.Attribute;
 import semantics.Function;
 import semantics.Grammar;
@@ -23,11 +26,14 @@ public class Interpreter {
 	Stack<Environment> environments;	
 	private static final char EOF = (char) -1;
 
+	private Memoization memoization;
 	
 	public Interpreter(Grammar grammar) {
 		this.grammar = grammar;
 		buf = new ArrayList<Character>();
 		environments = new Stack<Environment>();
+		
+		memoization = new Memoization();
 	}
 	
 
@@ -105,23 +111,56 @@ public class Interpreter {
 			// I suppose there are 2 children
 			NonTerminal nt = (NonTerminal) ((SemanticNode) tree.getChild(0)).getSymbol(); // name of nonterminal
 			CommonTree t = (CommonTree) tree.getChild(1); // list of arguments
-			Environment env = buildEnvironment(nt);
+				
+			/**
+			 * Code for memoization
+			 * creating a list with the values of the attributes
+			 */
+			List<Object> attr = new ArrayList<Object>();
+			
+			Environment env = buildEnvironment(nt);		
 			for (int i = 0; i < nt.getNumParam(); ++i) {
 				Object x = eval((CommonTree)t.getChild(i));
 				env.setValue(i, x);
-			}
+				/**
+				 * Insert on the List
+				 */
+				attr.add(x);
+			}			
+			/**
+			 * code for memoization
+			 */
+			Result result = memoization.getMemoization(nt.getName(), attr, pos);
+			if(result != null)
+				return result.getNext_pos();
+			// else
+			
 			environments.push(env);
 			int ret = process(nt.getPegExpr(), pos);
 			environments.pop();
+			/**
+			 * reset the List attr and put the returns values
+			 */
+			List<Object> result_attr = new ArrayList<Object>();
 			if (ret >= 0) {
 				int first = nt.getNumParam();
 				int last = first + nt.getNumRet();
+				// This is executed at least one time
+				// Can be changed to do statment
 				for (int i = first; i < last; ++i) {
 					Object x = env.getValue(i);					
 					SemanticNode y = (SemanticNode) t.getChild(i);
 					currEnvironment().setValue(((Attribute) y.getSymbol()).getIndex(), x);
+					/**
+					 * adding Object x on the List
+					 */
+					result_attr.add(x);
 				}
 			}
+			/**
+			 * memoizationing the value
+			 */
+			memoization.addMemoization(nt.getName(), attr, pos, ret, result_attr);
 			return ret;
 		}
 		
