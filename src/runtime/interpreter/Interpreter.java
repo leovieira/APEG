@@ -131,8 +131,20 @@ public class Interpreter {
 			 * code for memoization
 			 */
 			Result result = memoization.getMemoization(nt.getName(), attr, pos);
-			if(result != null)
+			if(result != null) {
+				System.out.println("Memorização Usada----" + nt.getName() + "--- pos: " + result.getNext_pos());
+				
+				// Atualiza os valores do ambiente
+				int first = nt.getNumParam();
+				int last = first + nt.getNumRet();
+				List<Object> list = result.getReturns_attr();				
+				for(int i = first; i < last; i++) {
+					Object x = list.get(i);
+					SemanticNode y = (SemanticNode) t.getChild(i);
+					currEnvironment().setValue(((Attribute) y.getSymbol()).getIndex(), x);
+				}
 				return result.getNext_pos();
+			}
 			// else
 			
 			environments.push(env);
@@ -145,8 +157,6 @@ public class Interpreter {
 			if (ret >= 0) {
 				int first = nt.getNumParam();
 				int last = first + nt.getNumRet();
-				// This is executed at least one time
-				// Can be changed to do statment
 				for (int i = first; i < last; ++i) {
 					Object x = env.getValue(i);					
 					SemanticNode y = (SemanticNode) t.getChild(i);
