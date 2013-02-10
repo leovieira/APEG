@@ -1,4 +1,4 @@
-package interpreter;
+package runtime.interpreter;
 
 import java.io.FileReader;
 import java.util.ArrayList;

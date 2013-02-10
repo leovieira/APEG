@@ -1,4 +1,4 @@
-import interpreter.Interpreter;
+import runtime.interpreter.Interpreter;
 import semantics.Grammar;
 import semantics.SemanticTreeAdaptor;
 import srcparser.*;
