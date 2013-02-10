@@ -116,23 +116,19 @@ public class Interpreter {
 			 * Code for memoization
 			 * creating a list with the values of the attributes
 			 */
+			// List of inherited attributes
 			List<Object> attr = new ArrayList<Object>();
 			
-			Environment env = buildEnvironment(nt);		
-			for (int i = 0; i < nt.getNumParam(); ++i) {
+			// code for eval inherited attributes
+			for(int i = 0; i < nt.getNumParam(); ++i) {
 				Object x = eval((CommonTree)t.getChild(i));
-				env.setValue(i, x);
-				/**
-				 * Insert on the List
-				 */
 				attr.add(x);
-			}			
-			/**
-			 * code for memoization
-			 */
+			}
 			Result result = memoization.getMemoization(nt.getName(), attr, pos);
 			if(result != null) {
-				System.out.println("Memorização Usada----" + nt.getName() + "--- pos: " + result.getNext_pos());
+				System.out.println("Memorização Usada----" + 
+			                        nt.getName() + "--- pos: " + 
+						            result.getNext_pos());
 				
 				// Atualiza os valores do ambiente
 				int first = nt.getNumParam();
@@ -147,11 +143,17 @@ public class Interpreter {
 			}
 			// else
 			
+			// Creating a environment and populate it
+			Environment env = buildEnvironment(nt);		
+			for (int i = 0; i < nt.getNumParam(); ++i)
+				env.setValue(i, attr.get(i));
+
 			environments.push(env);
 			int ret = process(nt.getPegExpr(), pos);
 			environments.pop();
+			
 			/**
-			 * reset the List attr and put the returns values
+			 * create a List of returns values
 			 */
 			List<Object> result_attr = new ArrayList<Object>();
 			if (ret >= 0) {
