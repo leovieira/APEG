@@ -1,3 +1,4 @@
+import interpreter.Interpreter;
 import semantics.Grammar;
 import semantics.SemanticTreeAdaptor;
 import srcparser.*;
@@ -63,8 +64,9 @@ public class Test {
 		}
 		
 		if (inputFileName != null && initSymbol != null) {
-			grammar.setInputFile(inputFileName);
-			int resp = grammar.execute(initSymbol);
+			Interpreter interpreter = new Interpreter(grammar);
+			interpreter.setInputFile(inputFileName);
+			int resp = interpreter.execute(initSymbol);
 			if (resp < 0) {
 				System.out.println(">>>>>>>>>> FAILED!");
 			} else {

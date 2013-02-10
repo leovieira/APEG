@@ -1,4 +1,6 @@
-package semantics;
+package interpreter;
+
+import semantics.Attribute;
 
 public class Environment {
 
