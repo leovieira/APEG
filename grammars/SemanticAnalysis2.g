@@ -58,7 +58,7 @@ import semantics.*;
     }
     
     /**
-     * O token passado como parï¿½metro (atributo token) ï¿½ usado
+     * O token passado como parâmetro (atributo token) é usado
      * para adicionar a linha e coluna na mensagem de erro.
      */
     public void emitErrorMessage(Token t, String pMessage) {
@@ -180,7 +180,7 @@ peg_expr
   ^(RANGE RANGE_PAIR+)
   ;
 
-actPars : ^(LIST expr*);
+actPars returns[int length]: ^(LIST { $length = 0; } (expr { $length = $length + 1; })*) ;
 
 assign :
   ^(ASSIGN
@@ -212,9 +212,18 @@ expr :
   |
   ^(OP_NOT expr)
   |
-  ^(CALL designator actPars)
+  ^(CALL designator[true] actPars
+    {
+      Function f = (Function) $designator.symbol;
+      int i1 = f.getNumParams();
+      int i2 = $actPars.length; 
+      if (i1 != i2) {
+        emitErrorMessage($CALL.token, "Wrong number of parameters");
+      }
+    }
+  )
   |
-  designator
+  designator[false]
   |
   number
   |
@@ -223,21 +232,33 @@ expr :
 
 number : INT_NUMBER | REAL_NUMBER ;
 
-designator :
+designator[boolean isFunction] returns [Symbol symbol]:
   ID
     {
-      Attribute at = currNT.getAttribute($ID.text);
-      if (at == null) {
-        emitErrorMessage($ID.token, "Attribute not found: " + $ID.text);
+      if (isFunction) {
+        Function f = grammar.getFunction($ID.text);
+        if (f == null) {
+          emitErrorMessage($ID.token, "Function not found: " + $ID.text);
+        } else {
+          SemanticNode sm = (SemanticNode) $ID;
+          sm.setSymbol(f);
+          symbol = f;
+        }
       } else {
-	      SemanticNode sm = (SemanticNode) $ID;
-	      sm.setSymbol(at);
-	    }
+        Attribute at = currNT.getAttribute($ID.text);
+        if (at == null) {
+          emitErrorMessage($ID.token, "Attribute not found: " + $ID.text);
+        } else {
+          SemanticNode sm = (SemanticNode) $ID;
+          sm.setSymbol(at);
+          symbol = at;
+        }
+      }
     }
   |
-  ^(DOT designator ID)
+  ^(DOT designator[isFunction] ID)
   |
-  ^(ARRAY_REF designator expr)
+  ^(ARRAY_REF designator[isFunction] expr)
   ;
 
 relOp : OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE ;
