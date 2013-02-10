@@ -111,7 +111,10 @@ public class Interpreter {
 			// I suppose there are 2 children
 			NonTerminal nt = (NonTerminal) ((SemanticNode) tree.getChild(0)).getSymbol(); // name of nonterminal
 			CommonTree t = (CommonTree) tree.getChild(1); // list of arguments
-				
+			
+			System.out.print(nt.getName() + " - " + "pos_ent: " + pos
+					         + " Param:");
+			
 			/**
 			 * Code for memoization
 			 * creating a list with the values of the attributes
@@ -123,12 +126,14 @@ public class Interpreter {
 			for(int i = 0; i < nt.getNumParam(); ++i) {
 				Object x = eval((CommonTree)t.getChild(i));
 				attr.add(x);
+				System.out.print(" " + x);
 			}
+			System.out.println();
+			
 			Result result = memoization.getMemoization(nt.getName(), attr, pos);
 			if(result != null) {
-				System.out.println("Memorização Usada----" + 
-			                        nt.getName() + "--- pos: " + 
-						            result.getNext_pos());
+				System.out.print("Memoization - next_pos: " +
+			                      result.getNext_pos() + " Return: ");
 				
 				// Atualiza os valores do ambiente
 				int first = nt.getNumParam();
@@ -136,12 +141,16 @@ public class Interpreter {
 				List<Object> list = result.getReturns_attr();				
 				for(int i = first; i < last; i++) {
 					Object x = list.get(i);
+					System.out.print(x + " ");
 					SemanticNode y = (SemanticNode) t.getChild(i);
 					currEnvironment().setValue(((Attribute) y.getSymbol()).getIndex(), x);
 				}
+				System.out.println("----------------");
 				return result.getNext_pos();
 			}
 			// else
+			
+			System.out.println("No Memoization\n");
 			
 			// Creating a environment and populate it
 			Environment env = buildEnvironment(nt);		
@@ -152,6 +161,9 @@ public class Interpreter {
 			int ret = process(nt.getPegExpr(), pos);
 			environments.pop();
 			
+			System.out.println("Memoization: " + nt.getName() + " pos: " + pos 
+					           + " - next_pos: " + ret + " Return: ");
+			
 			/**
 			 * create a List of returns values
 			 */
@@ -160,7 +172,8 @@ public class Interpreter {
 				int first = nt.getNumParam();
 				int last = first + nt.getNumRet();
 				for (int i = first; i < last; ++i) {
-					Object x = env.getValue(i);					
+					Object x = env.getValue(i);		
+					System.out.print(x + " ");
 					SemanticNode y = (SemanticNode) t.getChild(i);
 					currEnvironment().setValue(((Attribute) y.getSymbol()).getIndex(), x);
 					/**
@@ -169,6 +182,7 @@ public class Interpreter {
 					result_attr.add(x);
 				}
 			}
+			System.out.println("----------------");
 			/**
 			 * memoizationing the value
 			 */
