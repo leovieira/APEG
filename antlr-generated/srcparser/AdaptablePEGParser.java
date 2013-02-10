@@ -1,4 +1,4 @@
-// $ANTLR 3.5 /home/leo/workspace/APEG/grammars/AdaptablePEG.g 2013-02-10 14:31:12
+// $ANTLR 3.5 /home/leo/workspace/APEG/grammars/AdaptablePEG.g 2013-02-10 15:55:11
 
     package srcparser;
 
@@ -519,7 +519,7 @@ public class AdaptablePEGParser extends Parser {
 			stream_60.add(char_literal12);
 
 			// AST REWRITE
-			// elements: d1, ID, d3, peg_expr, d2
+			// elements: ID, d2, d3, peg_expr, d1
 			// token labels: 
 			// rule labels: d1, retval, d2, d3
 			// token list labels: 
@@ -1218,7 +1218,7 @@ public class AdaptablePEGParser extends Parser {
 
 					stream_peg_expr.add(peg_expr28.getTree());
 					// AST REWRITE
-					// elements: peg_seq, peg_expr
+					// elements: peg_expr, peg_seq
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2162,7 +2162,7 @@ public class AdaptablePEGParser extends Parser {
 							stream_OP_GT.add(char_literal45);
 
 							// AST REWRITE
-							// elements: actPars, ID
+							// elements: ID, actPars
 							// token labels: 
 							// rule labels: retval
 							// token list labels: 
@@ -2330,7 +2330,7 @@ public class AdaptablePEGParser extends Parser {
 			stream_60.add(char_literal51);
 
 			// AST REWRITE
-			// elements: ID, expr
+			// elements: expr, ID
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -2721,7 +2721,7 @@ public class AdaptablePEGParser extends Parser {
 
 					stream_term.add(term63.getTree());
 					// AST REWRITE
-					// elements: term, t1
+					// elements: t1, term
 					// token labels: t1
 					// rule labels: retval
 					// token list labels: 
@@ -3077,7 +3077,7 @@ public class AdaptablePEGParser extends Parser {
 							stream_56.add(char_literal73);
 
 							// AST REWRITE
-							// elements: designator, actPars
+							// elements: actPars, designator
 							// token labels: 
 							// rule labels: retval
 							// token list labels: 

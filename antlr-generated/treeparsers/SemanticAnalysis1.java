@@ -1,4 +1,4 @@
-// $ANTLR 3.5 /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g 2013-02-10 14:31:08
+// $ANTLR 3.5 /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g 2013-02-10 15:55:07
 
 package treeparsers;
 import semantics.*;
@@ -222,7 +222,7 @@ public class SemanticAnalysis1 extends TreeParser {
 							            }
 							          }
 							        } catch (Exception e) {
-						            emitErrorMessage(t1.token, "File not found: " + (t1!=null?t1.getText():null));
+						              emitErrorMessage(t1.token, "File not found: " + (t1!=null?t1.getText():null));
 							        }
 						        
 						}
