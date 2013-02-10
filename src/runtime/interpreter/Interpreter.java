@@ -1,12 +1,15 @@
 package runtime.interpreter;
 
 import java.io.FileReader;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Stack;
 
 import org.antlr.runtime.tree.CommonTree;
 
+import runtime.memoization.Memoization;
 import semantics.Attribute;
+import semantics.Function;
 import semantics.Grammar;
 import semantics.NonTerminal;
 import semantics.SemanticNode;
@@ -21,11 +24,14 @@ public class Interpreter {
 	Stack<Environment> environments;	
 	private static final char EOF = (char) -1;
 
+	private Memoization memo;
 	
 	public Interpreter(Grammar grammar) {
 		this.grammar = grammar;
 		buf = new ArrayList<Character>();
 		environments = new Stack<Environment>();
+		
+		memo = new Memoization();
 	}
 	
 
@@ -96,10 +102,15 @@ public class Interpreter {
 	 * @return
 	 * @throws Exception
 	 */
-	public int process(CommonTree tree, int pos) throws Exception {
+	private int process(CommonTree tree, int pos) throws Exception {
 		switch (tree.token.getType()) {
 		
 		case AdaptablePEGLexer.NONTERM: {
+			/**
+			 * piece of code added for memoization
+			 */
+			
+			
 			// I suppose there are 2 children
 			NonTerminal nt = (NonTerminal) ((SemanticNode) tree.getChild(0)).getSymbol(); // name of nonterminal
 			CommonTree t = (CommonTree) tree.getChild(1); // list of arguments
@@ -251,6 +262,21 @@ public class Interpreter {
 		
 		case AdaptablePEGLexer.INT_NUMBER: {
 			return new Integer(Integer.parseInt(tree.getText()));
+		}
+
+		case AdaptablePEGLexer.CALL: {
+			//I suppose there are 2 children, the name of the function and the list of arguments
+			SemanticNode nameNode = (SemanticNode) tree.getChild(0);
+			Method m = ((Function) nameNode.getSymbol()).getMethod();
+			CommonTree t1 = (CommonTree) tree.getChild(1);
+			int nArgs = t1.getChildCount();
+			// I already checked the number of parameters during semantic analysis
+			Object args[] = new Object[nArgs];
+			for (int i = 0; i < nArgs; ++i) {
+				CommonTree t2 = (CommonTree) t1.getChild(i);
+				args[i] = eval(t2);
+			}
+			return m.invoke(null, args);
 		}
 
 		case AdaptablePEGLexer.OP_ADD: {
