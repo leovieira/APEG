@@ -78,10 +78,11 @@ public class Test {
 
 	
 	public static void main(String args[]) throws Exception {
-//		testeGrammar("input/teste01.txt", "input/teste01_input.txt", "literal");
-//		testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S1");
-//		testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S2");
-		testeGrammar("input/teste03.txt", "input/teste03_input.txt", "teste");
+/*		testeGrammar("input/teste01.txt", "input/teste01_input.txt", "literal");
+		testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S1");
+		testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S2");
+		testeGrammar("input/teste03.txt", "input/teste03_input.txt", "teste");*/
+		testeGrammar("input/teste04.txt", "input/teste04_input.txt", "root");
 	}
 	
 }
