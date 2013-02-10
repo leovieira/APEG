@@ -68,16 +68,24 @@ public class Grammar {
 		char ch = '?';
 		// I know it will execute at least one iteration of the next loop,
 		// but the compiler does not know it
-		for (int i = buf.size(); i <= pos; ++i) {
+		/*for (int i = buf.size(); i <= pos; ++i) {
 			ch = (char) input.read();
 			buf.add(ch);
-		}
+		}*/
+		// So, I have changed for this code :)
+		int i = buf.size();
+		do {
+			ch = (char) input.read();
+			buf.add(ch);
+			++i;
+		} while(i <= pos);
+		
 		return ch;
 	}
 	
 	private int match(String s, int pos) throws Exception {
 		for (int i = 0; i < s.length(); ++i) {
-			char ch = read(pos);
+			char ch = read(pos+i);
 			char ch2 = s.charAt(i);
 			if (ch != ch2) {
 				return -1;
