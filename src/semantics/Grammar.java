@@ -85,7 +85,7 @@ public class Grammar {
 	
 	private int match(String s, int pos) throws Exception {
 		for (int i = 0; i < s.length(); ++i) {
-			char ch = read(pos+i);
+			char ch = read(pos + i);
 			char ch2 = s.charAt(i);
 			if (ch != ch2) {
 				return -1;
