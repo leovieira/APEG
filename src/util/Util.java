@@ -98,7 +98,7 @@ public class Util {
 
 	}
 
-	
+/*	
 	public static void addRules(Grammar grammar, String rule)
 	throws Exception {
 		
@@ -118,7 +118,7 @@ public class Util {
 				
 
 	}
-
+*/
 
 	
 	
