@@ -32,21 +32,12 @@ public class Memoization {
 	 *         synthesized attributes or null if there is not a memoization
 	 */
 	public Result getMemoization(String nonterminal, List<Object> attr, int pos) {
+		//disable memoization
+		return null;
+		/*
 		Entry entry = new Entry(nonterminal, pos, attr);
-		return map.get(entry);
+		return map.get(entry);*/
 		
-		/*HashMap<Integer, HashMap<List<Attribute>, Result> > map_non;
-		map_non = map.get(nonterminal);
-		if(map_non == null)
-			return null;
-		// else
-		HashMap<List<Attribute>, Result> map_pos = map_non.get(pos);
-		if(map_pos == null)
-			return null;
-		// I hope that the equals function compares the values of the list and not
-		// the pointers values
-		// Probability, I have to define the hascode / equals function for Attribute.
-		return map_pos.get(attr);*/
 	}
 	
 	public Result addMemoization(String nonterminal, List<Object> attr, int pos,
@@ -55,19 +46,6 @@ public class Memoization {
 		Entry entry = new Entry(nonterminal, pos, attr);
 		Result resp = new Result(next_pos, result_attr);
 		return map.put(entry, resp);
-		/*
-		HashMap<Integer, HashMap<List<Attribute>, Result> > map_non;
-		map_non = map.get(nonterminal);
-		if(map_non == null) {
-			map_non = new HashMap<Integer, HashMap<List<Attribute>, Result> >();
-			HashMap<List<Attribute>, Result> map_pos = 
-					                        new HashMap<List<Attribute>, Result> ();
-			
-			map_pos.put(attr, resp);
-			map_non.put(pos, map_pos);
-			map.put(nonterminal, map_non);
-		}
-		// else ---- TODO*/
 	}
 	
 	
