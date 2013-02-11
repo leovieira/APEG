@@ -3,10 +3,6 @@ apeg datadependent;
 
 functions Functions1 ;
 
-teste returns[int r] locals[int aux] :
-  digit<r> digit<aux>
-  ;
-
 literal locals[int n] :
   number<n> '[' strN<n> ']' !.
   ;
