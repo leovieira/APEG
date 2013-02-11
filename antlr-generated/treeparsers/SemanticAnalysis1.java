@@ -1,4 +1,4 @@
-// $ANTLR 3.5 /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g 2013-02-10 23:08:46
+// $ANTLR 3.5 C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g 2013-02-11 08:52:02
 
 package treeparsers;
 import semantics.*;
@@ -112,7 +112,7 @@ public class SemanticAnalysis1 extends TreeParser {
 	}
 
 	@Override public String[] getTokenNames() { return SemanticAnalysis1.tokenNames; }
-	@Override public String getGrammarFileName() { return "/home/leo/workspace/APEG/grammars/SemanticAnalysis1.g"; }
+	@Override public String getGrammarFileName() { return "C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g"; }
 
 
 
@@ -159,7 +159,7 @@ public class SemanticAnalysis1 extends TreeParser {
 	    }
 	    
 	    /**
-	     * O token passado como parï¿½metro (atributo token) ï¿½ usado
+	     * O token passado como parâmetro (atributo token) é usado
 	     * para adicionar a linha e coluna na mensagem de erro.
 	     */
 	    public void emitErrorMessage(Token t, String pMessage) {
@@ -185,21 +185,21 @@ public class SemanticAnalysis1 extends TreeParser {
 
 
 	// $ANTLR start "grammarDef"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:85:1: grammarDef[Grammar g] :t1= ID ^( FILES (t2= ID )* ) ( rule )+ ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:85:1: grammarDef[Grammar g] :t1= ID ^( FILES (t2= ID )* ) ( rule )+ ;
 	public final void grammarDef(Grammar g) throws RecognitionException {
 		CommonTree t1=null;
 		CommonTree t2=null;
 
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:85:23: (t1= ID ^( FILES (t2= ID )* ) ( rule )+ )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:86:5: t1= ID ^( FILES (t2= ID )* ) ( rule )+
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:85:23: (t1= ID ^( FILES (t2= ID )* ) ( rule )+ )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:86:5: t1= ID ^( FILES (t2= ID )* ) ( rule )+
 			{
 			 grammar = g; 
 			t1=(CommonTree)match(input,ID,FOLLOW_ID_in_grammarDef68); 
 			match(input,FILES,FOLLOW_FILES_in_grammarDef75); 
 			if ( input.LA(1)==Token.DOWN ) {
 				match(input, Token.DOWN, null); 
-				// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:89:7: (t2= ID )*
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:89:7: (t2= ID )*
 				loop1:
 				while (true) {
 					int alt1=2;
@@ -210,7 +210,7 @@ public class SemanticAnalysis1 extends TreeParser {
 
 					switch (alt1) {
 					case 1 :
-						// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:90:7: t2= ID
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:90:7: t2= ID
 						{
 						t2=(CommonTree)match(input,ID,FOLLOW_ID_in_grammarDef94); 
 
@@ -222,7 +222,7 @@ public class SemanticAnalysis1 extends TreeParser {
 							            }
 							          }
 							        } catch (Exception e) {
-						              emitErrorMessage(t1.token, "File not found: " + (t1!=null?t1.getText():null));
+						              emitErrorMessage(t2.token, "File not found: " + (t2!=null?t2.getText():null));
 							        }
 						        
 						}
@@ -236,7 +236,7 @@ public class SemanticAnalysis1 extends TreeParser {
 				match(input, Token.UP, null); 
 			}
 
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:105:5: ( rule )+
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:105:5: ( rule )+
 			int cnt2=0;
 			loop2:
 			while (true) {
@@ -248,7 +248,7 @@ public class SemanticAnalysis1 extends TreeParser {
 
 				switch (alt2) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:105:5: rule
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:105:5: rule
 					{
 					pushFollow(FOLLOW_rule_in_grammarDef125);
 					rule();
@@ -281,13 +281,13 @@ public class SemanticAnalysis1 extends TreeParser {
 
 
 	// $ANTLR start "rule"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:108:1: rule : ^( RULE ID ^( LIST ( varDecl[nt, Attribute.Category.PARAM] )* ) ^( LIST ( varDecl[nt, Attribute.Category.RETURN] )* ) ^( LIST ( varDecl[nt, Attribute.Category.LOCAL] )* ) peg_expr ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:108:1: rule : ^( RULE ID ^( LIST ( varDecl[nt, Attribute.Category.PARAM] )* ) ^( LIST ( varDecl[nt, Attribute.Category.RETURN] )* ) ^( LIST ( varDecl[nt, Attribute.Category.LOCAL] )* ) peg_expr ) ;
 	public final void rule() throws RecognitionException {
 		CommonTree ID1=null;
 
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:108:6: ( ^( RULE ID ^( LIST ( varDecl[nt, Attribute.Category.PARAM] )* ) ^( LIST ( varDecl[nt, Attribute.Category.RETURN] )* ) ^( LIST ( varDecl[nt, Attribute.Category.LOCAL] )* ) peg_expr ) )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:108:8: ^( RULE ID ^( LIST ( varDecl[nt, Attribute.Category.PARAM] )* ) ^( LIST ( varDecl[nt, Attribute.Category.RETURN] )* ) ^( LIST ( varDecl[nt, Attribute.Category.LOCAL] )* ) peg_expr )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:108:6: ( ^( RULE ID ^( LIST ( varDecl[nt, Attribute.Category.PARAM] )* ) ^( LIST ( varDecl[nt, Attribute.Category.RETURN] )* ) ^( LIST ( varDecl[nt, Attribute.Category.LOCAL] )* ) peg_expr ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:108:8: ^( RULE ID ^( LIST ( varDecl[nt, Attribute.Category.PARAM] )* ) ^( LIST ( varDecl[nt, Attribute.Category.RETURN] )* ) ^( LIST ( varDecl[nt, Attribute.Category.LOCAL] )* ) peg_expr )
 			{
 			match(input,RULE,FOLLOW_RULE_in_rule140); 
 			match(input, Token.DOWN, null); 
@@ -301,7 +301,7 @@ public class SemanticAnalysis1 extends TreeParser {
 			match(input,LIST,FOLLOW_LIST_in_rule155); 
 			if ( input.LA(1)==Token.DOWN ) {
 				match(input, Token.DOWN, null); 
-				// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:115:12: ( varDecl[nt, Attribute.Category.PARAM] )*
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:115:12: ( varDecl[nt, Attribute.Category.PARAM] )*
 				loop3:
 				while (true) {
 					int alt3=2;
@@ -312,7 +312,7 @@ public class SemanticAnalysis1 extends TreeParser {
 
 					switch (alt3) {
 					case 1 :
-						// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:115:13: varDecl[nt, Attribute.Category.PARAM]
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:115:13: varDecl[nt, Attribute.Category.PARAM]
 						{
 						pushFollow(FOLLOW_varDecl_in_rule158);
 						varDecl(nt, Attribute.Category.PARAM);
@@ -332,7 +332,7 @@ public class SemanticAnalysis1 extends TreeParser {
 			match(input,LIST,FOLLOW_LIST_in_rule170); 
 			if ( input.LA(1)==Token.DOWN ) {
 				match(input, Token.DOWN, null); 
-				// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:116:12: ( varDecl[nt, Attribute.Category.RETURN] )*
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:116:12: ( varDecl[nt, Attribute.Category.RETURN] )*
 				loop4:
 				while (true) {
 					int alt4=2;
@@ -343,7 +343,7 @@ public class SemanticAnalysis1 extends TreeParser {
 
 					switch (alt4) {
 					case 1 :
-						// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:116:13: varDecl[nt, Attribute.Category.RETURN]
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:116:13: varDecl[nt, Attribute.Category.RETURN]
 						{
 						pushFollow(FOLLOW_varDecl_in_rule173);
 						varDecl(nt, Attribute.Category.RETURN);
@@ -363,7 +363,7 @@ public class SemanticAnalysis1 extends TreeParser {
 			match(input,LIST,FOLLOW_LIST_in_rule185); 
 			if ( input.LA(1)==Token.DOWN ) {
 				match(input, Token.DOWN, null); 
-				// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:117:12: ( varDecl[nt, Attribute.Category.LOCAL] )*
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:117:12: ( varDecl[nt, Attribute.Category.LOCAL] )*
 				loop5:
 				while (true) {
 					int alt5=2;
@@ -374,7 +374,7 @@ public class SemanticAnalysis1 extends TreeParser {
 
 					switch (alt5) {
 					case 1 :
-						// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:117:13: varDecl[nt, Attribute.Category.LOCAL]
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:117:13: varDecl[nt, Attribute.Category.LOCAL]
 						{
 						pushFollow(FOLLOW_varDecl_in_rule188);
 						varDecl(nt, Attribute.Category.LOCAL);
@@ -413,14 +413,14 @@ public class SemanticAnalysis1 extends TreeParser {
 
 
 	// $ANTLR start "varDecl"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:121:1: varDecl[NonTerminal nt, Attribute.Category c] : ^( VARDECL id1= ID id2= ID ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:121:1: varDecl[NonTerminal nt, Attribute.Category c] : ^( VARDECL id1= ID id2= ID ) ;
 	public final void varDecl(NonTerminal nt, Attribute.Category c) throws RecognitionException {
 		CommonTree id1=null;
 		CommonTree id2=null;
 
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:121:47: ( ^( VARDECL id1= ID id2= ID ) )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:122:3: ^( VARDECL id1= ID id2= ID )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:121:47: ( ^( VARDECL id1= ID id2= ID ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:122:3: ^( VARDECL id1= ID id2= ID )
 			{
 			match(input,VARDECL,FOLLOW_VARDECL_in_varDecl216); 
 			match(input, Token.DOWN, null); 
@@ -451,10 +451,10 @@ public class SemanticAnalysis1 extends TreeParser {
 
 
 	// $ANTLR start "peg_expr"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:132:1: peg_expr : ( LAMBDA | ^( CHOICE peg_expr peg_expr ) | ^( SEQ ( peg_expr )+ ) | ANY | ^( NONTERM ID ^( LIST ( expr )* ) ) | STRING_LITERAL | ^( REPEAT peg_expr ) | ^( NOT_LOOKAHEAD peg_expr ) | ^( OPTIONAL peg_expr ) | ^( ONE_REPEAT peg_expr ) | ^( AND_LOOKAHEAD peg_expr ) | ^( COND expr ) | ^( ASSIGNLIST ( assign )+ ) | ^( RANGE ( RANGE_PAIR )+ ) );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:132:1: peg_expr : ( LAMBDA | ^( CHOICE peg_expr peg_expr ) | ^( SEQ ( peg_expr )+ ) | ANY | ^( NONTERM ID ^( LIST ( expr )* ) ) | STRING_LITERAL | ^( REPEAT peg_expr ) | ^( NOT_LOOKAHEAD peg_expr ) | ^( OPTIONAL peg_expr ) | ^( ONE_REPEAT peg_expr ) | ^( AND_LOOKAHEAD peg_expr ) | ^( COND expr ) | ^( ASSIGNLIST ( assign )+ ) | ^( RANGE ( RANGE_PAIR )+ ) );
 	public final void peg_expr() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:132:10: ( LAMBDA | ^( CHOICE peg_expr peg_expr ) | ^( SEQ ( peg_expr )+ ) | ANY | ^( NONTERM ID ^( LIST ( expr )* ) ) | STRING_LITERAL | ^( REPEAT peg_expr ) | ^( NOT_LOOKAHEAD peg_expr ) | ^( OPTIONAL peg_expr ) | ^( ONE_REPEAT peg_expr ) | ^( AND_LOOKAHEAD peg_expr ) | ^( COND expr ) | ^( ASSIGNLIST ( assign )+ ) | ^( RANGE ( RANGE_PAIR )+ ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:132:10: ( LAMBDA | ^( CHOICE peg_expr peg_expr ) | ^( SEQ ( peg_expr )+ ) | ANY | ^( NONTERM ID ^( LIST ( expr )* ) ) | STRING_LITERAL | ^( REPEAT peg_expr ) | ^( NOT_LOOKAHEAD peg_expr ) | ^( OPTIONAL peg_expr ) | ^( ONE_REPEAT peg_expr ) | ^( AND_LOOKAHEAD peg_expr ) | ^( COND expr ) | ^( ASSIGNLIST ( assign )+ ) | ^( RANGE ( RANGE_PAIR )+ ) )
 			int alt10=14;
 			switch ( input.LA(1) ) {
 			case LAMBDA:
@@ -534,13 +534,13 @@ public class SemanticAnalysis1 extends TreeParser {
 			}
 			switch (alt10) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:133:3: LAMBDA
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:133:3: LAMBDA
 					{
 					match(input,LAMBDA,FOLLOW_LAMBDA_in_peg_expr242); 
 					}
 					break;
 				case 2 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:135:3: ^( CHOICE peg_expr peg_expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:135:3: ^( CHOICE peg_expr peg_expr )
 					{
 					match(input,CHOICE,FOLLOW_CHOICE_in_peg_expr251); 
 					match(input, Token.DOWN, null); 
@@ -557,11 +557,11 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 3 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:137:3: ^( SEQ ( peg_expr )+ )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:137:3: ^( SEQ ( peg_expr )+ )
 					{
 					match(input,SEQ,FOLLOW_SEQ_in_peg_expr265); 
 					match(input, Token.DOWN, null); 
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:137:9: ( peg_expr )+
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:137:9: ( peg_expr )+
 					int cnt6=0;
 					loop6:
 					while (true) {
@@ -573,7 +573,7 @@ public class SemanticAnalysis1 extends TreeParser {
 
 						switch (alt6) {
 						case 1 :
-							// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:137:9: peg_expr
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:137:9: peg_expr
 							{
 							pushFollow(FOLLOW_peg_expr_in_peg_expr267);
 							peg_expr();
@@ -595,13 +595,13 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 4 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:139:3: ANY
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:139:3: ANY
 					{
 					match(input,ANY,FOLLOW_ANY_in_peg_expr277); 
 					}
 					break;
 				case 5 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:141:3: ^( NONTERM ID ^( LIST ( expr )* ) )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:141:3: ^( NONTERM ID ^( LIST ( expr )* ) )
 					{
 					match(input,NONTERM,FOLLOW_NONTERM_in_peg_expr286); 
 					match(input, Token.DOWN, null); 
@@ -609,7 +609,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					match(input,LIST,FOLLOW_LIST_in_peg_expr303); 
 					if ( input.LA(1)==Token.DOWN ) {
 						match(input, Token.DOWN, null); 
-						// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:143:14: ( expr )*
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:143:14: ( expr )*
 						loop7:
 						while (true) {
 							int alt7=2;
@@ -620,7 +620,7 @@ public class SemanticAnalysis1 extends TreeParser {
 
 							switch (alt7) {
 							case 1 :
-								// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:143:14: expr
+								// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:143:14: expr
 								{
 								pushFollow(FOLLOW_expr_in_peg_expr305);
 								expr();
@@ -642,13 +642,13 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 6 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:146:3: STRING_LITERAL
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:146:3: STRING_LITERAL
 					{
 					match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_peg_expr319); 
 					}
 					break;
 				case 7 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:148:3: ^( REPEAT peg_expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:148:3: ^( REPEAT peg_expr )
 					{
 					match(input,REPEAT,FOLLOW_REPEAT_in_peg_expr328); 
 					match(input, Token.DOWN, null); 
@@ -661,7 +661,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 8 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:150:3: ^( NOT_LOOKAHEAD peg_expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:150:3: ^( NOT_LOOKAHEAD peg_expr )
 					{
 					match(input,NOT_LOOKAHEAD,FOLLOW_NOT_LOOKAHEAD_in_peg_expr340); 
 					match(input, Token.DOWN, null); 
@@ -674,7 +674,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 9 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:152:3: ^( OPTIONAL peg_expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:152:3: ^( OPTIONAL peg_expr )
 					{
 					match(input,OPTIONAL,FOLLOW_OPTIONAL_in_peg_expr352); 
 					match(input, Token.DOWN, null); 
@@ -687,7 +687,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 10 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:154:3: ^( ONE_REPEAT peg_expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:154:3: ^( ONE_REPEAT peg_expr )
 					{
 					match(input,ONE_REPEAT,FOLLOW_ONE_REPEAT_in_peg_expr364); 
 					match(input, Token.DOWN, null); 
@@ -700,7 +700,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 11 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:156:3: ^( AND_LOOKAHEAD peg_expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:156:3: ^( AND_LOOKAHEAD peg_expr )
 					{
 					match(input,AND_LOOKAHEAD,FOLLOW_AND_LOOKAHEAD_in_peg_expr376); 
 					match(input, Token.DOWN, null); 
@@ -713,7 +713,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 12 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:158:3: ^( COND expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:158:3: ^( COND expr )
 					{
 					match(input,COND,FOLLOW_COND_in_peg_expr388); 
 					match(input, Token.DOWN, null); 
@@ -726,11 +726,11 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 13 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:160:3: ^( ASSIGNLIST ( assign )+ )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:160:3: ^( ASSIGNLIST ( assign )+ )
 					{
 					match(input,ASSIGNLIST,FOLLOW_ASSIGNLIST_in_peg_expr400); 
 					match(input, Token.DOWN, null); 
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:160:16: ( assign )+
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:160:16: ( assign )+
 					int cnt8=0;
 					loop8:
 					while (true) {
@@ -742,7 +742,7 @@ public class SemanticAnalysis1 extends TreeParser {
 
 						switch (alt8) {
 						case 1 :
-							// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:160:16: assign
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:160:16: assign
 							{
 							pushFollow(FOLLOW_assign_in_peg_expr402);
 							assign();
@@ -764,11 +764,11 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 14 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:162:3: ^( RANGE ( RANGE_PAIR )+ )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:162:3: ^( RANGE ( RANGE_PAIR )+ )
 					{
 					match(input,RANGE,FOLLOW_RANGE_in_peg_expr415); 
 					match(input, Token.DOWN, null); 
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:162:11: ( RANGE_PAIR )+
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:162:11: ( RANGE_PAIR )+
 					int cnt9=0;
 					loop9:
 					while (true) {
@@ -780,7 +780,7 @@ public class SemanticAnalysis1 extends TreeParser {
 
 						switch (alt9) {
 						case 1 :
-							// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:162:11: RANGE_PAIR
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:162:11: RANGE_PAIR
 							{
 							match(input,RANGE_PAIR,FOLLOW_RANGE_PAIR_in_peg_expr417); 
 							}
@@ -814,16 +814,16 @@ public class SemanticAnalysis1 extends TreeParser {
 
 
 	// $ANTLR start "actPars"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:165:1: actPars : ^( LIST ( expr )* ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:165:1: actPars : ^( LIST ( expr )* ) ;
 	public final void actPars() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:165:9: ( ^( LIST ( expr )* ) )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:165:11: ^( LIST ( expr )* )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:165:9: ( ^( LIST ( expr )* ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:165:11: ^( LIST ( expr )* )
 			{
 			match(input,LIST,FOLLOW_LIST_in_actPars431); 
 			if ( input.LA(1)==Token.DOWN ) {
 				match(input, Token.DOWN, null); 
-				// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:165:18: ( expr )*
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:165:18: ( expr )*
 				loop11:
 				while (true) {
 					int alt11=2;
@@ -834,7 +834,7 @@ public class SemanticAnalysis1 extends TreeParser {
 
 					switch (alt11) {
 					case 1 :
-						// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:165:18: expr
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:165:18: expr
 						{
 						pushFollow(FOLLOW_expr_in_actPars433);
 						expr();
@@ -867,11 +867,11 @@ public class SemanticAnalysis1 extends TreeParser {
 
 
 	// $ANTLR start "assign"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:167:1: assign : ^( ASSIGN ID expr ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:167:1: assign : ^( ASSIGN ID expr ) ;
 	public final void assign() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:167:8: ( ^( ASSIGN ID expr ) )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:168:3: ^( ASSIGN ID expr )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:167:8: ( ^( ASSIGN ID expr ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:168:3: ^( ASSIGN ID expr )
 			{
 			match(input,ASSIGN,FOLLOW_ASSIGN_in_assign446); 
 			match(input, Token.DOWN, null); 
@@ -898,10 +898,10 @@ public class SemanticAnalysis1 extends TreeParser {
 
 
 	// $ANTLR start "expr"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:171:1: expr : ( ^( OP_OR expr expr ) | ^( OP_AND expr expr ) | ^( relOp expr expr ) | ^( addOp expr expr ) | ^( mulOp expr expr ) | ^( UNARY_SUB expr ) | ^( OP_NOT expr ) | ^( CALL designator actPars ) | designator | number | STRING_LITERAL );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:171:1: expr : ( ^( OP_OR expr expr ) | ^( OP_AND expr expr ) | ^( relOp expr expr ) | ^( addOp expr expr ) | ^( mulOp expr expr ) | ^( UNARY_SUB expr ) | ^( OP_NOT expr ) | ^( CALL designator actPars ) | designator | number | STRING_LITERAL );
 	public final void expr() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:171:6: ( ^( OP_OR expr expr ) | ^( OP_AND expr expr ) | ^( relOp expr expr ) | ^( addOp expr expr ) | ^( mulOp expr expr ) | ^( UNARY_SUB expr ) | ^( OP_NOT expr ) | ^( CALL designator actPars ) | designator | number | STRING_LITERAL )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:171:6: ( ^( OP_OR expr expr ) | ^( OP_AND expr expr ) | ^( relOp expr expr ) | ^( addOp expr expr ) | ^( mulOp expr expr ) | ^( UNARY_SUB expr ) | ^( OP_NOT expr ) | ^( CALL designator actPars ) | designator | number | STRING_LITERAL )
 			int alt12=11;
 			switch ( input.LA(1) ) {
 			case OP_OR:
@@ -977,7 +977,7 @@ public class SemanticAnalysis1 extends TreeParser {
 			}
 			switch (alt12) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:172:3: ^( OP_OR expr expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:172:3: ^( OP_OR expr expr )
 					{
 					match(input,OP_OR,FOLLOW_OP_OR_in_expr466); 
 					match(input, Token.DOWN, null); 
@@ -994,7 +994,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 2 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:174:3: ^( OP_AND expr expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:174:3: ^( OP_AND expr expr )
 					{
 					match(input,OP_AND,FOLLOW_OP_AND_in_expr480); 
 					match(input, Token.DOWN, null); 
@@ -1011,7 +1011,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 3 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:176:3: ^( relOp expr expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:176:3: ^( relOp expr expr )
 					{
 					pushFollow(FOLLOW_relOp_in_expr494);
 					relOp();
@@ -1031,7 +1031,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 4 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:178:3: ^( addOp expr expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:178:3: ^( addOp expr expr )
 					{
 					pushFollow(FOLLOW_addOp_in_expr508);
 					addOp();
@@ -1051,7 +1051,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 5 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:180:3: ^( mulOp expr expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:180:3: ^( mulOp expr expr )
 					{
 					pushFollow(FOLLOW_mulOp_in_expr522);
 					mulOp();
@@ -1071,7 +1071,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 6 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:182:3: ^( UNARY_SUB expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:182:3: ^( UNARY_SUB expr )
 					{
 					match(input,UNARY_SUB,FOLLOW_UNARY_SUB_in_expr536); 
 					match(input, Token.DOWN, null); 
@@ -1084,7 +1084,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 7 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:184:3: ^( OP_NOT expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:184:3: ^( OP_NOT expr )
 					{
 					match(input,OP_NOT,FOLLOW_OP_NOT_in_expr548); 
 					match(input, Token.DOWN, null); 
@@ -1097,7 +1097,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 8 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:186:3: ^( CALL designator actPars )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:186:3: ^( CALL designator actPars )
 					{
 					match(input,CALL,FOLLOW_CALL_in_expr560); 
 					match(input, Token.DOWN, null); 
@@ -1114,7 +1114,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 9 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:188:3: designator
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:188:3: designator
 					{
 					pushFollow(FOLLOW_designator_in_expr573);
 					designator();
@@ -1123,7 +1123,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 10 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:190:3: number
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:190:3: number
 					{
 					pushFollow(FOLLOW_number_in_expr581);
 					number();
@@ -1132,7 +1132,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 11 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:192:3: STRING_LITERAL
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:192:3: STRING_LITERAL
 					{
 					match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_expr589); 
 					}
@@ -1153,11 +1153,11 @@ public class SemanticAnalysis1 extends TreeParser {
 
 
 	// $ANTLR start "number"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:195:1: number : ( INT_NUMBER | REAL_NUMBER );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:195:1: number : ( INT_NUMBER | REAL_NUMBER );
 	public final void number() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:195:8: ( INT_NUMBER | REAL_NUMBER )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:195:8: ( INT_NUMBER | REAL_NUMBER )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:
 			{
 			if ( input.LA(1)==INT_NUMBER||input.LA(1)==REAL_NUMBER ) {
 				input.consume();
@@ -1183,10 +1183,10 @@ public class SemanticAnalysis1 extends TreeParser {
 
 
 	// $ANTLR start "designator"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:197:1: designator : ( ID | ^( DOT designator ID ) | ^( ARRAY_REF designator expr ) );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:197:1: designator : ( ID | ^( DOT designator ID ) | ^( ARRAY_REF designator expr ) );
 	public final void designator() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:197:12: ( ID | ^( DOT designator ID ) | ^( ARRAY_REF designator expr ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:197:12: ( ID | ^( DOT designator ID ) | ^( ARRAY_REF designator expr ) )
 			int alt13=3;
 			switch ( input.LA(1) ) {
 			case ID:
@@ -1211,13 +1211,13 @@ public class SemanticAnalysis1 extends TreeParser {
 			}
 			switch (alt13) {
 				case 1 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:198:3: ID
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:198:3: ID
 					{
 					match(input,ID,FOLLOW_ID_in_designator615); 
 					}
 					break;
 				case 2 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:200:3: ^( DOT designator ID )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:200:3: ^( DOT designator ID )
 					{
 					match(input,DOT,FOLLOW_DOT_in_designator624); 
 					match(input, Token.DOWN, null); 
@@ -1231,7 +1231,7 @@ public class SemanticAnalysis1 extends TreeParser {
 					}
 					break;
 				case 3 :
-					// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:202:3: ^( ARRAY_REF designator expr )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:202:3: ^( ARRAY_REF designator expr )
 					{
 					match(input,ARRAY_REF,FOLLOW_ARRAY_REF_in_designator638); 
 					match(input, Token.DOWN, null); 
@@ -1263,11 +1263,11 @@ public class SemanticAnalysis1 extends TreeParser {
 
 
 	// $ANTLR start "relOp"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:205:1: relOp : ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:205:1: relOp : ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE );
 	public final void relOp() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:205:7: ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:205:7: ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:
 			{
 			if ( (input.LA(1) >= OP_EQ && input.LA(1) <= OP_LT)||input.LA(1)==OP_NE ) {
 				input.consume();
@@ -1293,11 +1293,11 @@ public class SemanticAnalysis1 extends TreeParser {
 
 
 	// $ANTLR start "addOp"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:207:1: addOp : ( OP_ADD | OP_SUB );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:207:1: addOp : ( OP_ADD | OP_SUB );
 	public final void addOp() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:207:7: ( OP_ADD | OP_SUB )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:207:7: ( OP_ADD | OP_SUB )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:
 			{
 			if ( input.LA(1)==OP_ADD||input.LA(1)==OP_SUB ) {
 				input.consume();
@@ -1323,11 +1323,11 @@ public class SemanticAnalysis1 extends TreeParser {
 
 
 	// $ANTLR start "mulOp"
-	// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:209:1: mulOp : ( OP_MUL | OP_DIV | OP_MOD );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:209:1: mulOp : ( OP_MUL | OP_DIV | OP_MOD );
 	public final void mulOp() throws RecognitionException {
 		try {
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:209:7: ( OP_MUL | OP_DIV | OP_MOD )
-			// /home/leo/workspace/APEG/grammars/SemanticAnalysis1.g:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:209:7: ( OP_MUL | OP_DIV | OP_MOD )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\SemanticAnalysis1.g:
 			{
 			if ( input.LA(1)==OP_DIV||(input.LA(1) >= OP_MOD && input.LA(1) <= OP_MUL) ) {
 				input.consume();

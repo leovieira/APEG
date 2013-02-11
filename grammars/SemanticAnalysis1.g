@@ -97,7 +97,7 @@ grammarDef[Grammar g] :
 	            }
 	          }
 	        } catch (Exception e) {
-              emitErrorMessage($t1.token, "File not found: " + $t1.text);
+              emitErrorMessage($t2.token, "File not found: " + $t2.text);
 	        }
         }
       )*

@@ -34,6 +34,9 @@ tokens {
 @parser::header
 {
     package srcparser;
+    import semantics.*;
+    import java.lang.reflect.Method;
+    import java.lang.reflect.Modifier;
 }
 @lexer::header
 {
@@ -41,6 +44,8 @@ tokens {
 }
 
 @members{
+    
+    Grammar grammar;
     
     private boolean mMessageCollectionEnabled = false;
     private List<String> mMessages;
@@ -110,7 +115,10 @@ tokens {
 
 // This begins the grammar definition.
 // An APEG grammar is a list of one or more APEG rules
-grammarDef :
+grammarDef[Grammar g] :
+    {
+      grammar = g;
+    }
     'apeg'! ID ';'!
     functions
     rules
@@ -119,44 +127,79 @@ grammarDef :
 rules : rule+ ;
 
 functions :
-  'functions' ID+ ';' -> ^(FILES ID+)
+  'functions' 
+  (
+  ID
+    {
+      try {
+          Class c = Class.forName($ID.text);
+          for (Method m : c.getDeclaredMethods()) {
+            if (grammar.addFunction(m) == null) {
+              emitErrorMessage($ID, "Function name duplicated: " + m.getName() + " in file " + $ID.text);
+            }
+          }
+        } catch (Exception e) {
+          emitErrorMessage($ID, "File not found: " + $ID.text);
+        }
+    }
+  )+
+  ';'
+    -> ^(FILES ID+)
   |
     -> ^(FILES )
   ;
 
 // A definiton of an APEG rule
 rule :
-  ID d1=optDecls d2=optReturn d3=optLocals ':' peg_expr ';'
+  ID 
+  { 
+	  NonTerminal nt = grammar.addNonTerminal($ID.text);
+	  if (nt == null) {
+	    emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
+	  }
+  }
+  d1=optDecls[nt, Attribute.Category.PARAM]
+  d2=optReturn[nt, Attribute.Category.RETURN]
+  d3=optLocals[nt, Attribute.Category.LOCAL]
+  ':' peg_expr ';'
   -> ^(RULE ID $d1 $d2 $d3 peg_expr)
 ;
 
 // This rule defines the list of all inhereted attributes
-decls :
-  '[' varDecl (',' varDecl)* ']' -> ^(LIST varDecl*)
+decls[NonTerminal nt, Attribute.Category c] :
+  '[' varDecl[nt,c] (',' varDecl[nt,c])* ']' -> ^(LIST varDecl*)
   ;
 
 // This rule defines the list of inhereted attributes
-optDecls :
-  decls -> decls
+optDecls[NonTerminal nt, Attribute.Category c] :
+  decls[nt,c] -> decls
   |
     -> LIST
   ;
 
 // This rule defines the list of synthesized attributes
-optReturn :
-  'returns' decls -> decls
+optReturn[NonTerminal nt, Attribute.Category c] :
+  'returns' decls[nt,c] -> decls
   |
     -> LIST
   ;
 
-optLocals :
-  'locals'! decls
+optLocals[NonTerminal nt, Attribute.Category c] :
+  'locals'! decls[nt,c]
   |
     -> LIST
   ;
 
-varDecl :
-  type ID -> ^(VARDECL type ID)
+varDecl[NonTerminal nt, Attribute.Category c] :
+  type ID
+  {
+    if (nt != null) {
+      if (nt.addAttribute($ID.text, null, c) == null) {
+        emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
+      }
+    }
+  } 
+    -> ^(VARDECL type ID)
   ;
 
 type :
