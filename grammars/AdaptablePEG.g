@@ -48,6 +48,7 @@ tokens {
     Grammar grammar;
     NonTerminal currNT;
     ArrayList<CommonTree> ntcalls = new ArrayList<CommonTree>();
+    boolean isAddingRules;
     
     private void verifNTCall(CommonTree tree) {
 		// I suppose there are exactly 2 children:
@@ -149,18 +150,17 @@ tokens {
 grammarDef[Grammar g] :
     {
       grammar = g;
+      isAddingRules = false;
     }
     'apeg'! ID ';'!
     functions
-    rules
+    rule+
     {
     	for (int i = 0; i < ntcalls.size(); ++i) {
     		verifNTCall(ntcalls.get(i));
     	}
     }
     ;
-
-rules : rule+ ;
 
 functions :
   'functions' 
@@ -185,19 +185,21 @@ functions :
     -> ^(FILES )
   ;
 
+addrules : { isAddingRules = true; } rule+ ;
+
 // A definiton of an APEG rule
 rule
 @after{
 	currNT.setPegExpr($t.tree);
 }
   :
-  ID 
-  { 
-	  currNT = grammar.addNonTerminal($ID.text);
-	  if (currNT == null) {
-	    emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
-	  }
-  }
+  ID
+	{
+		currNT = grammar.addNonTerminal($ID.text);
+		if (currNT == null && !isAddingRules) {
+			emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
+		}
+	}
   d1=optDecls[Attribute.Category.PARAM]
   d2=optReturn[Attribute.Category.RETURN]
   d3=optLocals[Attribute.Category.LOCAL]
@@ -317,7 +319,9 @@ peg_factor :
 
 ntcall
 @after{
-	ntcalls.add($ntcall.tree);
+	if (!isAddingRules) {
+		ntcalls.add($ntcall.tree);
+	}
 }
 :
   ID

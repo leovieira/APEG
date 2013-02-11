@@ -1,4 +1,4 @@
-// $ANTLR 3.5 C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g 2013-02-11 19:49:45
+// $ANTLR 3.5 C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g 2013-02-11 20:21:19
 
     package srcparser;
     import semantics.*;
@@ -130,6 +130,7 @@ public class AdaptablePEGParser extends Parser {
 	    Grammar grammar;
 	    NonTerminal currNT;
 	    ArrayList<CommonTree> ntcalls = new ArrayList<CommonTree>();
+	    boolean isAddingRules;
 	    
 	    private void verifNTCall(CommonTree tree) {
 			// I suppose there are exactly 2 children:
@@ -233,7 +234,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "grammarDef"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:149:1: grammarDef[Grammar g] : 'apeg' ! ID ';' ! functions rules ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:150:1: grammarDef[Grammar g] : 'apeg' ! ID ';' ! functions ( rule )+ ;
 	public final AdaptablePEGParser.grammarDef_return grammarDef(Grammar g) throws RecognitionException {
 		AdaptablePEGParser.grammarDef_return retval = new AdaptablePEGParser.grammarDef_return();
 		retval.start = input.LT(1);
@@ -244,21 +245,22 @@ public class AdaptablePEGParser extends Parser {
 		Token ID2=null;
 		Token char_literal3=null;
 		ParserRuleReturnScope functions4 =null;
-		ParserRuleReturnScope rules5 =null;
+		ParserRuleReturnScope rule5 =null;
 
 		CommonTree string_literal1_tree=null;
 		CommonTree ID2_tree=null;
 		CommonTree char_literal3_tree=null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:149:23: ( 'apeg' ! ID ';' ! functions rules )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:150:5: 'apeg' ! ID ';' ! functions rules
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:150:23: ( 'apeg' ! ID ';' ! functions ( rule )+ )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:151:5: 'apeg' ! ID ';' ! functions ( rule )+
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
 
 			      grammar = g;
+			      isAddingRules = false;
 			    
 			string_literal1=(Token)match(input,65,FOLLOW_65_in_grammarDef180); 
 			ID2=(Token)match(input,ID,FOLLOW_ID_in_grammarDef183); 
@@ -272,11 +274,36 @@ public class AdaptablePEGParser extends Parser {
 
 			adaptor.addChild(root_0, functions4.getTree());
 
-			pushFollow(FOLLOW_rules_in_grammarDef198);
-			rules5=rules();
-			state._fsp--;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:157:5: ( rule )+
+			int cnt1=0;
+			loop1:
+			while (true) {
+				int alt1=2;
+				int LA1_0 = input.LA(1);
+				if ( (LA1_0==ID) ) {
+					alt1=1;
+				}
 
-			adaptor.addChild(root_0, rules5.getTree());
+				switch (alt1) {
+				case 1 :
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:157:5: rule
+					{
+					pushFollow(FOLLOW_rule_in_grammarDef198);
+					rule5=rule();
+					state._fsp--;
+
+					adaptor.addChild(root_0, rule5.getTree());
+
+					}
+					break;
+
+				default :
+					if ( cnt1 >= 1 ) break loop1;
+					EarlyExitException eee = new EarlyExitException(1, input);
+					throw eee;
+				}
+				cnt1++;
+			}
 
 
 			    	for (int i = 0; i < ntcalls.size(); ++i) {
@@ -304,83 +331,6 @@ public class AdaptablePEGParser extends Parser {
 	// $ANTLR end "grammarDef"
 
 
-	public static class rules_return extends ParserRuleReturnScope {
-		CommonTree tree;
-		@Override
-		public CommonTree getTree() { return tree; }
-	};
-
-
-	// $ANTLR start "rules"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:163:1: rules : ( rule )+ ;
-	public final AdaptablePEGParser.rules_return rules() throws RecognitionException {
-		AdaptablePEGParser.rules_return retval = new AdaptablePEGParser.rules_return();
-		retval.start = input.LT(1);
-
-		CommonTree root_0 = null;
-
-		ParserRuleReturnScope rule6 =null;
-
-
-		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:163:7: ( ( rule )+ )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:163:9: ( rule )+
-			{
-			root_0 = (CommonTree)adaptor.nil();
-
-
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:163:9: ( rule )+
-			int cnt1=0;
-			loop1:
-			while (true) {
-				int alt1=2;
-				int LA1_0 = input.LA(1);
-				if ( (LA1_0==ID) ) {
-					alt1=1;
-				}
-
-				switch (alt1) {
-				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:163:9: rule
-					{
-					pushFollow(FOLLOW_rule_in_rules217);
-					rule6=rule();
-					state._fsp--;
-
-					adaptor.addChild(root_0, rule6.getTree());
-
-					}
-					break;
-
-				default :
-					if ( cnt1 >= 1 ) break loop1;
-					EarlyExitException eee = new EarlyExitException(1, input);
-					throw eee;
-				}
-				cnt1++;
-			}
-
-			}
-
-			retval.stop = input.LT(-1);
-
-			retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
-			adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
-
-		}
-		catch (RecognitionException re) {
-			reportError(re);
-			recover(input,re);
-			retval.tree = (CommonTree)adaptor.errorNode(input, retval.start, input.LT(-1), re);
-		}
-		finally {
-			// do for sure before leaving
-		}
-		return retval;
-	}
-	// $ANTLR end "rules"
-
-
 	public static class functions_return extends ParserRuleReturnScope {
 		CommonTree tree;
 		@Override
@@ -396,13 +346,13 @@ public class AdaptablePEGParser extends Parser {
 
 		CommonTree root_0 = null;
 
-		Token string_literal7=null;
-		Token ID8=null;
-		Token char_literal9=null;
+		Token string_literal6=null;
+		Token ID7=null;
+		Token char_literal8=null;
 
-		CommonTree string_literal7_tree=null;
-		CommonTree ID8_tree=null;
-		CommonTree char_literal9_tree=null;
+		CommonTree string_literal6_tree=null;
+		CommonTree ID7_tree=null;
+		CommonTree char_literal8_tree=null;
 		RewriteRuleTokenStream stream_66=new RewriteRuleTokenStream(adaptor,"token 66");
 		RewriteRuleTokenStream stream_ID=new RewriteRuleTokenStream(adaptor,"token ID");
 		RewriteRuleTokenStream stream_60=new RewriteRuleTokenStream(adaptor,"token 60");
@@ -428,8 +378,8 @@ public class AdaptablePEGParser extends Parser {
 				case 1 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:166:3: 'functions' ( ID )+ ';'
 					{
-					string_literal7=(Token)match(input,66,FOLLOW_66_in_functions229);  
-					stream_66.add(string_literal7);
+					string_literal6=(Token)match(input,66,FOLLOW_66_in_functions220);  
+					stream_66.add(string_literal6);
 
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:167:3: ( ID )+
 					int cnt2=0;
@@ -445,19 +395,19 @@ public class AdaptablePEGParser extends Parser {
 						case 1 :
 							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:168:3: ID
 							{
-							ID8=(Token)match(input,ID,FOLLOW_ID_in_functions238);  
-							stream_ID.add(ID8);
+							ID7=(Token)match(input,ID,FOLLOW_ID_in_functions229);  
+							stream_ID.add(ID7);
 
 
 							      try {
-							          Class c = Class.forName((ID8!=null?ID8.getText():null));
+							          Class c = Class.forName((ID7!=null?ID7.getText():null));
 							          for (Method m : c.getDeclaredMethods()) {
 							            if (grammar.addFunction(m) == null) {
-							              emitErrorMessage(ID8, "Function name duplicated: " + m.getName() + " in file " + (ID8!=null?ID8.getText():null));
+							              emitErrorMessage(ID7, "Function name duplicated: " + m.getName() + " in file " + (ID7!=null?ID7.getText():null));
 							            }
 							          }
 							        } catch (Exception e) {
-							          emitErrorMessage(ID8, "File not found: " + (ID8!=null?ID8.getText():null));
+							          emitErrorMessage(ID7, "File not found: " + (ID7!=null?ID7.getText():null));
 							        }
 							    
 							}
@@ -471,8 +421,8 @@ public class AdaptablePEGParser extends Parser {
 						cnt2++;
 					}
 
-					char_literal9=(Token)match(input,60,FOLLOW_60_in_functions253);  
-					stream_60.add(char_literal9);
+					char_literal8=(Token)match(input,60,FOLLOW_60_in_functions244);  
+					stream_60.add(char_literal8);
 
 					// AST REWRITE
 					// elements: ID
@@ -560,6 +510,84 @@ public class AdaptablePEGParser extends Parser {
 	// $ANTLR end "functions"
 
 
+	public static class addrules_return extends ParserRuleReturnScope {
+		CommonTree tree;
+		@Override
+		public CommonTree getTree() { return tree; }
+	};
+
+
+	// $ANTLR start "addrules"
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:188:1: addrules : ( rule )+ ;
+	public final AdaptablePEGParser.addrules_return addrules() throws RecognitionException {
+		AdaptablePEGParser.addrules_return retval = new AdaptablePEGParser.addrules_return();
+		retval.start = input.LT(1);
+
+		CommonTree root_0 = null;
+
+		ParserRuleReturnScope rule9 =null;
+
+
+		try {
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:188:10: ( ( rule )+ )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:188:12: ( rule )+
+			{
+			root_0 = (CommonTree)adaptor.nil();
+
+
+			 isAddingRules = true; 
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:188:38: ( rule )+
+			int cnt4=0;
+			loop4:
+			while (true) {
+				int alt4=2;
+				int LA4_0 = input.LA(1);
+				if ( (LA4_0==ID) ) {
+					alt4=1;
+				}
+
+				switch (alt4) {
+				case 1 :
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:188:38: rule
+					{
+					pushFollow(FOLLOW_rule_in_addrules285);
+					rule9=rule();
+					state._fsp--;
+
+					adaptor.addChild(root_0, rule9.getTree());
+
+					}
+					break;
+
+				default :
+					if ( cnt4 >= 1 ) break loop4;
+					EarlyExitException eee = new EarlyExitException(4, input);
+					throw eee;
+				}
+				cnt4++;
+			}
+
+			}
+
+			retval.stop = input.LT(-1);
+
+			retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
+			adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+
+		}
+		catch (RecognitionException re) {
+			reportError(re);
+			recover(input,re);
+			retval.tree = (CommonTree)adaptor.errorNode(input, retval.start, input.LT(-1), re);
+		}
+		finally {
+			// do for sure before leaving
+		}
+		return retval;
+	}
+	// $ANTLR end "addrules"
+
+
 	public static class rule_return extends ParserRuleReturnScope {
 		CommonTree tree;
 		@Override
@@ -568,7 +596,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "rule"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:189:1: rule : ID d1= optDecls[Attribute.Category.PARAM] d2= optReturn[Attribute.Category.RETURN] d3= optLocals[Attribute.Category.LOCAL] ':' t= peg_expr ';' -> ^( RULE ID $d1 $d2 $d3 peg_expr ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:191:1: rule : ID d1= optDecls[Attribute.Category.PARAM] d2= optReturn[Attribute.Category.RETURN] d3= optLocals[Attribute.Category.LOCAL] ':' t= peg_expr ';' -> ^( RULE ID $d1 $d2 $d3 peg_expr ) ;
 	public final AdaptablePEGParser.rule_return rule() throws RecognitionException {
 		AdaptablePEGParser.rule_return retval = new AdaptablePEGParser.rule_return();
 		retval.start = input.LT(1);
@@ -595,42 +623,42 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_optLocals=new RewriteRuleSubtreeStream(adaptor,"rule optLocals");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:193:3: ( ID d1= optDecls[Attribute.Category.PARAM] d2= optReturn[Attribute.Category.RETURN] d3= optLocals[Attribute.Category.LOCAL] ':' t= peg_expr ';' -> ^( RULE ID $d1 $d2 $d3 peg_expr ) )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:194:3: ID d1= optDecls[Attribute.Category.PARAM] d2= optReturn[Attribute.Category.RETURN] d3= optLocals[Attribute.Category.LOCAL] ':' t= peg_expr ';'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:195:3: ( ID d1= optDecls[Attribute.Category.PARAM] d2= optReturn[Attribute.Category.RETURN] d3= optLocals[Attribute.Category.LOCAL] ':' t= peg_expr ';' -> ^( RULE ID $d1 $d2 $d3 peg_expr ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:196:3: ID d1= optDecls[Attribute.Category.PARAM] d2= optReturn[Attribute.Category.RETURN] d3= optLocals[Attribute.Category.LOCAL] ':' t= peg_expr ';'
 			{
-			ID10=(Token)match(input,ID,FOLLOW_ID_in_rule301);  
+			ID10=(Token)match(input,ID,FOLLOW_ID_in_rule304);  
 			stream_ID.add(ID10);
 
-			 
-				  currNT = grammar.addNonTerminal((ID10!=null?ID10.getText():null));
-				  if (currNT == null) {
-				    emitErrorMessage(ID10, "Symbol duplicated: " + (ID10!=null?ID10.getText():null));
-				  }
-			  
-			pushFollow(FOLLOW_optDecls_in_rule312);
+
+					currNT = grammar.addNonTerminal((ID10!=null?ID10.getText():null));
+					if (currNT == null && !isAddingRules) {
+						emitErrorMessage(ID10, "Symbol duplicated: " + (ID10!=null?ID10.getText():null));
+					}
+				
+			pushFollow(FOLLOW_optDecls_in_rule313);
 			d1=optDecls(Attribute.Category.PARAM);
 			state._fsp--;
 
 			stream_optDecls.add(d1.getTree());
-			pushFollow(FOLLOW_optReturn_in_rule319);
+			pushFollow(FOLLOW_optReturn_in_rule320);
 			d2=optReturn(Attribute.Category.RETURN);
 			state._fsp--;
 
 			stream_optReturn.add(d2.getTree());
-			pushFollow(FOLLOW_optLocals_in_rule326);
+			pushFollow(FOLLOW_optLocals_in_rule327);
 			d3=optLocals(Attribute.Category.LOCAL);
 			state._fsp--;
 
 			stream_optLocals.add(d3.getTree());
-			char_literal11=(Token)match(input,59,FOLLOW_59_in_rule331);  
+			char_literal11=(Token)match(input,59,FOLLOW_59_in_rule332);  
 			stream_59.add(char_literal11);
 
-			pushFollow(FOLLOW_peg_expr_in_rule335);
+			pushFollow(FOLLOW_peg_expr_in_rule336);
 			t=peg_expr();
 			state._fsp--;
 
 			stream_peg_expr.add(t.getTree());
-			char_literal12=(Token)match(input,60,FOLLOW_60_in_rule339);  
+			char_literal12=(Token)match(input,60,FOLLOW_60_in_rule340);  
 			stream_60.add(char_literal12);
 
 			// AST REWRITE
@@ -647,9 +675,9 @@ public class AdaptablePEGParser extends Parser {
 			RewriteRuleSubtreeStream stream_d3=new RewriteRuleSubtreeStream(adaptor,"rule d3",d3!=null?d3.getTree():null);
 
 			root_0 = (CommonTree)adaptor.nil();
-			// 206:3: -> ^( RULE ID $d1 $d2 $d3 peg_expr )
+			// 208:3: -> ^( RULE ID $d1 $d2 $d3 peg_expr )
 			{
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:206:6: ^( RULE ID $d1 $d2 $d3 peg_expr )
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:208:6: ^( RULE ID $d1 $d2 $d3 peg_expr )
 				{
 				CommonTree root_1 = (CommonTree)adaptor.nil();
 				root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(RULE, "RULE"), root_1);
@@ -698,7 +726,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "decls"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:210:1: decls[Attribute.Category c] : '[' varDecl[c] ( ',' varDecl[c] )* ']' -> ^( LIST ( varDecl )* ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:212:1: decls[Attribute.Category c] : '[' varDecl[c] ( ',' varDecl[c] )* ']' -> ^( LIST ( varDecl )* ) ;
 	public final AdaptablePEGParser.decls_return decls(Attribute.Category c) throws RecognitionException {
 		AdaptablePEGParser.decls_return retval = new AdaptablePEGParser.decls_return();
 		retval.start = input.LT(1);
@@ -720,34 +748,34 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_varDecl=new RewriteRuleSubtreeStream(adaptor,"rule varDecl");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:210:29: ( '[' varDecl[c] ( ',' varDecl[c] )* ']' -> ^( LIST ( varDecl )* ) )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:211:3: '[' varDecl[c] ( ',' varDecl[c] )* ']'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:212:29: ( '[' varDecl[c] ( ',' varDecl[c] )* ']' -> ^( LIST ( varDecl )* ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:213:3: '[' varDecl[c] ( ',' varDecl[c] )* ']'
 			{
-			char_literal13=(Token)match(input,63,FOLLOW_63_in_decls373);  
+			char_literal13=(Token)match(input,63,FOLLOW_63_in_decls374);  
 			stream_63.add(char_literal13);
 
-			pushFollow(FOLLOW_varDecl_in_decls375);
+			pushFollow(FOLLOW_varDecl_in_decls376);
 			varDecl14=varDecl(c);
 			state._fsp--;
 
 			stream_varDecl.add(varDecl14.getTree());
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:211:18: ( ',' varDecl[c] )*
-			loop4:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:213:18: ( ',' varDecl[c] )*
+			loop5:
 			while (true) {
-				int alt4=2;
-				int LA4_0 = input.LA(1);
-				if ( (LA4_0==57) ) {
-					alt4=1;
+				int alt5=2;
+				int LA5_0 = input.LA(1);
+				if ( (LA5_0==57) ) {
+					alt5=1;
 				}
 
-				switch (alt4) {
+				switch (alt5) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:211:19: ',' varDecl[c]
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:213:19: ',' varDecl[c]
 					{
-					char_literal15=(Token)match(input,57,FOLLOW_57_in_decls379);  
+					char_literal15=(Token)match(input,57,FOLLOW_57_in_decls380);  
 					stream_57.add(char_literal15);
 
-					pushFollow(FOLLOW_varDecl_in_decls381);
+					pushFollow(FOLLOW_varDecl_in_decls382);
 					varDecl16=varDecl(c);
 					state._fsp--;
 
@@ -756,11 +784,11 @@ public class AdaptablePEGParser extends Parser {
 					break;
 
 				default :
-					break loop4;
+					break loop5;
 				}
 			}
 
-			char_literal17=(Token)match(input,64,FOLLOW_64_in_decls386);  
+			char_literal17=(Token)match(input,64,FOLLOW_64_in_decls387);  
 			stream_64.add(char_literal17);
 
 			// AST REWRITE
@@ -774,13 +802,13 @@ public class AdaptablePEGParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (CommonTree)adaptor.nil();
-			// 211:40: -> ^( LIST ( varDecl )* )
+			// 213:40: -> ^( LIST ( varDecl )* )
 			{
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:211:43: ^( LIST ( varDecl )* )
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:213:43: ^( LIST ( varDecl )* )
 				{
 				CommonTree root_1 = (CommonTree)adaptor.nil();
 				root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(LIST, "LIST"), root_1);
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:211:50: ( varDecl )*
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:213:50: ( varDecl )*
 				while ( stream_varDecl.hasNext() ) {
 					adaptor.addChild(root_1, stream_varDecl.nextTree());
 				}
@@ -823,7 +851,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "optDecls"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:215:1: optDecls[Attribute.Category c] : ( decls[c] -> decls | -> LIST );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:217:1: optDecls[Attribute.Category c] : ( decls[c] -> decls | -> LIST );
 	public final AdaptablePEGParser.optDecls_return optDecls(Attribute.Category c) throws RecognitionException {
 		AdaptablePEGParser.optDecls_return retval = new AdaptablePEGParser.optDecls_return();
 		retval.start = input.LT(1);
@@ -835,27 +863,27 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_decls=new RewriteRuleSubtreeStream(adaptor,"rule decls");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:215:32: ( decls[c] -> decls | -> LIST )
-			int alt5=2;
-			int LA5_0 = input.LA(1);
-			if ( (LA5_0==63) ) {
-				alt5=1;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:217:32: ( decls[c] -> decls | -> LIST )
+			int alt6=2;
+			int LA6_0 = input.LA(1);
+			if ( (LA6_0==63) ) {
+				alt6=1;
 			}
-			else if ( (LA5_0==59||(LA5_0 >= 67 && LA5_0 <= 68)) ) {
-				alt5=2;
+			else if ( (LA6_0==59||(LA6_0 >= 67 && LA6_0 <= 68)) ) {
+				alt6=2;
 			}
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 5, 0, input);
+					new NoViableAltException("", 6, 0, input);
 				throw nvae;
 			}
 
-			switch (alt5) {
+			switch (alt6) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:216:3: decls[c]
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:218:3: decls[c]
 					{
-					pushFollow(FOLLOW_decls_in_optDecls410);
+					pushFollow(FOLLOW_decls_in_optDecls411);
 					decls18=decls(c);
 					state._fsp--;
 
@@ -871,7 +899,7 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 216:12: -> decls
+					// 218:12: -> decls
 					{
 						adaptor.addChild(root_0, stream_decls.nextTree());
 					}
@@ -882,7 +910,7 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:218:5: 
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:220:5: 
 					{
 					// AST REWRITE
 					// elements: 
@@ -895,7 +923,7 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 218:5: -> LIST
+					// 220:5: -> LIST
 					{
 						adaptor.addChild(root_0, (CommonTree)adaptor.create(LIST, "LIST"));
 					}
@@ -934,7 +962,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "optReturn"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:222:1: optReturn[Attribute.Category c] : ( 'returns' decls[c] -> decls | -> LIST );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:224:1: optReturn[Attribute.Category c] : ( 'returns' decls[c] -> decls | -> LIST );
 	public final AdaptablePEGParser.optReturn_return optReturn(Attribute.Category c) throws RecognitionException {
 		AdaptablePEGParser.optReturn_return retval = new AdaptablePEGParser.optReturn_return();
 		retval.start = input.LT(1);
@@ -949,30 +977,30 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_decls=new RewriteRuleSubtreeStream(adaptor,"rule decls");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:222:33: ( 'returns' decls[c] -> decls | -> LIST )
-			int alt6=2;
-			int LA6_0 = input.LA(1);
-			if ( (LA6_0==68) ) {
-				alt6=1;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:224:33: ( 'returns' decls[c] -> decls | -> LIST )
+			int alt7=2;
+			int LA7_0 = input.LA(1);
+			if ( (LA7_0==68) ) {
+				alt7=1;
 			}
-			else if ( (LA6_0==59||LA6_0==67) ) {
-				alt6=2;
+			else if ( (LA7_0==59||LA7_0==67) ) {
+				alt7=2;
 			}
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 6, 0, input);
+					new NoViableAltException("", 7, 0, input);
 				throw nvae;
 			}
 
-			switch (alt6) {
+			switch (alt7) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:223:3: 'returns' decls[c]
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:225:3: 'returns' decls[c]
 					{
-					string_literal19=(Token)match(input,68,FOLLOW_68_in_optReturn442);  
+					string_literal19=(Token)match(input,68,FOLLOW_68_in_optReturn443);  
 					stream_68.add(string_literal19);
 
-					pushFollow(FOLLOW_decls_in_optReturn444);
+					pushFollow(FOLLOW_decls_in_optReturn445);
 					decls20=decls(c);
 					state._fsp--;
 
@@ -988,7 +1016,7 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 223:22: -> decls
+					// 225:22: -> decls
 					{
 						adaptor.addChild(root_0, stream_decls.nextTree());
 					}
@@ -999,7 +1027,7 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:225:5: 
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:227:5: 
 					{
 					// AST REWRITE
 					// elements: 
@@ -1012,7 +1040,7 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 225:5: -> LIST
+					// 227:5: -> LIST
 					{
 						adaptor.addChild(root_0, (CommonTree)adaptor.create(LIST, "LIST"));
 					}
@@ -1051,7 +1079,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "optLocals"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:228:1: optLocals[Attribute.Category c] : ( 'locals' ! decls[c] | -> LIST );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:230:1: optLocals[Attribute.Category c] : ( 'locals' ! decls[c] | -> LIST );
 	public final AdaptablePEGParser.optLocals_return optLocals(Attribute.Category c) throws RecognitionException {
 		AdaptablePEGParser.optLocals_return retval = new AdaptablePEGParser.optLocals_return();
 		retval.start = input.LT(1);
@@ -1064,31 +1092,31 @@ public class AdaptablePEGParser extends Parser {
 		CommonTree string_literal21_tree=null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:228:33: ( 'locals' ! decls[c] | -> LIST )
-			int alt7=2;
-			int LA7_0 = input.LA(1);
-			if ( (LA7_0==67) ) {
-				alt7=1;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:230:33: ( 'locals' ! decls[c] | -> LIST )
+			int alt8=2;
+			int LA8_0 = input.LA(1);
+			if ( (LA8_0==67) ) {
+				alt8=1;
 			}
-			else if ( (LA7_0==59) ) {
-				alt7=2;
+			else if ( (LA8_0==59) ) {
+				alt8=2;
 			}
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 7, 0, input);
+					new NoViableAltException("", 8, 0, input);
 				throw nvae;
 			}
 
-			switch (alt7) {
+			switch (alt8) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:229:3: 'locals' ! decls[c]
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:231:3: 'locals' ! decls[c]
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					string_literal21=(Token)match(input,67,FOLLOW_67_in_optLocals475); 
-					pushFollow(FOLLOW_decls_in_optLocals478);
+					string_literal21=(Token)match(input,67,FOLLOW_67_in_optLocals476); 
+					pushFollow(FOLLOW_decls_in_optLocals479);
 					decls22=decls(c);
 					state._fsp--;
 
@@ -1097,7 +1125,7 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:231:5: 
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:233:5: 
 					{
 					// AST REWRITE
 					// elements: 
@@ -1110,7 +1138,7 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 231:5: -> LIST
+					// 233:5: -> LIST
 					{
 						adaptor.addChild(root_0, (CommonTree)adaptor.create(LIST, "LIST"));
 					}
@@ -1149,7 +1177,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "varDecl"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:234:1: varDecl[Attribute.Category c] : type ID -> ^( VARDECL type ID ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:236:1: varDecl[Attribute.Category c] : type ID -> ^( VARDECL type ID ) ;
 	public final AdaptablePEGParser.varDecl_return varDecl(Attribute.Category c) throws RecognitionException {
 		AdaptablePEGParser.varDecl_return retval = new AdaptablePEGParser.varDecl_return();
 		retval.start = input.LT(1);
@@ -1164,15 +1192,15 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_type=new RewriteRuleSubtreeStream(adaptor,"rule type");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:234:31: ( type ID -> ^( VARDECL type ID ) )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:235:3: type ID
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:236:31: ( type ID -> ^( VARDECL type ID ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:237:3: type ID
 			{
-			pushFollow(FOLLOW_type_in_varDecl505);
+			pushFollow(FOLLOW_type_in_varDecl506);
 			type23=type();
 			state._fsp--;
 
 			stream_type.add(type23.getTree());
-			ID24=(Token)match(input,ID,FOLLOW_ID_in_varDecl507);  
+			ID24=(Token)match(input,ID,FOLLOW_ID_in_varDecl508);  
 			stream_ID.add(ID24);
 
 
@@ -1193,9 +1221,9 @@ public class AdaptablePEGParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (CommonTree)adaptor.nil();
-			// 243:5: -> ^( VARDECL type ID )
+			// 245:5: -> ^( VARDECL type ID )
 			{
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:243:8: ^( VARDECL type ID )
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:245:8: ^( VARDECL type ID )
 				{
 				CommonTree root_1 = (CommonTree)adaptor.nil();
 				root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(VARDECL, "VARDECL"), root_1);
@@ -1238,7 +1266,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "type"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:246:1: type : ID ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:248:1: type : ID ;
 	public final AdaptablePEGParser.type_return type() throws RecognitionException {
 		AdaptablePEGParser.type_return retval = new AdaptablePEGParser.type_return();
 		retval.start = input.LT(1);
@@ -1250,13 +1278,13 @@ public class AdaptablePEGParser extends Parser {
 		CommonTree ID25_tree=null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:246:6: ( ID )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:247:3: ID
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:248:6: ( ID )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:249:3: ID
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			ID25=(Token)match(input,ID,FOLLOW_ID_in_type539); 
+			ID25=(Token)match(input,ID,FOLLOW_ID_in_type540); 
 			ID25_tree = (CommonTree)adaptor.create(ID25);
 			adaptor.addChild(root_0, ID25_tree);
 
@@ -1289,7 +1317,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "peg_expr"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:254:1: peg_expr : peg_seq ( '/' peg_expr -> ^( CHOICE peg_seq peg_expr ) | -> peg_seq ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:256:1: peg_expr : peg_seq ( '/' peg_expr -> ^( CHOICE peg_seq peg_expr ) | -> peg_seq ) ;
 	public final AdaptablePEGParser.peg_expr_return peg_expr() throws RecognitionException {
 		AdaptablePEGParser.peg_expr_return retval = new AdaptablePEGParser.peg_expr_return();
 		retval.start = input.LT(1);
@@ -1306,38 +1334,38 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_peg_expr=new RewriteRuleSubtreeStream(adaptor,"rule peg_expr");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:254:10: ( peg_seq ( '/' peg_expr -> ^( CHOICE peg_seq peg_expr ) | -> peg_seq ) )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:255:3: peg_seq ( '/' peg_expr -> ^( CHOICE peg_seq peg_expr ) | -> peg_seq )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:256:10: ( peg_seq ( '/' peg_expr -> ^( CHOICE peg_seq peg_expr ) | -> peg_seq ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:257:3: peg_seq ( '/' peg_expr -> ^( CHOICE peg_seq peg_expr ) | -> peg_seq )
 			{
-			pushFollow(FOLLOW_peg_seq_in_peg_expr556);
+			pushFollow(FOLLOW_peg_seq_in_peg_expr557);
 			peg_seq26=peg_seq();
 			state._fsp--;
 
 			stream_peg_seq.add(peg_seq26.getTree());
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:256:3: ( '/' peg_expr -> ^( CHOICE peg_seq peg_expr ) | -> peg_seq )
-			int alt8=2;
-			int LA8_0 = input.LA(1);
-			if ( (LA8_0==OP_DIV) ) {
-				alt8=1;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:258:3: ( '/' peg_expr -> ^( CHOICE peg_seq peg_expr ) | -> peg_seq )
+			int alt9=2;
+			int LA9_0 = input.LA(1);
+			if ( (LA9_0==OP_DIV) ) {
+				alt9=1;
 			}
-			else if ( (LA8_0==56||LA8_0==60) ) {
-				alt8=2;
+			else if ( (LA9_0==56||LA9_0==60) ) {
+				alt9=2;
 			}
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 8, 0, input);
+					new NoViableAltException("", 9, 0, input);
 				throw nvae;
 			}
 
-			switch (alt8) {
+			switch (alt9) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:256:4: '/' peg_expr
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:258:4: '/' peg_expr
 					{
-					char_literal27=(Token)match(input,OP_DIV,FOLLOW_OP_DIV_in_peg_expr562);  
+					char_literal27=(Token)match(input,OP_DIV,FOLLOW_OP_DIV_in_peg_expr563);  
 					stream_OP_DIV.add(char_literal27);
 
-					pushFollow(FOLLOW_peg_expr_in_peg_expr564);
+					pushFollow(FOLLOW_peg_expr_in_peg_expr565);
 					peg_expr28=peg_expr();
 					state._fsp--;
 
@@ -1353,9 +1381,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 256:17: -> ^( CHOICE peg_seq peg_expr )
+					// 258:17: -> ^( CHOICE peg_seq peg_expr )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:256:20: ^( CHOICE peg_seq peg_expr )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:258:20: ^( CHOICE peg_seq peg_expr )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(CHOICE, "CHOICE"), root_1);
@@ -1372,7 +1400,7 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:258:5: 
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:260:5: 
 					{
 					// AST REWRITE
 					// elements: peg_seq
@@ -1385,7 +1413,7 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 258:5: -> peg_seq
+					// 260:5: -> peg_seq
 					{
 						adaptor.addChild(root_0, stream_peg_seq.nextTree());
 					}
@@ -1427,7 +1455,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "peg_seq"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:264:1: peg_seq : ( ( peg_unary_op )+ -> ^( SEQ ( peg_unary_op )+ ) | -> LAMBDA );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:266:1: peg_seq : ( ( peg_unary_op )+ -> ^( SEQ ( peg_unary_op )+ ) | -> LAMBDA );
 	public final AdaptablePEGParser.peg_seq_return peg_seq() throws RecognitionException {
 		AdaptablePEGParser.peg_seq_return retval = new AdaptablePEGParser.peg_seq_return();
 		retval.start = input.LT(1);
@@ -1439,41 +1467,41 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_peg_unary_op=new RewriteRuleSubtreeStream(adaptor,"rule peg_unary_op");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:264:9: ( ( peg_unary_op )+ -> ^( SEQ ( peg_unary_op )+ ) | -> LAMBDA )
-			int alt10=2;
-			int LA10_0 = input.LA(1);
-			if ( (LA10_0==ID||LA10_0==OP_NOT||LA10_0==STRING_LITERAL||(LA10_0 >= 54 && LA10_0 <= 55)||LA10_0==58||LA10_0==63||(LA10_0 >= 69 && LA10_0 <= 70)) ) {
-				alt10=1;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:266:9: ( ( peg_unary_op )+ -> ^( SEQ ( peg_unary_op )+ ) | -> LAMBDA )
+			int alt11=2;
+			int LA11_0 = input.LA(1);
+			if ( (LA11_0==ID||LA11_0==OP_NOT||LA11_0==STRING_LITERAL||(LA11_0 >= 54 && LA11_0 <= 55)||LA11_0==58||LA11_0==63||(LA11_0 >= 69 && LA11_0 <= 70)) ) {
+				alt11=1;
 			}
-			else if ( (LA10_0==OP_DIV||LA10_0==56||LA10_0==60) ) {
-				alt10=2;
+			else if ( (LA11_0==OP_DIV||LA11_0==56||LA11_0==60) ) {
+				alt11=2;
 			}
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 10, 0, input);
+					new NoViableAltException("", 11, 0, input);
 				throw nvae;
 			}
 
-			switch (alt10) {
+			switch (alt11) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:265:3: ( peg_unary_op )+
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:267:3: ( peg_unary_op )+
 					{
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:265:3: ( peg_unary_op )+
-					int cnt9=0;
-					loop9:
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:267:3: ( peg_unary_op )+
+					int cnt10=0;
+					loop10:
 					while (true) {
-						int alt9=2;
-						int LA9_0 = input.LA(1);
-						if ( (LA9_0==ID||LA9_0==OP_NOT||LA9_0==STRING_LITERAL||(LA9_0 >= 54 && LA9_0 <= 55)||LA9_0==58||LA9_0==63||(LA9_0 >= 69 && LA9_0 <= 70)) ) {
-							alt9=1;
+						int alt10=2;
+						int LA10_0 = input.LA(1);
+						if ( (LA10_0==ID||LA10_0==OP_NOT||LA10_0==STRING_LITERAL||(LA10_0 >= 54 && LA10_0 <= 55)||LA10_0==58||LA10_0==63||(LA10_0 >= 69 && LA10_0 <= 70)) ) {
+							alt10=1;
 						}
 
-						switch (alt9) {
+						switch (alt10) {
 						case 1 :
-							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:265:3: peg_unary_op
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:267:3: peg_unary_op
 							{
-							pushFollow(FOLLOW_peg_unary_op_in_peg_seq606);
+							pushFollow(FOLLOW_peg_unary_op_in_peg_seq607);
 							peg_unary_op29=peg_unary_op();
 							state._fsp--;
 
@@ -1482,11 +1510,11 @@ public class AdaptablePEGParser extends Parser {
 							break;
 
 						default :
-							if ( cnt9 >= 1 ) break loop9;
-							EarlyExitException eee = new EarlyExitException(9, input);
+							if ( cnt10 >= 1 ) break loop10;
+							EarlyExitException eee = new EarlyExitException(10, input);
 							throw eee;
 						}
-						cnt9++;
+						cnt10++;
 					}
 
 					// AST REWRITE
@@ -1500,9 +1528,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 265:17: -> ^( SEQ ( peg_unary_op )+ )
+					// 267:17: -> ^( SEQ ( peg_unary_op )+ )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:265:20: ^( SEQ ( peg_unary_op )+ )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:267:20: ^( SEQ ( peg_unary_op )+ )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(SEQ, "SEQ"), root_1);
@@ -1525,7 +1553,7 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:267:5: 
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:269:5: 
 					{
 					// AST REWRITE
 					// elements: 
@@ -1538,7 +1566,7 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 267:5: -> LAMBDA
+					// 269:5: -> LAMBDA
 					{
 						adaptor.addChild(root_0, (CommonTree)adaptor.create(LAMBDA, "LAMBDA"));
 					}
@@ -1577,7 +1605,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "peg_unary_op"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:277:1: peg_unary_op : ( peg_factor (t1= '?' -> ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor ) |t2= '*' -> ^( REPEAT[$t2, \"REPEAT\"] peg_factor ) |t3= '+' -> ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor ) | -> peg_factor ) |t4= '&' peg_factor -> ^( AND_LOOKAHEAD[$t4,\"AND_LOOKAHEAD\"] peg_factor ) |t5= '!' peg_factor -> ^( NOT_LOOKAHEAD[$t5,\"NOT_LOOKAHEAD\"] peg_factor ) |t6= '{?' cond '}' -> ^( COND[$t6,\"COND\"] cond ) |t7= '{' ( assign )+ '}' -> ^( ASSIGNLIST[$t7,\"ASSIGNLIST\"] ( assign )+ ) );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:279:1: peg_unary_op : ( peg_factor (t1= '?' -> ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor ) |t2= '*' -> ^( REPEAT[$t2, \"REPEAT\"] peg_factor ) |t3= '+' -> ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor ) | -> peg_factor ) |t4= '&' peg_factor -> ^( AND_LOOKAHEAD[$t4,\"AND_LOOKAHEAD\"] peg_factor ) |t5= '!' peg_factor -> ^( NOT_LOOKAHEAD[$t5,\"NOT_LOOKAHEAD\"] peg_factor ) |t6= '{?' cond '}' -> ^( COND[$t6,\"COND\"] cond ) |t7= '{' ( assign )+ '}' -> ^( ASSIGNLIST[$t7,\"ASSIGNLIST\"] ( assign )+ ) );
 	public final AdaptablePEGParser.peg_unary_op_return peg_unary_op() throws RecognitionException {
 		AdaptablePEGParser.peg_unary_op_return retval = new AdaptablePEGParser.peg_unary_op_return();
 		retval.start = input.LT(1);
@@ -1621,8 +1649,8 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_cond=new RewriteRuleSubtreeStream(adaptor,"rule cond");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:277:14: ( peg_factor (t1= '?' -> ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor ) |t2= '*' -> ^( REPEAT[$t2, \"REPEAT\"] peg_factor ) |t3= '+' -> ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor ) | -> peg_factor ) |t4= '&' peg_factor -> ^( AND_LOOKAHEAD[$t4,\"AND_LOOKAHEAD\"] peg_factor ) |t5= '!' peg_factor -> ^( NOT_LOOKAHEAD[$t5,\"NOT_LOOKAHEAD\"] peg_factor ) |t6= '{?' cond '}' -> ^( COND[$t6,\"COND\"] cond ) |t7= '{' ( assign )+ '}' -> ^( ASSIGNLIST[$t7,\"ASSIGNLIST\"] ( assign )+ ) )
-			int alt13=5;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:279:14: ( peg_factor (t1= '?' -> ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor ) |t2= '*' -> ^( REPEAT[$t2, \"REPEAT\"] peg_factor ) |t3= '+' -> ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor ) | -> peg_factor ) |t4= '&' peg_factor -> ^( AND_LOOKAHEAD[$t4,\"AND_LOOKAHEAD\"] peg_factor ) |t5= '!' peg_factor -> ^( NOT_LOOKAHEAD[$t5,\"NOT_LOOKAHEAD\"] peg_factor ) |t6= '{?' cond '}' -> ^( COND[$t6,\"COND\"] cond ) |t7= '{' ( assign )+ '}' -> ^( ASSIGNLIST[$t7,\"ASSIGNLIST\"] ( assign )+ ) )
+			int alt14=5;
 			switch ( input.LA(1) ) {
 			case ID:
 			case STRING_LITERAL:
@@ -1630,59 +1658,59 @@ public class AdaptablePEGParser extends Parser {
 			case 58:
 			case 63:
 				{
-				alt13=1;
+				alt14=1;
 				}
 				break;
 			case 54:
 				{
-				alt13=2;
+				alt14=2;
 				}
 				break;
 			case OP_NOT:
 				{
-				alt13=3;
+				alt14=3;
 				}
 				break;
 			case 70:
 				{
-				alt13=4;
+				alt14=4;
 				}
 				break;
 			case 69:
 				{
-				alt13=5;
+				alt14=5;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 13, 0, input);
+					new NoViableAltException("", 14, 0, input);
 				throw nvae;
 			}
-			switch (alt13) {
+			switch (alt14) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:278:3: peg_factor (t1= '?' -> ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor ) |t2= '*' -> ^( REPEAT[$t2, \"REPEAT\"] peg_factor ) |t3= '+' -> ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor ) | -> peg_factor )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:280:3: peg_factor (t1= '?' -> ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor ) |t2= '*' -> ^( REPEAT[$t2, \"REPEAT\"] peg_factor ) |t3= '+' -> ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor ) | -> peg_factor )
 					{
-					pushFollow(FOLLOW_peg_factor_in_peg_unary_op648);
+					pushFollow(FOLLOW_peg_factor_in_peg_unary_op649);
 					peg_factor30=peg_factor();
 					state._fsp--;
 
 					stream_peg_factor.add(peg_factor30.getTree());
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:279:5: (t1= '?' -> ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor ) |t2= '*' -> ^( REPEAT[$t2, \"REPEAT\"] peg_factor ) |t3= '+' -> ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor ) | -> peg_factor )
-					int alt11=4;
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:281:5: (t1= '?' -> ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor ) |t2= '*' -> ^( REPEAT[$t2, \"REPEAT\"] peg_factor ) |t3= '+' -> ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor ) | -> peg_factor )
+					int alt12=4;
 					switch ( input.LA(1) ) {
 					case 62:
 						{
-						alt11=1;
+						alt12=1;
 						}
 						break;
 					case OP_MUL:
 						{
-						alt11=2;
+						alt12=2;
 						}
 						break;
 					case OP_ADD:
 						{
-						alt11=3;
+						alt12=3;
 						}
 						break;
 					case ID:
@@ -1698,19 +1726,19 @@ public class AdaptablePEGParser extends Parser {
 					case 69:
 					case 70:
 						{
-						alt11=4;
+						alt12=4;
 						}
 						break;
 					default:
 						NoViableAltException nvae =
-							new NoViableAltException("", 11, 0, input);
+							new NoViableAltException("", 12, 0, input);
 						throw nvae;
 					}
-					switch (alt11) {
+					switch (alt12) {
 						case 1 :
-							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:280:7: t1= '?'
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:282:7: t1= '?'
 							{
-							t1=(Token)match(input,62,FOLLOW_62_in_peg_unary_op665);  
+							t1=(Token)match(input,62,FOLLOW_62_in_peg_unary_op666);  
 							stream_62.add(t1);
 
 							// AST REWRITE
@@ -1724,9 +1752,9 @@ public class AdaptablePEGParser extends Parser {
 							RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 							root_0 = (CommonTree)adaptor.nil();
-							// 280:14: -> ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor )
+							// 282:14: -> ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor )
 							{
-								// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:280:17: ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor )
+								// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:282:17: ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor )
 								{
 								CommonTree root_1 = (CommonTree)adaptor.nil();
 								root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(OPTIONAL, t1, "OPTIONAL"), root_1);
@@ -1742,9 +1770,9 @@ public class AdaptablePEGParser extends Parser {
 							}
 							break;
 						case 2 :
-							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:282:7: t2= '*'
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:284:7: t2= '*'
 							{
-							t2=(Token)match(input,OP_MUL,FOLLOW_OP_MUL_in_peg_unary_op692);  
+							t2=(Token)match(input,OP_MUL,FOLLOW_OP_MUL_in_peg_unary_op693);  
 							stream_OP_MUL.add(t2);
 
 							// AST REWRITE
@@ -1758,9 +1786,9 @@ public class AdaptablePEGParser extends Parser {
 							RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 							root_0 = (CommonTree)adaptor.nil();
-							// 282:14: -> ^( REPEAT[$t2, \"REPEAT\"] peg_factor )
+							// 284:14: -> ^( REPEAT[$t2, \"REPEAT\"] peg_factor )
 							{
-								// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:282:17: ^( REPEAT[$t2, \"REPEAT\"] peg_factor )
+								// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:284:17: ^( REPEAT[$t2, \"REPEAT\"] peg_factor )
 								{
 								CommonTree root_1 = (CommonTree)adaptor.nil();
 								root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(REPEAT, t2, "REPEAT"), root_1);
@@ -1776,9 +1804,9 @@ public class AdaptablePEGParser extends Parser {
 							}
 							break;
 						case 3 :
-							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:284:7: t3= '+'
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:286:7: t3= '+'
 							{
-							t3=(Token)match(input,OP_ADD,FOLLOW_OP_ADD_in_peg_unary_op719);  
+							t3=(Token)match(input,OP_ADD,FOLLOW_OP_ADD_in_peg_unary_op720);  
 							stream_OP_ADD.add(t3);
 
 							// AST REWRITE
@@ -1792,9 +1820,9 @@ public class AdaptablePEGParser extends Parser {
 							RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 							root_0 = (CommonTree)adaptor.nil();
-							// 284:14: -> ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor )
+							// 286:14: -> ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor )
 							{
-								// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:284:17: ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor )
+								// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:286:17: ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor )
 								{
 								CommonTree root_1 = (CommonTree)adaptor.nil();
 								root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(ONE_REPEAT, t3, "ONE_REPEAT"), root_1);
@@ -1810,7 +1838,7 @@ public class AdaptablePEGParser extends Parser {
 							}
 							break;
 						case 4 :
-							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:286:14: 
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:288:14: 
 							{
 							// AST REWRITE
 							// elements: peg_factor
@@ -1823,7 +1851,7 @@ public class AdaptablePEGParser extends Parser {
 							RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 							root_0 = (CommonTree)adaptor.nil();
-							// 286:14: -> peg_factor
+							// 288:14: -> peg_factor
 							{
 								adaptor.addChild(root_0, stream_peg_factor.nextTree());
 							}
@@ -1839,12 +1867,12 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:289:4: t4= '&' peg_factor
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:291:4: t4= '&' peg_factor
 					{
-					t4=(Token)match(input,54,FOLLOW_54_in_peg_unary_op771);  
+					t4=(Token)match(input,54,FOLLOW_54_in_peg_unary_op772);  
 					stream_54.add(t4);
 
-					pushFollow(FOLLOW_peg_factor_in_peg_unary_op773);
+					pushFollow(FOLLOW_peg_factor_in_peg_unary_op774);
 					peg_factor31=peg_factor();
 					state._fsp--;
 
@@ -1860,9 +1888,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 289:22: -> ^( AND_LOOKAHEAD[$t4,\"AND_LOOKAHEAD\"] peg_factor )
+					// 291:22: -> ^( AND_LOOKAHEAD[$t4,\"AND_LOOKAHEAD\"] peg_factor )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:289:25: ^( AND_LOOKAHEAD[$t4,\"AND_LOOKAHEAD\"] peg_factor )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:291:25: ^( AND_LOOKAHEAD[$t4,\"AND_LOOKAHEAD\"] peg_factor )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(AND_LOOKAHEAD, t4, "AND_LOOKAHEAD"), root_1);
@@ -1878,12 +1906,12 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 3 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:291:4: t5= '!' peg_factor
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:293:4: t5= '!' peg_factor
 					{
-					t5=(Token)match(input,OP_NOT,FOLLOW_OP_NOT_in_peg_unary_op794);  
+					t5=(Token)match(input,OP_NOT,FOLLOW_OP_NOT_in_peg_unary_op795);  
 					stream_OP_NOT.add(t5);
 
-					pushFollow(FOLLOW_peg_factor_in_peg_unary_op796);
+					pushFollow(FOLLOW_peg_factor_in_peg_unary_op797);
 					peg_factor32=peg_factor();
 					state._fsp--;
 
@@ -1899,9 +1927,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 291:22: -> ^( NOT_LOOKAHEAD[$t5,\"NOT_LOOKAHEAD\"] peg_factor )
+					// 293:22: -> ^( NOT_LOOKAHEAD[$t5,\"NOT_LOOKAHEAD\"] peg_factor )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:291:25: ^( NOT_LOOKAHEAD[$t5,\"NOT_LOOKAHEAD\"] peg_factor )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:293:25: ^( NOT_LOOKAHEAD[$t5,\"NOT_LOOKAHEAD\"] peg_factor )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(NOT_LOOKAHEAD, t5, "NOT_LOOKAHEAD"), root_1);
@@ -1917,17 +1945,17 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 4 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:293:4: t6= '{?' cond '}'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:295:4: t6= '{?' cond '}'
 					{
-					t6=(Token)match(input,70,FOLLOW_70_in_peg_unary_op817);  
+					t6=(Token)match(input,70,FOLLOW_70_in_peg_unary_op818);  
 					stream_70.add(t6);
 
-					pushFollow(FOLLOW_cond_in_peg_unary_op819);
+					pushFollow(FOLLOW_cond_in_peg_unary_op820);
 					cond33=cond();
 					state._fsp--;
 
 					stream_cond.add(cond33.getTree());
-					char_literal34=(Token)match(input,71,FOLLOW_71_in_peg_unary_op821);  
+					char_literal34=(Token)match(input,71,FOLLOW_71_in_peg_unary_op822);  
 					stream_71.add(char_literal34);
 
 					// AST REWRITE
@@ -1941,9 +1969,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 293:21: -> ^( COND[$t6,\"COND\"] cond )
+					// 295:21: -> ^( COND[$t6,\"COND\"] cond )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:293:24: ^( COND[$t6,\"COND\"] cond )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:295:24: ^( COND[$t6,\"COND\"] cond )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(COND, t6, "COND"), root_1);
@@ -1959,26 +1987,26 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 5 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:295:4: t7= '{' ( assign )+ '}'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:297:4: t7= '{' ( assign )+ '}'
 					{
-					t7=(Token)match(input,69,FOLLOW_69_in_peg_unary_op842);  
+					t7=(Token)match(input,69,FOLLOW_69_in_peg_unary_op843);  
 					stream_69.add(t7);
 
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:295:11: ( assign )+
-					int cnt12=0;
-					loop12:
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:297:11: ( assign )+
+					int cnt13=0;
+					loop13:
 					while (true) {
-						int alt12=2;
-						int LA12_0 = input.LA(1);
-						if ( (LA12_0==ID) ) {
-							alt12=1;
+						int alt13=2;
+						int LA13_0 = input.LA(1);
+						if ( (LA13_0==ID) ) {
+							alt13=1;
 						}
 
-						switch (alt12) {
+						switch (alt13) {
 						case 1 :
-							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:295:11: assign
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:297:11: assign
 							{
-							pushFollow(FOLLOW_assign_in_peg_unary_op844);
+							pushFollow(FOLLOW_assign_in_peg_unary_op845);
 							assign35=assign();
 							state._fsp--;
 
@@ -1987,14 +2015,14 @@ public class AdaptablePEGParser extends Parser {
 							break;
 
 						default :
-							if ( cnt12 >= 1 ) break loop12;
-							EarlyExitException eee = new EarlyExitException(12, input);
+							if ( cnt13 >= 1 ) break loop13;
+							EarlyExitException eee = new EarlyExitException(13, input);
 							throw eee;
 						}
-						cnt12++;
+						cnt13++;
 					}
 
-					char_literal36=(Token)match(input,71,FOLLOW_71_in_peg_unary_op847);  
+					char_literal36=(Token)match(input,71,FOLLOW_71_in_peg_unary_op848);  
 					stream_71.add(char_literal36);
 
 					// AST REWRITE
@@ -2008,9 +2036,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 295:23: -> ^( ASSIGNLIST[$t7,\"ASSIGNLIST\"] ( assign )+ )
+					// 297:23: -> ^( ASSIGNLIST[$t7,\"ASSIGNLIST\"] ( assign )+ )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:295:26: ^( ASSIGNLIST[$t7,\"ASSIGNLIST\"] ( assign )+ )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:297:26: ^( ASSIGNLIST[$t7,\"ASSIGNLIST\"] ( assign )+ )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(ASSIGNLIST, t7, "ASSIGNLIST"), root_1);
@@ -2061,7 +2089,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "peg_factor"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:306:1: peg_factor : ( STRING_LITERAL | ntcall | '[' ( RANGE_PAIR )+ ']' -> ^( RANGE ( RANGE_PAIR )+ ) | '.' -> ANY | '(' peg_expr ')' -> peg_expr );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:308:1: peg_factor : ( STRING_LITERAL | ntcall | '[' ( RANGE_PAIR )+ ']' -> ^( RANGE ( RANGE_PAIR )+ ) | '.' -> ANY | '(' peg_expr ')' -> peg_expr );
 	public final AdaptablePEGParser.peg_factor_return peg_factor() throws RecognitionException {
 		AdaptablePEGParser.peg_factor_return retval = new AdaptablePEGParser.peg_factor_return();
 		retval.start = input.LT(1);
@@ -2094,59 +2122,59 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_peg_expr=new RewriteRuleSubtreeStream(adaptor,"rule peg_expr");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:306:12: ( STRING_LITERAL | ntcall | '[' ( RANGE_PAIR )+ ']' -> ^( RANGE ( RANGE_PAIR )+ ) | '.' -> ANY | '(' peg_expr ')' -> peg_expr )
-			int alt15=5;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:308:12: ( STRING_LITERAL | ntcall | '[' ( RANGE_PAIR )+ ']' -> ^( RANGE ( RANGE_PAIR )+ ) | '.' -> ANY | '(' peg_expr ')' -> peg_expr )
+			int alt16=5;
 			switch ( input.LA(1) ) {
 			case STRING_LITERAL:
 				{
-				alt15=1;
+				alt16=1;
 				}
 				break;
 			case ID:
 				{
-				alt15=2;
+				alt16=2;
 				}
 				break;
 			case 63:
 				{
-				alt15=3;
+				alt16=3;
 				}
 				break;
 			case 58:
 				{
-				alt15=4;
+				alt16=4;
 				}
 				break;
 			case 55:
 				{
-				alt15=5;
+				alt16=5;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 15, 0, input);
+					new NoViableAltException("", 16, 0, input);
 				throw nvae;
 			}
-			switch (alt15) {
+			switch (alt16) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:307:3: STRING_LITERAL
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:309:3: STRING_LITERAL
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					STRING_LITERAL37=(Token)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_peg_factor879); 
+					STRING_LITERAL37=(Token)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_peg_factor880); 
 					STRING_LITERAL37_tree = (CommonTree)adaptor.create(STRING_LITERAL37);
 					adaptor.addChild(root_0, STRING_LITERAL37_tree);
 
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:309:3: ntcall
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:311:3: ntcall
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					pushFollow(FOLLOW_ntcall_in_peg_factor887);
+					pushFollow(FOLLOW_ntcall_in_peg_factor888);
 					ntcall38=ntcall();
 					state._fsp--;
 
@@ -2155,40 +2183,40 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 3 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:311:3: '[' ( RANGE_PAIR )+ ']'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:313:3: '[' ( RANGE_PAIR )+ ']'
 					{
-					char_literal39=(Token)match(input,63,FOLLOW_63_in_peg_factor895);  
+					char_literal39=(Token)match(input,63,FOLLOW_63_in_peg_factor896);  
 					stream_63.add(char_literal39);
 
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:311:7: ( RANGE_PAIR )+
-					int cnt14=0;
-					loop14:
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:313:7: ( RANGE_PAIR )+
+					int cnt15=0;
+					loop15:
 					while (true) {
-						int alt14=2;
-						int LA14_0 = input.LA(1);
-						if ( (LA14_0==RANGE_PAIR) ) {
-							alt14=1;
+						int alt15=2;
+						int LA15_0 = input.LA(1);
+						if ( (LA15_0==RANGE_PAIR) ) {
+							alt15=1;
 						}
 
-						switch (alt14) {
+						switch (alt15) {
 						case 1 :
-							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:311:7: RANGE_PAIR
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:313:7: RANGE_PAIR
 							{
-							RANGE_PAIR40=(Token)match(input,RANGE_PAIR,FOLLOW_RANGE_PAIR_in_peg_factor897);  
+							RANGE_PAIR40=(Token)match(input,RANGE_PAIR,FOLLOW_RANGE_PAIR_in_peg_factor898);  
 							stream_RANGE_PAIR.add(RANGE_PAIR40);
 
 							}
 							break;
 
 						default :
-							if ( cnt14 >= 1 ) break loop14;
-							EarlyExitException eee = new EarlyExitException(14, input);
+							if ( cnt15 >= 1 ) break loop15;
+							EarlyExitException eee = new EarlyExitException(15, input);
 							throw eee;
 						}
-						cnt14++;
+						cnt15++;
 					}
 
-					char_literal41=(Token)match(input,64,FOLLOW_64_in_peg_factor900);  
+					char_literal41=(Token)match(input,64,FOLLOW_64_in_peg_factor901);  
 					stream_64.add(char_literal41);
 
 					// AST REWRITE
@@ -2202,9 +2230,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 311:23: -> ^( RANGE ( RANGE_PAIR )+ )
+					// 313:23: -> ^( RANGE ( RANGE_PAIR )+ )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:311:26: ^( RANGE ( RANGE_PAIR )+ )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:313:26: ^( RANGE ( RANGE_PAIR )+ )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(RANGE, "RANGE"), root_1);
@@ -2227,9 +2255,9 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 4 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:313:3: '.'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:315:3: '.'
 					{
-					char_literal42=(Token)match(input,58,FOLLOW_58_in_peg_factor917);  
+					char_literal42=(Token)match(input,58,FOLLOW_58_in_peg_factor918);  
 					stream_58.add(char_literal42);
 
 					// AST REWRITE
@@ -2243,7 +2271,7 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 313:7: -> ANY
+					// 315:7: -> ANY
 					{
 						adaptor.addChild(root_0, (CommonTree)adaptor.create(ANY, "ANY"));
 					}
@@ -2254,17 +2282,17 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 5 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:315:3: '(' peg_expr ')'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:317:3: '(' peg_expr ')'
 					{
-					char_literal43=(Token)match(input,55,FOLLOW_55_in_peg_factor929);  
+					char_literal43=(Token)match(input,55,FOLLOW_55_in_peg_factor930);  
 					stream_55.add(char_literal43);
 
-					pushFollow(FOLLOW_peg_expr_in_peg_factor931);
+					pushFollow(FOLLOW_peg_expr_in_peg_factor932);
 					peg_expr44=peg_expr();
 					state._fsp--;
 
 					stream_peg_expr.add(peg_expr44.getTree());
-					char_literal45=(Token)match(input,56,FOLLOW_56_in_peg_factor933);  
+					char_literal45=(Token)match(input,56,FOLLOW_56_in_peg_factor934);  
 					stream_56.add(char_literal45);
 
 					// AST REWRITE
@@ -2278,7 +2306,7 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 315:20: -> peg_expr
+					// 317:20: -> peg_expr
 					{
 						adaptor.addChild(root_0, stream_peg_expr.nextTree());
 					}
@@ -2317,7 +2345,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "ntcall"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:318:1: ntcall : ID ( '<' actPars '>' -> ^( NONTERM ID actPars ) | -> ^( NONTERM ID LIST ) ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:320:1: ntcall : ID ( '<' actPars '>' -> ^( NONTERM ID actPars ) | -> ^( NONTERM ID LIST ) ) ;
 	public final AdaptablePEGParser.ntcall_return ntcall() throws RecognitionException {
 		AdaptablePEGParser.ntcall_return retval = new AdaptablePEGParser.ntcall_return();
 		retval.start = input.LT(1);
@@ -2338,41 +2366,41 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_actPars=new RewriteRuleSubtreeStream(adaptor,"rule actPars");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:322:3: ( ID ( '<' actPars '>' -> ^( NONTERM ID actPars ) | -> ^( NONTERM ID LIST ) ) )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:323:3: ID ( '<' actPars '>' -> ^( NONTERM ID actPars ) | -> ^( NONTERM ID LIST ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:326:3: ( ID ( '<' actPars '>' -> ^( NONTERM ID actPars ) | -> ^( NONTERM ID LIST ) ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:327:3: ID ( '<' actPars '>' -> ^( NONTERM ID actPars ) | -> ^( NONTERM ID LIST ) )
 			{
-			ID46=(Token)match(input,ID,FOLLOW_ID_in_ntcall954);  
+			ID46=(Token)match(input,ID,FOLLOW_ID_in_ntcall955);  
 			stream_ID.add(ID46);
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:324:6: ( '<' actPars '>' -> ^( NONTERM ID actPars ) | -> ^( NONTERM ID LIST ) )
-			int alt16=2;
-			int LA16_0 = input.LA(1);
-			if ( (LA16_0==OP_LT) ) {
-				alt16=1;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:328:6: ( '<' actPars '>' -> ^( NONTERM ID actPars ) | -> ^( NONTERM ID LIST ) )
+			int alt17=2;
+			int LA17_0 = input.LA(1);
+			if ( (LA17_0==OP_LT) ) {
+				alt17=1;
 			}
-			else if ( (LA16_0==ID||LA16_0==OP_ADD||LA16_0==OP_DIV||LA16_0==OP_MUL||LA16_0==OP_NOT||LA16_0==STRING_LITERAL||(LA16_0 >= 54 && LA16_0 <= 56)||LA16_0==58||LA16_0==60||(LA16_0 >= 62 && LA16_0 <= 63)||(LA16_0 >= 69 && LA16_0 <= 70)) ) {
-				alt16=2;
+			else if ( (LA17_0==ID||LA17_0==OP_ADD||LA17_0==OP_DIV||LA17_0==OP_MUL||LA17_0==OP_NOT||LA17_0==STRING_LITERAL||(LA17_0 >= 54 && LA17_0 <= 56)||LA17_0==58||LA17_0==60||(LA17_0 >= 62 && LA17_0 <= 63)||(LA17_0 >= 69 && LA17_0 <= 70)) ) {
+				alt17=2;
 			}
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 16, 0, input);
+					new NoViableAltException("", 17, 0, input);
 				throw nvae;
 			}
 
-			switch (alt16) {
+			switch (alt17) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:325:7: '<' actPars '>'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:329:7: '<' actPars '>'
 					{
-					char_literal47=(Token)match(input,OP_LT,FOLLOW_OP_LT_in_ntcall969);  
+					char_literal47=(Token)match(input,OP_LT,FOLLOW_OP_LT_in_ntcall970);  
 					stream_OP_LT.add(char_literal47);
 
-					pushFollow(FOLLOW_actPars_in_ntcall971);
+					pushFollow(FOLLOW_actPars_in_ntcall972);
 					actPars48=actPars();
 					state._fsp--;
 
 					stream_actPars.add(actPars48.getTree());
-					char_literal49=(Token)match(input,OP_GT,FOLLOW_OP_GT_in_ntcall973);  
+					char_literal49=(Token)match(input,OP_GT,FOLLOW_OP_GT_in_ntcall974);  
 					stream_OP_GT.add(char_literal49);
 
 					// AST REWRITE
@@ -2386,9 +2414,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 325:23: -> ^( NONTERM ID actPars )
+					// 329:23: -> ^( NONTERM ID actPars )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:325:26: ^( NONTERM ID actPars )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:329:26: ^( NONTERM ID actPars )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(NONTERM, "NONTERM"), root_1);
@@ -2405,7 +2433,7 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:327:9: 
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:331:9: 
 					{
 					// AST REWRITE
 					// elements: ID
@@ -2418,9 +2446,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 327:9: -> ^( NONTERM ID LIST )
+					// 331:9: -> ^( NONTERM ID LIST )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:327:12: ^( NONTERM ID LIST )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:331:12: ^( NONTERM ID LIST )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(NONTERM, "NONTERM"), root_1);
@@ -2447,7 +2475,9 @@ public class AdaptablePEGParser extends Parser {
 			adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
 
 
-				ntcalls.add(retval.tree);
+				if (!isAddingRules) {
+					ntcalls.add(retval.tree);
+				}
 
 		}
 		catch (RecognitionException re) {
@@ -2471,7 +2501,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "assign"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:331:1: assign : idAssign t= '=' expr ';' -> ^( ASSIGN[$t,\"ASSIGN\"] idAssign expr ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:335:1: assign : idAssign t= '=' expr ';' -> ^( ASSIGN[$t,\"ASSIGN\"] idAssign expr ) ;
 	public final AdaptablePEGParser.assign_return assign() throws RecognitionException {
 		AdaptablePEGParser.assign_return retval = new AdaptablePEGParser.assign_return();
 		retval.start = input.LT(1);
@@ -2491,23 +2521,23 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_expr=new RewriteRuleSubtreeStream(adaptor,"rule expr");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:331:8: ( idAssign t= '=' expr ';' -> ^( ASSIGN[$t,\"ASSIGN\"] idAssign expr ) )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:332:3: idAssign t= '=' expr ';'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:335:8: ( idAssign t= '=' expr ';' -> ^( ASSIGN[$t,\"ASSIGN\"] idAssign expr ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:336:3: idAssign t= '=' expr ';'
 			{
-			pushFollow(FOLLOW_idAssign_in_assign1029);
+			pushFollow(FOLLOW_idAssign_in_assign1030);
 			idAssign50=idAssign();
 			state._fsp--;
 
 			stream_idAssign.add(idAssign50.getTree());
-			t=(Token)match(input,61,FOLLOW_61_in_assign1033);  
+			t=(Token)match(input,61,FOLLOW_61_in_assign1034);  
 			stream_61.add(t);
 
-			pushFollow(FOLLOW_expr_in_assign1035);
+			pushFollow(FOLLOW_expr_in_assign1036);
 			expr51=expr();
 			state._fsp--;
 
 			stream_expr.add(expr51.getTree());
-			char_literal52=(Token)match(input,60,FOLLOW_60_in_assign1037);  
+			char_literal52=(Token)match(input,60,FOLLOW_60_in_assign1038);  
 			stream_60.add(char_literal52);
 
 			// AST REWRITE
@@ -2521,9 +2551,9 @@ public class AdaptablePEGParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (CommonTree)adaptor.nil();
-			// 332:27: -> ^( ASSIGN[$t,\"ASSIGN\"] idAssign expr )
+			// 336:27: -> ^( ASSIGN[$t,\"ASSIGN\"] idAssign expr )
 			{
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:332:30: ^( ASSIGN[$t,\"ASSIGN\"] idAssign expr )
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:336:30: ^( ASSIGN[$t,\"ASSIGN\"] idAssign expr )
 				{
 				CommonTree root_1 = (CommonTree)adaptor.nil();
 				root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(ASSIGN, t, "ASSIGN"), root_1);
@@ -2566,7 +2596,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "idAssign"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:335:1: idAssign : t= ID ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:339:1: idAssign : t= ID ;
 	public final AdaptablePEGParser.idAssign_return idAssign() throws RecognitionException {
 		AdaptablePEGParser.idAssign_return retval = new AdaptablePEGParser.idAssign_return();
 		retval.start = input.LT(1);
@@ -2578,13 +2608,13 @@ public class AdaptablePEGParser extends Parser {
 		CommonTree t_tree=null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:345:3: (t= ID )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:346:3: t= ID
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:349:3: (t= ID )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:350:3: t= ID
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			t=(Token)match(input,ID,FOLLOW_ID_in_idAssign1071); 
+			t=(Token)match(input,ID,FOLLOW_ID_in_idAssign1072); 
 			t_tree = (CommonTree)adaptor.create(t);
 			adaptor.addChild(root_0, t_tree);
 
@@ -2626,7 +2656,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "cond"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:349:1: cond : cond2 ( OP_OR ^ cond2 )* ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:353:1: cond : cond2 ( OP_OR ^ cond2 )* ;
 	public final AdaptablePEGParser.cond_return cond() throws RecognitionException {
 		AdaptablePEGParser.cond_return retval = new AdaptablePEGParser.cond_return();
 		retval.start = input.LT(1);
@@ -2640,36 +2670,36 @@ public class AdaptablePEGParser extends Parser {
 		CommonTree OP_OR54_tree=null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:349:6: ( cond2 ( OP_OR ^ cond2 )* )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:349:8: cond2 ( OP_OR ^ cond2 )*
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:353:6: ( cond2 ( OP_OR ^ cond2 )* )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:353:8: cond2 ( OP_OR ^ cond2 )*
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_cond2_in_cond1083);
+			pushFollow(FOLLOW_cond2_in_cond1084);
 			cond253=cond2();
 			state._fsp--;
 
 			adaptor.addChild(root_0, cond253.getTree());
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:349:14: ( OP_OR ^ cond2 )*
-			loop17:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:353:14: ( OP_OR ^ cond2 )*
+			loop18:
 			while (true) {
-				int alt17=2;
-				int LA17_0 = input.LA(1);
-				if ( (LA17_0==OP_OR) ) {
-					alt17=1;
+				int alt18=2;
+				int LA18_0 = input.LA(1);
+				if ( (LA18_0==OP_OR) ) {
+					alt18=1;
 				}
 
-				switch (alt17) {
+				switch (alt18) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:349:15: OP_OR ^ cond2
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:353:15: OP_OR ^ cond2
 					{
-					OP_OR54=(Token)match(input,OP_OR,FOLLOW_OP_OR_in_cond1086); 
+					OP_OR54=(Token)match(input,OP_OR,FOLLOW_OP_OR_in_cond1087); 
 					OP_OR54_tree = (CommonTree)adaptor.create(OP_OR54);
 					root_0 = (CommonTree)adaptor.becomeRoot(OP_OR54_tree, root_0);
 
-					pushFollow(FOLLOW_cond2_in_cond1089);
+					pushFollow(FOLLOW_cond2_in_cond1090);
 					cond255=cond2();
 					state._fsp--;
 
@@ -2679,7 +2709,7 @@ public class AdaptablePEGParser extends Parser {
 					break;
 
 				default :
-					break loop17;
+					break loop18;
 				}
 			}
 
@@ -2712,7 +2742,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "cond2"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:351:1: cond2 : cond3 ( OP_AND ^ cond3 )* ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:355:1: cond2 : cond3 ( OP_AND ^ cond3 )* ;
 	public final AdaptablePEGParser.cond2_return cond2() throws RecognitionException {
 		AdaptablePEGParser.cond2_return retval = new AdaptablePEGParser.cond2_return();
 		retval.start = input.LT(1);
@@ -2726,36 +2756,36 @@ public class AdaptablePEGParser extends Parser {
 		CommonTree OP_AND57_tree=null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:351:7: ( cond3 ( OP_AND ^ cond3 )* )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:351:9: cond3 ( OP_AND ^ cond3 )*
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:355:7: ( cond3 ( OP_AND ^ cond3 )* )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:355:9: cond3 ( OP_AND ^ cond3 )*
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_cond3_in_cond21100);
+			pushFollow(FOLLOW_cond3_in_cond21101);
 			cond356=cond3();
 			state._fsp--;
 
 			adaptor.addChild(root_0, cond356.getTree());
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:351:15: ( OP_AND ^ cond3 )*
-			loop18:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:355:15: ( OP_AND ^ cond3 )*
+			loop19:
 			while (true) {
-				int alt18=2;
-				int LA18_0 = input.LA(1);
-				if ( (LA18_0==OP_AND) ) {
-					alt18=1;
+				int alt19=2;
+				int LA19_0 = input.LA(1);
+				if ( (LA19_0==OP_AND) ) {
+					alt19=1;
 				}
 
-				switch (alt18) {
+				switch (alt19) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:351:16: OP_AND ^ cond3
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:355:16: OP_AND ^ cond3
 					{
-					OP_AND57=(Token)match(input,OP_AND,FOLLOW_OP_AND_in_cond21103); 
+					OP_AND57=(Token)match(input,OP_AND,FOLLOW_OP_AND_in_cond21104); 
 					OP_AND57_tree = (CommonTree)adaptor.create(OP_AND57);
 					root_0 = (CommonTree)adaptor.becomeRoot(OP_AND57_tree, root_0);
 
-					pushFollow(FOLLOW_cond3_in_cond21106);
+					pushFollow(FOLLOW_cond3_in_cond21107);
 					cond358=cond3();
 					state._fsp--;
 
@@ -2765,7 +2795,7 @@ public class AdaptablePEGParser extends Parser {
 					break;
 
 				default :
-					break loop18;
+					break loop19;
 				}
 			}
 
@@ -2798,7 +2828,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "cond3"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:353:1: cond3 : expr relOp ^ expr ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:357:1: cond3 : expr relOp ^ expr ;
 	public final AdaptablePEGParser.cond3_return cond3() throws RecognitionException {
 		AdaptablePEGParser.cond3_return retval = new AdaptablePEGParser.cond3_return();
 		retval.start = input.LT(1);
@@ -2811,24 +2841,24 @@ public class AdaptablePEGParser extends Parser {
 
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:353:7: ( expr relOp ^ expr )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:353:9: expr relOp ^ expr
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:357:7: ( expr relOp ^ expr )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:357:9: expr relOp ^ expr
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_expr_in_cond31117);
+			pushFollow(FOLLOW_expr_in_cond31118);
 			expr59=expr();
 			state._fsp--;
 
 			adaptor.addChild(root_0, expr59.getTree());
 
-			pushFollow(FOLLOW_relOp_in_cond31119);
+			pushFollow(FOLLOW_relOp_in_cond31120);
 			relOp60=relOp();
 			state._fsp--;
 
 			root_0 = (CommonTree)adaptor.becomeRoot(relOp60.getTree(), root_0);
-			pushFollow(FOLLOW_expr_in_cond31122);
+			pushFollow(FOLLOW_expr_in_cond31123);
 			expr61=expr();
 			state._fsp--;
 
@@ -2863,7 +2893,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "termOptUnary"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:355:1: termOptUnary : ( OP_SUB term -> ^( UNARY_SUB[$OP_SUB] term ) |t1= OP_NOT term -> ^( $t1 term ) | term -> term );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:359:1: termOptUnary : ( OP_SUB term -> ^( UNARY_SUB[$OP_SUB] term ) |t1= OP_NOT term -> ^( $t1 term ) | term -> term );
 	public final AdaptablePEGParser.termOptUnary_return termOptUnary() throws RecognitionException {
 		AdaptablePEGParser.termOptUnary_return retval = new AdaptablePEGParser.termOptUnary_return();
 		retval.start = input.LT(1);
@@ -2883,17 +2913,17 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_term=new RewriteRuleSubtreeStream(adaptor,"rule term");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:355:14: ( OP_SUB term -> ^( UNARY_SUB[$OP_SUB] term ) |t1= OP_NOT term -> ^( $t1 term ) | term -> term )
-			int alt19=3;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:359:14: ( OP_SUB term -> ^( UNARY_SUB[$OP_SUB] term ) |t1= OP_NOT term -> ^( $t1 term ) | term -> term )
+			int alt20=3;
 			switch ( input.LA(1) ) {
 			case OP_SUB:
 				{
-				alt19=1;
+				alt20=1;
 				}
 				break;
 			case OP_NOT:
 				{
-				alt19=2;
+				alt20=2;
 				}
 				break;
 			case ID:
@@ -2902,22 +2932,22 @@ public class AdaptablePEGParser extends Parser {
 			case STRING_LITERAL:
 			case 55:
 				{
-				alt19=3;
+				alt20=3;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 19, 0, input);
+					new NoViableAltException("", 20, 0, input);
 				throw nvae;
 			}
-			switch (alt19) {
+			switch (alt20) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:356:3: OP_SUB term
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:360:3: OP_SUB term
 					{
-					OP_SUB62=(Token)match(input,OP_SUB,FOLLOW_OP_SUB_in_termOptUnary1133);  
+					OP_SUB62=(Token)match(input,OP_SUB,FOLLOW_OP_SUB_in_termOptUnary1134);  
 					stream_OP_SUB.add(OP_SUB62);
 
-					pushFollow(FOLLOW_term_in_termOptUnary1135);
+					pushFollow(FOLLOW_term_in_termOptUnary1136);
 					term63=term();
 					state._fsp--;
 
@@ -2933,9 +2963,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 356:15: -> ^( UNARY_SUB[$OP_SUB] term )
+					// 360:15: -> ^( UNARY_SUB[$OP_SUB] term )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:356:18: ^( UNARY_SUB[$OP_SUB] term )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:360:18: ^( UNARY_SUB[$OP_SUB] term )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(UNARY_SUB, OP_SUB62), root_1);
@@ -2951,12 +2981,12 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:358:3: t1= OP_NOT term
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:362:3: t1= OP_NOT term
 					{
-					t1=(Token)match(input,OP_NOT,FOLLOW_OP_NOT_in_termOptUnary1154);  
+					t1=(Token)match(input,OP_NOT,FOLLOW_OP_NOT_in_termOptUnary1155);  
 					stream_OP_NOT.add(t1);
 
-					pushFollow(FOLLOW_term_in_termOptUnary1156);
+					pushFollow(FOLLOW_term_in_termOptUnary1157);
 					term64=term();
 					state._fsp--;
 
@@ -2973,9 +3003,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 358:18: -> ^( $t1 term )
+					// 362:18: -> ^( $t1 term )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:358:21: ^( $t1 term )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:362:21: ^( $t1 term )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot(stream_t1.nextNode(), root_1);
@@ -2991,9 +3021,9 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 3 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:360:3: term
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:364:3: term
 					{
-					pushFollow(FOLLOW_term_in_termOptUnary1173);
+					pushFollow(FOLLOW_term_in_termOptUnary1174);
 					term65=term();
 					state._fsp--;
 
@@ -3009,7 +3039,7 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 360:8: -> term
+					// 364:8: -> term
 					{
 						adaptor.addChild(root_0, stream_term.nextTree());
 					}
@@ -3048,7 +3078,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "expr"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:363:1: expr : termOptUnary ( addOp ^ term )* ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:367:1: expr : termOptUnary ( addOp ^ term )* ;
 	public final AdaptablePEGParser.expr_return expr() throws RecognitionException {
 		AdaptablePEGParser.expr_return retval = new AdaptablePEGParser.expr_return();
 		retval.start = input.LT(1);
@@ -3061,37 +3091,37 @@ public class AdaptablePEGParser extends Parser {
 
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:363:6: ( termOptUnary ( addOp ^ term )* )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:363:8: termOptUnary ( addOp ^ term )*
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:367:6: ( termOptUnary ( addOp ^ term )* )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:367:8: termOptUnary ( addOp ^ term )*
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_termOptUnary_in_expr1188);
+			pushFollow(FOLLOW_termOptUnary_in_expr1189);
 			termOptUnary66=termOptUnary();
 			state._fsp--;
 
 			adaptor.addChild(root_0, termOptUnary66.getTree());
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:363:21: ( addOp ^ term )*
-			loop20:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:367:21: ( addOp ^ term )*
+			loop21:
 			while (true) {
-				int alt20=2;
-				int LA20_0 = input.LA(1);
-				if ( (LA20_0==OP_ADD||LA20_0==OP_SUB) ) {
-					alt20=1;
+				int alt21=2;
+				int LA21_0 = input.LA(1);
+				if ( (LA21_0==OP_ADD||LA21_0==OP_SUB) ) {
+					alt21=1;
 				}
 
-				switch (alt20) {
+				switch (alt21) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:363:22: addOp ^ term
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:367:22: addOp ^ term
 					{
-					pushFollow(FOLLOW_addOp_in_expr1191);
+					pushFollow(FOLLOW_addOp_in_expr1192);
 					addOp67=addOp();
 					state._fsp--;
 
 					root_0 = (CommonTree)adaptor.becomeRoot(addOp67.getTree(), root_0);
-					pushFollow(FOLLOW_term_in_expr1194);
+					pushFollow(FOLLOW_term_in_expr1195);
 					term68=term();
 					state._fsp--;
 
@@ -3101,7 +3131,7 @@ public class AdaptablePEGParser extends Parser {
 					break;
 
 				default :
-					break loop20;
+					break loop21;
 				}
 			}
 
@@ -3134,7 +3164,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "term"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:365:1: term : factor ( mulOp ^ factor )* ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:369:1: term : factor ( mulOp ^ factor )* ;
 	public final AdaptablePEGParser.term_return term() throws RecognitionException {
 		AdaptablePEGParser.term_return retval = new AdaptablePEGParser.term_return();
 		retval.start = input.LT(1);
@@ -3147,37 +3177,37 @@ public class AdaptablePEGParser extends Parser {
 
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:365:6: ( factor ( mulOp ^ factor )* )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:365:8: factor ( mulOp ^ factor )*
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:369:6: ( factor ( mulOp ^ factor )* )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:369:8: factor ( mulOp ^ factor )*
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_factor_in_term1205);
+			pushFollow(FOLLOW_factor_in_term1206);
 			factor69=factor();
 			state._fsp--;
 
 			adaptor.addChild(root_0, factor69.getTree());
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:365:15: ( mulOp ^ factor )*
-			loop21:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:369:15: ( mulOp ^ factor )*
+			loop22:
 			while (true) {
-				int alt21=2;
-				int LA21_0 = input.LA(1);
-				if ( (LA21_0==OP_DIV||(LA21_0 >= OP_MOD && LA21_0 <= OP_MUL)) ) {
-					alt21=1;
+				int alt22=2;
+				int LA22_0 = input.LA(1);
+				if ( (LA22_0==OP_DIV||(LA22_0 >= OP_MOD && LA22_0 <= OP_MUL)) ) {
+					alt22=1;
 				}
 
-				switch (alt21) {
+				switch (alt22) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:365:16: mulOp ^ factor
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:369:16: mulOp ^ factor
 					{
-					pushFollow(FOLLOW_mulOp_in_term1208);
+					pushFollow(FOLLOW_mulOp_in_term1209);
 					mulOp70=mulOp();
 					state._fsp--;
 
 					root_0 = (CommonTree)adaptor.becomeRoot(mulOp70.getTree(), root_0);
-					pushFollow(FOLLOW_factor_in_term1211);
+					pushFollow(FOLLOW_factor_in_term1212);
 					factor71=factor();
 					state._fsp--;
 
@@ -3187,7 +3217,7 @@ public class AdaptablePEGParser extends Parser {
 					break;
 
 				default :
-					break loop21;
+					break loop22;
 				}
 			}
 
@@ -3220,7 +3250,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "factor"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:367:1: factor : ( attrORfunctioncall | number | STRING_LITERAL | '(' ! expr ')' !);
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:371:1: factor : ( attrORfunctioncall | number | STRING_LITERAL | '(' ! expr ')' !);
 	public final AdaptablePEGParser.factor_return factor() throws RecognitionException {
 		AdaptablePEGParser.factor_return retval = new AdaptablePEGParser.factor_return();
 		retval.start = input.LT(1);
@@ -3239,43 +3269,43 @@ public class AdaptablePEGParser extends Parser {
 		CommonTree char_literal77_tree=null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:367:8: ( attrORfunctioncall | number | STRING_LITERAL | '(' ! expr ')' !)
-			int alt22=4;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:371:8: ( attrORfunctioncall | number | STRING_LITERAL | '(' ! expr ')' !)
+			int alt23=4;
 			switch ( input.LA(1) ) {
 			case ID:
 				{
-				alt22=1;
+				alt23=1;
 				}
 				break;
 			case INT_NUMBER:
 			case REAL_NUMBER:
 				{
-				alt22=2;
+				alt23=2;
 				}
 				break;
 			case STRING_LITERAL:
 				{
-				alt22=3;
+				alt23=3;
 				}
 				break;
 			case 55:
 				{
-				alt22=4;
+				alt23=4;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 22, 0, input);
+					new NoViableAltException("", 23, 0, input);
 				throw nvae;
 			}
-			switch (alt22) {
+			switch (alt23) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:368:3: attrORfunctioncall
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:372:3: attrORfunctioncall
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					pushFollow(FOLLOW_attrORfunctioncall_in_factor1224);
+					pushFollow(FOLLOW_attrORfunctioncall_in_factor1225);
 					attrORfunctioncall72=attrORfunctioncall();
 					state._fsp--;
 
@@ -3284,12 +3314,12 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:370:3: number
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:374:3: number
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					pushFollow(FOLLOW_number_in_factor1232);
+					pushFollow(FOLLOW_number_in_factor1233);
 					number73=number();
 					state._fsp--;
 
@@ -3298,31 +3328,31 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 3 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:372:3: STRING_LITERAL
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:376:3: STRING_LITERAL
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					STRING_LITERAL74=(Token)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_factor1240); 
+					STRING_LITERAL74=(Token)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_factor1241); 
 					STRING_LITERAL74_tree = (CommonTree)adaptor.create(STRING_LITERAL74);
 					adaptor.addChild(root_0, STRING_LITERAL74_tree);
 
 					}
 					break;
 				case 4 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:374:3: '(' ! expr ')' !
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:378:3: '(' ! expr ')' !
 					{
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					char_literal75=(Token)match(input,55,FOLLOW_55_in_factor1248); 
-					pushFollow(FOLLOW_expr_in_factor1251);
+					char_literal75=(Token)match(input,55,FOLLOW_55_in_factor1249); 
+					pushFollow(FOLLOW_expr_in_factor1252);
 					expr76=expr();
 					state._fsp--;
 
 					adaptor.addChild(root_0, expr76.getTree());
 
-					char_literal77=(Token)match(input,56,FOLLOW_56_in_factor1253); 
+					char_literal77=(Token)match(input,56,FOLLOW_56_in_factor1254); 
 					}
 					break;
 
@@ -3354,7 +3384,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "attrORfunctioncall"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:377:1: attrORfunctioncall : ID ( '(' actPars ')' -> ^( CALL[$ID,\"CALL\"] ID actPars ) | -> ID ) ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:381:1: attrORfunctioncall : ID ( '(' actPars ')' -> ^( CALL[$ID,\"CALL\"] ID actPars ) | -> ID ) ;
 	public final AdaptablePEGParser.attrORfunctioncall_return attrORfunctioncall() throws RecognitionException {
 		AdaptablePEGParser.attrORfunctioncall_return retval = new AdaptablePEGParser.attrORfunctioncall_return();
 		retval.start = input.LT(1);
@@ -3378,31 +3408,31 @@ public class AdaptablePEGParser extends Parser {
 			Symbol symbol = null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:396:3: ( ID ( '(' actPars ')' -> ^( CALL[$ID,\"CALL\"] ID actPars ) | -> ID ) )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:397:3: ID ( '(' actPars ')' -> ^( CALL[$ID,\"CALL\"] ID actPars ) | -> ID )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:400:3: ( ID ( '(' actPars ')' -> ^( CALL[$ID,\"CALL\"] ID actPars ) | -> ID ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:401:3: ID ( '(' actPars ')' -> ^( CALL[$ID,\"CALL\"] ID actPars ) | -> ID )
 			{
-			ID78=(Token)match(input,ID,FOLLOW_ID_in_attrORfunctioncall1277);  
+			ID78=(Token)match(input,ID,FOLLOW_ID_in_attrORfunctioncall1278);  
 			stream_ID.add(ID78);
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:397:6: ( '(' actPars ')' -> ^( CALL[$ID,\"CALL\"] ID actPars ) | -> ID )
-			int alt23=2;
-			int LA23_0 = input.LA(1);
-			if ( (LA23_0==55) ) {
-				alt23=1;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:401:6: ( '(' actPars ')' -> ^( CALL[$ID,\"CALL\"] ID actPars ) | -> ID )
+			int alt24=2;
+			int LA24_0 = input.LA(1);
+			if ( (LA24_0==55) ) {
+				alt24=1;
 			}
-			else if ( ((LA23_0 >= OP_ADD && LA23_0 <= OP_NE)||(LA23_0 >= OP_OR && LA23_0 <= OP_SUB)||(LA23_0 >= 56 && LA23_0 <= 57)||LA23_0==60||LA23_0==64||LA23_0==71) ) {
-				alt23=2;
+			else if ( ((LA24_0 >= OP_ADD && LA24_0 <= OP_NE)||(LA24_0 >= OP_OR && LA24_0 <= OP_SUB)||(LA24_0 >= 56 && LA24_0 <= 57)||LA24_0==60||LA24_0==64||LA24_0==71) ) {
+				alt24=2;
 			}
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 23, 0, input);
+					new NoViableAltException("", 24, 0, input);
 				throw nvae;
 			}
 
-			switch (alt23) {
+			switch (alt24) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:398:4: '(' actPars ')'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:402:4: '(' actPars ')'
 					{
 
 					  		symbol = grammar.getFunction((ID78!=null?ID78.getText():null));
@@ -3410,15 +3440,15 @@ public class AdaptablePEGParser extends Parser {
 					          emitErrorMessage(ID78, "Function not found: " + (ID78!=null?ID78.getText():null));
 					        }
 					    
-					char_literal79=(Token)match(input,55,FOLLOW_55_in_attrORfunctioncall1292);  
+					char_literal79=(Token)match(input,55,FOLLOW_55_in_attrORfunctioncall1293);  
 					stream_55.add(char_literal79);
 
-					pushFollow(FOLLOW_actPars_in_attrORfunctioncall1294);
+					pushFollow(FOLLOW_actPars_in_attrORfunctioncall1295);
 					actPars80=actPars();
 					state._fsp--;
 
 					stream_actPars.add(actPars80.getTree());
-					char_literal81=(Token)match(input,56,FOLLOW_56_in_attrORfunctioncall1296);  
+					char_literal81=(Token)match(input,56,FOLLOW_56_in_attrORfunctioncall1297);  
 					stream_56.add(char_literal81);
 
 
@@ -3440,9 +3470,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 413:5: -> ^( CALL[$ID,\"CALL\"] ID actPars )
+					// 417:5: -> ^( CALL[$ID,\"CALL\"] ID actPars )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:413:8: ^( CALL[$ID,\"CALL\"] ID actPars )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:417:8: ^( CALL[$ID,\"CALL\"] ID actPars )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(CALL, ID78, "CALL"), root_1);
@@ -3459,7 +3489,7 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:416:5: 
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:420:5: 
 					{
 
 					    	symbol = currNT.getAttribute((ID78!=null?ID78.getText():null));
@@ -3478,7 +3508,7 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 422:5: -> ID
+					// 426:5: -> ID
 					{
 						adaptor.addChild(root_0, stream_ID.nextNode());
 					}
@@ -3535,7 +3565,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "number"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:426:1: number : ( INT_NUMBER | REAL_NUMBER );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:430:1: number : ( INT_NUMBER | REAL_NUMBER );
 	public final AdaptablePEGParser.number_return number() throws RecognitionException {
 		AdaptablePEGParser.number_return retval = new AdaptablePEGParser.number_return();
 		retval.start = input.LT(1);
@@ -3547,7 +3577,7 @@ public class AdaptablePEGParser extends Parser {
 		CommonTree set82_tree=null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:426:8: ( INT_NUMBER | REAL_NUMBER )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:430:8: ( INT_NUMBER | REAL_NUMBER )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:
 			{
 			root_0 = (CommonTree)adaptor.nil();
@@ -3592,7 +3622,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "designator"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:428:1: designator : ( ID -> ID ) (t1= '.' ID -> ^( DOT[$t1,\"DOT\"] $designator ID ) |t2= '[' expr ']' -> ^( ARRAY_REF[$t2,\"ARRAY_REF\"] $designator expr ) )* ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:432:1: designator : ( ID -> ID ) (t1= '.' ID -> ^( DOT[$t1,\"DOT\"] $designator ID ) |t2= '[' expr ']' -> ^( ARRAY_REF[$t2,\"ARRAY_REF\"] $designator expr ) )* ;
 	public final AdaptablePEGParser.designator_return designator() throws RecognitionException {
 		AdaptablePEGParser.designator_return retval = new AdaptablePEGParser.designator_return();
 		retval.start = input.LT(1);
@@ -3618,13 +3648,13 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_expr=new RewriteRuleSubtreeStream(adaptor,"rule expr");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:428:12: ( ( ID -> ID ) (t1= '.' ID -> ^( DOT[$t1,\"DOT\"] $designator ID ) |t2= '[' expr ']' -> ^( ARRAY_REF[$t2,\"ARRAY_REF\"] $designator expr ) )* )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:429:3: ( ID -> ID ) (t1= '.' ID -> ^( DOT[$t1,\"DOT\"] $designator ID ) |t2= '[' expr ']' -> ^( ARRAY_REF[$t2,\"ARRAY_REF\"] $designator expr ) )*
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:432:12: ( ( ID -> ID ) (t1= '.' ID -> ^( DOT[$t1,\"DOT\"] $designator ID ) |t2= '[' expr ']' -> ^( ARRAY_REF[$t2,\"ARRAY_REF\"] $designator expr ) )* )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:433:3: ( ID -> ID ) (t1= '.' ID -> ^( DOT[$t1,\"DOT\"] $designator ID ) |t2= '[' expr ']' -> ^( ARRAY_REF[$t2,\"ARRAY_REF\"] $designator expr ) )*
 			{
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:429:3: ( ID -> ID )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:429:4: ID
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:433:3: ( ID -> ID )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:433:4: ID
 			{
-			ID83=(Token)match(input,ID,FOLLOW_ID_in_designator1381);  
+			ID83=(Token)match(input,ID,FOLLOW_ID_in_designator1382);  
 			stream_ID.add(ID83);
 
 			// AST REWRITE
@@ -3638,7 +3668,7 @@ public class AdaptablePEGParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (CommonTree)adaptor.nil();
-			// 429:7: -> ID
+			// 433:7: -> ID
 			{
 				adaptor.addChild(root_0, stream_ID.nextNode());
 			}
@@ -3648,26 +3678,26 @@ public class AdaptablePEGParser extends Parser {
 
 			}
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:430:5: (t1= '.' ID -> ^( DOT[$t1,\"DOT\"] $designator ID ) |t2= '[' expr ']' -> ^( ARRAY_REF[$t2,\"ARRAY_REF\"] $designator expr ) )*
-			loop24:
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:434:5: (t1= '.' ID -> ^( DOT[$t1,\"DOT\"] $designator ID ) |t2= '[' expr ']' -> ^( ARRAY_REF[$t2,\"ARRAY_REF\"] $designator expr ) )*
+			loop25:
 			while (true) {
-				int alt24=3;
-				int LA24_0 = input.LA(1);
-				if ( (LA24_0==58) ) {
-					alt24=1;
+				int alt25=3;
+				int LA25_0 = input.LA(1);
+				if ( (LA25_0==58) ) {
+					alt25=1;
 				}
-				else if ( (LA24_0==63) ) {
-					alt24=2;
+				else if ( (LA25_0==63) ) {
+					alt25=2;
 				}
 
-				switch (alt24) {
+				switch (alt25) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:431:5: t1= '.' ID
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:435:5: t1= '.' ID
 					{
-					t1=(Token)match(input,58,FOLLOW_58_in_designator1400);  
+					t1=(Token)match(input,58,FOLLOW_58_in_designator1401);  
 					stream_58.add(t1);
 
-					ID84=(Token)match(input,ID,FOLLOW_ID_in_designator1402);  
+					ID84=(Token)match(input,ID,FOLLOW_ID_in_designator1403);  
 					stream_ID.add(ID84);
 
 					// AST REWRITE
@@ -3681,9 +3711,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 431:15: -> ^( DOT[$t1,\"DOT\"] $designator ID )
+					// 435:15: -> ^( DOT[$t1,\"DOT\"] $designator ID )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:431:18: ^( DOT[$t1,\"DOT\"] $designator ID )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:435:18: ^( DOT[$t1,\"DOT\"] $designator ID )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(DOT, t1, "DOT"), root_1);
@@ -3700,17 +3730,17 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:433:5: t2= '[' expr ']'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:437:5: t2= '[' expr ']'
 					{
-					t2=(Token)match(input,63,FOLLOW_63_in_designator1428);  
+					t2=(Token)match(input,63,FOLLOW_63_in_designator1429);  
 					stream_63.add(t2);
 
-					pushFollow(FOLLOW_expr_in_designator1430);
+					pushFollow(FOLLOW_expr_in_designator1431);
 					expr85=expr();
 					state._fsp--;
 
 					stream_expr.add(expr85.getTree());
-					char_literal86=(Token)match(input,64,FOLLOW_64_in_designator1432);  
+					char_literal86=(Token)match(input,64,FOLLOW_64_in_designator1433);  
 					stream_64.add(char_literal86);
 
 					// AST REWRITE
@@ -3724,9 +3754,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 433:21: -> ^( ARRAY_REF[$t2,\"ARRAY_REF\"] $designator expr )
+					// 437:21: -> ^( ARRAY_REF[$t2,\"ARRAY_REF\"] $designator expr )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:433:24: ^( ARRAY_REF[$t2,\"ARRAY_REF\"] $designator expr )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:437:24: ^( ARRAY_REF[$t2,\"ARRAY_REF\"] $designator expr )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(ARRAY_REF, t2, "ARRAY_REF"), root_1);
@@ -3744,7 +3774,7 @@ public class AdaptablePEGParser extends Parser {
 					break;
 
 				default :
-					break loop24;
+					break loop25;
 				}
 			}
 
@@ -3778,7 +3808,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "actPars"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:437:1: actPars returns [int length] : ( ( expr ( ',' expr )* ) -> ^( LIST ( expr )* ) | -> ^( LIST ) );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:441:1: actPars returns [int length] : ( ( expr ( ',' expr )* ) -> ^( LIST ( expr )* ) | -> ^( LIST ) );
 	public final AdaptablePEGParser.actPars_return actPars() throws RecognitionException {
 		AdaptablePEGParser.actPars_return retval = new AdaptablePEGParser.actPars_return();
 		retval.start = input.LT(1);
@@ -3794,52 +3824,52 @@ public class AdaptablePEGParser extends Parser {
 		RewriteRuleSubtreeStream stream_expr=new RewriteRuleSubtreeStream(adaptor,"rule expr");
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:437:28: ( ( expr ( ',' expr )* ) -> ^( LIST ( expr )* ) | -> ^( LIST ) )
-			int alt26=2;
-			int LA26_0 = input.LA(1);
-			if ( ((LA26_0 >= ID && LA26_0 <= INT_NUMBER)||LA26_0==OP_NOT||LA26_0==OP_SUB||LA26_0==REAL_NUMBER||LA26_0==STRING_LITERAL||LA26_0==55) ) {
-				alt26=1;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:441:28: ( ( expr ( ',' expr )* ) -> ^( LIST ( expr )* ) | -> ^( LIST ) )
+			int alt27=2;
+			int LA27_0 = input.LA(1);
+			if ( ((LA27_0 >= ID && LA27_0 <= INT_NUMBER)||LA27_0==OP_NOT||LA27_0==OP_SUB||LA27_0==REAL_NUMBER||LA27_0==STRING_LITERAL||LA27_0==55) ) {
+				alt27=1;
 			}
-			else if ( (LA26_0==OP_GT||LA26_0==56) ) {
-				alt26=2;
+			else if ( (LA27_0==OP_GT||LA27_0==56) ) {
+				alt27=2;
 			}
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 26, 0, input);
+					new NoViableAltException("", 27, 0, input);
 				throw nvae;
 			}
 
-			switch (alt26) {
+			switch (alt27) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:438:3: ( expr ( ',' expr )* )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:442:3: ( expr ( ',' expr )* )
 					{
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:438:3: ( expr ( ',' expr )* )
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:438:4: expr ( ',' expr )*
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:442:3: ( expr ( ',' expr )* )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:442:4: expr ( ',' expr )*
 					{
-					pushFollow(FOLLOW_expr_in_actPars1470);
+					pushFollow(FOLLOW_expr_in_actPars1471);
 					expr87=expr();
 					state._fsp--;
 
 					stream_expr.add(expr87.getTree());
 					 retval.length = 1; 
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:438:26: ( ',' expr )*
-					loop25:
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:442:26: ( ',' expr )*
+					loop26:
 					while (true) {
-						int alt25=2;
-						int LA25_0 = input.LA(1);
-						if ( (LA25_0==57) ) {
-							alt25=1;
+						int alt26=2;
+						int LA26_0 = input.LA(1);
+						if ( (LA26_0==57) ) {
+							alt26=1;
 						}
 
-						switch (alt25) {
+						switch (alt26) {
 						case 1 :
-							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:438:27: ',' expr
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:442:27: ',' expr
 							{
-							char_literal88=(Token)match(input,57,FOLLOW_57_in_actPars1475);  
+							char_literal88=(Token)match(input,57,FOLLOW_57_in_actPars1476);  
 							stream_57.add(char_literal88);
 
-							pushFollow(FOLLOW_expr_in_actPars1477);
+							pushFollow(FOLLOW_expr_in_actPars1478);
 							expr89=expr();
 							state._fsp--;
 
@@ -3849,7 +3879,7 @@ public class AdaptablePEGParser extends Parser {
 							break;
 
 						default :
-							break loop25;
+							break loop26;
 						}
 					}
 
@@ -3866,13 +3896,13 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 438:68: -> ^( LIST ( expr )* )
+					// 442:68: -> ^( LIST ( expr )* )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:438:71: ^( LIST ( expr )* )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:442:71: ^( LIST ( expr )* )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(LIST, "LIST"), root_1);
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:438:78: ( expr )*
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:442:78: ( expr )*
 						while ( stream_expr.hasNext() ) {
 							adaptor.addChild(root_1, stream_expr.nextTree());
 						}
@@ -3889,7 +3919,7 @@ public class AdaptablePEGParser extends Parser {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:440:3: 
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:444:3: 
 					{
 					 retval.length = 0; 
 					// AST REWRITE
@@ -3903,9 +3933,9 @@ public class AdaptablePEGParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (CommonTree)adaptor.nil();
-					// 440:21: -> ^( LIST )
+					// 444:21: -> ^( LIST )
 					{
-						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:440:24: ^( LIST )
+						// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:444:24: ^( LIST )
 						{
 						CommonTree root_1 = (CommonTree)adaptor.nil();
 						root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(LIST, "LIST"), root_1);
@@ -3948,7 +3978,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "relOp"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:442:1: relOp : ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:446:1: relOp : ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE );
 	public final AdaptablePEGParser.relOp_return relOp() throws RecognitionException {
 		AdaptablePEGParser.relOp_return retval = new AdaptablePEGParser.relOp_return();
 		retval.start = input.LT(1);
@@ -3960,7 +3990,7 @@ public class AdaptablePEGParser extends Parser {
 		CommonTree set90_tree=null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:442:7: ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:446:7: ( OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:
 			{
 			root_0 = (CommonTree)adaptor.nil();
@@ -4005,7 +4035,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "addOp"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:444:1: addOp : ( OP_ADD | OP_SUB );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:448:1: addOp : ( OP_ADD | OP_SUB );
 	public final AdaptablePEGParser.addOp_return addOp() throws RecognitionException {
 		AdaptablePEGParser.addOp_return retval = new AdaptablePEGParser.addOp_return();
 		retval.start = input.LT(1);
@@ -4017,7 +4047,7 @@ public class AdaptablePEGParser extends Parser {
 		CommonTree set91_tree=null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:444:7: ( OP_ADD | OP_SUB )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:448:7: ( OP_ADD | OP_SUB )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:
 			{
 			root_0 = (CommonTree)adaptor.nil();
@@ -4062,7 +4092,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "mulOp"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:446:1: mulOp : ( OP_MUL | OP_DIV | OP_MOD );
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:450:1: mulOp : ( OP_MUL | OP_DIV | OP_MOD );
 	public final AdaptablePEGParser.mulOp_return mulOp() throws RecognitionException {
 		AdaptablePEGParser.mulOp_return retval = new AdaptablePEGParser.mulOp_return();
 		retval.start = input.LT(1);
@@ -4074,7 +4104,7 @@ public class AdaptablePEGParser extends Parser {
 		CommonTree set92_tree=null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:446:7: ( OP_MUL | OP_DIV | OP_MOD )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:450:7: ( OP_MUL | OP_DIV | OP_MOD )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:
 			{
 			root_0 = (CommonTree)adaptor.nil();
@@ -4118,104 +4148,104 @@ public class AdaptablePEGParser extends Parser {
 	public static final BitSet FOLLOW_ID_in_grammarDef183 = new BitSet(new long[]{0x1000000000000000L});
 	public static final BitSet FOLLOW_60_in_grammarDef185 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000004L});
 	public static final BitSet FOLLOW_functions_in_grammarDef192 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_rules_in_grammarDef198 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_rule_in_rules217 = new BitSet(new long[]{0x0000000000040002L});
-	public static final BitSet FOLLOW_66_in_functions229 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_ID_in_functions238 = new BitSet(new long[]{0x1000000000040000L});
-	public static final BitSet FOLLOW_60_in_functions253 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_rule301 = new BitSet(new long[]{0x8800000000000000L,0x0000000000000018L});
-	public static final BitSet FOLLOW_optDecls_in_rule312 = new BitSet(new long[]{0x0800000000000000L,0x0000000000000018L});
-	public static final BitSet FOLLOW_optReturn_in_rule319 = new BitSet(new long[]{0x0800000000000000L,0x0000000000000008L});
-	public static final BitSet FOLLOW_optLocals_in_rule326 = new BitSet(new long[]{0x0800000000000000L});
-	public static final BitSet FOLLOW_59_in_rule331 = new BitSet(new long[]{0x84C2010080040000L,0x0000000000000060L});
-	public static final BitSet FOLLOW_peg_expr_in_rule335 = new BitSet(new long[]{0x1000000000000000L});
-	public static final BitSet FOLLOW_60_in_rule339 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_63_in_decls373 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_varDecl_in_decls375 = new BitSet(new long[]{0x0200000000000000L,0x0000000000000001L});
-	public static final BitSet FOLLOW_57_in_decls379 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_varDecl_in_decls381 = new BitSet(new long[]{0x0200000000000000L,0x0000000000000001L});
-	public static final BitSet FOLLOW_64_in_decls386 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_decls_in_optDecls410 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_68_in_optReturn442 = new BitSet(new long[]{0x8000000000000000L});
-	public static final BitSet FOLLOW_decls_in_optReturn444 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_67_in_optLocals475 = new BitSet(new long[]{0x8000000000000000L});
-	public static final BitSet FOLLOW_decls_in_optLocals478 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_type_in_varDecl505 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_ID_in_varDecl507 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_type539 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_peg_seq_in_peg_expr556 = new BitSet(new long[]{0x0000000080000002L});
-	public static final BitSet FOLLOW_OP_DIV_in_peg_expr562 = new BitSet(new long[]{0x84C2010080040000L,0x0000000000000060L});
-	public static final BitSet FOLLOW_peg_expr_in_peg_expr564 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_peg_unary_op_in_peg_seq606 = new BitSet(new long[]{0x84C2010000040002L,0x0000000000000060L});
-	public static final BitSet FOLLOW_peg_factor_in_peg_unary_op648 = new BitSet(new long[]{0x4000004020000002L});
-	public static final BitSet FOLLOW_62_in_peg_unary_op665 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_OP_MUL_in_peg_unary_op692 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_OP_ADD_in_peg_unary_op719 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_54_in_peg_unary_op771 = new BitSet(new long[]{0x8482000000040000L});
-	public static final BitSet FOLLOW_peg_factor_in_peg_unary_op773 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_OP_NOT_in_peg_unary_op794 = new BitSet(new long[]{0x8482000000040000L});
-	public static final BitSet FOLLOW_peg_factor_in_peg_unary_op796 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_70_in_peg_unary_op817 = new BitSet(new long[]{0x00822500000C0000L});
-	public static final BitSet FOLLOW_cond_in_peg_unary_op819 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-	public static final BitSet FOLLOW_71_in_peg_unary_op821 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_69_in_peg_unary_op842 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_assign_in_peg_unary_op844 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000080L});
-	public static final BitSet FOLLOW_71_in_peg_unary_op847 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_STRING_LITERAL_in_peg_factor879 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ntcall_in_peg_factor887 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_63_in_peg_factor895 = new BitSet(new long[]{0x0000100000000000L});
-	public static final BitSet FOLLOW_RANGE_PAIR_in_peg_factor897 = new BitSet(new long[]{0x0000100000000000L,0x0000000000000001L});
-	public static final BitSet FOLLOW_64_in_peg_factor900 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_58_in_peg_factor917 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_55_in_peg_factor929 = new BitSet(new long[]{0x84C2010080040000L,0x0000000000000060L});
-	public static final BitSet FOLLOW_peg_expr_in_peg_factor931 = new BitSet(new long[]{0x0100000000000000L});
-	public static final BitSet FOLLOW_56_in_peg_factor933 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_ntcall954 = new BitSet(new long[]{0x0000001000000002L});
-	public static final BitSet FOLLOW_OP_LT_in_ntcall969 = new BitSet(new long[]{0x00822504000C0000L});
-	public static final BitSet FOLLOW_actPars_in_ntcall971 = new BitSet(new long[]{0x0000000400000000L});
-	public static final BitSet FOLLOW_OP_GT_in_ntcall973 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_idAssign_in_assign1029 = new BitSet(new long[]{0x2000000000000000L});
-	public static final BitSet FOLLOW_61_in_assign1033 = new BitSet(new long[]{0x00822500000C0000L});
-	public static final BitSet FOLLOW_expr_in_assign1035 = new BitSet(new long[]{0x1000000000000000L});
-	public static final BitSet FOLLOW_60_in_assign1037 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_idAssign1071 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_cond2_in_cond1083 = new BitSet(new long[]{0x0000020000000002L});
-	public static final BitSet FOLLOW_OP_OR_in_cond1086 = new BitSet(new long[]{0x00822500000C0000L});
-	public static final BitSet FOLLOW_cond2_in_cond1089 = new BitSet(new long[]{0x0000020000000002L});
-	public static final BitSet FOLLOW_cond3_in_cond21100 = new BitSet(new long[]{0x0000000040000002L});
-	public static final BitSet FOLLOW_OP_AND_in_cond21103 = new BitSet(new long[]{0x00822500000C0000L});
-	public static final BitSet FOLLOW_cond3_in_cond21106 = new BitSet(new long[]{0x0000000040000002L});
-	public static final BitSet FOLLOW_expr_in_cond31117 = new BitSet(new long[]{0x0000009F00000000L});
-	public static final BitSet FOLLOW_relOp_in_cond31119 = new BitSet(new long[]{0x00822500000C0000L});
-	public static final BitSet FOLLOW_expr_in_cond31122 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_OP_SUB_in_termOptUnary1133 = new BitSet(new long[]{0x00822000000C0000L});
-	public static final BitSet FOLLOW_term_in_termOptUnary1135 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_OP_NOT_in_termOptUnary1154 = new BitSet(new long[]{0x00822000000C0000L});
-	public static final BitSet FOLLOW_term_in_termOptUnary1156 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_term_in_termOptUnary1173 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_termOptUnary_in_expr1188 = new BitSet(new long[]{0x0000040020000002L});
-	public static final BitSet FOLLOW_addOp_in_expr1191 = new BitSet(new long[]{0x00822000000C0000L});
-	public static final BitSet FOLLOW_term_in_expr1194 = new BitSet(new long[]{0x0000040020000002L});
-	public static final BitSet FOLLOW_factor_in_term1205 = new BitSet(new long[]{0x0000006080000002L});
-	public static final BitSet FOLLOW_mulOp_in_term1208 = new BitSet(new long[]{0x00822000000C0000L});
-	public static final BitSet FOLLOW_factor_in_term1211 = new BitSet(new long[]{0x0000006080000002L});
-	public static final BitSet FOLLOW_attrORfunctioncall_in_factor1224 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_number_in_factor1232 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_STRING_LITERAL_in_factor1240 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_55_in_factor1248 = new BitSet(new long[]{0x00822500000C0000L});
-	public static final BitSet FOLLOW_expr_in_factor1251 = new BitSet(new long[]{0x0100000000000000L});
-	public static final BitSet FOLLOW_56_in_factor1253 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_attrORfunctioncall1277 = new BitSet(new long[]{0x0080000000000002L});
-	public static final BitSet FOLLOW_55_in_attrORfunctioncall1292 = new BitSet(new long[]{0x01822500000C0000L});
-	public static final BitSet FOLLOW_actPars_in_attrORfunctioncall1294 = new BitSet(new long[]{0x0100000000000000L});
-	public static final BitSet FOLLOW_56_in_attrORfunctioncall1296 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_designator1381 = new BitSet(new long[]{0x8400000000000002L});
-	public static final BitSet FOLLOW_58_in_designator1400 = new BitSet(new long[]{0x0000000000040000L});
-	public static final BitSet FOLLOW_ID_in_designator1402 = new BitSet(new long[]{0x8400000000000002L});
-	public static final BitSet FOLLOW_63_in_designator1428 = new BitSet(new long[]{0x00822500000C0000L});
-	public static final BitSet FOLLOW_expr_in_designator1430 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000001L});
-	public static final BitSet FOLLOW_64_in_designator1432 = new BitSet(new long[]{0x8400000000000002L});
-	public static final BitSet FOLLOW_expr_in_actPars1470 = new BitSet(new long[]{0x0200000000000002L});
-	public static final BitSet FOLLOW_57_in_actPars1475 = new BitSet(new long[]{0x00822500000C0000L});
-	public static final BitSet FOLLOW_expr_in_actPars1477 = new BitSet(new long[]{0x0200000000000002L});
+	public static final BitSet FOLLOW_rule_in_grammarDef198 = new BitSet(new long[]{0x0000000000040002L});
+	public static final BitSet FOLLOW_66_in_functions220 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_ID_in_functions229 = new BitSet(new long[]{0x1000000000040000L});
+	public static final BitSet FOLLOW_60_in_functions244 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_rule_in_addrules285 = new BitSet(new long[]{0x0000000000040002L});
+	public static final BitSet FOLLOW_ID_in_rule304 = new BitSet(new long[]{0x8800000000000000L,0x0000000000000018L});
+	public static final BitSet FOLLOW_optDecls_in_rule313 = new BitSet(new long[]{0x0800000000000000L,0x0000000000000018L});
+	public static final BitSet FOLLOW_optReturn_in_rule320 = new BitSet(new long[]{0x0800000000000000L,0x0000000000000008L});
+	public static final BitSet FOLLOW_optLocals_in_rule327 = new BitSet(new long[]{0x0800000000000000L});
+	public static final BitSet FOLLOW_59_in_rule332 = new BitSet(new long[]{0x84C2010080040000L,0x0000000000000060L});
+	public static final BitSet FOLLOW_peg_expr_in_rule336 = new BitSet(new long[]{0x1000000000000000L});
+	public static final BitSet FOLLOW_60_in_rule340 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_63_in_decls374 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_varDecl_in_decls376 = new BitSet(new long[]{0x0200000000000000L,0x0000000000000001L});
+	public static final BitSet FOLLOW_57_in_decls380 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_varDecl_in_decls382 = new BitSet(new long[]{0x0200000000000000L,0x0000000000000001L});
+	public static final BitSet FOLLOW_64_in_decls387 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_decls_in_optDecls411 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_68_in_optReturn443 = new BitSet(new long[]{0x8000000000000000L});
+	public static final BitSet FOLLOW_decls_in_optReturn445 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_67_in_optLocals476 = new BitSet(new long[]{0x8000000000000000L});
+	public static final BitSet FOLLOW_decls_in_optLocals479 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_type_in_varDecl506 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_ID_in_varDecl508 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_type540 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_peg_seq_in_peg_expr557 = new BitSet(new long[]{0x0000000080000002L});
+	public static final BitSet FOLLOW_OP_DIV_in_peg_expr563 = new BitSet(new long[]{0x84C2010080040000L,0x0000000000000060L});
+	public static final BitSet FOLLOW_peg_expr_in_peg_expr565 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_peg_unary_op_in_peg_seq607 = new BitSet(new long[]{0x84C2010000040002L,0x0000000000000060L});
+	public static final BitSet FOLLOW_peg_factor_in_peg_unary_op649 = new BitSet(new long[]{0x4000004020000002L});
+	public static final BitSet FOLLOW_62_in_peg_unary_op666 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_OP_MUL_in_peg_unary_op693 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_OP_ADD_in_peg_unary_op720 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_54_in_peg_unary_op772 = new BitSet(new long[]{0x8482000000040000L});
+	public static final BitSet FOLLOW_peg_factor_in_peg_unary_op774 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_OP_NOT_in_peg_unary_op795 = new BitSet(new long[]{0x8482000000040000L});
+	public static final BitSet FOLLOW_peg_factor_in_peg_unary_op797 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_70_in_peg_unary_op818 = new BitSet(new long[]{0x00822500000C0000L});
+	public static final BitSet FOLLOW_cond_in_peg_unary_op820 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+	public static final BitSet FOLLOW_71_in_peg_unary_op822 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_69_in_peg_unary_op843 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_assign_in_peg_unary_op845 = new BitSet(new long[]{0x0000000000040000L,0x0000000000000080L});
+	public static final BitSet FOLLOW_71_in_peg_unary_op848 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_STRING_LITERAL_in_peg_factor880 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ntcall_in_peg_factor888 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_63_in_peg_factor896 = new BitSet(new long[]{0x0000100000000000L});
+	public static final BitSet FOLLOW_RANGE_PAIR_in_peg_factor898 = new BitSet(new long[]{0x0000100000000000L,0x0000000000000001L});
+	public static final BitSet FOLLOW_64_in_peg_factor901 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_58_in_peg_factor918 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_55_in_peg_factor930 = new BitSet(new long[]{0x84C2010080040000L,0x0000000000000060L});
+	public static final BitSet FOLLOW_peg_expr_in_peg_factor932 = new BitSet(new long[]{0x0100000000000000L});
+	public static final BitSet FOLLOW_56_in_peg_factor934 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_ntcall955 = new BitSet(new long[]{0x0000001000000002L});
+	public static final BitSet FOLLOW_OP_LT_in_ntcall970 = new BitSet(new long[]{0x00822504000C0000L});
+	public static final BitSet FOLLOW_actPars_in_ntcall972 = new BitSet(new long[]{0x0000000400000000L});
+	public static final BitSet FOLLOW_OP_GT_in_ntcall974 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_idAssign_in_assign1030 = new BitSet(new long[]{0x2000000000000000L});
+	public static final BitSet FOLLOW_61_in_assign1034 = new BitSet(new long[]{0x00822500000C0000L});
+	public static final BitSet FOLLOW_expr_in_assign1036 = new BitSet(new long[]{0x1000000000000000L});
+	public static final BitSet FOLLOW_60_in_assign1038 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_idAssign1072 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_cond2_in_cond1084 = new BitSet(new long[]{0x0000020000000002L});
+	public static final BitSet FOLLOW_OP_OR_in_cond1087 = new BitSet(new long[]{0x00822500000C0000L});
+	public static final BitSet FOLLOW_cond2_in_cond1090 = new BitSet(new long[]{0x0000020000000002L});
+	public static final BitSet FOLLOW_cond3_in_cond21101 = new BitSet(new long[]{0x0000000040000002L});
+	public static final BitSet FOLLOW_OP_AND_in_cond21104 = new BitSet(new long[]{0x00822500000C0000L});
+	public static final BitSet FOLLOW_cond3_in_cond21107 = new BitSet(new long[]{0x0000000040000002L});
+	public static final BitSet FOLLOW_expr_in_cond31118 = new BitSet(new long[]{0x0000009F00000000L});
+	public static final BitSet FOLLOW_relOp_in_cond31120 = new BitSet(new long[]{0x00822500000C0000L});
+	public static final BitSet FOLLOW_expr_in_cond31123 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_OP_SUB_in_termOptUnary1134 = new BitSet(new long[]{0x00822000000C0000L});
+	public static final BitSet FOLLOW_term_in_termOptUnary1136 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_OP_NOT_in_termOptUnary1155 = new BitSet(new long[]{0x00822000000C0000L});
+	public static final BitSet FOLLOW_term_in_termOptUnary1157 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_term_in_termOptUnary1174 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_termOptUnary_in_expr1189 = new BitSet(new long[]{0x0000040020000002L});
+	public static final BitSet FOLLOW_addOp_in_expr1192 = new BitSet(new long[]{0x00822000000C0000L});
+	public static final BitSet FOLLOW_term_in_expr1195 = new BitSet(new long[]{0x0000040020000002L});
+	public static final BitSet FOLLOW_factor_in_term1206 = new BitSet(new long[]{0x0000006080000002L});
+	public static final BitSet FOLLOW_mulOp_in_term1209 = new BitSet(new long[]{0x00822000000C0000L});
+	public static final BitSet FOLLOW_factor_in_term1212 = new BitSet(new long[]{0x0000006080000002L});
+	public static final BitSet FOLLOW_attrORfunctioncall_in_factor1225 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_number_in_factor1233 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_STRING_LITERAL_in_factor1241 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_55_in_factor1249 = new BitSet(new long[]{0x00822500000C0000L});
+	public static final BitSet FOLLOW_expr_in_factor1252 = new BitSet(new long[]{0x0100000000000000L});
+	public static final BitSet FOLLOW_56_in_factor1254 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_attrORfunctioncall1278 = new BitSet(new long[]{0x0080000000000002L});
+	public static final BitSet FOLLOW_55_in_attrORfunctioncall1293 = new BitSet(new long[]{0x01822500000C0000L});
+	public static final BitSet FOLLOW_actPars_in_attrORfunctioncall1295 = new BitSet(new long[]{0x0100000000000000L});
+	public static final BitSet FOLLOW_56_in_attrORfunctioncall1297 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_designator1382 = new BitSet(new long[]{0x8400000000000002L});
+	public static final BitSet FOLLOW_58_in_designator1401 = new BitSet(new long[]{0x0000000000040000L});
+	public static final BitSet FOLLOW_ID_in_designator1403 = new BitSet(new long[]{0x8400000000000002L});
+	public static final BitSet FOLLOW_63_in_designator1429 = new BitSet(new long[]{0x00822500000C0000L});
+	public static final BitSet FOLLOW_expr_in_designator1431 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000001L});
+	public static final BitSet FOLLOW_64_in_designator1433 = new BitSet(new long[]{0x8400000000000002L});
+	public static final BitSet FOLLOW_expr_in_actPars1471 = new BitSet(new long[]{0x0200000000000002L});
+	public static final BitSet FOLLOW_57_in_actPars1476 = new BitSet(new long[]{0x00822500000C0000L});
+	public static final BitSet FOLLOW_expr_in_actPars1478 = new BitSet(new long[]{0x0200000000000002L});
 }
