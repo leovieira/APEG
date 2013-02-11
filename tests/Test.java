@@ -11,6 +11,7 @@ public class Test {
 		Util.testeGrammar("input/teste03.txt", "input/teste03_input.txt", "teste");
 		Util.testeGrammar("input/teste04.txt", "input/teste04_input.txt", "root");
 		Util.testeGrammar("input/teste05.txt", "input/teste05_input.txt", "root");
+		Util.testeGrammar("input/teste06.txt", "input/teste06_input.txt", "literal");
 		
 		Grammar grammar = new Grammar();
 //		Util.addRules(grammar, "a : b 'a' ;");

@@ -1,6 +1,8 @@
 package semantics;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.antlr.runtime.tree.CommonTree;
 import semantics.Attribute.Category;
 
@@ -94,8 +96,25 @@ public class NonTerminal extends Symbol {
 
 	public NonTerminal copy() {
 		NonTerminal nt = new NonTerminal(getName());
+		nt.numParam = this.numParam;
+		nt.numLocal = this.numLocal;
+		nt.numRet = this.numRet;
+		
+		ArrayList<Attribute> atr = new ArrayList<Attribute>();
+		Iterator<Attribute> it = attrs.iterator();
+		// Note que criei uma nova lista de atributos
+		// Porém, inserir os mesmos ponteiros dos valores dos outros
+		// Isso permitir inserir novos atributos locais sem alterar o anterior
+		while(it.hasNext())
+			atr.add(it.next());
+		// Vou apontar para a mesma expressão
+		// Quando eu inserir uma nova regra irei criar um novo nó choice
+		// que terá essa árvore do lado esquerdo e uma nova do lado direito
+		// Assim economizo memoria
+		nt.pegExpr = this.pegExpr;
 		
 		return nt;
+		
 	}
 	
 }
