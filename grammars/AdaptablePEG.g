@@ -1,4 +1,3 @@
-
 grammar AdaptablePEG;
 
 options {
@@ -37,6 +36,7 @@ tokens {
     import semantics.*;
     import java.lang.reflect.Method;
     import java.lang.reflect.Modifier;
+    import java.util.ArrayList;
 }
 @lexer::header
 {
@@ -46,6 +46,37 @@ tokens {
 @members{
     
     Grammar grammar;
+    NonTerminal currNT;
+    ArrayList<CommonTree> ntcalls = new ArrayList<CommonTree>();
+    
+    private void verifNTCall(CommonTree tree) {
+		// I suppose there are exactly 2 children:
+		// - the name of the nonterminal
+		// - the list of arguments
+		SemanticNode sm = (SemanticNode) tree.getChild(0);
+		String name = sm.getText();
+		CommonTree args = (CommonTree) tree.getChild(1);
+		NonTerminal nt = grammar.getNonTerminal(name);
+		if (nt == null) {
+			emitErrorMessage(sm.getToken(), "Nonterminal not found: " + name);
+		} else {
+			sm.setSymbol(nt);
+			int i1 = nt.getNumParam() + nt.getNumRet();
+			int i2 = args.getChildCount();
+			if (i1 != i2) {
+				emitErrorMessage(sm.getToken(),
+				"Wrong number of arguments in nonterminal " + name);
+			} else {
+				for (int i = nt.getNumParam(); i < i1; ++i) {
+					CommonTree t = (CommonTree) args.getChild(i);
+					if (t.token.getType() != ID) {
+						emitErrorMessage(sm.getToken(),
+						"Arguments for synthesized attributes must be only an identifier");
+					}
+				}
+			}
+		}
+	}
     
     private boolean mMessageCollectionEnabled = false;
     private List<String> mMessages;
@@ -92,7 +123,7 @@ tokens {
      * para adicionar a linha e coluna na mensagem de erro.
      */
     public void emitErrorMessage(Token t, String pMessage) {
-        emitErrorMessage("line " + t.getLine() + ":" + t.getCharPositionInLine() + " " + pMessage);
+        emitErrorMessage("line " + t.getLine() + ":" + (t.getCharPositionInLine()+1) + " " + pMessage);
     }
         
     /**
@@ -122,6 +153,11 @@ grammarDef[Grammar g] :
     'apeg'! ID ';'!
     functions
     rules
+    {
+    	for (int i = 0; i < ntcalls.size(); ++i) {
+    		verifNTCall(ntcalls.get(i));
+    	}
+    }
     ;
 
 rules : rule+ ;
@@ -150,51 +186,56 @@ functions :
   ;
 
 // A definiton of an APEG rule
-rule :
+rule
+@after{
+	currNT.setPegExpr($t.tree);
+}
+  :
   ID 
   { 
-	  NonTerminal nt = grammar.addNonTerminal($ID.text);
-	  if (nt == null) {
+	  currNT = grammar.addNonTerminal($ID.text);
+	  if (currNT == null) {
 	    emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
 	  }
   }
-  d1=optDecls[nt, Attribute.Category.PARAM]
-  d2=optReturn[nt, Attribute.Category.RETURN]
-  d3=optLocals[nt, Attribute.Category.LOCAL]
-  ':' peg_expr ';'
+  d1=optDecls[Attribute.Category.PARAM]
+  d2=optReturn[Attribute.Category.RETURN]
+  d3=optLocals[Attribute.Category.LOCAL]
+  ':' t=peg_expr
+  ';'
   -> ^(RULE ID $d1 $d2 $d3 peg_expr)
 ;
 
 // This rule defines the list of all inhereted attributes
-decls[NonTerminal nt, Attribute.Category c] :
-  '[' varDecl[nt,c] (',' varDecl[nt,c])* ']' -> ^(LIST varDecl*)
+decls[Attribute.Category c] :
+  '[' varDecl[c] (',' varDecl[c])* ']' -> ^(LIST varDecl*)
   ;
 
 // This rule defines the list of inhereted attributes
-optDecls[NonTerminal nt, Attribute.Category c] :
-  decls[nt,c] -> decls
+optDecls[Attribute.Category c] :
+  decls[c] -> decls
   |
     -> LIST
   ;
 
 // This rule defines the list of synthesized attributes
-optReturn[NonTerminal nt, Attribute.Category c] :
-  'returns' decls[nt,c] -> decls
+optReturn[Attribute.Category c] :
+  'returns' decls[c] -> decls
   |
     -> LIST
   ;
 
-optLocals[NonTerminal nt, Attribute.Category c] :
-  'locals'! decls[nt,c]
+optLocals[Attribute.Category c] :
+  'locals'! decls[c]
   |
     -> LIST
   ;
 
-varDecl[NonTerminal nt, Attribute.Category c] :
+varDecl[Attribute.Category c] :
   type ID
   {
-    if (nt != null) {
-      if (nt.addAttribute($ID.text, null, c) == null) {
+    if (currNT != null) {
+      if (currNT.addAttribute($ID.text, null, c) == null) {
         emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
       }
     }
@@ -263,26 +304,46 @@ peg_unary_op :
 // A<...> (non-terminal basic expression)
 // \lambda (empty basic expression)
 peg_factor :
-//  CHAR_LITERAL      <-------- Looking this
-//  |
-// 
   STRING_LITERAL
+  |
+  ntcall
   |
   '[' RANGE_PAIR+ ']' -> ^(RANGE RANGE_PAIR+)
   |
   '.' -> ANY
   |
-  ID (
+  '(' peg_expr ')' -> peg_expr
+  ;
+
+ntcall
+@after{
+	ntcalls.add($ntcall.tree);
+}
+:
+  ID
+     (
       '<' actPars '>' -> ^(NONTERM ID actPars)
       |
         -> ^(NONTERM ID LIST)
      )
-  |
-  '(' peg_expr ')' -> peg_expr
   ;
 
 assign :
-  ID t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] ID expr)
+  idAssign t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] idAssign expr)
+  ;
+  
+idAssign
+@after{
+	Attribute at = currNT.getAttribute($idAssign.text);
+	if (at == null) {
+		emitErrorMessage($t, "Attribute not found: " + $idAssign.text);
+	} else {
+		SemanticNode sm = (SemanticNode) $idAssign.tree;
+		sm.setSymbol(at);
+	}
+}
+  :
+  t=ID
   ;
  
 cond : cond2 (OP_OR^ cond2)* ;
@@ -304,16 +365,62 @@ expr : termOptUnary (addOp^ term)* ;
 term : factor (mulOp^ factor)* ;
 
 factor :
-  designator (
-    t1='(' actPars ')' -> ^(CALL[$t1,"CALL"] designator actPars)
-    |       -> designator
-    )
+  attrORfunctioncall
   |
   number
   |
   STRING_LITERAL
   |
   '('! expr ')'!
+  ;
+
+attrORfunctioncall
+@init{
+	Symbol symbol = null;
+}
+@after{
+    if (symbol != null) {
+    	SemanticNode sm;
+    	if (symbol instanceof Attribute) {
+    		// if the resulting tree is just ID, then ID is at the root of the tree
+    		sm = (SemanticNode) $attrORfunctioncall.tree;
+    	} else if (symbol instanceof Function) {
+    		// if the resulting tree is CALL, then ID is the first child of the tree
+    		sm = (SemanticNode) ((CommonTree) $attrORfunctioncall.tree).getChild(0);
+    	} else {
+    		throw new Error("Unexpected type for symbol at attribute or function call");
+    	}
+    	sm.setSymbol(symbol);
+    }
+}
+  :
+  ID (
+  	{
+  		symbol = grammar.getFunction($ID.text);
+        if (symbol == null) {
+          emitErrorMessage($ID, "Function not found: " + $ID.text);
+        }
+    }  
+    '(' actPars ')'
+    {
+    	Function f = (Function) symbol;
+    	int i1 = f.getNumParams();
+    	int i2 = $actPars.length;
+    	if (i1 != i2) {
+    		emitErrorMessage($ID, "Wrong number of parameters");
+    	}
+    }    
+    -> ^(CALL[$ID,"CALL"] ID actPars)
+    |
+    
+    {
+    	symbol = currNT.getAttribute($ID.text);
+        if (symbol == null) {
+          emitErrorMessage($ID, "Attribute not found: " + $ID.text);
+        }
+    }    
+    -> ID
+  )
   ;
 
 number : INT_NUMBER | REAL_NUMBER ;
@@ -327,10 +434,10 @@ designator :
     )*
     ;
 
-actPars : 
-  (expr (',' expr)*) -> ^(LIST expr*)
+actPars returns[int length]: 
+  (expr { $length = 1; } (',' expr { $length = $length + 1; } )*)  -> ^(LIST expr*)
   |
-    -> ^(LIST ); 
+  { $length = 0; }  -> ^(LIST ); 
 
 relOp : OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE ;
 

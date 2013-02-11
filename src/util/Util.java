@@ -3,17 +3,17 @@ package util;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 
 import runtime.interpreter.Interpreter;
 import semantics.Grammar;
+import semantics.NonTerminal;
+import semantics.SemanticNode;
 import semantics.SemanticTreeAdaptor;
 import srcparser.AdaptablePEGLexer;
 import srcparser.AdaptablePEGParser;
-import treeparsers.AdaptablePEGTree;
-import treeparsers.SemanticAnalysis1;
-import treeparsers.SemanticAnalysis2;
 
 public class Util {
 
@@ -37,6 +37,7 @@ public class Util {
 		AdaptablePEGParser parser = new AdaptablePEGParser(tokens);
 		SemanticTreeAdaptor adaptor = new SemanticTreeAdaptor();
 		parser.setTreeAdaptor(adaptor);
+		parser.enableErrorMessageCollection(true);
 		AdaptablePEGParser.grammarDef_return result = parser.grammarDef(grammar);
 		Tree t = (Tree) result.getTree();
 		System.out.println(t.toStringTree());
@@ -73,7 +74,7 @@ public class Util {
 			walker2.printErrorMessages();
 			return;
 		}
-*/
+		
 		CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
 		nodes.setTokenStream(tokens);
 		SemanticAnalysis2 walker = new SemanticAnalysis2(nodes);
@@ -83,7 +84,7 @@ public class Util {
 			walker.printErrorMessages();
 			return;
 		}
-		
+*/		
 		if (inputFileName != null && initSymbol != null) {
 			Interpreter interpreter = new Interpreter(grammar);
 			interpreter.setInputFile(inputFileName);
