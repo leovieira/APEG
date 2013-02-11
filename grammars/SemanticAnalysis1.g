@@ -58,7 +58,7 @@ import java.lang.reflect.Modifier;
     }
     
     /**
-     * O token passado como parâmetro (atributo token) é usado
+     * O token passado como parï¿½metro (atributo token) ï¿½ usado
      * para adicionar a linha e coluna na mensagem de erro.
      */
     public void emitErrorMessage(Token t, String pMessage) {

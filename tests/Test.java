@@ -13,7 +13,7 @@ public class Test {
 		Util.testeGrammar("input/teste05.txt", "input/teste05_input.txt", "root");
 		
 		Grammar grammar = new Grammar();
-		Util.addRules(grammar, "a : b 'a' ;");
+//		Util.addRules(grammar, "a : b 'a' ;");
 	}
 	
 }

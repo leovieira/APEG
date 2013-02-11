@@ -29,20 +29,22 @@ public class Util {
 		System.out.println("Input file: " + inputFileName);
 		System.out.println("Initial Symbol: " + initSymbol);
 		
+		Grammar grammar = new Grammar();
+		
 		ANTLRFileStream input = new ANTLRFileStream(grammarFileName);
 		AdaptablePEGLexer lexer = new AdaptablePEGLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		AdaptablePEGParser parser = new AdaptablePEGParser(tokens);
 		SemanticTreeAdaptor adaptor = new SemanticTreeAdaptor();
 		parser.setTreeAdaptor(adaptor);
-		AdaptablePEGParser.grammarDef_return result = parser.grammarDef();
+		AdaptablePEGParser.grammarDef_return result = parser.grammarDef(grammar);
 		Tree t = (Tree) result.getTree();
 		System.out.println(t.toStringTree());
 		if (parser.hasErrors()) {
 			parser.printErrorMessages();
 			return;
 		}
-				
+/*				
 		CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
 		nodes.setTokenStream(tokens);
 		AdaptablePEGTree walker = new AdaptablePEGTree(nodes);
@@ -52,8 +54,6 @@ public class Util {
 			walker.printErrorMessages();
 			return;
 		}
-		
-		Grammar grammar = new Grammar();
 
 		CommonTreeNodeStream nodes1 = new CommonTreeNodeStream(t);
 		nodes1.setTokenStream(tokens);
@@ -71,6 +71,16 @@ public class Util {
 		walker2.grammarDef(grammar);
 		if (walker2.hasErrors()) {
 			walker2.printErrorMessages();
+			return;
+		}
+*/
+		CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
+		nodes.setTokenStream(tokens);
+		SemanticAnalysis2 walker = new SemanticAnalysis2(nodes);
+		walker.enableErrorMessageCollection(true);
+		walker.grammarDef(grammar);
+		if (walker.hasErrors()) {
+			walker.printErrorMessages();
 			return;
 		}
 		
