@@ -1,4 +1,4 @@
-// $ANTLR 3.5 /home/leo/workspace/APEG/grammars/AdaptablePEG.g 2013-02-10 23:08:49
+// $ANTLR 3.5 /home/leo/workspace/APEG/grammars/AdaptablePEG.g 2013-02-10 23:23:03
 
     package srcparser;
 
@@ -571,7 +571,7 @@ public class AdaptablePEGParser extends Parser {
 			stream_60.add(char_literal13);
 
 			// AST REWRITE
-			// elements: ID, d2, d3, peg_expr, d1
+			// elements: peg_expr, d1, d2, d3, ID
 			// token labels: 
 			// rule labels: d1, retval, d2, d3
 			// token list labels: 
@@ -1110,7 +1110,7 @@ public class AdaptablePEGParser extends Parser {
 			stream_ID.add(ID25);
 
 			// AST REWRITE
-			// elements: ID, type
+			// elements: type, ID
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -2214,7 +2214,7 @@ public class AdaptablePEGParser extends Parser {
 							stream_OP_GT.add(char_literal46);
 
 							// AST REWRITE
-							// elements: ID, actPars
+							// elements: actPars, ID
 							// token labels: 
 							// rule labels: retval
 							// token list labels: 
@@ -2382,7 +2382,7 @@ public class AdaptablePEGParser extends Parser {
 			stream_60.add(char_literal52);
 
 			// AST REWRITE
-			// elements: expr, ID
+			// elements: ID, expr
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -2773,7 +2773,7 @@ public class AdaptablePEGParser extends Parser {
 
 					stream_term.add(term64.getTree());
 					// AST REWRITE
-					// elements: t1, term
+					// elements: term, t1
 					// token labels: t1
 					// rule labels: retval
 					// token list labels: 
@@ -3129,7 +3129,7 @@ public class AdaptablePEGParser extends Parser {
 							stream_56.add(char_literal74);
 
 							// AST REWRITE
-							// elements: actPars, designator
+							// elements: designator, actPars
 							// token labels: 
 							// rule labels: retval
 							// token list labels: 
@@ -3436,7 +3436,7 @@ public class AdaptablePEGParser extends Parser {
 					stream_64.add(char_literal84);
 
 					// AST REWRITE
-					// elements: expr, designator
+					// elements: designator, expr
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
