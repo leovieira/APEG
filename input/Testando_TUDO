@@ -8,14 +8,17 @@ E entre gente remota edificaram
 Novo Reino, que tanto sublimaram;
 
 
-Ratinho, isso deveria funcionar
+Turotial
 
-primeiramente vai em team -> Shyncronize workspace
-depois, nos conflitos, vai em cada um resolve
-
-  - Onde está de verlheo são os conflitos que o algoritmo de merge não sabe resolver 
-    devem ser feitos manualmente. Se abertar no quadradinho ao lado das duas visões
-    ele irá copiar do remoto para o local
-  - Os azuis são os que ele sabe resolver. Pode-se fazer o mesmo processo, mas
-    deve haver uma forma automatica de fazer isso
+quando houver conflito faça:
+ 1) clique com o botão direito do mauso no projeto
+ 2) vá em team -> merge tool
+ 3) resolva os conflitos
+ 4) em GitStaging, passe para Staged Changes os arquivos que conflito
+ 5) Faça o commit
+ 6) Seja feliz
+ 
+Foi assim que eue o ratinho conseguimos resolver o conflito.
+Espero que não tenhamos mais problemas e esse plugin do Eclipse para o EGit
+não é uma coisa confiável :(
     
