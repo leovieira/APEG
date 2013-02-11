@@ -1,9 +1,9 @@
 apeg adapdatadependent;
 
-functions Functions1;
+functions AdaptableFunctions;
 
 literal[Grammar g] locals[int n, Grammar g1]:
-	number<g, n> {g1 = g.copy().addRule("strN[Grammar g] <- " + rep("CHAR", n)); }
+	number<g, n> {g1 = copy(g).addRule("strN[Grammar g] <- " + rep("CHAR", n)); }
 	strN<g1>
 	;
 	

@@ -2,6 +2,8 @@ package semantics;
 
 import java.lang.reflect.Method;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Set;
 
 public class Grammar {
 	
@@ -37,5 +39,26 @@ public class Grammar {
 		return f;
 	}
 
+	public Grammar copy() {
+		//Hashtable<String, Function> functions = new Hashtable<String, Function>();
+		//create a new grammar
+		Grammar resp = new Grammar();
+		// copy all values of the Map nonTerms
+		Set<String> keys = nonTerms.keySet();
+		Iterator<String> it = keys.iterator();
+		String s;		
+		while(it.hasNext()) {
+			s = it.next();
+			resp.nonTerms.put(s, getNonTerminal(s).copy());
+		}
+		
+		//copy all values of the map functions
+		// Se esses valores nao seram alterados na adaptabildiade nao preciso
+		// fazer uma copia mesmo, basta aponta para o mesmo map
+		// para uma implementacao mais rapida, nao fiz uma copia
+		resp.functions = functions;		
+		
+		return resp;
+	}
 	
 }

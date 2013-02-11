@@ -92,4 +92,10 @@ public class NonTerminal extends Symbol {
 		return numRet;
 	}
 
+	public NonTerminal copy() {
+		NonTerminal nt = new NonTerminal(getName());
+		
+		return nt;
+	}
+	
 }
