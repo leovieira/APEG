@@ -88,7 +88,7 @@ public class Util {
 	}
 
 	
-	public static void addRule(Grammar grammar, String rule)
+	public static void addRules(Grammar grammar, String rule)
 	throws Exception {
 		
 		ANTLRStringStream input = new ANTLRStringStream(rule);
