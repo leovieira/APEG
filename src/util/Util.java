@@ -14,9 +14,6 @@ import semantics.SemanticNode;
 import semantics.SemanticTreeAdaptor;
 import srcparser.AdaptablePEGLexer;
 import srcparser.AdaptablePEGParser;
-import treeparsers.AdaptablePEGTree;
-import treeparsers.SemanticAnalysis1;
-import treeparsers.SemanticAnalysis2;
 
 public class Util {
 

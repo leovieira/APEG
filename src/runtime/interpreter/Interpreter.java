@@ -320,7 +320,8 @@ public class Interpreter {
 		case AdaptablePEGLexer.CALL: {
 			//I suppose there are 2 children, the name of the function and the list of arguments
 			SemanticNode nameNode = (SemanticNode) tree.getChild(0);
-			Method m = ((Function) nameNode.getSymbol()).getMethod();
+			Function f = (Function) nameNode.getSymbol(); 
+			Method m = f.getMethod();
 			CommonTree t1 = (CommonTree) tree.getChild(1);
 			int nArgs = t1.getChildCount();
 			// I already checked the number of parameters during semantic analysis

@@ -1,4 +1,3 @@
-
 grammar AdaptablePEG;
 
 options {
@@ -330,16 +329,16 @@ ntcall
   ;
 
 assign :
-  idAttr t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] idAttr expr)
+  idAssign t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] idAssign expr)
   ;
   
-idAttr
+idAssign
 @after{
-	Attribute at = currNT.getAttribute($idAttr.text);
+	Attribute at = currNT.getAttribute($idAssign.text);
 	if (at == null) {
-		emitErrorMessage($t, "Attribute not found: " + $idAttr.text);
+		emitErrorMessage($t, "Attribute not found: " + $idAssign.text);
 	} else {
-		SemanticNode sm = (SemanticNode) $idAttr.tree;
+		SemanticNode sm = (SemanticNode) $idAssign.tree;
 		sm.setSymbol(at);
 	}
 }
@@ -381,7 +380,16 @@ attrORfunctioncall
 }
 @after{
     if (symbol != null) {
-    	SemanticNode sm = (SemanticNode) $attrORfunctioncall.tree;
+    	SemanticNode sm;
+    	if (symbol instanceof Attribute) {
+    		// if the resulting tree is just ID, then ID is at the root of the tree
+    		sm = (SemanticNode) $attrORfunctioncall.tree;
+    	} else if (symbol instanceof Function) {
+    		// if the resulting tree is CALL, then ID is the first child of the tree
+    		sm = (SemanticNode) ((CommonTree) $attrORfunctioncall.tree).getChild(0);
+    	} else {
+    		throw new Error("Unexpected type for symbol at attribute or function call");
+    	}
     	sm.setSymbol(symbol);
     }
 }
