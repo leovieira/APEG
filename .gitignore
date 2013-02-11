@@ -1,3 +1,3 @@
 /bin
-/antlr-generated
+/antlr-generated/**
 grammar/*.tokens
