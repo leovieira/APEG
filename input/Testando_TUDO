@@ -1,0 +1,22 @@
+As armas e os barões assinalados,
+Que da ocidental praia Lusitana,
+Por mares nunca de antes navegados,
+Passaram ainda além da Taprobana,
+Em perigos e guerras esforçados,
+Mais do que prometia a força humana,
+E entre gente remota edificaram
+Novo Reino, que tanto sublimaram;
+
+
+Ratinho, isso deveria funcionar
+
+primeiramente vai em team -> Shyncronize workspace
+depois, nos conflitos, vai em cada um resolve
+
+  - Onde está de verlheo são os conflitos que o algoritmo de merge não sabe resolver 
+    devem ser feitos manualmente. Se abertar no quadradinho ao lado das duas visões
+    ele irá copiar do remoto para o local
+  - Os azuis são os que ele sabe resolver. Pode-se fazer o mesmo processo, mas
+    deve haver uma forma automatica de fazer isso
+    
+    
