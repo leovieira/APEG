@@ -49,6 +49,7 @@ tokens {
     NonTerminal currNT;
     ArrayList<CommonTree> ntcalls = new ArrayList<CommonTree>();
     boolean isAddingRules;
+    NonTerminal addedNT;
     
     private void verifNTCall(CommonTree tree) {
 		// I suppose there are exactly 2 children:
@@ -151,6 +152,7 @@ grammarDef[Grammar g] :
     {
       grammar = g;
       isAddingRules = false;
+      addedNT = null;
     }
     'apeg'! ID ';'!
     functions
@@ -185,12 +187,20 @@ functions :
     -> ^(FILES )
   ;
 
-addrules : { isAddingRules = true; } rule+ ;
+addrules :
+	{
+		isAddingRules = true;
+		addedNT = null;
+	}
+	rule+
+	;
 
 // A definiton of an APEG rule
 rule
 @after{
-	currNT.setPegExpr($t.tree);
+	if (currNT != null) {
+		currNT.setPegExpr($t.tree);
+	}
 }
   :
   ID
@@ -199,6 +209,7 @@ rule
 		if (currNT == null && !isAddingRules) {
 			emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
 		}
+		addedNT = grammar.getNonTerminal($ID.text);
 	}
   d1=optDecls[Attribute.Category.PARAM]
   d2=optReturn[Attribute.Category.RETURN]
@@ -319,9 +330,7 @@ peg_factor :
 
 ntcall
 @after{
-	if (!isAddingRules) {
-		ntcalls.add($ntcall.tree);
-	}
+	ntcalls.add($ntcall.tree);
 }
 :
   ID
@@ -338,12 +347,14 @@ assign :
   
 idAssign
 @after{
-	Attribute at = currNT.getAttribute($idAssign.text);
-	if (at == null) {
-		emitErrorMessage($t, "Attribute not found: " + $idAssign.text);
-	} else {
-		SemanticNode sm = (SemanticNode) $idAssign.tree;
-		sm.setSymbol(at);
+	if (currNT != null) {
+		Attribute at = currNT.getAttribute($idAssign.text);
+		if (at == null) {
+			emitErrorMessage($t, "Attribute not found: " + $idAssign.text);
+		} else {
+			SemanticNode sm = (SemanticNode) $idAssign.tree;
+			sm.setSymbol(at);
+		}
 	}
 }
   :
@@ -369,7 +380,7 @@ expr : termOptUnary (addOp^ term)* ;
 term : factor (mulOp^ factor)* ;
 
 factor :
-  attrORfunctioncall
+  attrORfuncall
   |
   number
   |
@@ -378,7 +389,7 @@ factor :
   '('! expr ')'!
   ;
 
-attrORfunctioncall
+attrORfuncall
 @init{
 	Symbol symbol = null;
 }
@@ -387,10 +398,16 @@ attrORfunctioncall
     	SemanticNode sm;
     	if (symbol instanceof Attribute) {
     		// if the resulting tree is just ID, then ID is at the root of the tree
-    		sm = (SemanticNode) $attrORfunctioncall.tree;
+    		sm = (SemanticNode) $attrORfuncall.tree;
     	} else if (symbol instanceof Function) {
     		// if the resulting tree is CALL, then ID is the first child of the tree
-    		sm = (SemanticNode) ((CommonTree) $attrORfunctioncall.tree).getChild(0);
+    		sm = (SemanticNode) ((CommonTree) $attrORfuncall.tree).getChild(0);
+    		// the second child of the tree is the list of arguments
+    		CommonTree t = (CommonTree) ((CommonTree) $attrORfuncall.tree).getChild(1);
+	    	Function f = (Function) symbol;
+	    	if (f.getNumParams() != t.getChildCount()) {
+	    		emitErrorMessage(sm.getToken(), "Wrong number of parameters");
+	    	}
     	} else {
     		throw new Error("Unexpected type for symbol at attribute or function call");
     	}
@@ -399,31 +416,25 @@ attrORfunctioncall
 }
   :
   ID (
-  	{
+    '(' actPars ')'
+    {
   		symbol = grammar.getFunction($ID.text);
         if (symbol == null) {
           emitErrorMessage($ID, "Function not found: " + $ID.text);
         }
-    }  
-    '(' actPars ')'
-    {
-    	Function f = (Function) symbol;
-    	int i1 = f.getNumParams();
-    	int i2 = $actPars.length;
-    	if (i1 != i2) {
-    		emitErrorMessage($ID, "Wrong number of parameters");
-    	}
     }    
-    -> ^(CALL[$ID,"CALL"] ID actPars)
-    |
+  -> ^(CALL[$ID,"CALL"] ID actPars)
+  |
     
     {
-    	symbol = currNT.getAttribute($ID.text);
-        if (symbol == null) {
-          emitErrorMessage($ID, "Attribute not found: " + $ID.text);
-        }
+    	if (currNT != null) {
+	    	symbol = currNT.getAttribute($ID.text);
+	        if (symbol == null) {
+	          emitErrorMessage($ID, "Attribute not found: " + $ID.text);
+	        }
+	    }
     }    
-    -> ID
+  -> ID
   )
   ;
 
@@ -438,10 +449,10 @@ designator :
     )*
     ;
 
-actPars returns[int length]: 
-  (expr { $length = 1; } (',' expr { $length = $length + 1; } )*)  -> ^(LIST expr*)
+actPars: 
+  (expr (',' expr )*)  -> ^(LIST expr*)
   |
-  { $length = 0; }  -> ^(LIST ); 
+    -> ^(LIST ); 
 
 relOp : OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE ;
 
