@@ -113,8 +113,10 @@ tokens {
 grammarDef :
     'apeg'! ID ';'!
     functions
-    rule+
+    rules
     ;
+
+rules : rule+ ;
 
 functions :
   'functions' ID+ ';' -> ^(FILES ID+)
