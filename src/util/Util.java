@@ -1,6 +1,7 @@
 package util;
 
 import org.antlr.runtime.ANTLRFileStream;
+import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
@@ -87,5 +88,27 @@ public class Util {
 	}
 
 	
+	public static void addRule(Grammar grammar, String rule)
+	throws Exception {
+		
+		ANTLRStringStream input = new ANTLRStringStream(rule);
+		AdaptablePEGLexer lexer = new AdaptablePEGLexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		AdaptablePEGParser parser = new AdaptablePEGParser(tokens);
+		SemanticTreeAdaptor adaptor = new SemanticTreeAdaptor();
+		parser.setTreeAdaptor(adaptor);
+		AdaptablePEGParser.rules_return result = parser.rules();
+		Tree t = (Tree) result.getTree();
+		System.out.println(t.toStringTree());
+		if (parser.hasErrors()) {
+			parser.printErrorMessages();
+			return;
+		}
+				
 
+	}
+
+
+	
+	
 }

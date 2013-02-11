@@ -1,4 +1,5 @@
 
+import semantics.Grammar;
 import util.Util;
 
 public class Test {
@@ -8,8 +9,12 @@ public class Test {
 		Util.testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S1");
 		Util.testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S2");
 		Util.testeGrammar("input/teste03.txt", "input/teste03_input.txt", "teste");
-		Util.testeGrammar("input/teste04.txt", "input/teste04_input.txt", "root");*/
+		Util.testeGrammar("input/teste04.txt", "input/teste04_input.txt", "root");
 		Util.testeGrammar("input/teste05.txt", "input/teste05_input.txt", "root");
+		*/
+		
+		Grammar grammar = new Grammar();
+		Util.addRule(grammar, "a : b 'a' ;");
 	}
 	
 }
