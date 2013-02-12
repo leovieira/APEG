@@ -13,7 +13,6 @@ public class Test {
 		System.out.println("Return value(s) = " + args3[2]);
 		Util.testeGrammar("input/teste04.txt", "input/teste04_input.txt", "root");
 		Util.testeGrammar("input/teste05.txt", "input/teste05_input.txt", "root");
-		Util.testeGrammar("input/teste06.txt", "input/teste06_input.txt", "literal");
 		Util.testeGrammar("input/teste06.txt", "input/teste06_input.txt", "literal3", true);
 		Util.testeGrammar("input/teste06a.txt", "input/teste06_input.txt", "literal3", true);
 		Util.testeGrammar("input/teste07.txt", "input/teste07_input.txt", "block", true);
