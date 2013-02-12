@@ -1,6 +1,17 @@
+<<<<<<< HEAD
 import org.antlr.runtime.tree.CommonTree;
+=======
+import org.antlr.runtime.ANTLRFileStream;
+import org.antlr.runtime.ANTLRStringStream;
+import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.Tree;
+>>>>>>> c2efe4b461cba9d7e6a8b7e70910149c1537758b
 
 import semantics.Grammar;
+import semantics.SemanticTreeAdaptor;
+import srcparser.AdaptablePEGLexer;
+import srcparser.AdaptablePEGParser;
 
 
 public class AdaptableFunctions {
@@ -22,10 +33,31 @@ public class AdaptableFunctions {
 		return resp;
 	}
 	
+<<<<<<< HEAD
 	public static Grammar addRule(Grammar g, String rule) {
 		CommonTree resp, peg_expr = new CommonTree();
 		//peg_expr = 
 		
 		return null;
+=======
+	public static Grammar addRule(Grammar g, String rule) throws Exception {
+		ANTLRStringStream input = new ANTLRStringStream(rule);
+		AdaptablePEGLexer lexer = new AdaptablePEGLexer(input);
+		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		AdaptablePEGParser parser = new AdaptablePEGParser(tokens);
+		SemanticTreeAdaptor adaptor = new SemanticTreeAdaptor();
+		parser.setTreeAdaptor(adaptor);
+		parser.enableErrorMessageCollection(true);
+		System.out.println("Trying to add rules: " + rule);
+		AdaptablePEGParser.addrules_return result = parser.addrules(g);
+		Tree t = (Tree) result.getTree();
+//		System.out.println(t.toStringTree());
+		if (parser.hasErrors()) {
+			System.out.println("Errors when extending the grammar:");
+			parser.printErrorMessages();
+			throw new Exception("Extension failed");
+		}
+		return g;
+>>>>>>> c2efe4b461cba9d7e6a8b7e70910149c1537758b
 	}
 }
