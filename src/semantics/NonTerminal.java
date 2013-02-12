@@ -107,6 +107,11 @@ public class NonTerminal extends Symbol {
 		// Isso permitir inserir novos atributos locais sem alterar o anterior
 		while(it.hasNext())
 			atr.add(it.next());
+		
+		// --- VLADIMIR
+		// faltou colocar os atributos no objeto
+		nt.attrs = atr;
+		
 		// Vou apontar para a mesma expressão
 		// Quando eu inserir uma nova regra irei criar um novo nó choice
 		// que terá essa árvore do lado esquerdo e uma nova do lado direito

@@ -47,32 +47,35 @@ tokens {
     
     Grammar grammar;
     NonTerminal currNT;
-    ArrayList<CommonTree> ntcalls = new ArrayList<CommonTree>();
+    ArrayList<CommonTree> ntcalls;
     boolean isAddingRules;
+    boolean isNewRule;
     
-    private void verifNTCall(CommonTree tree) {
-		// I suppose there are exactly 2 children:
-		// - the name of the nonterminal
-		// - the list of arguments
-		SemanticNode sm = (SemanticNode) tree.getChild(0);
-		String name = sm.getText();
-		CommonTree args = (CommonTree) tree.getChild(1);
-		NonTerminal nt = grammar.getNonTerminal(name);
-		if (nt == null) {
-			emitErrorMessage(sm.getToken(), "Nonterminal not found: " + name);
-		} else {
-			sm.setSymbol(nt);
-			int i1 = nt.getNumParam() + nt.getNumRet();
-			int i2 = args.getChildCount();
-			if (i1 != i2) {
-				emitErrorMessage(sm.getToken(),
-				"Wrong number of arguments in nonterminal " + name);
+    private void verifNTCalls() {
+    	for (CommonTree tree : ntcalls) {
+			// I suppose there are exactly 2 children:
+			// - the name of the nonterminal
+			// - the list of arguments
+			SemanticNode sm = (SemanticNode) tree.getChild(0);
+			String name = sm.getText();
+			CommonTree args = (CommonTree) tree.getChild(1);
+			NonTerminal nt = grammar.getNonTerminal(name);
+			if (nt == null) {
+				emitErrorMessage(sm.getToken(), "Nonterminal not found: " + name);
 			} else {
-				for (int i = nt.getNumParam(); i < i1; ++i) {
-					CommonTree t = (CommonTree) args.getChild(i);
-					if (t.token.getType() != ID) {
-						emitErrorMessage(sm.getToken(),
-						"Arguments for synthesized attributes must be only an identifier");
+				sm.setSymbol(nt);
+				int i1 = nt.getNumParam() + nt.getNumRet();
+				int i2 = args.getChildCount();
+				if (i1 != i2) {
+					emitErrorMessage(sm.getToken(),
+					"Wrong number of arguments in nonterminal " + name);
+				} else {
+					for (int i = nt.getNumParam(); i < i1; ++i) {
+						CommonTree t = (CommonTree) args.getChild(i);
+						if (t.token.getType() != ID) {
+							emitErrorMessage(sm.getToken(),
+							"Arguments for synthesized attributes must be only an identifier");
+						}
 					}
 				}
 			}
@@ -150,15 +153,15 @@ tokens {
 grammarDef[Grammar g] :
     {
       grammar = g;
+      ntcalls = new ArrayList<CommonTree>();
       isAddingRules = false;
+      isNewRule = true;
     }
     'apeg'! ID ';'!
     functions
     rule+
     {
-    	for (int i = 0; i < ntcalls.size(); ++i) {
-    		verifNTCall(ntcalls.get(i));
-    	}
+    	verifNTCalls();
     }
     ;
 
@@ -185,19 +188,49 @@ functions :
     -> ^(FILES )
   ;
 
-addrules : { isAddingRules = true; } rule+ ;
+addrules[Grammar g] :
+	{
+		grammar = g;
+		isAddingRules = true;
+		ntcalls = new ArrayList<CommonTree>();
+	}
+	rule+
+	{
+		verifNTCalls();
+	}
+	;
 
 // A definiton of an APEG rule
 rule
 @after{
-	currNT.setPegExpr($t.tree);
+	if (currNT != null) {
+		if (isNewRule) {
+			currNT.setPegExpr($t.tree);
+		} else {
+			CommonTree root = (CommonTree) adaptor.create(AdaptablePEGLexer.CHOICE, "CHOICE");
+			root.addChild(currNT.getPegExpr());
+			root.addChild($t.tree);
+			currNT.setPegExpr(root);
+			System.out.println("Rule modified: " + root.toStringTree());
+		}
+	}
 }
   :
   ID
 	{
-		currNT = grammar.addNonTerminal($ID.text);
-		if (currNT == null && !isAddingRules) {
-			emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
+		if (isAddingRules) {
+			currNT = grammar.getNonTerminal($ID.text);
+			if (currNT == null) {
+				isNewRule = true;
+				currNT = grammar.addNonTerminal($ID.text);
+			} else {
+				isNewRule = false;
+			}
+		} else {
+			currNT = grammar.addNonTerminal($ID.text);
+			if (currNT == null) {
+				emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
+			}
 		}
 	}
   d1=optDecls[Attribute.Category.PARAM]
@@ -236,8 +269,10 @@ optLocals[Attribute.Category c] :
 varDecl[Attribute.Category c] :
   type ID
   {
-    if (currNT != null) {
-      if (currNT.addAttribute($ID.text, null, c) == null) {
+    if (isAddingRules && !isNewRule) {
+        emitErrorMessage($ID, "Declaration of attributes not allowed when extending existing rule.");
+    } else if (currNT != null) {
+      if (currNT.addAttribute($ID.text, $type.typeSymbol, c) == null) {
         emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
       }
     }
@@ -245,8 +280,8 @@ varDecl[Attribute.Category c] :
     -> ^(VARDECL type ID)
   ;
 
-type :
-  ID
+type returns[Type typeSymbol]:
+  ID { $typeSymbol = new Type($ID.text); }
   ;
 
 // Definition of the right side of a APEG
@@ -319,9 +354,7 @@ peg_factor :
 
 ntcall
 @after{
-	if (!isAddingRules) {
-		ntcalls.add($ntcall.tree);
-	}
+	ntcalls.add($ntcall.tree);
 }
 :
   ID
@@ -338,12 +371,14 @@ assign :
   
 idAssign
 @after{
-	Attribute at = currNT.getAttribute($idAssign.text);
-	if (at == null) {
-		emitErrorMessage($t, "Attribute not found: " + $idAssign.text);
-	} else {
-		SemanticNode sm = (SemanticNode) $idAssign.tree;
-		sm.setSymbol(at);
+	if (currNT != null) {
+		Attribute at = currNT.getAttribute($idAssign.text);
+		if (at == null) {
+			emitErrorMessage($t, "Attribute not found: " + $idAssign.text);
+		} else {
+			SemanticNode sm = (SemanticNode) $idAssign.tree;
+			sm.setSymbol(at);
+		}
 	}
 }
   :
@@ -354,7 +389,13 @@ cond : cond2 (OP_OR^ cond2)* ;
 
 cond2 : cond3 (OP_AND^ cond3)* ;
 
-cond3 : expr relOp^ expr ;
+cond3 :
+	expr relOp^ expr
+	|
+	TRUE
+	|
+	FALSE
+	;
 
 termOptUnary :
   OP_SUB term -> ^(UNARY_SUB[$OP_SUB] term)
@@ -369,7 +410,7 @@ expr : termOptUnary (addOp^ term)* ;
 term : factor (mulOp^ factor)* ;
 
 factor :
-  attrORfunctioncall
+  attrORfuncall
   |
   number
   |
@@ -378,7 +419,7 @@ factor :
   '('! expr ')'!
   ;
 
-attrORfunctioncall
+attrORfuncall
 @init{
 	Symbol symbol = null;
 }
@@ -387,10 +428,16 @@ attrORfunctioncall
     	SemanticNode sm;
     	if (symbol instanceof Attribute) {
     		// if the resulting tree is just ID, then ID is at the root of the tree
-    		sm = (SemanticNode) $attrORfunctioncall.tree;
+    		sm = (SemanticNode) $attrORfuncall.tree;
     	} else if (symbol instanceof Function) {
     		// if the resulting tree is CALL, then ID is the first child of the tree
-    		sm = (SemanticNode) ((CommonTree) $attrORfunctioncall.tree).getChild(0);
+    		sm = (SemanticNode) ((CommonTree) $attrORfuncall.tree).getChild(0);
+    		// the second child of the tree is the list of arguments
+    		CommonTree t = (CommonTree) ((CommonTree) $attrORfuncall.tree).getChild(1);
+	    	Function f = (Function) symbol;
+	    	if (f.getNumParams() != t.getChildCount()) {
+	    		emitErrorMessage(sm.getToken(), "Wrong number of parameters");
+	    	}
     	} else {
     		throw new Error("Unexpected type for symbol at attribute or function call");
     	}
@@ -399,31 +446,25 @@ attrORfunctioncall
 }
   :
   ID (
-  	{
+    '(' actPars ')'
+    {
   		symbol = grammar.getFunction($ID.text);
         if (symbol == null) {
           emitErrorMessage($ID, "Function not found: " + $ID.text);
         }
-    }  
-    '(' actPars ')'
-    {
-    	Function f = (Function) symbol;
-    	int i1 = f.getNumParams();
-    	int i2 = $actPars.length;
-    	if (i1 != i2) {
-    		emitErrorMessage($ID, "Wrong number of parameters");
-    	}
     }    
-    -> ^(CALL[$ID,"CALL"] ID actPars)
-    |
+  -> ^(CALL[$ID,"CALL"] ID actPars)
+  |
     
     {
-    	symbol = currNT.getAttribute($ID.text);
-        if (symbol == null) {
-          emitErrorMessage($ID, "Attribute not found: " + $ID.text);
-        }
+    	if (currNT != null) {
+	    	symbol = currNT.getAttribute($ID.text);
+	        if (symbol == null) {
+	          emitErrorMessage($ID, "Attribute not found: " + $ID.text);
+	        }
+	    }
     }    
-    -> ID
+  -> ID
   )
   ;
 
@@ -438,10 +479,10 @@ designator :
     )*
     ;
 
-actPars returns[int length]: 
-  (expr { $length = 1; } (',' expr { $length = $length + 1; } )*)  -> ^(LIST expr*)
+actPars: 
+  (expr (',' expr )*)  -> ^(LIST expr*)
   |
-  { $length = 0; }  -> ^(LIST ); 
+    -> ^(LIST ); 
 
 relOp : OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE ;
 
@@ -465,8 +506,21 @@ OP_SUB : '-';
 OP_MUL : '*';
 OP_DIV : '/';
 OP_MOD : '%';
-STRING_LITERAL
-  : '\'' LITERAL_CHAR LITERAL_CHAR* '\''
+STRING_LITERAL:
+	'\'' LITERAL_CHAR LITERAL_CHAR* '\''
+  	{
+  	String s = $text;
+  	s = s.substring(1, s.length()-1);
+  	String r = "";
+  	for (int i = 0; i < s.length(); ++i) {
+  		char ch = s.charAt(i);
+  		if (ch != '\\') {
+  			r += ch;
+  		}
+  	}
+  	setText(r);
+//  	System.out.println("STRING : " + $text);
+  	}
   ;
 fragment LITERAL_CHAR
   : ESC
@@ -493,6 +547,8 @@ fragment XDIGIT :
   ;
 fragment LETTER : 'a'..'z' | 'A'..'Z';
 fragment DIGIT : '0'..'9';
+TRUE : 'true';
+FALSE : 'false';
 ID : LETTER (LETTER | DIGIT | '_')*;
 INT_NUMBER : DIGIT+;
 RANGE_PAIR : LETTER '-' LETTER | DIGIT '-' DIGIT;
