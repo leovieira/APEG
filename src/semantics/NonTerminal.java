@@ -107,7 +107,6 @@ public class NonTerminal extends Symbol {
 		// Isso permitir inserir novos atributos locais sem alterar o anterior
 		while(it.hasNext())
 			atr.add(it.next());
-		
 		// --- VLADIMIR
 		// faltou colocar os atributos no objeto
 		nt.attrs = atr;
