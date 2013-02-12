@@ -10,9 +10,9 @@ import java.util.List;
 
 public class Result {
 	private int next_pos;
-	private List<Object> returns_attr;
+	private Object[] returns_attr;
 	
-	public Result(int pos, List<Object> attr) {
+	public Result(int pos, Object[] attr) {
 		this.next_pos = pos;
 		this.returns_attr = attr;
 	}
@@ -25,11 +25,11 @@ public class Result {
 		this.next_pos = next_pos;
 	}
 
-	public List<Object> getReturns_attr() {
+	public Object[] getReturns_attr() {
 		return returns_attr;
 	}
 
-	public void setReturns_attr(List<Object> returns_attr) {
+	public void setReturns_attr(Object[] returns_attr) {
 		this.returns_attr = returns_attr;
 	}
 }

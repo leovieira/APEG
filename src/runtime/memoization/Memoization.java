@@ -31,17 +31,17 @@ public class Memoization {
 	 * @return An object that represent the next position and the values of the 
 	 *         synthesized attributes or null if there is not a memoization
 	 */
-	public Result getMemoization(String nonterminal, List<Object> attr, int pos) {
+	public Result getMemoization(String nonterminal, Object[] attr, int pos) {
 		//disable memoization
 		return null;
-		/*
-		Entry entry = new Entry(nonterminal, pos, attr);
+		
+		/*Entry entry = new Entry(nonterminal, pos, attr);
 		return map.get(entry);*/
 		
 	}
 	
-	public Result addMemoization(String nonterminal, List<Object> attr, int pos,
-			                    int next_pos, List<Object> result_attr) {
+	public Result addMemoization(String nonterminal, Object[] attr, int pos,
+			                    int next_pos, Object[] result_attr) {
 		
 		Entry entry = new Entry(nonterminal, pos, attr);
 		Result resp = new Result(next_pos, result_attr);
@@ -58,9 +58,9 @@ public class Memoization {
 	protected class Entry {
 		private String non_term;
 		private int pos;
-		private List<Object> inh_attr;
+		private Object[] inh_attr;
 
-		public Entry(String non_ter, int pos, List<Object> attr) {
+		public Entry(String non_ter, int pos, Object[] attr) {
 			this.non_term = non_ter;
 			this.pos = pos;
 			this.inh_attr = attr;
@@ -82,11 +82,11 @@ public class Memoization {
 			this.non_term = non_term;
 		}
 
-		public List<Object> getInh_attr() {
+		public Object[] getInh_attr() {
 			return inh_attr;
 		}
 
-		public void setInh_attr(List<Object> inh_attr) {
+		public void setInh_attr(Object[] inh_attr) {
 			this.inh_attr = inh_attr;
 		}
 

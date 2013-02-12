@@ -171,12 +171,12 @@ public class Interpreter {
 			 * creating a list with the values of the attributes
 			 */
 			// List of inherited attributes
-			ArrayList<Object> attr = new ArrayList<Object>();
+			Object[] attr = new Object[nt.getNumParam()];
 			
 			// code for eval inherited attributes
 			for(int i = 0; i < nt.getNumParam(); ++i) {
 				Object x = eval((CommonTree)t.getChild(i));
-				attr.add(x);
+				attr[i] = x;
 //				System.out.print(" " + x);
 			}
 //			System.out.println();
@@ -188,9 +188,9 @@ public class Interpreter {
 				// Atualiza os valores do ambiente
 				int first = nt.getNumParam();
 				int last = first + nt.getNumRet();
-				List<Object> list = result.getReturns_attr();				
+				Object[] list = result.getReturns_attr();				
 				for(int i = first; i < last; i++) {
-					Object x = list.get(i);
+					Object x = list[i];
 //					System.out.print(x + " ");
 					SemanticNode y = (SemanticNode) t.getChild(i);
 					currEnvironment().setValue(((Attribute) y.getSymbol()).getIndex(), x);
@@ -205,7 +205,7 @@ public class Interpreter {
 			// Creating a environment and populate it
 			Environment env = buildEnvironment(nt);		
 			for (int i = 0; i < nt.getNumParam(); ++i)
-				env.setValue(i, attr.get(i));
+				env.setValue(i, attr[i]);
 
 			environments.push(env);
 	
@@ -242,7 +242,7 @@ public class Interpreter {
 			/**
 			 * create a List of returns values
 			 */
-			List<Object> result_attr = new ArrayList<Object>();
+			Object[] result_attr = new Object[nt.getNumRet()];
 			if (ret >= 0) {
 				int first = nt.getNumParam();
 				int last = first + nt.getNumRet();
@@ -254,7 +254,7 @@ public class Interpreter {
 					/**
 					 * adding Object x on the List
 					 */
-					result_attr.add(x);
+					result_attr[i-first] = x;
 				}
 			}
 //			System.out.println("----------------");
