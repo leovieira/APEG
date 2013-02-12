@@ -4,6 +4,7 @@ import util.Util;
 public class Test {
 	
 	public static void main(String args[]) throws Exception {
+
 		Util.testeGrammar("input/teste01.txt", "input/teste01_input.txt", "literal");
 		Util.testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S1");
 		Util.testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S2");
@@ -15,6 +16,7 @@ public class Test {
 		Util.testeGrammar("input/teste05.txt", "input/teste05_input.txt", "root");
 		Util.testeGrammar("input/teste06.txt", "input/teste06_input.txt", "literal3", true);
 		Util.testeGrammar("input/teste06a.txt", "input/teste06_input.txt", "literal3", true);
+		Util.testeGrammar("input/teste06b.txt", "input/teste06_input.txt", "literal3", true);
 		Util.testeGrammar("input/teste07.txt", "input/teste07_input.txt", "block", true);
 		Util.testeGrammar("input/teste07a.txt", "input/teste07_input.txt", "block", true);
 		Object args8[] = new Object[1];

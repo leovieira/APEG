@@ -1,0 +1,25 @@
+apeg adapdatadependent;
+
+functions AdaptableFunctions;
+
+literal3[Grammar g] : literal<g> literal<g> literal<g> !. ;
+
+literal[Grammar g] locals[int n, Grammar g1]:
+	number<n>
+	{ g1 = addRule(copyGrammar(g), concat(concat('strN : ', concatN('CHAR ', n)), ';')) ; }
+	'['
+	strN<g1>
+	']'
+    ;
+
+strN[Grammar g]:
+    {? false }
+	;
+
+CHAR : . ;
+
+number returns[int r] locals[String t] :
+  t=digit+ { r = strToInt(t); }
+  ;
+  
+digit : [0-9] ;

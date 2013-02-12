@@ -1,5 +1,8 @@
 package util;
 
+import java.io.StringWriter;
+import java.text.Normalizer;
+
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -100,8 +103,59 @@ public class Util {
 
 	}
 
+	public static String formatString(String s) {
+		StringBuilder sb = new StringBuilder();
+		int i = 0;
+		while (i < s.length()) {
+			char ch = s.charAt(i);
+			if (ch != '\\') {
+				sb.append(ch);
+				++i;
+			} else {				
+				++i;
+				if (i == s.length()) {
+					break;
+				}
+				ch = s.charAt(i);
+				++i;
+				switch (ch) {
+				case '\\':
+					sb.append('\\');
+					break;
+				case 'n':
+					sb.append('\n');
+					break;
+				case 'r':
+					sb.append('\r');
+					break;
+				case 'f':
+					sb.append('\f');
+					break;
+				case 't':
+					sb.append('\t');
+					break;
+				case '\"':
+					sb.append('\"');
+					break;
+				case '\'':
+					sb.append('\'');
+					break;
+				default :
+					--i;
+				}
+			}
+		}
+		return sb.toString();
+	}
+	
+	
 	public static void main(String args[]) {
-
+		String s = "a\'\t\"b\n\\c";
+		System.out.println(s);
+		String s1 = "a\\\'\\t\\\"b\\n\\\\c";
+		System.out.println(s1);
+		s1 = formatString(s1);
+		System.out.println(s1);		
 	}
 	
 }

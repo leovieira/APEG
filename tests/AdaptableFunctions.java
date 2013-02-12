@@ -31,6 +31,10 @@ public class AdaptableFunctions {
 		return resp;
 	}
 	
+	public static int strToInt(String s) {
+		return Integer.parseInt(s);
+	}
+	
 	public static Grammar addRule(Grammar g, String rule) throws Exception {
 		ANTLRStringStream input = new ANTLRStringStream(rule);
 		AdaptablePEGLexer lexer = new AdaptablePEGLexer(input);

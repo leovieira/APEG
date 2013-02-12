@@ -310,14 +310,41 @@ public class Interpreter {
 			// I suppose there is exactly one child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			int ret = pos;
-			int ret1 = ret;
+			int ret1;
 			while (true) {
-				ret1 = process(t, ret1);
+				ret1 = process(t, ret);
 				if (ret1 < 0) {
 					return ret;
 				}
 				ret = ret1;
 			}
+		}
+		
+		case AdaptablePEGLexer.ONE_REPEAT: {
+			// I suppose there is exactly one child
+			CommonTree t = (CommonTree) tree.getChild(0);
+			int ret = process(t, pos);
+			if (ret < 0) {
+				return ret;
+			}
+			int ret1;
+			while (true) {
+				ret1 = process(t, ret);
+				if (ret1 < 0) {
+					return ret;
+				}
+				ret = ret1;
+			}
+		}
+		
+		case AdaptablePEGLexer.OPTIONAL: {
+			// I suppose there is exactly one child
+			CommonTree t = (CommonTree) tree.getChild(0);
+			int ret = process(t, pos);
+			if (ret < 0) {
+				ret = pos;
+			}
+			return ret;
 		}
 		
 		case AdaptablePEGLexer.COND: {

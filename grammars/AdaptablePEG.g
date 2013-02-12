@@ -42,6 +42,7 @@ tokens {
 @lexer::header
 {
     package srcparser;
+    import util.Util;
 }
 
 @members{
@@ -525,14 +526,8 @@ STRING_LITERAL:
   	{
   	String s = $text;
   	s = s.substring(1, s.length()-1);
-  	String r = "";
-  	for (int i = 0; i < s.length(); ++i) {
-  		char ch = s.charAt(i);
-  		if (ch != '\\') {
-  			r += ch;
-  		}
-  	}
-  	setText(r);
+  	s = Util.formatString(s);
+  	setText(s);
 //  	System.out.println("STRING : " + $text);
   	}
   ;
@@ -549,7 +544,6 @@ fragment ESC : '\\'
     | '"'
     | '\''
     | '\\'
-    | '>'
     | 'u' XDIGIT XDIGIT XDIGIT XDIGIT
     | . // unknown, leave as it is
     )
