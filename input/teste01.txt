@@ -28,13 +28,4 @@ digit returns [int x1] :
 
 CHAR : . ;
 
-f locals[int x] : digit<x> ;
 
-/*
-a : literal<1, 2>;
-a : {? n > 0 } ;
-b : strN;
-c : strN<1+2>;
-d : digit<1>;
-e locals[int x] : digit<x>;
-*/
