@@ -1,4 +1,4 @@
-// $ANTLR 3.5 C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g 2013-02-11 20:21:20
+// $ANTLR 3.5 C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g 2013-02-12 02:35:53
 
     package srcparser;
 
@@ -11,8 +11,6 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class AdaptablePEGLexer extends Lexer {
 	public static final int EOF=-1;
-	public static final int T__54=54;
-	public static final int T__55=55;
 	public static final int T__56=56;
 	public static final int T__57=57;
 	public static final int T__58=58;
@@ -29,6 +27,8 @@ public class AdaptablePEGLexer extends Lexer {
 	public static final int T__69=69;
 	public static final int T__70=70;
 	public static final int T__71=71;
+	public static final int T__72=72;
+	public static final int T__73=73;
 	public static final int AND_LOOKAHEAD=4;
 	public static final int ANY=5;
 	public static final int ARRAY_REF=6;
@@ -42,43 +42,45 @@ public class AdaptablePEGLexer extends Lexer {
 	public static final int DOT=14;
 	public static final int ESC=15;
 	public static final int EXPONENT=16;
-	public static final int FILES=17;
-	public static final int ID=18;
-	public static final int INT_NUMBER=19;
-	public static final int LAMBDA=20;
-	public static final int LETTER=21;
-	public static final int LINE_COMMENT=22;
-	public static final int LIST=23;
-	public static final int LITERAL_CHAR=24;
-	public static final int NONTERM=25;
-	public static final int NOT_LOOKAHEAD=26;
-	public static final int ONE_REPEAT=27;
-	public static final int OPTIONAL=28;
-	public static final int OP_ADD=29;
-	public static final int OP_AND=30;
-	public static final int OP_DIV=31;
-	public static final int OP_EQ=32;
-	public static final int OP_GE=33;
-	public static final int OP_GT=34;
-	public static final int OP_LE=35;
-	public static final int OP_LT=36;
-	public static final int OP_MOD=37;
-	public static final int OP_MUL=38;
-	public static final int OP_NE=39;
-	public static final int OP_NOT=40;
-	public static final int OP_OR=41;
-	public static final int OP_SUB=42;
-	public static final int RANGE=43;
-	public static final int RANGE_PAIR=44;
-	public static final int REAL_NUMBER=45;
-	public static final int REPEAT=46;
-	public static final int RULE=47;
-	public static final int SEQ=48;
-	public static final int STRING_LITERAL=49;
-	public static final int UNARY_SUB=50;
-	public static final int VARDECL=51;
-	public static final int WS=52;
-	public static final int XDIGIT=53;
+	public static final int FALSE=17;
+	public static final int FILES=18;
+	public static final int ID=19;
+	public static final int INT_NUMBER=20;
+	public static final int LAMBDA=21;
+	public static final int LETTER=22;
+	public static final int LINE_COMMENT=23;
+	public static final int LIST=24;
+	public static final int LITERAL_CHAR=25;
+	public static final int NONTERM=26;
+	public static final int NOT_LOOKAHEAD=27;
+	public static final int ONE_REPEAT=28;
+	public static final int OPTIONAL=29;
+	public static final int OP_ADD=30;
+	public static final int OP_AND=31;
+	public static final int OP_DIV=32;
+	public static final int OP_EQ=33;
+	public static final int OP_GE=34;
+	public static final int OP_GT=35;
+	public static final int OP_LE=36;
+	public static final int OP_LT=37;
+	public static final int OP_MOD=38;
+	public static final int OP_MUL=39;
+	public static final int OP_NE=40;
+	public static final int OP_NOT=41;
+	public static final int OP_OR=42;
+	public static final int OP_SUB=43;
+	public static final int RANGE=44;
+	public static final int RANGE_PAIR=45;
+	public static final int REAL_NUMBER=46;
+	public static final int REPEAT=47;
+	public static final int RULE=48;
+	public static final int SEQ=49;
+	public static final int STRING_LITERAL=50;
+	public static final int TRUE=51;
+	public static final int UNARY_SUB=52;
+	public static final int VARDECL=53;
+	public static final int WS=54;
+	public static final int XDIGIT=55;
 
 	// delegates
 	// delegators
@@ -95,55 +97,15 @@ public class AdaptablePEGLexer extends Lexer {
 	}
 	@Override public String getGrammarFileName() { return "C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g"; }
 
-	// $ANTLR start "T__54"
-	public final void mT__54() throws RecognitionException {
-		try {
-			int _type = T__54;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:6:7: ( '&' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:6:9: '&'
-			{
-			match('&'); 
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__54"
-
-	// $ANTLR start "T__55"
-	public final void mT__55() throws RecognitionException {
-		try {
-			int _type = T__55;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:7:7: ( '(' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:7:9: '('
-			{
-			match('('); 
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__55"
-
 	// $ANTLR start "T__56"
 	public final void mT__56() throws RecognitionException {
 		try {
 			int _type = T__56;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:8:7: ( ')' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:8:9: ')'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:6:7: ( '&' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:6:9: '&'
 			{
-			match(')'); 
+			match('&'); 
 			}
 
 			state.type = _type;
@@ -160,10 +122,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__57;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:9:7: ( ',' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:9:9: ','
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:7:7: ( '(' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:7:9: '('
 			{
-			match(','); 
+			match('('); 
 			}
 
 			state.type = _type;
@@ -180,10 +142,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__58;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:10:7: ( '.' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:10:9: '.'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:8:7: ( ')' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:8:9: ')'
 			{
-			match('.'); 
+			match(')'); 
 			}
 
 			state.type = _type;
@@ -200,10 +162,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__59;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:11:7: ( ':' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:11:9: ':'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:9:7: ( ',' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:9:9: ','
 			{
-			match(':'); 
+			match(','); 
 			}
 
 			state.type = _type;
@@ -220,10 +182,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__60;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:12:7: ( ';' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:12:9: ';'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:10:7: ( '.' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:10:9: '.'
 			{
-			match(';'); 
+			match('.'); 
 			}
 
 			state.type = _type;
@@ -240,10 +202,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__61;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:13:7: ( '=' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:13:9: '='
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:11:7: ( ':' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:11:9: ':'
 			{
-			match('='); 
+			match(':'); 
 			}
 
 			state.type = _type;
@@ -260,10 +222,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__62;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:14:7: ( '?' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:14:9: '?'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:12:7: ( ';' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:12:9: ';'
 			{
-			match('?'); 
+			match(';'); 
 			}
 
 			state.type = _type;
@@ -280,10 +242,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__63;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:15:7: ( '[' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:15:9: '['
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:13:7: ( '=' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:13:9: '='
 			{
-			match('['); 
+			match('='); 
 			}
 
 			state.type = _type;
@@ -300,10 +262,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__64;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:16:7: ( ']' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:16:9: ']'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:14:7: ( '?' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:14:9: '?'
 			{
-			match(']'); 
+			match('?'); 
 			}
 
 			state.type = _type;
@@ -320,11 +282,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__65;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:17:7: ( 'apeg' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:17:9: 'apeg'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:15:7: ( '[' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:15:9: '['
 			{
-			match("apeg"); 
-
+			match('['); 
 			}
 
 			state.type = _type;
@@ -341,11 +302,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__66;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:18:7: ( 'functions' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:18:9: 'functions'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:16:7: ( ']' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:16:9: ']'
 			{
-			match("functions"); 
-
+			match(']'); 
 			}
 
 			state.type = _type;
@@ -362,10 +322,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__67;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:19:7: ( 'locals' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:19:9: 'locals'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:17:7: ( 'apeg' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:17:9: 'apeg'
 			{
-			match("locals"); 
+			match("apeg"); 
 
 			}
 
@@ -383,10 +343,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__68;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:20:7: ( 'returns' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:20:9: 'returns'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:18:7: ( 'functions' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:18:9: 'functions'
 			{
-			match("returns"); 
+			match("functions"); 
 
 			}
 
@@ -404,10 +364,11 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__69;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:21:7: ( '{' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:21:9: '{'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:19:7: ( 'locals' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:19:9: 'locals'
 			{
-			match('{'); 
+			match("locals"); 
+
 			}
 
 			state.type = _type;
@@ -424,10 +385,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__70;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:22:7: ( '{?' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:22:9: '{?'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:20:7: ( 'returns' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:20:9: 'returns'
 			{
-			match("{?"); 
+			match("returns"); 
 
 			}
 
@@ -445,6 +406,47 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = T__71;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:21:7: ( '{' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:21:9: '{'
+			{
+			match('{'); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__71"
+
+	// $ANTLR start "T__72"
+	public final void mT__72() throws RecognitionException {
+		try {
+			int _type = T__72;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:22:7: ( '{?' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:22:9: '{?'
+			{
+			match("{?"); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__72"
+
+	// $ANTLR start "T__73"
+	public final void mT__73() throws RecognitionException {
+		try {
+			int _type = T__73;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:23:7: ( '}' )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:23:9: '}'
 			{
@@ -458,15 +460,15 @@ public class AdaptablePEGLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__71"
+	// $ANTLR end "T__73"
 
 	// $ANTLR start "OP_AND"
 	public final void mOP_AND() throws RecognitionException {
 		try {
 			int _type = OP_AND;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:454:8: ( '&&' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:454:10: '&&'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:495:8: ( '&&' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:495:10: '&&'
 			{
 			match("&&"); 
 
@@ -486,8 +488,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_OR;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:455:7: ( '||' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:455:9: '||'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:496:7: ( '||' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:496:9: '||'
 			{
 			match("||"); 
 
@@ -507,8 +509,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_NOT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:456:8: ( '!' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:456:10: '!'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:497:8: ( '!' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:497:10: '!'
 			{
 			match('!'); 
 			}
@@ -527,8 +529,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_EQ;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:457:7: ( '==' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:457:9: '=='
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:498:7: ( '==' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:498:9: '=='
 			{
 			match("=="); 
 
@@ -548,8 +550,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_LT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:458:7: ( '<' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:458:9: '<'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:499:7: ( '<' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:499:9: '<'
 			{
 			match('<'); 
 			}
@@ -568,8 +570,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_GT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:459:7: ( '>' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:459:9: '>'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:500:7: ( '>' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:500:9: '>'
 			{
 			match('>'); 
 			}
@@ -588,8 +590,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_LE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:460:7: ( '<=' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:460:9: '<='
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:501:7: ( '<=' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:501:9: '<='
 			{
 			match("<="); 
 
@@ -609,8 +611,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_GE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:461:7: ( '>=' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:461:9: '>='
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:502:7: ( '>=' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:502:9: '>='
 			{
 			match(">="); 
 
@@ -630,8 +632,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_NE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:462:7: ( '!=' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:462:9: '!='
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:503:7: ( '!=' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:503:9: '!='
 			{
 			match("!="); 
 
@@ -651,8 +653,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_ADD;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:463:8: ( '+' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:463:10: '+'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:504:8: ( '+' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:504:10: '+'
 			{
 			match('+'); 
 			}
@@ -671,8 +673,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_SUB;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:464:8: ( '-' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:464:10: '-'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:505:8: ( '-' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:505:10: '-'
 			{
 			match('-'); 
 			}
@@ -691,8 +693,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_MUL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:465:8: ( '*' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:465:10: '*'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:506:8: ( '*' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:506:10: '*'
 			{
 			match('*'); 
 			}
@@ -711,8 +713,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_DIV;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:466:8: ( '/' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:466:10: '/'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:507:8: ( '/' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:507:10: '/'
 			{
 			match('/'); 
 			}
@@ -731,8 +733,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = OP_MOD;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:467:8: ( '%' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:467:10: '%'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:508:8: ( '%' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:508:10: '%'
 			{
 			match('%'); 
 			}
@@ -751,13 +753,13 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = STRING_LITERAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:469:3: ( '\\'' LITERAL_CHAR ( LITERAL_CHAR )* '\\'' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:469:5: '\\'' LITERAL_CHAR ( LITERAL_CHAR )* '\\''
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:510:3: ( '\\'' LITERAL_CHAR ( LITERAL_CHAR )* '\\'' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:510:5: '\\'' LITERAL_CHAR ( LITERAL_CHAR )* '\\''
 			{
 			match('\''); 
 			mLITERAL_CHAR(); 
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:469:23: ( LITERAL_CHAR )*
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:510:23: ( LITERAL_CHAR )*
 			loop1:
 			while (true) {
 				int alt1=2;
@@ -768,7 +770,7 @@ public class AdaptablePEGLexer extends Lexer {
 
 				switch (alt1) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:469:23: LITERAL_CHAR
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:510:23: LITERAL_CHAR
 					{
 					mLITERAL_CHAR(); 
 
@@ -795,7 +797,7 @@ public class AdaptablePEGLexer extends Lexer {
 	// $ANTLR start "LITERAL_CHAR"
 	public final void mLITERAL_CHAR() throws RecognitionException {
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:472:3: ( ESC |~ ( '\\'' | '\\\\' ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:513:3: ( ESC |~ ( '\\'' | '\\\\' ) )
 			int alt2=2;
 			int LA2_0 = input.LA(1);
 			if ( (LA2_0=='\\') ) {
@@ -813,14 +815,14 @@ public class AdaptablePEGLexer extends Lexer {
 
 			switch (alt2) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:472:5: ESC
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:513:5: ESC
 					{
 					mESC(); 
 
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:473:5: ~ ( '\\'' | '\\\\' )
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:514:5: ~ ( '\\'' | '\\\\' )
 					{
 					if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '&')||(input.LA(1) >= '(' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
 						input.consume();
@@ -844,11 +846,11 @@ public class AdaptablePEGLexer extends Lexer {
 	// $ANTLR start "ESC"
 	public final void mESC() throws RecognitionException {
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:475:14: ( '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . ) )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:475:16: '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:516:14: ( '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:516:16: '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . )
 			{
 			match('\\'); 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:476:5: ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:517:5: ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '\\\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . )
 			int alt3=11;
 			int LA3_0 = input.LA(1);
 			if ( (LA3_0=='n') ) {
@@ -901,61 +903,61 @@ public class AdaptablePEGLexer extends Lexer {
 
 			switch (alt3) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:476:7: 'n'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:517:7: 'n'
 					{
 					match('n'); 
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:477:7: 'r'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:518:7: 'r'
 					{
 					match('r'); 
 					}
 					break;
 				case 3 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:478:7: 't'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:519:7: 't'
 					{
 					match('t'); 
 					}
 					break;
 				case 4 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:479:7: 'b'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:520:7: 'b'
 					{
 					match('b'); 
 					}
 					break;
 				case 5 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:480:7: 'f'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:521:7: 'f'
 					{
 					match('f'); 
 					}
 					break;
 				case 6 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:481:7: '\"'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:522:7: '\"'
 					{
 					match('\"'); 
 					}
 					break;
 				case 7 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:482:7: '\\''
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:523:7: '\\''
 					{
 					match('\''); 
 					}
 					break;
 				case 8 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:483:7: '\\\\'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:524:7: '\\\\'
 					{
 					match('\\'); 
 					}
 					break;
 				case 9 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:484:7: '>'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:525:7: '>'
 					{
 					match('>'); 
 					}
 					break;
 				case 10 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:485:7: 'u' XDIGIT XDIGIT XDIGIT XDIGIT
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:526:7: 'u' XDIGIT XDIGIT XDIGIT XDIGIT
 					{
 					match('u'); 
 					mXDIGIT(); 
@@ -969,7 +971,7 @@ public class AdaptablePEGLexer extends Lexer {
 					}
 					break;
 				case 11 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:486:7: .
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:527:7: .
 					{
 					matchAny(); 
 					}
@@ -989,7 +991,7 @@ public class AdaptablePEGLexer extends Lexer {
 	// $ANTLR start "XDIGIT"
 	public final void mXDIGIT() throws RecognitionException {
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:489:17: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:530:17: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:
 			{
 			if ( (input.LA(1) >= '0' && input.LA(1) <= '9')||(input.LA(1) >= 'A' && input.LA(1) <= 'F')||(input.LA(1) >= 'a' && input.LA(1) <= 'f') ) {
@@ -1012,7 +1014,7 @@ public class AdaptablePEGLexer extends Lexer {
 	// $ANTLR start "LETTER"
 	public final void mLETTER() throws RecognitionException {
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:494:17: ( 'a' .. 'z' | 'A' .. 'Z' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:535:17: ( 'a' .. 'z' | 'A' .. 'Z' )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:
 			{
 			if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
@@ -1035,7 +1037,7 @@ public class AdaptablePEGLexer extends Lexer {
 	// $ANTLR start "DIGIT"
 	public final void mDIGIT() throws RecognitionException {
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:495:16: ( '0' .. '9' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:536:16: ( '0' .. '9' )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:
 			{
 			if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
@@ -1055,17 +1057,59 @@ public class AdaptablePEGLexer extends Lexer {
 	}
 	// $ANTLR end "DIGIT"
 
+	// $ANTLR start "TRUE"
+	public final void mTRUE() throws RecognitionException {
+		try {
+			int _type = TRUE;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:537:6: ( 'true' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:537:8: 'true'
+			{
+			match("true"); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "TRUE"
+
+	// $ANTLR start "FALSE"
+	public final void mFALSE() throws RecognitionException {
+		try {
+			int _type = FALSE;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:538:7: ( 'false' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:538:9: 'false'
+			{
+			match("false"); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "FALSE"
+
 	// $ANTLR start "ID"
 	public final void mID() throws RecognitionException {
 		try {
 			int _type = ID;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:496:4: ( LETTER ( LETTER | DIGIT | '_' )* )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:496:6: LETTER ( LETTER | DIGIT | '_' )*
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:539:4: ( LETTER ( LETTER | DIGIT | '_' )* )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:539:6: LETTER ( LETTER | DIGIT | '_' )*
 			{
 			mLETTER(); 
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:496:13: ( LETTER | DIGIT | '_' )*
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:539:13: ( LETTER | DIGIT | '_' )*
 			loop4:
 			while (true) {
 				int alt4=2;
@@ -1110,10 +1154,10 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = INT_NUMBER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:497:12: ( ( DIGIT )+ )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:497:14: ( DIGIT )+
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:540:12: ( ( DIGIT )+ )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:540:14: ( DIGIT )+
 			{
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:497:14: ( DIGIT )+
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:540:14: ( DIGIT )+
 			int cnt5=0;
 			loop5:
 			while (true) {
@@ -1162,7 +1206,7 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = RANGE_PAIR;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:498:12: ( LETTER '-' LETTER | DIGIT '-' DIGIT )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:541:12: ( LETTER '-' LETTER | DIGIT '-' DIGIT )
 			int alt6=2;
 			int LA6_0 = input.LA(1);
 			if ( ((LA6_0 >= 'A' && LA6_0 <= 'Z')||(LA6_0 >= 'a' && LA6_0 <= 'z')) ) {
@@ -1180,7 +1224,7 @@ public class AdaptablePEGLexer extends Lexer {
 
 			switch (alt6) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:498:14: LETTER '-' LETTER
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:541:14: LETTER '-' LETTER
 					{
 					mLETTER(); 
 
@@ -1190,7 +1234,7 @@ public class AdaptablePEGLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:498:34: DIGIT '-' DIGIT
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:541:34: DIGIT '-' DIGIT
 					{
 					mDIGIT(); 
 
@@ -1215,7 +1259,7 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = REAL_NUMBER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:499:13: ( ( DIGIT )+ ( '.' ( DIGIT )* )? ( EXPONENT )? | '.' ( DIGIT )+ ( EXPONENT )? )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:542:13: ( ( DIGIT )+ ( '.' ( DIGIT )* )? ( EXPONENT )? | '.' ( DIGIT )+ ( EXPONENT )? )
 			int alt13=2;
 			int LA13_0 = input.LA(1);
 			if ( ((LA13_0 >= '0' && LA13_0 <= '9')) ) {
@@ -1233,9 +1277,9 @@ public class AdaptablePEGLexer extends Lexer {
 
 			switch (alt13) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:500:3: ( DIGIT )+ ( '.' ( DIGIT )* )? ( EXPONENT )?
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:543:3: ( DIGIT )+ ( '.' ( DIGIT )* )? ( EXPONENT )?
 					{
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:500:3: ( DIGIT )+
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:543:3: ( DIGIT )+
 					int cnt7=0;
 					loop7:
 					while (true) {
@@ -1268,7 +1312,7 @@ public class AdaptablePEGLexer extends Lexer {
 						cnt7++;
 					}
 
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:500:10: ( '.' ( DIGIT )* )?
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:543:10: ( '.' ( DIGIT )* )?
 					int alt9=2;
 					int LA9_0 = input.LA(1);
 					if ( (LA9_0=='.') ) {
@@ -1276,10 +1320,10 @@ public class AdaptablePEGLexer extends Lexer {
 					}
 					switch (alt9) {
 						case 1 :
-							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:500:11: '.' ( DIGIT )*
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:543:11: '.' ( DIGIT )*
 							{
 							match('.'); 
-							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:500:15: ( DIGIT )*
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:543:15: ( DIGIT )*
 							loop8:
 							while (true) {
 								int alt8=2;
@@ -1313,7 +1357,7 @@ public class AdaptablePEGLexer extends Lexer {
 
 					}
 
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:500:24: ( EXPONENT )?
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:543:24: ( EXPONENT )?
 					int alt10=2;
 					int LA10_0 = input.LA(1);
 					if ( (LA10_0=='E'||LA10_0=='e') ) {
@@ -1321,7 +1365,7 @@ public class AdaptablePEGLexer extends Lexer {
 					}
 					switch (alt10) {
 						case 1 :
-							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:500:24: EXPONENT
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:543:24: EXPONENT
 							{
 							mEXPONENT(); 
 
@@ -1333,10 +1377,10 @@ public class AdaptablePEGLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:502:3: '.' ( DIGIT )+ ( EXPONENT )?
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:545:3: '.' ( DIGIT )+ ( EXPONENT )?
 					{
 					match('.'); 
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:502:7: ( DIGIT )+
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:545:7: ( DIGIT )+
 					int cnt11=0;
 					loop11:
 					while (true) {
@@ -1369,7 +1413,7 @@ public class AdaptablePEGLexer extends Lexer {
 						cnt11++;
 					}
 
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:502:14: ( EXPONENT )?
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:545:14: ( EXPONENT )?
 					int alt12=2;
 					int LA12_0 = input.LA(1);
 					if ( (LA12_0=='E'||LA12_0=='e') ) {
@@ -1377,7 +1421,7 @@ public class AdaptablePEGLexer extends Lexer {
 					}
 					switch (alt12) {
 						case 1 :
-							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:502:14: EXPONENT
+							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:545:14: EXPONENT
 							{
 							mEXPONENT(); 
 
@@ -1402,8 +1446,8 @@ public class AdaptablePEGLexer extends Lexer {
 	// $ANTLR start "EXPONENT"
 	public final void mEXPONENT() throws RecognitionException {
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:504:19: ( ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:504:21: ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:547:19: ( ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:547:21: ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+
 			{
 			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
 				input.consume();
@@ -1413,7 +1457,7 @@ public class AdaptablePEGLexer extends Lexer {
 				recover(mse);
 				throw mse;
 			}
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:504:31: ( '+' | '-' )?
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:547:31: ( '+' | '-' )?
 			int alt14=2;
 			int LA14_0 = input.LA(1);
 			if ( (LA14_0=='+'||LA14_0=='-') ) {
@@ -1436,7 +1480,7 @@ public class AdaptablePEGLexer extends Lexer {
 
 			}
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:504:42: ( DIGIT )+
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:547:42: ( DIGIT )+
 			int cnt15=0;
 			loop15:
 			while (true) {
@@ -1483,8 +1527,8 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:505:4: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:505:6: ( ' ' | '\\t' | '\\r' | '\\n' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:548:4: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:548:6: ( ' ' | '\\t' | '\\r' | '\\n' )
 			{
 			if ( (input.LA(1) >= '\t' && input.LA(1) <= '\n')||input.LA(1)=='\r'||input.LA(1)==' ' ) {
 				input.consume();
@@ -1511,12 +1555,12 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:506:9: ( '/*' ( . )* '*/' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:506:11: '/*' ( . )* '*/'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:549:9: ( '/*' ( . )* '*/' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:549:11: '/*' ( . )* '*/'
 			{
 			match("/*"); 
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:506:16: ( . )*
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:549:16: ( . )*
 			loop16:
 			while (true) {
 				int alt16=2;
@@ -1537,7 +1581,7 @@ public class AdaptablePEGLexer extends Lexer {
 
 				switch (alt16) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:506:16: .
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:549:16: .
 					{
 					matchAny(); 
 					}
@@ -1567,12 +1611,12 @@ public class AdaptablePEGLexer extends Lexer {
 		try {
 			int _type = LINE_COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:507:14: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' )
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:507:16: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:550:14: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:550:16: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
 			{
 			match("//"); 
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:507:21: (~ ( '\\n' | '\\r' ) )*
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:550:21: (~ ( '\\n' | '\\r' ) )*
 			loop17:
 			while (true) {
 				int alt17=2;
@@ -1601,7 +1645,7 @@ public class AdaptablePEGLexer extends Lexer {
 				}
 			}
 
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:507:35: ( '\\r' )?
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:550:35: ( '\\r' )?
 			int alt18=2;
 			int LA18_0 = input.LA(1);
 			if ( (LA18_0=='\r') ) {
@@ -1609,7 +1653,7 @@ public class AdaptablePEGLexer extends Lexer {
 			}
 			switch (alt18) {
 				case 1 :
-					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:507:35: '\\r'
+					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:550:35: '\\r'
 					{
 					match('\r'); 
 					}
@@ -1632,133 +1676,133 @@ public class AdaptablePEGLexer extends Lexer {
 
 	@Override
 	public void mTokens() throws RecognitionException {
-		// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:8: ( T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | OP_AND | OP_OR | OP_NOT | OP_EQ | OP_LT | OP_GT | OP_LE | OP_GE | OP_NE | OP_ADD | OP_SUB | OP_MUL | OP_DIV | OP_MOD | STRING_LITERAL | ID | INT_NUMBER | RANGE_PAIR | REAL_NUMBER | WS | COMMENT | LINE_COMMENT )
-		int alt19=40;
+		// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:8: ( T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | OP_AND | OP_OR | OP_NOT | OP_EQ | OP_LT | OP_GT | OP_LE | OP_GE | OP_NE | OP_ADD | OP_SUB | OP_MUL | OP_DIV | OP_MOD | STRING_LITERAL | TRUE | FALSE | ID | INT_NUMBER | RANGE_PAIR | REAL_NUMBER | WS | COMMENT | LINE_COMMENT )
+		int alt19=42;
 		alt19 = dfa19.predict(input);
 		switch (alt19) {
 			case 1 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:10: T__54
-				{
-				mT__54(); 
-
-				}
-				break;
-			case 2 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:16: T__55
-				{
-				mT__55(); 
-
-				}
-				break;
-			case 3 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:22: T__56
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:10: T__56
 				{
 				mT__56(); 
 
 				}
 				break;
-			case 4 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:28: T__57
+			case 2 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:16: T__57
 				{
 				mT__57(); 
 
 				}
 				break;
-			case 5 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:34: T__58
+			case 3 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:22: T__58
 				{
 				mT__58(); 
 
 				}
 				break;
-			case 6 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:40: T__59
+			case 4 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:28: T__59
 				{
 				mT__59(); 
 
 				}
 				break;
-			case 7 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:46: T__60
+			case 5 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:34: T__60
 				{
 				mT__60(); 
 
 				}
 				break;
-			case 8 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:52: T__61
+			case 6 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:40: T__61
 				{
 				mT__61(); 
 
 				}
 				break;
-			case 9 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:58: T__62
+			case 7 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:46: T__62
 				{
 				mT__62(); 
 
 				}
 				break;
-			case 10 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:64: T__63
+			case 8 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:52: T__63
 				{
 				mT__63(); 
 
 				}
 				break;
-			case 11 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:70: T__64
+			case 9 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:58: T__64
 				{
 				mT__64(); 
 
 				}
 				break;
-			case 12 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:76: T__65
+			case 10 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:64: T__65
 				{
 				mT__65(); 
 
 				}
 				break;
-			case 13 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:82: T__66
+			case 11 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:70: T__66
 				{
 				mT__66(); 
 
 				}
 				break;
-			case 14 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:88: T__67
+			case 12 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:76: T__67
 				{
 				mT__67(); 
 
 				}
 				break;
-			case 15 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:94: T__68
+			case 13 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:82: T__68
 				{
 				mT__68(); 
 
 				}
 				break;
-			case 16 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:100: T__69
+			case 14 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:88: T__69
 				{
 				mT__69(); 
 
 				}
 				break;
-			case 17 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:106: T__70
+			case 15 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:94: T__70
 				{
 				mT__70(); 
 
 				}
 				break;
-			case 18 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:112: T__71
+			case 16 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:100: T__71
 				{
 				mT__71(); 
+
+				}
+				break;
+			case 17 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:106: T__72
+				{
+				mT__72(); 
+
+				}
+				break;
+			case 18 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:112: T__73
+				{
+				mT__73(); 
 
 				}
 				break;
@@ -1868,49 +1912,63 @@ public class AdaptablePEGLexer extends Lexer {
 				}
 				break;
 			case 34 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:224: ID
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:224: TRUE
+				{
+				mTRUE(); 
+
+				}
+				break;
+			case 35 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:229: FALSE
+				{
+				mFALSE(); 
+
+				}
+				break;
+			case 36 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:235: ID
 				{
 				mID(); 
 
 				}
 				break;
-			case 35 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:227: INT_NUMBER
+			case 37 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:238: INT_NUMBER
 				{
 				mINT_NUMBER(); 
 
 				}
 				break;
-			case 36 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:238: RANGE_PAIR
+			case 38 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:249: RANGE_PAIR
 				{
 				mRANGE_PAIR(); 
 
 				}
 				break;
-			case 37 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:249: REAL_NUMBER
+			case 39 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:260: REAL_NUMBER
 				{
 				mREAL_NUMBER(); 
 
 				}
 				break;
-			case 38 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:261: WS
+			case 40 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:272: WS
 				{
 				mWS(); 
 
 				}
 				break;
-			case 39 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:264: COMMENT
+			case 41 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:275: COMMENT
 				{
 				mCOMMENT(); 
 
 				}
 				break;
-			case 40 :
-				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:272: LINE_COMMENT
+			case 42 :
+				// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:1:283: LINE_COMMENT
 				{
 				mLINE_COMMENT(); 
 
@@ -1923,112 +1981,124 @@ public class AdaptablePEGLexer extends Lexer {
 
 	protected DFA19 dfa19 = new DFA19(this);
 	static final String DFA19_eotS =
-		"\1\uffff\1\40\3\uffff\1\41\2\uffff\1\44\3\uffff\4\46\1\54\2\uffff\1\56"+
-		"\1\60\1\62\3\uffff\1\65\2\uffff\1\46\1\66\7\uffff\1\46\2\uffff\3\46\14"+
-		"\uffff\1\66\4\46\1\100\3\46\1\uffff\4\46\1\110\2\46\1\uffff\1\113\1\46"+
-		"\1\uffff\1\115\1\uffff";
+		"\1\uffff\1\41\3\uffff\1\42\2\uffff\1\45\3\uffff\4\47\1\56\2\uffff\1\60"+
+		"\1\62\1\64\3\uffff\1\67\2\uffff\2\47\1\71\7\uffff\1\47\2\uffff\4\47\13"+
+		"\uffff\1\47\1\uffff\1\71\6\47\1\107\4\47\1\114\1\uffff\1\47\1\116\2\47"+
+		"\1\uffff\1\47\1\uffff\1\122\2\47\1\uffff\1\125\1\47\1\uffff\1\127\1\uffff";
 	static final String DFA19_eofS =
-		"\116\uffff";
+		"\130\uffff";
 	static final String DFA19_minS =
 		"\1\11\1\46\3\uffff\1\60\2\uffff\1\75\3\uffff\4\55\1\77\2\uffff\3\75\3"+
-		"\uffff\1\52\2\uffff\2\55\7\uffff\1\145\2\uffff\1\156\1\143\1\164\14\uffff"+
-		"\1\56\1\147\1\143\1\141\1\165\1\60\1\164\1\154\1\162\1\uffff\1\151\1\163"+
-		"\1\156\1\157\1\60\1\163\1\156\1\uffff\1\60\1\163\1\uffff\1\60\1\uffff";
+		"\uffff\1\52\2\uffff\3\55\7\uffff\1\145\2\uffff\1\156\1\154\1\143\1\164"+
+		"\13\uffff\1\165\1\uffff\1\56\1\147\1\143\1\163\1\141\1\165\1\145\1\60"+
+		"\1\164\1\145\1\154\1\162\1\60\1\uffff\1\151\1\60\1\163\1\156\1\uffff\1"+
+		"\157\1\uffff\1\60\1\163\1\156\1\uffff\1\60\1\163\1\uffff\1\60\1\uffff";
 	static final String DFA19_maxS =
 		"\1\175\1\46\3\uffff\1\71\2\uffff\1\75\3\uffff\1\160\1\165\1\157\1\145"+
-		"\1\77\2\uffff\3\75\3\uffff\1\57\2\uffff\1\55\1\145\7\uffff\1\145\2\uffff"+
-		"\1\156\1\143\1\164\14\uffff\1\145\1\147\1\143\1\141\1\165\1\172\1\164"+
-		"\1\154\1\162\1\uffff\1\151\1\163\1\156\1\157\1\172\1\163\1\156\1\uffff"+
+		"\1\77\2\uffff\3\75\3\uffff\1\57\2\uffff\1\162\1\55\1\145\7\uffff\1\145"+
+		"\2\uffff\1\156\1\154\1\143\1\164\13\uffff\1\165\1\uffff\1\145\1\147\1"+
+		"\143\1\163\1\141\1\165\1\145\1\172\1\164\1\145\1\154\1\162\1\172\1\uffff"+
+		"\1\151\1\172\1\163\1\156\1\uffff\1\157\1\uffff\1\172\1\163\1\156\1\uffff"+
 		"\1\172\1\163\1\uffff\1\172\1\uffff";
 	static final String DFA19_acceptS =
 		"\2\uffff\1\2\1\3\1\4\1\uffff\1\6\1\7\1\uffff\1\11\1\12\1\13\5\uffff\1"+
-		"\22\1\24\3\uffff\1\34\1\35\1\36\1\uffff\1\40\1\41\2\uffff\1\46\1\23\1"+
-		"\1\1\5\1\45\1\26\1\10\1\uffff\1\42\1\44\3\uffff\1\21\1\20\1\33\1\25\1"+
-		"\31\1\27\1\32\1\30\1\47\1\50\1\37\1\43\11\uffff\1\14\7\uffff\1\16\2\uffff"+
-		"\1\17\1\uffff\1\15";
+		"\22\1\24\3\uffff\1\34\1\35\1\36\1\uffff\1\40\1\41\3\uffff\1\50\1\23\1"+
+		"\1\1\5\1\47\1\26\1\10\1\uffff\1\44\1\46\4\uffff\1\21\1\20\1\33\1\25\1"+
+		"\31\1\27\1\32\1\30\1\51\1\52\1\37\1\uffff\1\45\15\uffff\1\14\4\uffff\1"+
+		"\42\1\uffff\1\43\3\uffff\1\16\2\uffff\1\17\1\uffff\1\15";
 	static final String DFA19_specialS =
-		"\116\uffff}>";
+		"\130\uffff}>";
 	static final String[] DFA19_transitionS = {
-			"\2\36\2\uffff\1\36\22\uffff\1\36\1\23\3\uffff\1\32\1\1\1\33\1\2\1\3\1"+
-			"\30\1\26\1\4\1\27\1\5\1\31\12\35\1\6\1\7\1\24\1\10\1\25\1\11\1\uffff"+
-			"\32\34\1\12\1\uffff\1\13\3\uffff\1\14\4\34\1\15\5\34\1\16\5\34\1\17\10"+
-			"\34\1\20\1\22\1\21",
-			"\1\37",
+			"\2\37\2\uffff\1\37\22\uffff\1\37\1\23\3\uffff\1\32\1\1\1\33\1\2\1\3\1"+
+			"\30\1\26\1\4\1\27\1\5\1\31\12\36\1\6\1\7\1\24\1\10\1\25\1\11\1\uffff"+
+			"\32\35\1\12\1\uffff\1\13\3\uffff\1\14\4\35\1\15\5\35\1\16\5\35\1\17\1"+
+			"\35\1\34\6\35\1\20\1\22\1\21",
+			"\1\40",
 			"",
 			"",
 			"",
-			"\12\42",
+			"\12\43",
 			"",
 			"",
-			"\1\43",
+			"\1\44",
 			"",
 			"",
 			"",
-			"\1\47\102\uffff\1\45",
-			"\1\47\107\uffff\1\50",
-			"\1\47\101\uffff\1\51",
-			"\1\47\67\uffff\1\52",
-			"\1\53",
-			"",
-			"",
+			"\1\50\102\uffff\1\46",
+			"\1\50\63\uffff\1\52\23\uffff\1\51",
+			"\1\50\101\uffff\1\53",
+			"\1\50\67\uffff\1\54",
 			"\1\55",
+			"",
+			"",
 			"\1\57",
 			"\1\61",
+			"\1\63",
 			"",
 			"",
 			"",
-			"\1\63\4\uffff\1\64",
+			"\1\65\4\uffff\1\66",
 			"",
 			"",
-			"\1\47",
-			"\1\47\1\42\1\uffff\12\67\13\uffff\1\42\37\uffff\1\42",
-			"",
-			"",
-			"",
-			"",
+			"\1\50\104\uffff\1\70",
+			"\1\50",
+			"\1\50\1\43\1\uffff\12\72\13\uffff\1\43\37\uffff\1\43",
 			"",
 			"",
 			"",
-			"\1\70",
 			"",
 			"",
-			"\1\71",
-			"\1\72",
+			"",
+			"",
 			"\1\73",
 			"",
 			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"\1\42\1\uffff\12\67\13\uffff\1\42\37\uffff\1\42",
 			"\1\74",
 			"\1\75",
 			"\1\76",
 			"\1\77",
-			"\12\46\7\uffff\32\46\4\uffff\1\46\1\uffff\32\46",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"\1\100",
+			"",
+			"\1\43\1\uffff\12\72\13\uffff\1\43\37\uffff\1\43",
 			"\1\101",
 			"\1\102",
 			"\1\103",
-			"",
 			"\1\104",
 			"\1\105",
 			"\1\106",
-			"\1\107",
-			"\12\46\7\uffff\32\46\4\uffff\1\46\1\uffff\32\46",
+			"\12\47\7\uffff\32\47\4\uffff\1\47\1\uffff\32\47",
+			"\1\110",
 			"\1\111",
 			"\1\112",
+			"\1\113",
+			"\12\47\7\uffff\32\47\4\uffff\1\47\1\uffff\32\47",
 			"",
-			"\12\46\7\uffff\32\46\4\uffff\1\46\1\uffff\32\46",
-			"\1\114",
+			"\1\115",
+			"\12\47\7\uffff\32\47\4\uffff\1\47\1\uffff\32\47",
+			"\1\117",
+			"\1\120",
 			"",
-			"\12\46\7\uffff\32\46\4\uffff\1\46\1\uffff\32\46",
+			"\1\121",
+			"",
+			"\12\47\7\uffff\32\47\4\uffff\1\47\1\uffff\32\47",
+			"\1\123",
+			"\1\124",
+			"",
+			"\12\47\7\uffff\32\47\4\uffff\1\47\1\uffff\32\47",
+			"\1\126",
+			"",
+			"\12\47\7\uffff\32\47\4\uffff\1\47\1\uffff\32\47",
 			""
 	};
 
@@ -2063,7 +2133,7 @@ public class AdaptablePEGLexer extends Lexer {
 		}
 		@Override
 		public String getDescription() {
-			return "1:1: Tokens : ( T__54 | T__55 | T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | OP_AND | OP_OR | OP_NOT | OP_EQ | OP_LT | OP_GT | OP_LE | OP_GE | OP_NE | OP_ADD | OP_SUB | OP_MUL | OP_DIV | OP_MOD | STRING_LITERAL | ID | INT_NUMBER | RANGE_PAIR | REAL_NUMBER | WS | COMMENT | LINE_COMMENT );";
+			return "1:1: Tokens : ( T__56 | T__57 | T__58 | T__59 | T__60 | T__61 | T__62 | T__63 | T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | OP_AND | OP_OR | OP_NOT | OP_EQ | OP_LT | OP_GT | OP_LE | OP_GE | OP_NE | OP_ADD | OP_SUB | OP_MUL | OP_DIV | OP_MOD | STRING_LITERAL | TRUE | FALSE | ID | INT_NUMBER | RANGE_PAIR | REAL_NUMBER | WS | COMMENT | LINE_COMMENT );";
 		}
 	}
 

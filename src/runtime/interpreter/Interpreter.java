@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import org.antlr.runtime.tree.CommonTree;
+import org.hamcrest.core.IsAnything;
 
 import runtime.memoization.Memoization;
 import runtime.memoization.Result;
@@ -20,6 +21,7 @@ import srcparser.AdaptablePEGLexer;
 public class Interpreter {
 	
 	private Grammar grammar;
+	private boolean isAdaptable;
 
 	private FileReader input;
 	private ArrayList<Character> buf;
@@ -28,8 +30,9 @@ public class Interpreter {
 
 	private Memoization memoization;
 	
-	public Interpreter(Grammar grammar) {
+	public Interpreter(Grammar grammar, boolean isAdaptable) {
 		this.grammar = grammar;
+		this.isAdaptable = isAdaptable;
 		buf = new ArrayList<Character>();
 		environments = new Stack<Environment>();
 		
@@ -75,12 +78,33 @@ public class Interpreter {
 		return pos + s.length();
 	}
 
-	public int execute(String nontermName) throws Exception {
+	public int execute(String nontermName, Object args[]) throws Exception {
 		NonTerminal nt = grammar.getNonTerminal(nontermName);
 		if (nt == null) {
 			throw new Exception("Nonterminal not found: " + nontermName);
 		}
+		int nArgs;
+		if (args == null) {
+			nArgs = 0;
+		} else {
+			nArgs = args.length;
+		}
+		if (isAdaptable) {
+			Object args2[] = args;
+			args = new Object[nArgs + 1];
+			args[0] = grammar;
+			for (int i = 0; i < nArgs; ++i) {
+				args[i + 1] = args2[i];
+			}
+			++nArgs;
+		}
+		if (nArgs != nt.getNumParam() + nt.getNumRet()) {
+			throw new Exception("Wrong number of parameters: " + nontermName);
+		}		
 		Environment env = buildEnvironment(nt);
+		for (int i = 0; i < nt.getNumParam(); ++i) {
+			env.setValue(i, args[i]);
+		}
 		environments.push(env);
 		return process(nt.getPegExpr(), 0);
 	}
@@ -113,13 +137,14 @@ public class Interpreter {
 			CommonTree t = (CommonTree) tree.getChild(1); // list of arguments
 			
 //			System.out.print(nt.getName() + " - " + "pos_ent: " + pos + " Param:");
+//			System.out.println(nt.getName() + "<" + t.toStringTree() + ">");
 			
 			/**
 			 * Code for memoization
 			 * creating a list with the values of the attributes
 			 */
 			// List of inherited attributes
-			List<Object> attr = new ArrayList<Object>();
+			ArrayList<Object> attr = new ArrayList<Object>();
 			
 			// code for eval inherited attributes
 			for(int i = 0; i < nt.getNumParam(); ++i) {
@@ -156,7 +181,20 @@ public class Interpreter {
 				env.setValue(i, attr.get(i));
 
 			environments.push(env);
-			int ret = process(nt.getPegExpr(), pos);
+	
+			CommonTree pegExpr;
+			if (isAdaptable) {
+				Grammar g = (Grammar) attr.get(0);
+				NonTerminal auxnt = g.getNonTerminal(nt.getName());
+				pegExpr = auxnt.getPegExpr();
+			} else {
+				pegExpr = nt.getPegExpr();
+			}
+			
+//			System.out.println(pegExpr.toStringTree());
+
+			int ret = process(pegExpr, pos);
+			
 			environments.pop();
 			
 //			System.out.println("Memoization: " + nt.getName() + " pos: " + pos + " - next_pos: " + ret + " Return: ");
@@ -267,7 +305,7 @@ public class Interpreter {
 		}
 			
 		case AdaptablePEGLexer.ASSIGNLIST: {
-			// I suppose all childrem are ASSIGN
+			// I suppose all children are ASSIGN
 			for (int i = 0; i < tree.getChildCount(); ++i) {
 				CommonTree t = (CommonTree) tree.getChild(i);
 				process(t, pos);
@@ -313,8 +351,20 @@ public class Interpreter {
 	private Object eval(CommonTree tree) throws Exception {
 		switch (tree.token.getType()) {
 		
+		case AdaptablePEGLexer.TRUE: {
+			return new Boolean(true);
+		}
+		
+		case AdaptablePEGLexer.FALSE: {
+			return new Boolean(false);
+		}
+		
 		case AdaptablePEGLexer.INT_NUMBER: {
 			return new Integer(Integer.parseInt(tree.getText()));
+		}
+		
+		case AdaptablePEGLexer.STRING_LITERAL: {
+			return tree.getText().substring(1, tree.getText().length() - 1);
 		}
 
 		case AdaptablePEGLexer.CALL: {

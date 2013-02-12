@@ -188,12 +188,16 @@ functions :
     -> ^(FILES )
   ;
 
-addrules :
+addrules[Grammar g] :
 	{
+		grammar = g;
 		isAddingRules = true;
 		ntcalls = new ArrayList<CommonTree>();
 	}
 	rule+
+	{
+		verifNTCalls();
+	}
 	;
 
 // A definiton of an APEG rule
@@ -203,12 +207,11 @@ rule
 		if (isNewRule) {
 			currNT.setPegExpr($t.tree);
 		} else {
-			CommonTree root = (CommonTree) adaptor.nil();
-			Token token = adaptor.getToken(AdaptablePEGLexer.CHOICE);;
-			root.token = token;
+			CommonTree root = (CommonTree) adaptor.create(AdaptablePEGLexer.CHOICE, "CHOICE");
 			root.addChild(currNT.getPegExpr());
 			root.addChild($t.tree);
 			currNT.setPegExpr(root);
+			// System.out.println(root.toStringTree());
 		}
 	}
 }
@@ -386,7 +389,13 @@ cond : cond2 (OP_OR^ cond2)* ;
 
 cond2 : cond3 (OP_AND^ cond3)* ;
 
-cond3 : expr relOp^ expr ;
+cond3 :
+	expr relOp^ expr
+	|
+	TRUE
+	|
+	FALSE
+	;
 
 termOptUnary :
   OP_SUB term -> ^(UNARY_SUB[$OP_SUB] term)
@@ -525,6 +534,8 @@ fragment XDIGIT :
   ;
 fragment LETTER : 'a'..'z' | 'A'..'Z';
 fragment DIGIT : '0'..'9';
+TRUE : 'true';
+FALSE : 'false';
 ID : LETTER (LETTER | DIGIT | '_')*;
 INT_NUMBER : DIGIT+;
 RANGE_PAIR : LETTER '-' LETTER | DIGIT '-' DIGIT;
