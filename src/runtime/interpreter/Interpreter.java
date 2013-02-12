@@ -78,6 +78,18 @@ public class Interpreter {
 		return pos + s.length();
 	}
 
+	/**
+	 * Execute the current PEG, starting at the nonterminal given.
+	 * If the nonterminal has attributes, their values must be all defined in the array args.
+	 * If the PEG is adaptable, the first attribute of the initial symbol must be a Grammar.
+	 * But the grammar is not passed as an argument in args, it is automatically appended to args as the first argument.
+	 * The number of elements in args must be exactly the of sum of the numbers of inhereted and synthesized attributes of the initial symbol, except for the Grammar of an adaptable PEG.
+	 * For the synthesized attributes, the values in args may be null.
+	 * @param nontermName Name of the initial symbol.
+	 * @param args Array of values for the attributes. Empty cells (with null) must be provided for the synthesized attributes. All inhereted attributes come before the synthesized ones.
+	 * @return The number of characters processed.
+	 * @throws Exception
+	 */
 	public int execute(String nontermName, Object args[]) throws Exception {
 		NonTerminal nt = grammar.getNonTerminal(nontermName);
 		if (nt == null) {
@@ -90,6 +102,13 @@ public class Interpreter {
 			nArgs = args.length;
 		}
 		if (isAdaptable) {
+			if (nt.getNumParam() == 0) {
+				throw new Exception("For adaptable PEG, the initial symbol must have a Grammar as first attribute");
+			}
+			Attribute at1 = nt.getParam(0);
+			if (at1.getType().getName().compareTo("Grammar") != 0) {
+				throw new Exception("For adaptable PEG, the initial symbol must have a Grammar as first attribute");
+			}
 			Object args2[] = args;
 			args = new Object[nArgs + 1];
 			args[0] = grammar;
@@ -106,7 +125,15 @@ public class Interpreter {
 			env.setValue(i, args[i]);
 		}
 		environments.push(env);
-		return process(nt.getPegExpr(), 0);
+		int ret = process(nt.getPegExpr(), 0);
+		if (ret >= 0) {
+			int first = nt.getNumParam();
+			int last = first + nt.getNumRet();
+			for (int i = first; i < last; ++i) {
+				args[i] = env.getValue(i);		
+			}
+		}
+		return ret;
 	}
 	
 	public Environment buildEnvironment(NonTerminal nt) {
@@ -184,7 +211,7 @@ public class Interpreter {
 	
 			CommonTree pegExpr;
 			if (isAdaptable) {
-				Grammar g = (Grammar) attr.get(0);
+				Grammar g = (Grammar) env.getValue(0);
 				NonTerminal auxnt = g.getNonTerminal(nt.getName());
 				pegExpr = auxnt.getPegExpr();
 			} else {

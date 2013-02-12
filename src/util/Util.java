@@ -35,6 +35,16 @@ public class Util {
 			String grammarFileName,
 			String inputFileName,
 			String initSymbol,
+			Object args[]
+			)
+			throws Exception {
+		testeGrammar(grammarFileName, inputFileName, initSymbol, false, args);
+	}
+
+	public static void testeGrammar(
+			String grammarFileName,
+			String inputFileName,
+			String initSymbol,
 			boolean isAdaptable
 			)
 			throws Exception {
@@ -73,9 +83,9 @@ public class Util {
 			return;
 		}
 		
-		NonTerminal nt = grammar.getNonTerminal("CHAR");
+/*		NonTerminal nt = grammar.getNonTerminal("CHAR");
 		Grammar g1 = grammar.copy();
-		NonTerminal nt1 = g1.getNonTerminal("CHAR");
+		NonTerminal nt1 = g1.getNonTerminal("CHAR");*/
 				
 		if (inputFileName != null && initSymbol != null) {
 			Interpreter interpreter = new Interpreter(grammar, isAdaptable);
@@ -84,33 +94,11 @@ public class Util {
 			if (resp < 0) {
 				System.out.println(">>>>>>>>>> FAILED!");
 			} else {
-				System.out.println(">>>>> SUCCESS - number of character read: " + resp);
+				System.out.println(">>>>> SUCCESS - number of characters read: " + resp);
 			}
 		}
 
 	}
-
-/*	
-	public static void addRules(Grammar grammar, String rule)
-	throws Exception {
-		
-		ANTLRStringStream input = new ANTLRStringStream(rule);
-		AdaptablePEGLexer lexer = new AdaptablePEGLexer(input);
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		AdaptablePEGParser parser = new AdaptablePEGParser(tokens);
-		SemanticTreeAdaptor adaptor = new SemanticTreeAdaptor();
-		parser.setTreeAdaptor(adaptor);
-		AdaptablePEGParser.rules_return result = parser.rules();
-		Tree t = (Tree) result.getTree();
-		System.out.println(t.toStringTree());
-		if (parser.hasErrors()) {
-			parser.printErrorMessages();
-			return;
-		}
-				
-
-	}
-*/
 
 	public static void main(String args[]) {
 

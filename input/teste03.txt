@@ -3,9 +3,11 @@ apeg testfunction;
 
 functions Functions1 ;
 
-teste : strN<add(1,2)>
+teste[int x, int y] returns [int z] :
+  { z = add(x,y); }
+  strN<z*2>
   ;
 
-strN[int n] : ( {? n > 0 } CHAR { n = n - 1; } )* {? n == 0 } ;
+strN[int n] : ( {? n > 0 } CHAR { n = n - 1; } )* {? n == 0 } !. ;
 
 CHAR : . ;

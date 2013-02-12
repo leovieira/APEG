@@ -272,7 +272,7 @@ varDecl[Attribute.Category c] :
     if (isAddingRules && !isNewRule) {
         emitErrorMessage($ID, "Declaration of attributes not allowed when extending existing rule.");
     } else if (currNT != null) {
-      if (currNT.addAttribute($ID.text, null, c) == null) {
+      if (currNT.addAttribute($ID.text, $type.typeSymbol, c) == null) {
         emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
       }
     }
@@ -280,8 +280,8 @@ varDecl[Attribute.Category c] :
     -> ^(VARDECL type ID)
   ;
 
-type :
-  ID
+type returns[Type typeSymbol]:
+  ID { $typeSymbol = new Type($ID.text); }
   ;
 
 // Definition of the right side of a APEG

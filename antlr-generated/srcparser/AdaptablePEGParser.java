@@ -1,4 +1,4 @@
-// $ANTLR 3.5 C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g 2013-02-12 02:35:52
+// $ANTLR 3.5 C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g 2013-02-12 11:09:19
 
     package srcparser;
     import semantics.*;
@@ -1239,7 +1239,7 @@ public class AdaptablePEGParser extends Parser {
 			    if (isAddingRules && !isNewRule) {
 			        emitErrorMessage(ID24, "Declaration of attributes not allowed when extending existing rule.");
 			    } else if (currNT != null) {
-			      if (currNT.addAttribute((ID24!=null?ID24.getText():null), null, c) == null) {
+			      if (currNT.addAttribute((ID24!=null?ID24.getText():null), (type23!=null?((AdaptablePEGParser.type_return)type23).typeSymbol:null), c) == null) {
 			        emitErrorMessage(ID24, "Symbol duplicated: " + (ID24!=null?ID24.getText():null));
 			      }
 			    }
@@ -1293,6 +1293,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	public static class type_return extends ParserRuleReturnScope {
+		public Type typeSymbol;
 		CommonTree tree;
 		@Override
 		public CommonTree getTree() { return tree; }
@@ -1300,7 +1301,7 @@ public class AdaptablePEGParser extends Parser {
 
 
 	// $ANTLR start "type"
-	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:283:1: type : ID ;
+	// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:283:1: type returns [Type typeSymbol] : ID ;
 	public final AdaptablePEGParser.type_return type() throws RecognitionException {
 		AdaptablePEGParser.type_return retval = new AdaptablePEGParser.type_return();
 		retval.start = input.LT(1);
@@ -1312,16 +1313,17 @@ public class AdaptablePEGParser extends Parser {
 		CommonTree ID25_tree=null;
 
 		try {
-			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:283:6: ( ID )
+			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:283:30: ( ID )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:284:3: ID
 			{
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			ID25=(Token)match(input,ID,FOLLOW_ID_in_type547); 
+			ID25=(Token)match(input,ID,FOLLOW_ID_in_type549); 
 			ID25_tree = (CommonTree)adaptor.create(ID25);
 			adaptor.addChild(root_0, ID25_tree);
 
+			 retval.typeSymbol = new Type((ID25!=null?ID25.getText():null)); 
 			}
 
 			retval.stop = input.LT(-1);
@@ -1371,7 +1373,7 @@ public class AdaptablePEGParser extends Parser {
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:291:10: ( peg_seq ( '/' peg_expr -> ^( CHOICE peg_seq peg_expr ) | -> peg_seq ) )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:292:3: peg_seq ( '/' peg_expr -> ^( CHOICE peg_seq peg_expr ) | -> peg_seq )
 			{
-			pushFollow(FOLLOW_peg_seq_in_peg_expr564);
+			pushFollow(FOLLOW_peg_seq_in_peg_expr568);
 			peg_seq26=peg_seq();
 			state._fsp--;
 
@@ -1396,10 +1398,10 @@ public class AdaptablePEGParser extends Parser {
 				case 1 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:293:4: '/' peg_expr
 					{
-					char_literal27=(Token)match(input,OP_DIV,FOLLOW_OP_DIV_in_peg_expr570);  
+					char_literal27=(Token)match(input,OP_DIV,FOLLOW_OP_DIV_in_peg_expr574);  
 					stream_OP_DIV.add(char_literal27);
 
-					pushFollow(FOLLOW_peg_expr_in_peg_expr572);
+					pushFollow(FOLLOW_peg_expr_in_peg_expr576);
 					peg_expr28=peg_expr();
 					state._fsp--;
 
@@ -1535,7 +1537,7 @@ public class AdaptablePEGParser extends Parser {
 						case 1 :
 							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:302:3: peg_unary_op
 							{
-							pushFollow(FOLLOW_peg_unary_op_in_peg_seq614);
+							pushFollow(FOLLOW_peg_unary_op_in_peg_seq618);
 							peg_unary_op29=peg_unary_op();
 							state._fsp--;
 
@@ -1724,7 +1726,7 @@ public class AdaptablePEGParser extends Parser {
 				case 1 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:315:3: peg_factor (t1= '?' -> ^( OPTIONAL[$t1, \"OPTIONAL\"] peg_factor ) |t2= '*' -> ^( REPEAT[$t2, \"REPEAT\"] peg_factor ) |t3= '+' -> ^( ONE_REPEAT[$t3, \"ONE_REPEAT\"] peg_factor ) | -> peg_factor )
 					{
-					pushFollow(FOLLOW_peg_factor_in_peg_unary_op656);
+					pushFollow(FOLLOW_peg_factor_in_peg_unary_op660);
 					peg_factor30=peg_factor();
 					state._fsp--;
 
@@ -1772,7 +1774,7 @@ public class AdaptablePEGParser extends Parser {
 						case 1 :
 							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:317:7: t1= '?'
 							{
-							t1=(Token)match(input,64,FOLLOW_64_in_peg_unary_op673);  
+							t1=(Token)match(input,64,FOLLOW_64_in_peg_unary_op677);  
 							stream_64.add(t1);
 
 							// AST REWRITE
@@ -1806,7 +1808,7 @@ public class AdaptablePEGParser extends Parser {
 						case 2 :
 							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:319:7: t2= '*'
 							{
-							t2=(Token)match(input,OP_MUL,FOLLOW_OP_MUL_in_peg_unary_op700);  
+							t2=(Token)match(input,OP_MUL,FOLLOW_OP_MUL_in_peg_unary_op704);  
 							stream_OP_MUL.add(t2);
 
 							// AST REWRITE
@@ -1840,7 +1842,7 @@ public class AdaptablePEGParser extends Parser {
 						case 3 :
 							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:321:7: t3= '+'
 							{
-							t3=(Token)match(input,OP_ADD,FOLLOW_OP_ADD_in_peg_unary_op727);  
+							t3=(Token)match(input,OP_ADD,FOLLOW_OP_ADD_in_peg_unary_op731);  
 							stream_OP_ADD.add(t3);
 
 							// AST REWRITE
@@ -1903,10 +1905,10 @@ public class AdaptablePEGParser extends Parser {
 				case 2 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:326:4: t4= '&' peg_factor
 					{
-					t4=(Token)match(input,56,FOLLOW_56_in_peg_unary_op779);  
+					t4=(Token)match(input,56,FOLLOW_56_in_peg_unary_op783);  
 					stream_56.add(t4);
 
-					pushFollow(FOLLOW_peg_factor_in_peg_unary_op781);
+					pushFollow(FOLLOW_peg_factor_in_peg_unary_op785);
 					peg_factor31=peg_factor();
 					state._fsp--;
 
@@ -1942,10 +1944,10 @@ public class AdaptablePEGParser extends Parser {
 				case 3 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:328:4: t5= '!' peg_factor
 					{
-					t5=(Token)match(input,OP_NOT,FOLLOW_OP_NOT_in_peg_unary_op802);  
+					t5=(Token)match(input,OP_NOT,FOLLOW_OP_NOT_in_peg_unary_op806);  
 					stream_OP_NOT.add(t5);
 
-					pushFollow(FOLLOW_peg_factor_in_peg_unary_op804);
+					pushFollow(FOLLOW_peg_factor_in_peg_unary_op808);
 					peg_factor32=peg_factor();
 					state._fsp--;
 
@@ -1981,15 +1983,15 @@ public class AdaptablePEGParser extends Parser {
 				case 4 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:330:4: t6= '{?' cond '}'
 					{
-					t6=(Token)match(input,72,FOLLOW_72_in_peg_unary_op825);  
+					t6=(Token)match(input,72,FOLLOW_72_in_peg_unary_op829);  
 					stream_72.add(t6);
 
-					pushFollow(FOLLOW_cond_in_peg_unary_op827);
+					pushFollow(FOLLOW_cond_in_peg_unary_op831);
 					cond33=cond();
 					state._fsp--;
 
 					stream_cond.add(cond33.getTree());
-					char_literal34=(Token)match(input,73,FOLLOW_73_in_peg_unary_op829);  
+					char_literal34=(Token)match(input,73,FOLLOW_73_in_peg_unary_op833);  
 					stream_73.add(char_literal34);
 
 					// AST REWRITE
@@ -2023,7 +2025,7 @@ public class AdaptablePEGParser extends Parser {
 				case 5 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:332:4: t7= '{' ( assign )+ '}'
 					{
-					t7=(Token)match(input,71,FOLLOW_71_in_peg_unary_op850);  
+					t7=(Token)match(input,71,FOLLOW_71_in_peg_unary_op854);  
 					stream_71.add(t7);
 
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:332:11: ( assign )+
@@ -2040,7 +2042,7 @@ public class AdaptablePEGParser extends Parser {
 						case 1 :
 							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:332:11: assign
 							{
-							pushFollow(FOLLOW_assign_in_peg_unary_op852);
+							pushFollow(FOLLOW_assign_in_peg_unary_op856);
 							assign35=assign();
 							state._fsp--;
 
@@ -2056,7 +2058,7 @@ public class AdaptablePEGParser extends Parser {
 						cnt13++;
 					}
 
-					char_literal36=(Token)match(input,73,FOLLOW_73_in_peg_unary_op855);  
+					char_literal36=(Token)match(input,73,FOLLOW_73_in_peg_unary_op859);  
 					stream_73.add(char_literal36);
 
 					// AST REWRITE
@@ -2196,7 +2198,7 @@ public class AdaptablePEGParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					STRING_LITERAL37=(Token)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_peg_factor887); 
+					STRING_LITERAL37=(Token)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_peg_factor891); 
 					STRING_LITERAL37_tree = (CommonTree)adaptor.create(STRING_LITERAL37);
 					adaptor.addChild(root_0, STRING_LITERAL37_tree);
 
@@ -2208,7 +2210,7 @@ public class AdaptablePEGParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					pushFollow(FOLLOW_ntcall_in_peg_factor895);
+					pushFollow(FOLLOW_ntcall_in_peg_factor899);
 					ntcall38=ntcall();
 					state._fsp--;
 
@@ -2219,7 +2221,7 @@ public class AdaptablePEGParser extends Parser {
 				case 3 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:348:3: '[' ( RANGE_PAIR )+ ']'
 					{
-					char_literal39=(Token)match(input,65,FOLLOW_65_in_peg_factor903);  
+					char_literal39=(Token)match(input,65,FOLLOW_65_in_peg_factor907);  
 					stream_65.add(char_literal39);
 
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:348:7: ( RANGE_PAIR )+
@@ -2236,7 +2238,7 @@ public class AdaptablePEGParser extends Parser {
 						case 1 :
 							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:348:7: RANGE_PAIR
 							{
-							RANGE_PAIR40=(Token)match(input,RANGE_PAIR,FOLLOW_RANGE_PAIR_in_peg_factor905);  
+							RANGE_PAIR40=(Token)match(input,RANGE_PAIR,FOLLOW_RANGE_PAIR_in_peg_factor909);  
 							stream_RANGE_PAIR.add(RANGE_PAIR40);
 
 							}
@@ -2250,7 +2252,7 @@ public class AdaptablePEGParser extends Parser {
 						cnt15++;
 					}
 
-					char_literal41=(Token)match(input,66,FOLLOW_66_in_peg_factor908);  
+					char_literal41=(Token)match(input,66,FOLLOW_66_in_peg_factor912);  
 					stream_66.add(char_literal41);
 
 					// AST REWRITE
@@ -2291,7 +2293,7 @@ public class AdaptablePEGParser extends Parser {
 				case 4 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:350:3: '.'
 					{
-					char_literal42=(Token)match(input,60,FOLLOW_60_in_peg_factor925);  
+					char_literal42=(Token)match(input,60,FOLLOW_60_in_peg_factor929);  
 					stream_60.add(char_literal42);
 
 					// AST REWRITE
@@ -2318,15 +2320,15 @@ public class AdaptablePEGParser extends Parser {
 				case 5 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:352:3: '(' peg_expr ')'
 					{
-					char_literal43=(Token)match(input,57,FOLLOW_57_in_peg_factor937);  
+					char_literal43=(Token)match(input,57,FOLLOW_57_in_peg_factor941);  
 					stream_57.add(char_literal43);
 
-					pushFollow(FOLLOW_peg_expr_in_peg_factor939);
+					pushFollow(FOLLOW_peg_expr_in_peg_factor943);
 					peg_expr44=peg_expr();
 					state._fsp--;
 
 					stream_peg_expr.add(peg_expr44.getTree());
-					char_literal45=(Token)match(input,58,FOLLOW_58_in_peg_factor941);  
+					char_literal45=(Token)match(input,58,FOLLOW_58_in_peg_factor945);  
 					stream_58.add(char_literal45);
 
 					// AST REWRITE
@@ -2403,7 +2405,7 @@ public class AdaptablePEGParser extends Parser {
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:359:3: ( ID ( '<' actPars '>' -> ^( NONTERM ID actPars ) | -> ^( NONTERM ID LIST ) ) )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:360:3: ID ( '<' actPars '>' -> ^( NONTERM ID actPars ) | -> ^( NONTERM ID LIST ) )
 			{
-			ID46=(Token)match(input,ID,FOLLOW_ID_in_ntcall962);  
+			ID46=(Token)match(input,ID,FOLLOW_ID_in_ntcall966);  
 			stream_ID.add(ID46);
 
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:361:6: ( '<' actPars '>' -> ^( NONTERM ID actPars ) | -> ^( NONTERM ID LIST ) )
@@ -2426,15 +2428,15 @@ public class AdaptablePEGParser extends Parser {
 				case 1 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:362:7: '<' actPars '>'
 					{
-					char_literal47=(Token)match(input,OP_LT,FOLLOW_OP_LT_in_ntcall977);  
+					char_literal47=(Token)match(input,OP_LT,FOLLOW_OP_LT_in_ntcall981);  
 					stream_OP_LT.add(char_literal47);
 
-					pushFollow(FOLLOW_actPars_in_ntcall979);
+					pushFollow(FOLLOW_actPars_in_ntcall983);
 					actPars48=actPars();
 					state._fsp--;
 
 					stream_actPars.add(actPars48.getTree());
-					char_literal49=(Token)match(input,OP_GT,FOLLOW_OP_GT_in_ntcall981);  
+					char_literal49=(Token)match(input,OP_GT,FOLLOW_OP_GT_in_ntcall985);  
 					stream_OP_GT.add(char_literal49);
 
 					// AST REWRITE
@@ -2556,20 +2558,20 @@ public class AdaptablePEGParser extends Parser {
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:368:8: ( idAssign t= '=' expr ';' -> ^( ASSIGN[$t,\"ASSIGN\"] idAssign expr ) )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:369:3: idAssign t= '=' expr ';'
 			{
-			pushFollow(FOLLOW_idAssign_in_assign1037);
+			pushFollow(FOLLOW_idAssign_in_assign1041);
 			idAssign50=idAssign();
 			state._fsp--;
 
 			stream_idAssign.add(idAssign50.getTree());
-			t=(Token)match(input,63,FOLLOW_63_in_assign1041);  
+			t=(Token)match(input,63,FOLLOW_63_in_assign1045);  
 			stream_63.add(t);
 
-			pushFollow(FOLLOW_expr_in_assign1043);
+			pushFollow(FOLLOW_expr_in_assign1047);
 			expr51=expr();
 			state._fsp--;
 
 			stream_expr.add(expr51.getTree());
-			char_literal52=(Token)match(input,62,FOLLOW_62_in_assign1045);  
+			char_literal52=(Token)match(input,62,FOLLOW_62_in_assign1049);  
 			stream_62.add(char_literal52);
 
 			// AST REWRITE
@@ -2646,7 +2648,7 @@ public class AdaptablePEGParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			t=(Token)match(input,ID,FOLLOW_ID_in_idAssign1079); 
+			t=(Token)match(input,ID,FOLLOW_ID_in_idAssign1083); 
 			t_tree = (CommonTree)adaptor.create(t);
 			adaptor.addChild(root_0, t_tree);
 
@@ -2710,7 +2712,7 @@ public class AdaptablePEGParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_cond2_in_cond1091);
+			pushFollow(FOLLOW_cond2_in_cond1095);
 			cond253=cond2();
 			state._fsp--;
 
@@ -2729,11 +2731,11 @@ public class AdaptablePEGParser extends Parser {
 				case 1 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:388:15: OP_OR ^ cond2
 					{
-					OP_OR54=(Token)match(input,OP_OR,FOLLOW_OP_OR_in_cond1094); 
+					OP_OR54=(Token)match(input,OP_OR,FOLLOW_OP_OR_in_cond1098); 
 					OP_OR54_tree = (CommonTree)adaptor.create(OP_OR54);
 					root_0 = (CommonTree)adaptor.becomeRoot(OP_OR54_tree, root_0);
 
-					pushFollow(FOLLOW_cond2_in_cond1097);
+					pushFollow(FOLLOW_cond2_in_cond1101);
 					cond255=cond2();
 					state._fsp--;
 
@@ -2796,7 +2798,7 @@ public class AdaptablePEGParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_cond3_in_cond21108);
+			pushFollow(FOLLOW_cond3_in_cond21112);
 			cond356=cond3();
 			state._fsp--;
 
@@ -2815,11 +2817,11 @@ public class AdaptablePEGParser extends Parser {
 				case 1 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:390:16: OP_AND ^ cond3
 					{
-					OP_AND57=(Token)match(input,OP_AND,FOLLOW_OP_AND_in_cond21111); 
+					OP_AND57=(Token)match(input,OP_AND,FOLLOW_OP_AND_in_cond21115); 
 					OP_AND57_tree = (CommonTree)adaptor.create(OP_AND57);
 					root_0 = (CommonTree)adaptor.becomeRoot(OP_AND57_tree, root_0);
 
-					pushFollow(FOLLOW_cond3_in_cond21114);
+					pushFollow(FOLLOW_cond3_in_cond21118);
 					cond358=cond3();
 					state._fsp--;
 
@@ -2915,18 +2917,18 @@ public class AdaptablePEGParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					pushFollow(FOLLOW_expr_in_cond31126);
+					pushFollow(FOLLOW_expr_in_cond31130);
 					expr59=expr();
 					state._fsp--;
 
 					adaptor.addChild(root_0, expr59.getTree());
 
-					pushFollow(FOLLOW_relOp_in_cond31128);
+					pushFollow(FOLLOW_relOp_in_cond31132);
 					relOp60=relOp();
 					state._fsp--;
 
 					root_0 = (CommonTree)adaptor.becomeRoot(relOp60.getTree(), root_0);
-					pushFollow(FOLLOW_expr_in_cond31131);
+					pushFollow(FOLLOW_expr_in_cond31135);
 					expr61=expr();
 					state._fsp--;
 
@@ -2940,7 +2942,7 @@ public class AdaptablePEGParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					TRUE62=(Token)match(input,TRUE,FOLLOW_TRUE_in_cond31137); 
+					TRUE62=(Token)match(input,TRUE,FOLLOW_TRUE_in_cond31141); 
 					TRUE62_tree = (CommonTree)adaptor.create(TRUE62);
 					adaptor.addChild(root_0, TRUE62_tree);
 
@@ -2952,7 +2954,7 @@ public class AdaptablePEGParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					FALSE63=(Token)match(input,FALSE,FOLLOW_FALSE_in_cond31143); 
+					FALSE63=(Token)match(input,FALSE,FOLLOW_FALSE_in_cond31147); 
 					FALSE63_tree = (CommonTree)adaptor.create(FALSE63);
 					adaptor.addChild(root_0, FALSE63_tree);
 
@@ -3038,10 +3040,10 @@ public class AdaptablePEGParser extends Parser {
 				case 1 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:401:3: OP_SUB term
 					{
-					OP_SUB64=(Token)match(input,OP_SUB,FOLLOW_OP_SUB_in_termOptUnary1155);  
+					OP_SUB64=(Token)match(input,OP_SUB,FOLLOW_OP_SUB_in_termOptUnary1159);  
 					stream_OP_SUB.add(OP_SUB64);
 
-					pushFollow(FOLLOW_term_in_termOptUnary1157);
+					pushFollow(FOLLOW_term_in_termOptUnary1161);
 					term65=term();
 					state._fsp--;
 
@@ -3077,10 +3079,10 @@ public class AdaptablePEGParser extends Parser {
 				case 2 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:403:3: t1= OP_NOT term
 					{
-					t1=(Token)match(input,OP_NOT,FOLLOW_OP_NOT_in_termOptUnary1176);  
+					t1=(Token)match(input,OP_NOT,FOLLOW_OP_NOT_in_termOptUnary1180);  
 					stream_OP_NOT.add(t1);
 
-					pushFollow(FOLLOW_term_in_termOptUnary1178);
+					pushFollow(FOLLOW_term_in_termOptUnary1182);
 					term66=term();
 					state._fsp--;
 
@@ -3117,7 +3119,7 @@ public class AdaptablePEGParser extends Parser {
 				case 3 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:405:3: term
 					{
-					pushFollow(FOLLOW_term_in_termOptUnary1195);
+					pushFollow(FOLLOW_term_in_termOptUnary1199);
 					term67=term();
 					state._fsp--;
 
@@ -3191,7 +3193,7 @@ public class AdaptablePEGParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_termOptUnary_in_expr1210);
+			pushFollow(FOLLOW_termOptUnary_in_expr1214);
 			termOptUnary68=termOptUnary();
 			state._fsp--;
 
@@ -3210,12 +3212,12 @@ public class AdaptablePEGParser extends Parser {
 				case 1 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:408:22: addOp ^ term
 					{
-					pushFollow(FOLLOW_addOp_in_expr1213);
+					pushFollow(FOLLOW_addOp_in_expr1217);
 					addOp69=addOp();
 					state._fsp--;
 
 					root_0 = (CommonTree)adaptor.becomeRoot(addOp69.getTree(), root_0);
-					pushFollow(FOLLOW_term_in_expr1216);
+					pushFollow(FOLLOW_term_in_expr1220);
 					term70=term();
 					state._fsp--;
 
@@ -3277,7 +3279,7 @@ public class AdaptablePEGParser extends Parser {
 			root_0 = (CommonTree)adaptor.nil();
 
 
-			pushFollow(FOLLOW_factor_in_term1227);
+			pushFollow(FOLLOW_factor_in_term1231);
 			factor71=factor();
 			state._fsp--;
 
@@ -3296,12 +3298,12 @@ public class AdaptablePEGParser extends Parser {
 				case 1 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:410:16: mulOp ^ factor
 					{
-					pushFollow(FOLLOW_mulOp_in_term1230);
+					pushFollow(FOLLOW_mulOp_in_term1234);
 					mulOp72=mulOp();
 					state._fsp--;
 
 					root_0 = (CommonTree)adaptor.becomeRoot(mulOp72.getTree(), root_0);
-					pushFollow(FOLLOW_factor_in_term1233);
+					pushFollow(FOLLOW_factor_in_term1237);
 					factor73=factor();
 					state._fsp--;
 
@@ -3399,7 +3401,7 @@ public class AdaptablePEGParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					pushFollow(FOLLOW_attrORfuncall_in_factor1246);
+					pushFollow(FOLLOW_attrORfuncall_in_factor1250);
 					attrORfuncall74=attrORfuncall();
 					state._fsp--;
 
@@ -3413,7 +3415,7 @@ public class AdaptablePEGParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					pushFollow(FOLLOW_number_in_factor1254);
+					pushFollow(FOLLOW_number_in_factor1258);
 					number75=number();
 					state._fsp--;
 
@@ -3427,7 +3429,7 @@ public class AdaptablePEGParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					STRING_LITERAL76=(Token)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_factor1262); 
+					STRING_LITERAL76=(Token)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_factor1266); 
 					STRING_LITERAL76_tree = (CommonTree)adaptor.create(STRING_LITERAL76);
 					adaptor.addChild(root_0, STRING_LITERAL76_tree);
 
@@ -3439,14 +3441,14 @@ public class AdaptablePEGParser extends Parser {
 					root_0 = (CommonTree)adaptor.nil();
 
 
-					char_literal77=(Token)match(input,57,FOLLOW_57_in_factor1270); 
-					pushFollow(FOLLOW_expr_in_factor1273);
+					char_literal77=(Token)match(input,57,FOLLOW_57_in_factor1274); 
+					pushFollow(FOLLOW_expr_in_factor1277);
 					expr78=expr();
 					state._fsp--;
 
 					adaptor.addChild(root_0, expr78.getTree());
 
-					char_literal79=(Token)match(input,58,FOLLOW_58_in_factor1275); 
+					char_literal79=(Token)match(input,58,FOLLOW_58_in_factor1279); 
 					}
 					break;
 
@@ -3505,7 +3507,7 @@ public class AdaptablePEGParser extends Parser {
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:447:3: ( ID ( '(' actPars ')' -> ^( CALL[$ID,\"CALL\"] ID actPars ) | -> ID ) )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:448:3: ID ( '(' actPars ')' -> ^( CALL[$ID,\"CALL\"] ID actPars ) | -> ID )
 			{
-			ID80=(Token)match(input,ID,FOLLOW_ID_in_attrORfuncall1299);  
+			ID80=(Token)match(input,ID,FOLLOW_ID_in_attrORfuncall1303);  
 			stream_ID.add(ID80);
 
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:448:6: ( '(' actPars ')' -> ^( CALL[$ID,\"CALL\"] ID actPars ) | -> ID )
@@ -3528,15 +3530,15 @@ public class AdaptablePEGParser extends Parser {
 				case 1 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:449:5: '(' actPars ')'
 					{
-					char_literal81=(Token)match(input,57,FOLLOW_57_in_attrORfuncall1307);  
+					char_literal81=(Token)match(input,57,FOLLOW_57_in_attrORfuncall1311);  
 					stream_57.add(char_literal81);
 
-					pushFollow(FOLLOW_actPars_in_attrORfuncall1309);
+					pushFollow(FOLLOW_actPars_in_attrORfuncall1313);
 					actPars82=actPars();
 					state._fsp--;
 
 					stream_actPars.add(actPars82.getTree());
-					char_literal83=(Token)match(input,58,FOLLOW_58_in_attrORfuncall1311);  
+					char_literal83=(Token)match(input,58,FOLLOW_58_in_attrORfuncall1315);  
 					stream_58.add(char_literal83);
 
 
@@ -3748,7 +3750,7 @@ public class AdaptablePEGParser extends Parser {
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:474:3: ( ID -> ID )
 			// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:474:4: ID
 			{
-			ID85=(Token)match(input,ID,FOLLOW_ID_in_designator1390);  
+			ID85=(Token)match(input,ID,FOLLOW_ID_in_designator1394);  
 			stream_ID.add(ID85);
 
 			// AST REWRITE
@@ -3788,10 +3790,10 @@ public class AdaptablePEGParser extends Parser {
 				case 1 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:476:5: t1= '.' ID
 					{
-					t1=(Token)match(input,60,FOLLOW_60_in_designator1409);  
+					t1=(Token)match(input,60,FOLLOW_60_in_designator1413);  
 					stream_60.add(t1);
 
-					ID86=(Token)match(input,ID,FOLLOW_ID_in_designator1411);  
+					ID86=(Token)match(input,ID,FOLLOW_ID_in_designator1415);  
 					stream_ID.add(ID86);
 
 					// AST REWRITE
@@ -3826,15 +3828,15 @@ public class AdaptablePEGParser extends Parser {
 				case 2 :
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:478:5: t2= '[' expr ']'
 					{
-					t2=(Token)match(input,65,FOLLOW_65_in_designator1437);  
+					t2=(Token)match(input,65,FOLLOW_65_in_designator1441);  
 					stream_65.add(t2);
 
-					pushFollow(FOLLOW_expr_in_designator1439);
+					pushFollow(FOLLOW_expr_in_designator1443);
 					expr87=expr();
 					state._fsp--;
 
 					stream_expr.add(expr87.getTree());
-					char_literal88=(Token)match(input,66,FOLLOW_66_in_designator1441);  
+					char_literal88=(Token)match(input,66,FOLLOW_66_in_designator1445);  
 					stream_66.add(char_literal88);
 
 					// AST REWRITE
@@ -3940,7 +3942,7 @@ public class AdaptablePEGParser extends Parser {
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:483:3: ( expr ( ',' expr )* )
 					// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:483:4: expr ( ',' expr )*
 					{
-					pushFollow(FOLLOW_expr_in_actPars1476);
+					pushFollow(FOLLOW_expr_in_actPars1480);
 					expr89=expr();
 					state._fsp--;
 
@@ -3958,10 +3960,10 @@ public class AdaptablePEGParser extends Parser {
 						case 1 :
 							// C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g:483:10: ',' expr
 							{
-							char_literal90=(Token)match(input,59,FOLLOW_59_in_actPars1479);  
+							char_literal90=(Token)match(input,59,FOLLOW_59_in_actPars1483);  
 							stream_59.add(char_literal90);
 
-							pushFollow(FOLLOW_expr_in_actPars1481);
+							pushFollow(FOLLOW_expr_in_actPars1485);
 							expr91=expr();
 							state._fsp--;
 
@@ -4262,82 +4264,82 @@ public class AdaptablePEGParser extends Parser {
 	public static final BitSet FOLLOW_decls_in_optLocals486 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_type_in_varDecl513 = new BitSet(new long[]{0x0000000000080000L});
 	public static final BitSet FOLLOW_ID_in_varDecl515 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_type547 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_peg_seq_in_peg_expr564 = new BitSet(new long[]{0x0000000100000002L});
-	public static final BitSet FOLLOW_OP_DIV_in_peg_expr570 = new BitSet(new long[]{0x1304020100080000L,0x0000000000000182L});
-	public static final BitSet FOLLOW_peg_expr_in_peg_expr572 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_peg_unary_op_in_peg_seq614 = new BitSet(new long[]{0x1304020000080002L,0x0000000000000182L});
-	public static final BitSet FOLLOW_peg_factor_in_peg_unary_op656 = new BitSet(new long[]{0x0000008040000002L,0x0000000000000001L});
-	public static final BitSet FOLLOW_64_in_peg_unary_op673 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_OP_MUL_in_peg_unary_op700 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_OP_ADD_in_peg_unary_op727 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_56_in_peg_unary_op779 = new BitSet(new long[]{0x1204000000080000L,0x0000000000000002L});
-	public static final BitSet FOLLOW_peg_factor_in_peg_unary_op781 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_OP_NOT_in_peg_unary_op802 = new BitSet(new long[]{0x1204000000080000L,0x0000000000000002L});
-	public static final BitSet FOLLOW_peg_factor_in_peg_unary_op804 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_72_in_peg_unary_op825 = new BitSet(new long[]{0x020C4A00001A0000L});
-	public static final BitSet FOLLOW_cond_in_peg_unary_op827 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000200L});
-	public static final BitSet FOLLOW_73_in_peg_unary_op829 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_71_in_peg_unary_op850 = new BitSet(new long[]{0x0000000000080000L});
-	public static final BitSet FOLLOW_assign_in_peg_unary_op852 = new BitSet(new long[]{0x0000000000080000L,0x0000000000000200L});
-	public static final BitSet FOLLOW_73_in_peg_unary_op855 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_STRING_LITERAL_in_peg_factor887 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ntcall_in_peg_factor895 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_65_in_peg_factor903 = new BitSet(new long[]{0x0000200000000000L});
-	public static final BitSet FOLLOW_RANGE_PAIR_in_peg_factor905 = new BitSet(new long[]{0x0000200000000000L,0x0000000000000004L});
-	public static final BitSet FOLLOW_66_in_peg_factor908 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_60_in_peg_factor925 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_57_in_peg_factor937 = new BitSet(new long[]{0x1304020100080000L,0x0000000000000182L});
-	public static final BitSet FOLLOW_peg_expr_in_peg_factor939 = new BitSet(new long[]{0x0400000000000000L});
-	public static final BitSet FOLLOW_58_in_peg_factor941 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_ntcall962 = new BitSet(new long[]{0x0000002000000002L});
-	public static final BitSet FOLLOW_OP_LT_in_ntcall977 = new BitSet(new long[]{0x02044A0800180000L});
-	public static final BitSet FOLLOW_actPars_in_ntcall979 = new BitSet(new long[]{0x0000000800000000L});
-	public static final BitSet FOLLOW_OP_GT_in_ntcall981 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_idAssign_in_assign1037 = new BitSet(new long[]{0x8000000000000000L});
-	public static final BitSet FOLLOW_63_in_assign1041 = new BitSet(new long[]{0x02044A0000180000L});
-	public static final BitSet FOLLOW_expr_in_assign1043 = new BitSet(new long[]{0x4000000000000000L});
-	public static final BitSet FOLLOW_62_in_assign1045 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_idAssign1079 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_cond2_in_cond1091 = new BitSet(new long[]{0x0000040000000002L});
-	public static final BitSet FOLLOW_OP_OR_in_cond1094 = new BitSet(new long[]{0x020C4A00001A0000L});
-	public static final BitSet FOLLOW_cond2_in_cond1097 = new BitSet(new long[]{0x0000040000000002L});
-	public static final BitSet FOLLOW_cond3_in_cond21108 = new BitSet(new long[]{0x0000000080000002L});
-	public static final BitSet FOLLOW_OP_AND_in_cond21111 = new BitSet(new long[]{0x020C4A00001A0000L});
-	public static final BitSet FOLLOW_cond3_in_cond21114 = new BitSet(new long[]{0x0000000080000002L});
-	public static final BitSet FOLLOW_expr_in_cond31126 = new BitSet(new long[]{0x0000013E00000000L});
-	public static final BitSet FOLLOW_relOp_in_cond31128 = new BitSet(new long[]{0x02044A0000180000L});
-	public static final BitSet FOLLOW_expr_in_cond31131 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_TRUE_in_cond31137 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_FALSE_in_cond31143 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_OP_SUB_in_termOptUnary1155 = new BitSet(new long[]{0x0204400000180000L});
-	public static final BitSet FOLLOW_term_in_termOptUnary1157 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_OP_NOT_in_termOptUnary1176 = new BitSet(new long[]{0x0204400000180000L});
-	public static final BitSet FOLLOW_term_in_termOptUnary1178 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_term_in_termOptUnary1195 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_termOptUnary_in_expr1210 = new BitSet(new long[]{0x0000080040000002L});
-	public static final BitSet FOLLOW_addOp_in_expr1213 = new BitSet(new long[]{0x0204400000180000L});
-	public static final BitSet FOLLOW_term_in_expr1216 = new BitSet(new long[]{0x0000080040000002L});
-	public static final BitSet FOLLOW_factor_in_term1227 = new BitSet(new long[]{0x000000C100000002L});
-	public static final BitSet FOLLOW_mulOp_in_term1230 = new BitSet(new long[]{0x0204400000180000L});
-	public static final BitSet FOLLOW_factor_in_term1233 = new BitSet(new long[]{0x000000C100000002L});
-	public static final BitSet FOLLOW_attrORfuncall_in_factor1246 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_number_in_factor1254 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_STRING_LITERAL_in_factor1262 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_57_in_factor1270 = new BitSet(new long[]{0x02044A0000180000L});
-	public static final BitSet FOLLOW_expr_in_factor1273 = new BitSet(new long[]{0x0400000000000000L});
-	public static final BitSet FOLLOW_58_in_factor1275 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_attrORfuncall1299 = new BitSet(new long[]{0x0200000000000002L});
-	public static final BitSet FOLLOW_57_in_attrORfuncall1307 = new BitSet(new long[]{0x06044A0000180000L});
-	public static final BitSet FOLLOW_actPars_in_attrORfuncall1309 = new BitSet(new long[]{0x0400000000000000L});
-	public static final BitSet FOLLOW_58_in_attrORfuncall1311 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ID_in_designator1390 = new BitSet(new long[]{0x1000000000000002L,0x0000000000000002L});
-	public static final BitSet FOLLOW_60_in_designator1409 = new BitSet(new long[]{0x0000000000080000L});
-	public static final BitSet FOLLOW_ID_in_designator1411 = new BitSet(new long[]{0x1000000000000002L,0x0000000000000002L});
-	public static final BitSet FOLLOW_65_in_designator1437 = new BitSet(new long[]{0x02044A0000180000L});
-	public static final BitSet FOLLOW_expr_in_designator1439 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-	public static final BitSet FOLLOW_66_in_designator1441 = new BitSet(new long[]{0x1000000000000002L,0x0000000000000002L});
-	public static final BitSet FOLLOW_expr_in_actPars1476 = new BitSet(new long[]{0x0800000000000002L});
-	public static final BitSet FOLLOW_59_in_actPars1479 = new BitSet(new long[]{0x02044A0000180000L});
-	public static final BitSet FOLLOW_expr_in_actPars1481 = new BitSet(new long[]{0x0800000000000002L});
+	public static final BitSet FOLLOW_ID_in_type549 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_peg_seq_in_peg_expr568 = new BitSet(new long[]{0x0000000100000002L});
+	public static final BitSet FOLLOW_OP_DIV_in_peg_expr574 = new BitSet(new long[]{0x1304020100080000L,0x0000000000000182L});
+	public static final BitSet FOLLOW_peg_expr_in_peg_expr576 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_peg_unary_op_in_peg_seq618 = new BitSet(new long[]{0x1304020000080002L,0x0000000000000182L});
+	public static final BitSet FOLLOW_peg_factor_in_peg_unary_op660 = new BitSet(new long[]{0x0000008040000002L,0x0000000000000001L});
+	public static final BitSet FOLLOW_64_in_peg_unary_op677 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_OP_MUL_in_peg_unary_op704 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_OP_ADD_in_peg_unary_op731 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_56_in_peg_unary_op783 = new BitSet(new long[]{0x1204000000080000L,0x0000000000000002L});
+	public static final BitSet FOLLOW_peg_factor_in_peg_unary_op785 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_OP_NOT_in_peg_unary_op806 = new BitSet(new long[]{0x1204000000080000L,0x0000000000000002L});
+	public static final BitSet FOLLOW_peg_factor_in_peg_unary_op808 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_72_in_peg_unary_op829 = new BitSet(new long[]{0x020C4A00001A0000L});
+	public static final BitSet FOLLOW_cond_in_peg_unary_op831 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000200L});
+	public static final BitSet FOLLOW_73_in_peg_unary_op833 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_71_in_peg_unary_op854 = new BitSet(new long[]{0x0000000000080000L});
+	public static final BitSet FOLLOW_assign_in_peg_unary_op856 = new BitSet(new long[]{0x0000000000080000L,0x0000000000000200L});
+	public static final BitSet FOLLOW_73_in_peg_unary_op859 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_STRING_LITERAL_in_peg_factor891 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ntcall_in_peg_factor899 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_65_in_peg_factor907 = new BitSet(new long[]{0x0000200000000000L});
+	public static final BitSet FOLLOW_RANGE_PAIR_in_peg_factor909 = new BitSet(new long[]{0x0000200000000000L,0x0000000000000004L});
+	public static final BitSet FOLLOW_66_in_peg_factor912 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_60_in_peg_factor929 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_57_in_peg_factor941 = new BitSet(new long[]{0x1304020100080000L,0x0000000000000182L});
+	public static final BitSet FOLLOW_peg_expr_in_peg_factor943 = new BitSet(new long[]{0x0400000000000000L});
+	public static final BitSet FOLLOW_58_in_peg_factor945 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_ntcall966 = new BitSet(new long[]{0x0000002000000002L});
+	public static final BitSet FOLLOW_OP_LT_in_ntcall981 = new BitSet(new long[]{0x02044A0800180000L});
+	public static final BitSet FOLLOW_actPars_in_ntcall983 = new BitSet(new long[]{0x0000000800000000L});
+	public static final BitSet FOLLOW_OP_GT_in_ntcall985 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_idAssign_in_assign1041 = new BitSet(new long[]{0x8000000000000000L});
+	public static final BitSet FOLLOW_63_in_assign1045 = new BitSet(new long[]{0x02044A0000180000L});
+	public static final BitSet FOLLOW_expr_in_assign1047 = new BitSet(new long[]{0x4000000000000000L});
+	public static final BitSet FOLLOW_62_in_assign1049 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_idAssign1083 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_cond2_in_cond1095 = new BitSet(new long[]{0x0000040000000002L});
+	public static final BitSet FOLLOW_OP_OR_in_cond1098 = new BitSet(new long[]{0x020C4A00001A0000L});
+	public static final BitSet FOLLOW_cond2_in_cond1101 = new BitSet(new long[]{0x0000040000000002L});
+	public static final BitSet FOLLOW_cond3_in_cond21112 = new BitSet(new long[]{0x0000000080000002L});
+	public static final BitSet FOLLOW_OP_AND_in_cond21115 = new BitSet(new long[]{0x020C4A00001A0000L});
+	public static final BitSet FOLLOW_cond3_in_cond21118 = new BitSet(new long[]{0x0000000080000002L});
+	public static final BitSet FOLLOW_expr_in_cond31130 = new BitSet(new long[]{0x0000013E00000000L});
+	public static final BitSet FOLLOW_relOp_in_cond31132 = new BitSet(new long[]{0x02044A0000180000L});
+	public static final BitSet FOLLOW_expr_in_cond31135 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_TRUE_in_cond31141 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_FALSE_in_cond31147 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_OP_SUB_in_termOptUnary1159 = new BitSet(new long[]{0x0204400000180000L});
+	public static final BitSet FOLLOW_term_in_termOptUnary1161 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_OP_NOT_in_termOptUnary1180 = new BitSet(new long[]{0x0204400000180000L});
+	public static final BitSet FOLLOW_term_in_termOptUnary1182 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_term_in_termOptUnary1199 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_termOptUnary_in_expr1214 = new BitSet(new long[]{0x0000080040000002L});
+	public static final BitSet FOLLOW_addOp_in_expr1217 = new BitSet(new long[]{0x0204400000180000L});
+	public static final BitSet FOLLOW_term_in_expr1220 = new BitSet(new long[]{0x0000080040000002L});
+	public static final BitSet FOLLOW_factor_in_term1231 = new BitSet(new long[]{0x000000C100000002L});
+	public static final BitSet FOLLOW_mulOp_in_term1234 = new BitSet(new long[]{0x0204400000180000L});
+	public static final BitSet FOLLOW_factor_in_term1237 = new BitSet(new long[]{0x000000C100000002L});
+	public static final BitSet FOLLOW_attrORfuncall_in_factor1250 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_number_in_factor1258 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_STRING_LITERAL_in_factor1266 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_57_in_factor1274 = new BitSet(new long[]{0x02044A0000180000L});
+	public static final BitSet FOLLOW_expr_in_factor1277 = new BitSet(new long[]{0x0400000000000000L});
+	public static final BitSet FOLLOW_58_in_factor1279 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_attrORfuncall1303 = new BitSet(new long[]{0x0200000000000002L});
+	public static final BitSet FOLLOW_57_in_attrORfuncall1311 = new BitSet(new long[]{0x06044A0000180000L});
+	public static final BitSet FOLLOW_actPars_in_attrORfuncall1313 = new BitSet(new long[]{0x0400000000000000L});
+	public static final BitSet FOLLOW_58_in_attrORfuncall1315 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ID_in_designator1394 = new BitSet(new long[]{0x1000000000000002L,0x0000000000000002L});
+	public static final BitSet FOLLOW_60_in_designator1413 = new BitSet(new long[]{0x0000000000080000L});
+	public static final BitSet FOLLOW_ID_in_designator1415 = new BitSet(new long[]{0x1000000000000002L,0x0000000000000002L});
+	public static final BitSet FOLLOW_65_in_designator1441 = new BitSet(new long[]{0x02044A0000180000L});
+	public static final BitSet FOLLOW_expr_in_designator1443 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+	public static final BitSet FOLLOW_66_in_designator1445 = new BitSet(new long[]{0x1000000000000002L,0x0000000000000002L});
+	public static final BitSet FOLLOW_expr_in_actPars1480 = new BitSet(new long[]{0x0800000000000002L});
+	public static final BitSet FOLLOW_59_in_actPars1483 = new BitSet(new long[]{0x02044A0000180000L});
+	public static final BitSet FOLLOW_expr_in_actPars1485 = new BitSet(new long[]{0x0800000000000002L});
 }

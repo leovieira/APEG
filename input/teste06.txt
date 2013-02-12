@@ -2,12 +2,13 @@ apeg adapdatadependent;
 
 functions AdaptableFunctions;
 
+literal3[Grammar g] : literal<g> literal<g> literal<g> !. ;
+
 literal[Grammar g] locals[int n, Grammar g1]:
 	number<g, n> { g1 = addRule(copyGrammar(g), concat(concat('strN : ', concatN('CHAR<g> ', n)), ';')) ;  }
 	'['
 	strN<g1>
 	']'
-	!.
     ;
 
 strN[Grammar g]:
