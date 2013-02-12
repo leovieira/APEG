@@ -13,16 +13,10 @@ public class Test {
 		System.out.println("Return value(s) = " + args3[2]);
 		Util.testeGrammar("input/teste04.txt", "input/teste04_input.txt", "root");
 		Util.testeGrammar("input/teste05.txt", "input/teste05_input.txt", "root");
-<<<<<<< HEAD
 		Util.testeGrammar("input/teste06.txt", "input/teste06_input.txt", "literal");
-		
-		Grammar grammar = new Grammar();
-//		Util.addRules(grammar, "a : b 'a' ;");
-=======
 		Util.testeGrammar("input/teste06.txt", "input/teste06_input.txt", "literal3", true);
 		Util.testeGrammar("input/teste06a.txt", "input/teste06_input.txt", "literal3", true);
 		Util.testeGrammar("input/teste07.txt", "input/teste07_input.txt", "block", true);
->>>>>>> c2efe4b461cba9d7e6a8b7e70910149c1537758b
 	}
 	
 }
