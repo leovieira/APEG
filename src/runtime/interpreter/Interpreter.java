@@ -211,7 +211,20 @@ public class Interpreter {
 	
 			CommonTree pegExpr;
 			if (isAdaptable) {
-				Grammar g = (Grammar) env.getValue(0);
+				// I am sure at least the initial symbol has Grammar as first attribute
+				Grammar g = null;
+				int k = environments.size() - 1;
+				while (true) {
+					Environment aux = environments.get(k);
+					if (aux.size() > 0) {
+						Object x = aux.getValue(0);
+						if (x instanceof Grammar) {
+							g = (Grammar) x;
+							break;
+						}
+					}
+					--k;
+				}
 				NonTerminal auxnt = g.getNonTerminal(nt.getName());
 				pegExpr = auxnt.getPegExpr();
 			} else {
@@ -265,8 +278,7 @@ public class Interpreter {
 		}
 		
 		case AdaptablePEGLexer.STRING_LITERAL: {
-			String s = tree.token.getText();
-			return match(s.substring(1, s.length()-1), pos);
+			return match(tree.token.getText(), pos);
 		}
 		
 		case AdaptablePEGLexer.RANGE: {
@@ -391,7 +403,7 @@ public class Interpreter {
 		}
 		
 		case AdaptablePEGLexer.STRING_LITERAL: {
-			return tree.getText().substring(1, tree.getText().length() - 1);
+			return tree.getText();
 		}
 
 		case AdaptablePEGLexer.CALL: {

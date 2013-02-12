@@ -1,4 +1,4 @@
-// $ANTLR 3.5 C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g 2013-02-12 11:09:19
+// $ANTLR 3.5 C:\\Users\\vladimir\\git\\APEG\\grammars\\AdaptablePEG.g 2013-02-12 12:54:00
 
     package srcparser;
     import semantics.*;
@@ -732,7 +732,7 @@ public class AdaptablePEGParser extends Parser {
 						root.addChild(currNT.getPegExpr());
 						root.addChild((t!=null?((CommonTree)t.getTree()):null));
 						currNT.setPegExpr(root);
-						// System.out.println(root.toStringTree());
+						System.out.println("Rule modified: " + root.toStringTree());
 					}
 				}
 

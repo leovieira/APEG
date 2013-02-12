@@ -211,7 +211,7 @@ rule
 			root.addChild(currNT.getPegExpr());
 			root.addChild($t.tree);
 			currNT.setPegExpr(root);
-			// System.out.println(root.toStringTree());
+			System.out.println("Rule modified: " + root.toStringTree());
 		}
 	}
 }
@@ -506,8 +506,21 @@ OP_SUB : '-';
 OP_MUL : '*';
 OP_DIV : '/';
 OP_MOD : '%';
-STRING_LITERAL
-  : '\'' LITERAL_CHAR LITERAL_CHAR* '\''
+STRING_LITERAL:
+	'\'' LITERAL_CHAR LITERAL_CHAR* '\''
+  	{
+  	String s = $text;
+  	s = s.substring(1, s.length()-1);
+  	String r = "";
+  	for (int i = 0; i < s.length(); ++i) {
+  		char ch = s.charAt(i);
+  		if (ch != '\\') {
+  			r += ch;
+  		}
+  	}
+  	setText(r);
+//  	System.out.println("STRING : " + $text);
+  	}
   ;
 fragment LITERAL_CHAR
   : ESC

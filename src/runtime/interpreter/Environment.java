@@ -10,6 +10,10 @@ public class Environment {
 		values = new Object[size];
 	}
 	
+	public int size() {
+		return values.length;
+	}
+	
 	/**
 	 * To be used when the value of a specific attribute is needed (currently, I have found no use).
 	 * @param attr
