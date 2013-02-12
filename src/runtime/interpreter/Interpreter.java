@@ -361,6 +361,22 @@ public class Interpreter {
 			return pos;
 		}
 		
+		case AdaptablePEGLexer.CAPTURE_TEXT: {
+			// I suppose there are 2 children: the iD and a PEG expression
+			SemanticNode left = (SemanticNode) tree.getChild(0);
+			CommonTree right = (CommonTree) tree.getChild(1);
+			int ret = process(right, pos);
+			if (ret >= 0) {
+				char aux[] = new char[ret - pos];
+				for (int i = pos; i < ret; ++i) {
+					aux[i - pos] = buf.get(i);
+				}
+				String s = new String(aux);
+				currEnvironment().setValue((Attribute) left.getSymbol(), s);
+			}
+			return ret;
+		}
+		
 		case AdaptablePEGLexer.AND_LOOKAHEAD: {
 			// I suppose there is exactly 1 child
 			CommonTree t = (CommonTree) tree.getChild(0);

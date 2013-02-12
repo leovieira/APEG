@@ -28,6 +28,7 @@ tokens {
   LAMBDA;
   RANGE;
   FILES;
+  CAPTURE_TEXT;
 }
 
 @parser::header
@@ -299,10 +300,21 @@ peg_expr :
 // This rule defines a sequence operator: e1 e2 
 // The precedence of sequence operator is 2
 peg_seq : 
-  peg_unary_op+ -> ^(SEQ peg_unary_op+)
+  t1=peg_capturetext
+  	(
+  		-> $t1
+  	  |
+  	  peg_capturetext+ -> ^(SEQ peg_capturetext+)
+  	)
   |
     -> LAMBDA
   ;
+
+peg_capturetext :
+	peg_unary_op
+	|
+	idAssign t8='=' peg_unary_op -> ^(CAPTURE_TEXT[$t8, "CAPTURE_TEXT"] idAssign peg_unary_op)
+	;
 
 
 // This rule defines the operators with precedence 4 and 3  
@@ -332,7 +344,7 @@ peg_unary_op :
    t7='{' assign+ '}' -> ^(ASSIGNLIST[$t7,"ASSIGNLIST"] assign+)
    ;
 
-// This rule defines the others operator and basic exprtessions
+// This rule defines the other operators and basic expressions
 // ' ' (Character with precedence 5)
 // " " (Literal String with precedence 5)
 // [ ] (Character class with precedence 5)
@@ -470,6 +482,8 @@ attrORfuncall
 
 number : INT_NUMBER | REAL_NUMBER ;
 
+// I am currently not using designator.
+// I am using only a single identifier for attributes and function calls
 designator :
   (ID -> ID)
     (
