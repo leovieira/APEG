@@ -47,33 +47,35 @@ tokens {
     
     Grammar grammar;
     NonTerminal currNT;
-    ArrayList<CommonTree> ntcalls = new ArrayList<CommonTree>();
+    ArrayList<CommonTree> ntcalls;
     boolean isAddingRules;
-    NonTerminal addedNT;
+    boolean isNewRule;
     
-    private void verifNTCall(CommonTree tree) {
-		// I suppose there are exactly 2 children:
-		// - the name of the nonterminal
-		// - the list of arguments
-		SemanticNode sm = (SemanticNode) tree.getChild(0);
-		String name = sm.getText();
-		CommonTree args = (CommonTree) tree.getChild(1);
-		NonTerminal nt = grammar.getNonTerminal(name);
-		if (nt == null) {
-			emitErrorMessage(sm.getToken(), "Nonterminal not found: " + name);
-		} else {
-			sm.setSymbol(nt);
-			int i1 = nt.getNumParam() + nt.getNumRet();
-			int i2 = args.getChildCount();
-			if (i1 != i2) {
-				emitErrorMessage(sm.getToken(),
-				"Wrong number of arguments in nonterminal " + name);
+    private void verifNTCalls() {
+    	for (CommonTree tree : ntcalls) {
+			// I suppose there are exactly 2 children:
+			// - the name of the nonterminal
+			// - the list of arguments
+			SemanticNode sm = (SemanticNode) tree.getChild(0);
+			String name = sm.getText();
+			CommonTree args = (CommonTree) tree.getChild(1);
+			NonTerminal nt = grammar.getNonTerminal(name);
+			if (nt == null) {
+				emitErrorMessage(sm.getToken(), "Nonterminal not found: " + name);
 			} else {
-				for (int i = nt.getNumParam(); i < i1; ++i) {
-					CommonTree t = (CommonTree) args.getChild(i);
-					if (t.token.getType() != ID) {
-						emitErrorMessage(sm.getToken(),
-						"Arguments for synthesized attributes must be only an identifier");
+				sm.setSymbol(nt);
+				int i1 = nt.getNumParam() + nt.getNumRet();
+				int i2 = args.getChildCount();
+				if (i1 != i2) {
+					emitErrorMessage(sm.getToken(),
+					"Wrong number of arguments in nonterminal " + name);
+				} else {
+					for (int i = nt.getNumParam(); i < i1; ++i) {
+						CommonTree t = (CommonTree) args.getChild(i);
+						if (t.token.getType() != ID) {
+							emitErrorMessage(sm.getToken(),
+							"Arguments for synthesized attributes must be only an identifier");
+						}
 					}
 				}
 			}
@@ -151,16 +153,15 @@ tokens {
 grammarDef[Grammar g] :
     {
       grammar = g;
+      ntcalls = new ArrayList<CommonTree>();
       isAddingRules = false;
-      addedNT = null;
+      isNewRule = true;
     }
     'apeg'! ID ';'!
     functions
     rule+
     {
-    	for (int i = 0; i < ntcalls.size(); ++i) {
-    		verifNTCall(ntcalls.get(i));
-    	}
+    	verifNTCalls();
     }
     ;
 
@@ -190,7 +191,7 @@ functions :
 addrules :
 	{
 		isAddingRules = true;
-		addedNT = null;
+		ntcalls = new ArrayList<CommonTree>();
 	}
 	rule+
 	;
@@ -199,17 +200,35 @@ addrules :
 rule
 @after{
 	if (currNT != null) {
-		currNT.setPegExpr($t.tree);
+		if (isNewRule) {
+			currNT.setPegExpr($t.tree);
+		} else {
+			CommonTree root = (CommonTree) adaptor.nil();
+			Token token = adaptor.getToken(AdaptablePEGLexer.CHOICE);;
+			root.token = token;
+			root.addChild(currNT.getPegExpr());
+			root.addChild($t.tree);
+			currNT.setPegExpr(root);
+		}
 	}
 }
   :
   ID
 	{
-		currNT = grammar.addNonTerminal($ID.text);
-		if (currNT == null && !isAddingRules) {
-			emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
+		if (isAddingRules) {
+			currNT = grammar.getNonTerminal($ID.text);
+			if (currNT == null) {
+				isNewRule = true;
+				currNT = grammar.addNonTerminal($ID.text);
+			} else {
+				isNewRule = false;
+			}
+		} else {
+			currNT = grammar.addNonTerminal($ID.text);
+			if (currNT == null) {
+				emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
+			}
 		}
-		addedNT = grammar.getNonTerminal($ID.text);
 	}
   d1=optDecls[Attribute.Category.PARAM]
   d2=optReturn[Attribute.Category.RETURN]
@@ -247,7 +266,9 @@ optLocals[Attribute.Category c] :
 varDecl[Attribute.Category c] :
   type ID
   {
-    if (currNT != null) {
+    if (isAddingRules && !isNewRule) {
+        emitErrorMessage($ID, "Declaration of attributes not allowed when extending existing rule.");
+    } else if (currNT != null) {
       if (currNT.addAttribute($ID.text, null, c) == null) {
         emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
       }
