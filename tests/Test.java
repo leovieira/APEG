@@ -4,7 +4,7 @@ import util.Util;
 public class Test {
 	
 	public static void main(String args[]) throws Exception {
-
+/*
 		Util.testeGrammar("input/teste01.txt", "input/teste01_input.txt", "literal");
 		Util.testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S1");
 		Util.testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S2");
@@ -23,6 +23,14 @@ public class Test {
 		Object args8[] = new Object[1];
 		Util.testeGrammar("input/teste08.txt", "input/teste08_input.txt", "name", args8);
 		System.out.println("Return value(s) = " + args8[0]);
+		*/
+		Object args9_1[] = new Object[1];
+		Util.testeGrammar("input/teste09.txt", "input/teste09_input1.txt", "a", args9_1);
+		System.out.println("Return value(s) = " + args9_1[0]);
+		Object args9_2[] = new Object[2];
+		args9_2[0] = 2;
+		Util.testeGrammar("input/teste09.txt", "input/teste09_input2.txt", "c", args9_2);
+		System.out.println("Return value(s) = " + args9_2[1]);
 	}
 	
 }
