@@ -25,41 +25,20 @@ public class Util {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static void testeGrammar(
+	public static int testeGrammar(
 			String grammarFileName,
 			String inputFileName,
 			String initSymbol
 			)
 			throws Exception {
-		testeGrammar(grammarFileName, inputFileName, initSymbol, false, null);
-	}
-
-	public static void testeGrammar(
-			String grammarFileName,
-			String inputFileName,
-			String initSymbol,
-			Object args[]
-			)
-			throws Exception {
-		testeGrammar(grammarFileName, inputFileName, initSymbol, false, args);
-	}
-
-	public static void testeGrammar(
-			String grammarFileName,
-			String inputFileName,
-			String initSymbol,
-			boolean isAdaptable
-			)
-			throws Exception {
-		testeGrammar(grammarFileName, inputFileName, initSymbol, isAdaptable, null);
+		return testeGrammar(grammarFileName, inputFileName, initSymbol, null);
 	}
 
 	
-	public static void testeGrammar(
+	public static int testeGrammar(
 		String grammarFileName,
 		String inputFileName,
 		String initSymbol,
-		boolean isAdaptable,
 		Object args[]
 		)
 	throws Exception {
@@ -83,7 +62,7 @@ public class Util {
 		System.out.println(t.toStringTree());
 		if (parser.hasErrors()) {
 			parser.printErrorMessages();
-			return;
+			return -2;
 		}
 		
 /*		NonTerminal nt = grammar.getNonTerminal("CHAR");
@@ -91,7 +70,7 @@ public class Util {
 		NonTerminal nt1 = g1.getNonTerminal("CHAR");*/
 				
 		if (inputFileName != null && initSymbol != null) {
-			Interpreter interpreter = new Interpreter(grammar, isAdaptable);
+			Interpreter interpreter = new Interpreter(grammar);
 			interpreter.setInputFile(inputFileName);
 			int resp = interpreter.execute(initSymbol, args);
 			if (resp < 0) {
@@ -99,7 +78,10 @@ public class Util {
 			} else {
 				System.out.println(">>>>> SUCCESS - number of characters read: " + resp);
 			}
+			return resp;
 		}
+		
+		return 0;
 
 	}
 

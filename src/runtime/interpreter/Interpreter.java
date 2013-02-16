@@ -21,7 +21,6 @@ import srcparser.AdaptablePEGLexer;
 public class Interpreter {
 	
 	private Grammar grammar;
-	private boolean isAdaptable;
 
 	private FileReader input;
 	private ArrayList<Character> buf;
@@ -30,9 +29,8 @@ public class Interpreter {
 
 	private Memoization memoization;
 	
-	public Interpreter(Grammar grammar, boolean isAdaptable) {
+	public Interpreter(Grammar grammar) {
 		this.grammar = grammar;
-		this.isAdaptable = isAdaptable;
 		buf = new ArrayList<Character>();
 		environments = new Stack<Environment>();
 		
@@ -101,7 +99,8 @@ public class Interpreter {
 		} else {
 			nArgs = args.length;
 		}
-		if (isAdaptable) {
+		Object argsAdaptable[] = null;
+		if (grammar.isAdaptable()) {
 			if (nt.getNumParam() == 0) {
 				throw new Exception("For adaptable PEG, the initial symbol must have a Grammar as first attribute");
 			}
@@ -109,11 +108,11 @@ public class Interpreter {
 			if (at1.getType().getName().compareTo("Grammar") != 0) {
 				throw new Exception("For adaptable PEG, the initial symbol must have a Grammar as first attribute");
 			}
-			Object args2[] = args;
+			argsAdaptable = args;
 			args = new Object[nArgs + 1];
 			args[0] = grammar;
 			for (int i = 0; i < nArgs; ++i) {
-				args[i + 1] = args2[i];
+				args[i + 1] = argsAdaptable[i];
 			}
 			++nArgs;
 		}
@@ -130,7 +129,11 @@ public class Interpreter {
 			int first = nt.getNumParam();
 			int last = first + nt.getNumRet();
 			for (int i = first; i < last; ++i) {
-				args[i] = env.getValue(i);		
+				if (argsAdaptable != null) {
+					argsAdaptable[i - 1] = env.getValue(i);
+				} else {
+					args[i] = env.getValue(i);		
+				}
 			}
 		}
 		return ret;
@@ -210,7 +213,7 @@ public class Interpreter {
 			environments.push(env);
 	
 			CommonTree pegExpr;
-			if (isAdaptable) {
+			if (grammar.isAdaptable()) {
 				// I am sure at least the initial symbol has Grammar as first attribute
 				Grammar g = null;
 				int k = environments.size() - 1;

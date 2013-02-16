@@ -150,7 +150,7 @@ tokens {
 }
 
 
-// This begins the grammar definition.
+// Start symbol for a grammar definition.
 // An APEG grammar is a list of one or more APEG rules
 grammarDef[Grammar g] :
     {
@@ -160,12 +160,21 @@ grammarDef[Grammar g] :
       isNewRule = true;
     }
     'apeg'! ID ';'!
+	('options' '{' (compiler_opt ';')* '}')?
     functions
     rule+
     {
     	verifNTCalls();
     }
     ;
+
+compiler_opt :
+	'isAdaptable' '='
+	('true' { grammar.setAdaptable(true); }
+	|
+	'false' { grammar.setAdaptable(false); }
+	)
+	;
 
 functions :
   'functions' 

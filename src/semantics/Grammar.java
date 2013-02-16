@@ -7,10 +7,22 @@ import java.util.Set;
 
 public class Grammar {
 	
-	private Hashtable<String, NonTerminal> nonTerms = new Hashtable<String, NonTerminal>();
-	private Hashtable<String, Function> functions = new Hashtable<String, Function>();
+	private Hashtable<String, NonTerminal> nonTerms;
+	private Hashtable<String, Function> functions;
+	private boolean isAdaptable;
 		
 	public Grammar() {
+		nonTerms = new Hashtable<String, NonTerminal>();
+		functions = new Hashtable<String, Function>();
+		isAdaptable = false;
+	}
+	
+	public void setAdaptable(boolean b) {
+		isAdaptable = b;
+	}
+	
+	public boolean isAdaptable() {
+		return isAdaptable;
 	}
 		
 	public NonTerminal getNonTerminal(String name) {
@@ -43,6 +55,7 @@ public class Grammar {
 		//Hashtable<String, Function> functions = new Hashtable<String, Function>();
 		//create a new grammar
 		Grammar resp = new Grammar();
+		resp.isAdaptable = isAdaptable;
 		// copy all values of the Map nonTerms
 		Set<String> keys = nonTerms.keySet();
 		Iterator<String> it = keys.iterator();

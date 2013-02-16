@@ -1,5 +1,9 @@
 apeg block;
 
+options {
+  isAdaptable = true;
+}
+
 functions AdaptableFunctions;
 
 block[Grammar g] locals[Grammar g1]:

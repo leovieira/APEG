@@ -1,5 +1,9 @@
 apeg adapdatadependent;
 
+options {
+  isAdaptable = true;
+}
+
 functions AdaptableFunctions;
 
 literal3[Grammar g] : literal<g> literal<g> literal<g> !. ;
