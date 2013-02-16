@@ -18,3 +18,12 @@ b[int x] returns[int x1] :
    ( c<w,z> { w = w + 1; } '0' / c<w,z> '1' )
    ;
  
+ e : f<0> f<1> ;
+   
+ f[int k] :
+   {? k == 0 }
+   /
+   '1'
+   ;
+ 
+ 

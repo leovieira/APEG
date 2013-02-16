@@ -31,6 +31,7 @@ public class Test {
 		args9_2[0] = 2;
 		Util.testeGrammar("input/teste09.txt", "input/teste09_input2.txt", "c", args9_2);
 		System.out.println("Return value(s) = " + args9_2[1]);
+		Util.testeGrammar("input/teste09.txt", "input/teste09_input2.txt", "e");
 	}
 	
 }
