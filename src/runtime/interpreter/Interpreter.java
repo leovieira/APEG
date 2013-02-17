@@ -214,24 +214,6 @@ public class Interpreter {
 	
 			CommonTree pegExpr;
 			if (grammar.isAdaptable()) {
-				/*
-				// I am sure at least the initial symbol has Grammar as first attribute
-				Grammar g = null;
-				int k = environments.size() - 1;
-				while (true) {
-					Environment aux = environments.get(k);
-					if (aux.size() > 0) {
-						Object x = aux.getValue(0);
-						if (x instanceof Grammar) {
-							g = (Grammar) x;
-							break;
-						}
-					}
-					--k;
-				}
-				NonTerminal auxnt = g.getNonTerminal(nt.getName());
-				pegExpr = auxnt.getPegExpr();
-				*/
 				pegExpr = ((Grammar) environments.peek().getValue(0)).getNonTerminal(nt.getName()).getPegExpr();
 			} else {
 				pegExpr = nt.getPegExpr();
