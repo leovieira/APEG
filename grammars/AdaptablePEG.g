@@ -189,10 +189,16 @@ grammarDef[Grammar g] :
 
 compiler_opt :
 	'isAdaptable' '='
-	('true' { grammar.setAdaptable(true); }
+		('true' { grammar.setAdaptable(true); }
+		|
+		'false' { grammar.setAdaptable(false); }
+		)
 	|
-	'false' { grammar.setAdaptable(false); }
-	)
+	'choiceSemantics' '='
+		('simple' { grammar.setChoicePushEnv(true); }
+		|
+		'pushEnv' { grammar.setChoicePushEnv(false); }
+		)
 	;
 
 functions :

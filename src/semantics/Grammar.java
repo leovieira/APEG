@@ -10,6 +10,7 @@ public class Grammar {
 	private Hashtable<String, NonTerminal> nonTerms;
 	private Hashtable<String, Function> functions;
 	private boolean isAdaptable;
+	private boolean choicePushEnv;
 		
 	public Grammar() {
 		nonTerms = new Hashtable<String, NonTerminal>();
@@ -24,7 +25,15 @@ public class Grammar {
 	public boolean isAdaptable() {
 		return isAdaptable;
 	}
-		
+	
+	public void setChoicePushEnv(boolean b) {
+		choicePushEnv = b;
+	}
+	
+	public boolean choicePushEnv() {
+		return choicePushEnv;
+	}
+	
 	public NonTerminal getNonTerminal(String name) {
 		return nonTerms.get(name);
 	}

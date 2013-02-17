@@ -1,5 +1,5 @@
 apeg captureText;
 
-name returns [String s] : s=ID* ;
+name returns [String s] : s=letter* ;
 
-ID : [a-z] ;
+letter : [a-z] ;
