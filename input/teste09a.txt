@@ -1,6 +1,10 @@
 
 apeg choiceback;
 
+options {
+    choiceSemantics = pushEnv;
+}
+
 a returns[int k] : b<0,k> ;
  
 b[int x] returns[int x1] :
@@ -11,9 +15,4 @@ b[int x] returns[int x1] :
   { x = x + 1; } '2' { x1 = x; }
   ;
  
- c[int x] returns[int x1] : { x1 = 2*x; } ;
  
- d returns[int z] locals[int w]:
-   { w = 0; }
-   ( c<w,z> { w = w + 1; } '0' / c<w,z> '1' )
-   ;

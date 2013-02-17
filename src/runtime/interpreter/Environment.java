@@ -10,6 +10,14 @@ public class Environment {
 		values = new Object[size];
 	}
 	
+	public Environment copy() {
+		Environment e = new Environment(size());
+		for (int i = 0; i < size(); ++i) {
+			e.setValue(i, getValue(i));
+		}
+		return e;
+	}
+	
 	public int size() {
 		return values.length;
 	}

@@ -223,7 +223,9 @@ public class Interpreter {
 
 			int ret = process(pegExpr, pos);
 			
-			environments.pop();
+			env = environments.pop();
+			// env may be a different enviroment, because a copy may be pushed
+			// when the semantics of CHOICE is pushEnv
 			
 //			System.out.println("Memoization: " + nt.getName() + " pos: " + pos + " - next_pos: " + ret + " Return: ");
 			
@@ -348,6 +350,22 @@ public class Interpreter {
 
 		case AdaptablePEGLexer.CHOICE: {
 			// I suppose there are 2 children
+			CommonTree t = (CommonTree) tree.getChild(0);
+			Environment env = null;
+			if (grammar.choicePushEnv()) {
+				env = environments.peek().copy();
+			}
+			int ret = process(t, pos);
+			if (ret >= 0) {
+				return ret;
+			}
+			if (grammar.choicePushEnv()) {
+				environments.pop();
+				environments.push(env);
+			}
+			t = (CommonTree) tree.getChild(1);
+			return process(t, pos);
+/*
 			for (int i = 0; i < tree.getChildCount(); ++i) {
 				CommonTree t = (CommonTree) tree.getChild(i);
 				int ret = process(t, pos);
@@ -355,7 +373,7 @@ public class Interpreter {
 					return ret;
 				}
 			}
-			return -1;
+			return -1;*/
 		}
 			
 		case AdaptablePEGLexer.ASSIGNLIST: {

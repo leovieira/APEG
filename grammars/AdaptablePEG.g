@@ -195,9 +195,9 @@ compiler_opt :
 		)
 	|
 	'choiceSemantics' '='
-		('simple' { grammar.setChoicePushEnv(true); }
+		('simple' { grammar.setChoicePushEnv(false); }
 		|
-		'pushEnv' { grammar.setChoicePushEnv(false); }
+		'pushEnv' { grammar.setChoicePushEnv(true); }
 		)
 	;
 

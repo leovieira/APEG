@@ -165,7 +165,7 @@ public class UnitTests {
 	public void Test09_1() {
 		try {
 			Object args9_1[] = new Object[1];
-			int resp = Util.testeGrammar("input/teste09.txt", "input/teste09_input1.txt", "a", args9_1);
+			int resp = Util.testeGrammar("input/teste09.txt", "input/teste09_input.txt", "a", args9_1);
 			assertEquals(resp, 1);
 			System.out.println("Return value(s) = " + args9_1[0]);
 			assertEquals(args9_1[0], 3);
@@ -178,23 +178,11 @@ public class UnitTests {
 	@Test
 	public void Test09_2() {
 		try {
-			Object args9_2[] = new Object[2];
-			args9_2[0] = 2;
-			int resp = Util.testeGrammar("input/teste09.txt", "input/teste09_input2.txt", "c", args9_2);
-			assertEquals(resp, 0);
-			System.out.println("Return value(s) = " + args9_2[1]);
-			assertEquals(args9_2[1], 4);
-		} catch (Exception e) {
-			System.out.println(e);
-			assertTrue(false);
-		}
-	}
-
-	@Test
-	public void Test09_3() {
-		try {
-			int resp = Util.testeGrammar("input/teste09.txt", "input/teste09_input2.txt", "e");
+			Object args9_1[] = new Object[1];
+			int resp = Util.testeGrammar("input/teste09a.txt", "input/teste09_input.txt", "a", args9_1);
 			assertEquals(resp, 1);
+			System.out.println("Return value(s) = " + args9_1[0]);
+			assertEquals(args9_1[0], 1);
 		} catch (Exception e) {
 			System.out.println(e);
 			assertTrue(false);

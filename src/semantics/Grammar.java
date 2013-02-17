@@ -65,6 +65,7 @@ public class Grammar {
 		//create a new grammar
 		Grammar resp = new Grammar();
 		resp.isAdaptable = isAdaptable;
+		resp.choicePushEnv = choicePushEnv;
 		// copy all values of the Map nonTerms
 		Set<String> keys = nonTerms.keySet();
 		Iterator<String> it = keys.iterator();
