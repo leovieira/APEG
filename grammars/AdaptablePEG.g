@@ -46,15 +46,26 @@ tokens {
 }
 
 @members{
+
+    private static class NTCallInfo {
+        NonTerminal enclosingNT;
+        CommonTree callExpr;
+        public NTCallInfo(NonTerminal enclosingNT, CommonTree callExpr) {
+            this.enclosingNT = enclosingNT;
+            this.callExpr = callExpr;
+        }
+    }
     
     Grammar grammar;
     NonTerminal currNT;
-    ArrayList<CommonTree> ntcalls;
+    ArrayList<NTCallInfo> ntcalls;
     boolean isAddingRules;
     boolean isNewRule;
     
     private void verifNTCalls() {
-    	for (CommonTree tree : ntcalls) {
+    	for (NTCallInfo ntCallInfo : ntcalls) {
+    	    NonTerminal enclosingNT = ntCallInfo.enclosingNT;
+    	    CommonTree tree = ntCallInfo.callExpr;
 			// I suppose there are exactly 2 children:
 			// - the name of the nonterminal
 			// - the list of arguments
@@ -66,6 +77,14 @@ tokens {
 				emitErrorMessage(sm.getToken(), "Nonterminal not found: " + name);
 			} else {
 				sm.setSymbol(nt);
+				if(nt.addedGrammarAttribute()) {
+				// A grammar attribute was automatically inserted at NonTerminal nt.
+				// Now it is necessary to pass the correct new first argument
+				    Attribute grammarAttr = enclosingNT.getParam(0);
+					SemanticNode auxt = (SemanticNode) adaptor.create(AdaptablePEGLexer.ID, grammarAttr.getName());
+					auxt.setSymbol(grammarAttr);
+					args.insertChild(0, auxt);
+				}
 				int i1 = nt.getNumParam() + nt.getNumRet();
 				int i2 = args.getChildCount();
 				if (i1 != i2) {
@@ -155,7 +174,7 @@ tokens {
 grammarDef[Grammar g] :
     {
       grammar = g;
-      ntcalls = new ArrayList<CommonTree>();
+      ntcalls = new ArrayList<NTCallInfo>();
       isAddingRules = false;
       isNewRule = true;
     }
@@ -203,7 +222,7 @@ addrules[Grammar g] :
 	{
 		grammar = g;
 		isAddingRules = true;
-		ntcalls = new ArrayList<CommonTree>();
+		ntcalls = new ArrayList<NTCallInfo>();
 	}
 	rule+
 	{
@@ -223,6 +242,11 @@ rule
 			root.addChild($t.tree);
 			currNT.setPegExpr(root);
 			System.out.println("Rule modified: " + root.toStringTree());
+		}
+		if (grammar.isAdaptable()) {
+			if (currNT.getNumParam() == 0 || currNT.getParam(0).getType().getName().compareTo("Grammar") != 0) {
+				currNT.addGrammarAttribute();
+			}
 		}
 	}
 }
@@ -252,7 +276,7 @@ rule
   -> ^(RULE ID $d1 $d2 $d3 peg_expr)
 ;
 
-// This rule defines the list of all inhereted attributes
+// This rule defines the lists of all attributes
 decls[Attribute.Category c] :
   '[' varDecl[c] (',' varDecl[c])* ']' -> ^(LIST varDecl*)
   ;
@@ -376,7 +400,9 @@ peg_factor :
 
 ntcall
 @after{
-	ntcalls.add($ntcall.tree);
+    if (currNT != null) {
+        ntcalls.add(new NTCallInfo(currNT, $ntcall.tree));
+    }
 }
 :
   ID

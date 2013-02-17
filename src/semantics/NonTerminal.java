@@ -6,6 +6,18 @@ import java.util.Iterator;
 import org.antlr.runtime.tree.CommonTree;
 import semantics.Attribute.Category;
 
+/**
+ * A class to represent a Nonterminal symbol.
+ * 
+ * It offers a method to add a Grammar as its first inherited attribute.
+ * This method is necessary because all nonterminals in an APEG must have this attribute.
+ * Although the parser allows a programmer to omit this attribute in some cases,
+ * it must be inserted not only because of attribute evaluation, but also because
+ * the use of an additional attribute may affect the memoization mechanism.
+ * 
+ * @author vladimir
+ *
+ */
 public class NonTerminal extends Symbol {
 	
 	private int numParam;
@@ -13,9 +25,11 @@ public class NonTerminal extends Symbol {
 	private int numLocal;
 	private ArrayList<Attribute> attrs = new ArrayList<Attribute>();
 	private CommonTree pegExpr;
+	private boolean addedGrammarAttribute;
 	
 	public NonTerminal(String name) {
 		super(name);
+		addedGrammarAttribute = false;
 	}
 
 	public CommonTree getPegExpr() {
@@ -82,6 +96,21 @@ public class NonTerminal extends Symbol {
 		return a;
 	}
 
+	public void addGrammarAttribute() {
+//		System.out.println("Adding grammar attribute to " + getName());
+		Attribute a = new Attribute("grammar", new Type("Grammar"), Category.PARAM, 0);
+		attrs. add(0, a);
+		for (int i = 1; i < attrs.size(); ++i) {
+			attrs.get(i).setIndex(attrs.get(i).getIndex() + 1);
+		}
+		++numParam;
+		addedGrammarAttribute = true;
+	}
+	
+	public boolean addedGrammarAttribute() {
+		return addedGrammarAttribute;
+	}
+	
 	public int getNumParam() {
 		return numParam;
 	}
@@ -99,6 +128,7 @@ public class NonTerminal extends Symbol {
 		nt.numParam = this.numParam;
 		nt.numLocal = this.numLocal;
 		nt.numRet = this.numRet;
+		nt.addedGrammarAttribute = this.addedGrammarAttribute;
 		
 		ArrayList<Attribute> atr = new ArrayList<Attribute>();
 		Iterator<Attribute> it = attrs.iterator();

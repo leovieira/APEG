@@ -6,10 +6,11 @@ options {
 
 functions AdaptableFunctions;
 
-literal3[Grammar g] : literal<g> literal<g> literal<g> !. ;
+literal3[Grammar g] :
+    literal<g> literal<g> literal<g> !. ;
 
 literal[Grammar g] locals[int n, Grammar g1]:
-	number<n>
+    number<n>
 	{ g1 = addRule(copyGrammar(g), concat(concat('strN : ', concatN('CHAR ', n)), ';')) ; }
 	'['
 	strN<g1>
@@ -23,8 +24,8 @@ strN[Grammar g]:
 CHAR : . ;
 
 number returns[int r] locals[int aux] :
-  digit<r> ( digit<aux> { r = r * 10 + aux; } )*
-  ;
+    digit<r> ( digit<aux> { r = r * 10 + aux; } )*
+    ;
   
 digit returns [int x1] :
   '0'  { x1 = 0; }

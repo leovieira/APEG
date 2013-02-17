@@ -29,4 +29,8 @@ public class Attribute extends Symbol {
 		return index;
 	}
 	
+	public void setIndex(int index) {
+		this.index = index;
+	}
+	
 }
