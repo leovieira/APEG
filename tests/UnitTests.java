@@ -17,6 +17,17 @@ public class UnitTests {
 	}
 
 	@Test
+	public void Test01_1() {
+		try {
+			int resp = Util.testeGrammar("input/teste01a.txt", "input/teste01_input.txt", "literal");
+			assertEquals(24, resp);
+		} catch (Exception e) {
+			System.out.println(e);
+			assertTrue(false);
+		}
+	}
+
+	@Test
 	public void Test02_1() {
 		try {
 			int resp = Util.testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S1");

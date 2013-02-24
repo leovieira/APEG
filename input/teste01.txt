@@ -1,17 +1,14 @@
-
 apeg datadependent;
-
-functions Functions1 ;
 
 literal locals[int n] :
   number<n> '[' strN<n> ']' !.
   ;
 
-number returns[int r] locals[int aux] :
-  digit<r> ( digit<aux> { r = r * 10 + aux; } )*
-  ;
-
 strN[int n] : ( {? n > 0 } CHAR { n = n - 1; } )* {? n == 0 } ;
+
+number returns[int x2] locals[int x1] :
+  digit<x2> ( digit<x1> { x2 = x2 * 10 + x1; } )*
+  ;
 
 digit returns [int x1] :
   '0'  { x1 = 0; }
