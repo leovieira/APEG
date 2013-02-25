@@ -286,16 +286,26 @@ public class Interpreter {
 		
 		case AdaptablePEGLexer.SEQ: {
 			int ret = pos;
+			Environment env = null;
+			if (grammar.discardChanges()) {
+				env = environments.peek().copy();
+			}
 			for (int i = 0; i < tree.getChildCount(); ++i) {
 				CommonTree t = (CommonTree) tree.getChild(i);
 				ret = process(t, ret);
 				if (ret < 0) {
+					if (grammar.discardChanges()) {
+						environments.pop();
+						environments.push(env);
+					}
 					return -1;
 				}
 			}
 			return ret;
 		}
 		
+		//TODO
+		// insert code for discarding changes in environments, in several operations
 		case AdaptablePEGLexer.REPEAT: {
 			// I suppose there is exactly one child
 			CommonTree t = (CommonTree) tree.getChild(0);
@@ -352,14 +362,14 @@ public class Interpreter {
 			// I suppose there are 2 children
 			CommonTree t = (CommonTree) tree.getChild(0);
 			Environment env = null;
-			if (grammar.choicePushEnv()) {
+			if (grammar.discardChanges()) {
 				env = environments.peek().copy();
 			}
 			int ret = process(t, pos);
 			if (ret >= 0) {
 				return ret;
 			}
-			if (grammar.choicePushEnv()) {
+			if (grammar.discardChanges()) {
 				environments.pop();
 				environments.push(env);
 			}

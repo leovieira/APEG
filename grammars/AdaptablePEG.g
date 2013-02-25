@@ -194,10 +194,10 @@ compiler_opt :
 		'false' { grammar.setAdaptable(false); }
 		)
 	|
-	'choiceSemantics' '='
-		('simple' { grammar.setChoicePushEnv(false); }
+	'envSemantics' '='
+		('simple' { grammar.setDiscardChanges(false); }
 		|
-		'pushEnv' { grammar.setChoicePushEnv(true); }
+		'discardChangesWhenFail' { grammar.setDiscardChanges(true); }
 		)
 	;
 

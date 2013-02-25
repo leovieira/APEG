@@ -10,7 +10,7 @@ public class Grammar {
 	private Hashtable<String, NonTerminal> nonTerms;
 	private Hashtable<String, Function> functions;
 	private boolean isAdaptable;
-	private boolean choicePushEnv;
+	private boolean discardChanges;
 		
 	public Grammar() {
 		nonTerms = new Hashtable<String, NonTerminal>();
@@ -26,12 +26,12 @@ public class Grammar {
 		return isAdaptable;
 	}
 	
-	public void setChoicePushEnv(boolean b) {
-		choicePushEnv = b;
+	public void setDiscardChanges(boolean b) {
+		discardChanges = b;
 	}
 	
-	public boolean choicePushEnv() {
-		return choicePushEnv;
+	public boolean discardChanges() {
+		return discardChanges;
 	}
 	
 	public NonTerminal getNonTerminal(String name) {
@@ -65,7 +65,7 @@ public class Grammar {
 		//create a new grammar
 		Grammar resp = new Grammar();
 		resp.isAdaptable = isAdaptable;
-		resp.choicePushEnv = choicePushEnv;
+		resp.discardChanges = discardChanges;
 		// copy all values of the Map nonTerms
 		Set<String> keys = nonTerms.keySet();
 		Iterator<String> it = keys.iterator();

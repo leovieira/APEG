@@ -2,7 +2,7 @@
 apeg choiceback;
 
 options {
-    choiceSemantics = pushEnv;
+    envSemantics = discardChangesWhenFail;
 }
 
 a returns[int k] : b<0,k> ;
