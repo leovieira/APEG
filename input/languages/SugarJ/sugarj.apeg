@@ -1,0 +1,90 @@
+apeg SugarJ;
+
+/**
+ This grammar implements the SugarJ languages
+ 
+ Conceitualmente, uma definião de "sugar" tem duas partes: definição da sintaxe e regras de transformação ou desugaring
+ Eu irei introduzir somente a parte de sintaxe, pois é o que interessa para a gente.
+**/
+
+
+/**
+ This nonterminal defines the syntax of a Sugar 
+ 
+ Notes: The modifier must be public;
+**/
+
+sugar_declaration:
+  modifiers 'sugar' Id '{' defining_syntax '}'
+  ;
+ 
+modifiers: 
+  'public'
+  ;
+  
+/**
+ This nonterminal defines the syntax of the rules. We use the PEG style
+**/
+
+defining_syntax:
+  'context-free syntax' peg_rules
+  ; 
+
+peg_rule:
+  (Id '->' peg_expr ';')*
+  ;
+  
+peg_expr:
+  peg_seq ('/' peg_seg)*
+  ;
+  
+peg_seq:
+  peg_predicate / 
+  ;
+
+peg_predicate:
+    '!' peg_unary_op
+  / '&' peg_unary_op
+  / peg_unary_op
+  ;
+
+peg_unary_op:
+  / peg_factor '*'
+  / peg_factor '+'
+  / peg_factor '?'
+  / peg_factor
+  ;
+  
+peg_factor:
+    Literal
+  / Id
+  / '[' RANGE+ ']'
+  / '.'
+  / '(' peg_expr ')'
+  ;
+  
+Literal:
+  '\'' (!'\'' Char)+ '\''
+  ;
+
+Char:
+    '\\' ('n' / 'r' / 't' / 'b' / 'f' / '"' / '\'' / '\\' )
+  /  !'\\' .
+  ;
+  
+Id:
+  Letter (Letter / Digit / '_')*
+  ;
+  
+Letter:
+  [a-zA-Z]
+  ;
+  
+Digit:
+  [0-9]
+  ;
+
+RANGE:
+    Char '-' Char 
+  / Char
+  ;
