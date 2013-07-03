@@ -7,6 +7,22 @@ apeg SugarJ;
  Eu irei introduzir somente a parte de sintaxe, pois é o que interessa para a gente.
 **/
 
+/**
+ This nonterminal defines white space
+**/
+
+ws:
+  (space / comment)*;
+
+space:
+  ' ' / '\t' / endOfLine;
+
+endOfLine:
+  '\r\n' / '\r' / '\n'; 
+
+comment:
+    '//' (!endOfLine .)* endOfLine
+  / '/*' (!'*/' .)* '*/';
 
 /**
  This nonterminal defines the syntax of a Sugar 
@@ -15,7 +31,7 @@ apeg SugarJ;
 **/
 
 sugar_declaration:
-  modifiers 'sugar' Id '{' defining_syntax '}'
+  ws modifiers ws 'sugar' ws Id ws '{' ws defining_syntax ws '}'
   ;
  
 modifiers: 
@@ -27,15 +43,15 @@ modifiers:
 **/
 
 defining_syntax:
-  'context-free syntax' peg_rules
+  'context-free syntax' peg_rule
   ; 
 
 peg_rule:
-  (Id '->' peg_expr ';')*
+  (ws peg_expr ws '->' ws Id ws ';')*
   ;
   
 peg_expr:
-  peg_seq ('/' peg_seg)*
+  peg_seq (ws '/' ws peg_seq)*
   ;
   
 peg_seq:
