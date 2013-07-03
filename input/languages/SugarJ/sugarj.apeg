@@ -31,7 +31,7 @@ comment:
 **/
 
 sugar_declaration:
-  ws modifiers ws 'sugar' ws Id ws '{' ws defining_syntax ws '}'
+  ws modifiers ws 'sugar' ws Id ws '{'  ws defining_syntax ws '}'
   ;
  
 modifiers: 
@@ -43,7 +43,7 @@ modifiers:
 **/
 
 defining_syntax:
-  'context-free syntax' peg_rule
+  'context-free syntax' ws peg_rule
   ; 
 
 peg_rule:
@@ -55,7 +55,7 @@ peg_expr:
   ;
   
 peg_seq:
-  peg_predicate / 
+  peg_predicate (ws peg_predicate)* / 
   ;
 
 peg_predicate:
@@ -65,7 +65,7 @@ peg_predicate:
   ;
 
 peg_unary_op:
-  / peg_factor '*'
+    peg_factor '*'
   / peg_factor '+'
   / peg_factor '?'
   / peg_factor

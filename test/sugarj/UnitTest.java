@@ -6,23 +6,35 @@ import org.junit.Test;
 
 public class UnitTest {
 
-	@Test
-	public void TestPair() {
+	public int executeGrammar(String grammar, String file, String start) {
 		try {
-			int resp = Util.testeGrammar("input/languages/SugarJ/sugarj.apeg",
-					                     "input/languages/SugarJ/examples/Pair.sugj", "sugar_declaration");
+			int resp = Util.testeGrammar(grammar, file, start);
 			if(resp < 0)
 				resp = -1;
 			else
 				resp = 1;
-			assertEquals(1, resp);
+			return resp;
 		} catch (Exception e) {
 			System.out.println(e);
-			assertTrue(false);
+			return -1;
 		}
 	}
-
 	
+	@Test
+	public void TestPair() {
+		int resp = executeGrammar("input/languages/SugarJ/sugarj.apeg",
+                                  "input/languages/SugarJ/examples/Pair.sugj",
+                                  "sugar_declaration");
+		assertEquals(1, resp);
+	}
+
+	@Test
+	public void TestClousure() {
+		int resp = executeGrammar("input/languages/SugarJ/sugarj.apeg",
+                "input/languages/SugarJ/examples/Closure.sugj",
+                "sugar_declaration");
+		assertEquals(1, resp);
+	}
 	
 	
 
