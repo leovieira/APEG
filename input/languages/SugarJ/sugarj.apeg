@@ -8,29 +8,12 @@ apeg SugarJ;
 **/
 
 /**
- This nonterminal defines white space
-**/
-
-ws:
-  (space / comment)*;
-
-space:
-  ' ' / '\t' / endOfLine;
-
-endOfLine:
-  '\r\n' / '\r' / '\n'; 
-
-comment:
-    '//' (!endOfLine .)* endOfLine
-  / '/*' (!'*/' .)* '*/';
-
-/**
  This nonterminal defines the syntax of a Sugar 
  
  Notes: The modifier must be public;
 **/
 
-sugar_declaration:
+sugar_declaration[String package]:
   ws modifiers ws 'sugar' ws Id ws '{'  ws defining_syntax ws '}'
   ;
  
@@ -64,19 +47,19 @@ peg_predicate:
   / peg_unary_op
   ;
 
-peg_unary_op:
-    peg_factor '*'
-  / peg_factor '+'
-  / peg_factor '?'
-  / peg_factor
+peg_unary_op locals[String s]:
+    peg_factor<s> '*'
+  / peg_factor<s> '+'
+  / peg_factor<s> '?'
+  / peg_factor<s>
   ;
   
-peg_factor:
-    Literal
-  / Id
-  / '[' RANGE+ ']'
-  / '.'
-  / '(' peg_expr ')'
+peg_factor returns[String s]:
+    s=Literal
+  / s=Id
+  / s=('[' RANGE+ ']')
+  / s='.'
+  / '(' peg_expr ')' {s='()';}
   ;
   
 Literal:
@@ -102,5 +85,22 @@ Digit:
 
 RANGE:
     Char '-' Char 
-  / Char
+  / !']' Char
   ;
+  
+/**
+ This nonterminal defines white space
+**/
+
+ws:
+  (space / comment)*;
+
+space:
+  ' ' / '\t' / endOfLine;
+
+endOfLine:
+  '\r\n' / '\r' / '\n'; 
+
+comment:
+    '//' (!endOfLine .)* endOfLine
+  / '/*' (!'*/' .)* '*/';
