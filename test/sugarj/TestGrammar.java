@@ -72,4 +72,59 @@ public class TestGrammar {
 		assertEquals(1, resp);
 		assertEquals(s, "()");
 	}
+	
+	@Test
+	public void TestPeg_unary_op() {
+		Object args[] = new Object[1];
+		String s;
+		int resp;
+		// Testing a repeat as peg_unary_op and check if the returns string has the correct value
+		resp = executeGrammar(grammar, path + "peg_unary_op_repeat.txt", "peg_unary_op", args);
+		s = (String) args[0];
+		assertEquals(1, resp);
+		assertEquals(s, "nonterminal*");
+		
+		// Testing an one-or-more as peg_unary_op and check if the returns string has the correct value
+		resp = executeGrammar(grammar, path + "peg_unary_op_one_or_more.txt", "peg_unary_op", args);
+		s = (String) args[0];
+		assertEquals(1, resp);
+		assertEquals(s, "[a-z0-9A-Z]+");
+		
+		// Testing an optional as peg_unary_op and check if the returns string has the correct value
+		resp = executeGrammar(grammar, path + "peg_unary_op_optional.txt", "peg_unary_op", args);
+		s = (String) args[0];
+		assertEquals(1, resp);
+		assertEquals(s, "\'abc testando\'?");
+		
+	}
+	
+	@Test
+	public void TestPeg_predicate() {
+		Object args[] = new Object[1];
+		String s;
+		int resp;
+		// Testing a not-predicate as peg_predicate and check if the returns string has the correct value
+		resp = executeGrammar(grammar, path + "peg_predicate_not.txt", "peg_predicate", args);
+		s = (String) args[0];
+		assertEquals(1, resp);
+		assertEquals(s, "![a-z0-9A-Z]");
+		
+		// Testing a and-predicate as peg_predicate and check if the returns string has the correct value
+		resp = executeGrammar(grammar, path + "peg_predicate_and.txt", "peg_predicate", args);
+		s = (String) args[0];
+		assertEquals(1, resp);
+		assertEquals(s, "&[a-z0-9A-Z]");		
+	}
+	
+	@Test
+	public void TestPeg_seq() {
+		Object args[] = new Object[1];
+		String s;
+		int resp;
+		// Testing peg_seq and check if the returns string has the correct value
+		resp = executeGrammar(grammar, path + "peg_seq.txt", "peg_seq", args);
+		s = (String) args[0];
+		assertEquals(1, resp);
+		assertEquals(s, "&[a-z0-9A-Z]+ !. identifier_01* \'abc testando\'?");
+	}
 }

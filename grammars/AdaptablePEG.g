@@ -572,7 +572,8 @@ OP_MUL : '*';
 OP_DIV : '/';
 OP_MOD : '%';
 STRING_LITERAL:
-	'\'' LITERAL_CHAR LITERAL_CHAR* '\''
+     '\'' LITERAL_CHAR* '\''
+	// '\'' LITERAL_CHAR LITERAL_CHAR* '\''
   	{
   	String s = $text;
   	s = s.substring(1, s.length()-1);

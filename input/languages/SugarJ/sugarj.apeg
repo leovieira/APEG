@@ -13,7 +13,7 @@ apeg SugarJ;
  Notes: The modifier must be public;
 **/
 
-functions functions.sugarj.SugarJFunctions;
+functions SugarJFunctions;
 
 sugar_declaration[String package]:
   ws modifiers ws 'sugar' ws Id ws '{'  ws defining_syntax ws '}'
@@ -35,24 +35,24 @@ peg_rule:
   (ws peg_expr ws '->' ws Id ws ';')*
   ;
   
-peg_expr:
-  peg_seq (ws '/' ws peg_seq)*
+peg_expr locals[String s, String s1]:
+  peg_seq<s> (ws '/' ws peg_seq<s1>)*
   ;
   
-peg_seq:
-  peg_predicate (ws peg_predicate)* / 
+peg_seq returns[String s] locals[String s1]:
+  peg_predicate<s> (ws peg_predicate<s1> {s = concat(s, concat(' ', s1));})* / {s ='';}
   ;
 
-peg_predicate:
-    '!' peg_unary_op
-  / '&' peg_unary_op
-  / peg_unary_op
+peg_predicate returns[String s]:
+    '!' peg_unary_op<s> {s = concat('!', s);}
+  / '&' peg_unary_op<s> {s = concat('&', s);}
+  / peg_unary_op<s>
   ;
 
-peg_unary_op locals[String s]:
-    peg_factor<s> '*'
-  / peg_factor<s> '+'
-  / peg_factor<s> '?'
+peg_unary_op returns[String s]:
+    peg_factor<s> '*' {s = concat(s, '*');}
+  / peg_factor<s> '+' {s = concat(s, '+');}
+  / peg_factor<s> '?' {s = concat(s, '?');}
   / peg_factor<s>
   ;
   
