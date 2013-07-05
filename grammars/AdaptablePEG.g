@@ -204,12 +204,12 @@ compiler_opt :
 functions :
   'functions' 
   (
-  // ID
-  package_name
+   ID
+  //package_name
     {
       try {
-          //Class c = Class.forName($ID.text);
-          Class c = Class.forName($package_name.text);
+          Class c = Class.forName($ID.text);
+          //Class c = Class.forName($package_name.text);
           for (Method m : c.getDeclaredMethods()) {
             if (grammar.addFunction(m) == null) {
               emitErrorMessage($ID, "Function name duplicated: " + m.getName() + " in file " + $ID.text);
@@ -221,16 +221,17 @@ functions :
     }
   )+
   ';'
-    -> ^(FILES package_name+)
+    -> ^(FILES ID+)
   |
     -> ^(FILES )
   ;
 
-package_name:
+/*package_name:
    ID -> ID
   |
    ID t1='.' t2=package_name -> ^(DOT[$t1,"DOT"] ID $t2)
   ;
+*/
 
 addrules[Grammar g] :
 	{
