@@ -1,0 +1,5 @@
+public sugar Test {
+  context-free syntax
+     '(' JavaTyype ',' JavaType ')' -> JavaType;
+     '(' JavaExpr ',' JavaExpr ')' -> JavaExpr;
+}

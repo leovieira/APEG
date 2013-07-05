@@ -13,10 +13,10 @@ apeg SugarJ;
  Notes: The modifier must be public;
 **/
 
-functions SugarJFunctions;
+functions AdaptableFunctions;
 
-sugar_declaration[String package]:
-  ws modifiers ws 'sugar' ws Id ws '{'  ws defining_syntax ws '}'
+sugar_declaration returns[String name, String rules]:
+  ws modifiers ws 'sugar' ws name=Id ws '{'  ws defining_syntax<rules> ws '}'
   ;
  
 modifiers: 
@@ -27,16 +27,16 @@ modifiers:
  This nonterminal defines the syntax of the rules. We use the PEG style
 **/
 
-defining_syntax:
-  'context-free syntax' ws peg_rule
+defining_syntax returns[String s]:
+  'context-free syntax' ws peg_rule<s>
   ; 
 
-peg_rule:
-  (ws peg_expr ws '->' ws Id ws ';')*
+peg_rule returns[String s] locals[String s1, String id]:
+  {s='';} (ws peg_expr<s1> ws '->' ws id=Id ws ';' {s = concat(s, concat(id, concat(': ', concat(s1, ';'))));})*
   ;
   
-peg_expr locals[String s, String s1]:
-  peg_seq<s> (ws '/' ws peg_seq<s1>)*
+peg_expr returns[String s] locals[String s1]:
+  peg_seq<s> (ws '/' ws peg_seq<s1> {s = concat(s, concat(' / ', s1));})*
   ;
   
 peg_seq returns[String s] locals[String s1]:
@@ -61,7 +61,7 @@ peg_factor returns[String s]:
   / Id
   / '[' RANGE+ ']'
   / '.')
-  / '(' peg_expr ')' {s='()';}
+  / '(' peg_expr<s> ')' {s = concat('(', concat(s, ')'));}
   ;
   
 Literal:

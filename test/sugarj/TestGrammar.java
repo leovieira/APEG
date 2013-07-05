@@ -70,7 +70,7 @@ public class TestGrammar {
 		resp = executeGrammar(grammar, path + "peg_factor_parenthesis.txt", "peg_factor", args);
 		s = (String) args[0];
 		assertEquals(1, resp);
-		assertEquals(s, "()");
+		assertEquals(s, "(a / ab)");
 	}
 	
 	@Test
@@ -126,5 +126,43 @@ public class TestGrammar {
 		s = (String) args[0];
 		assertEquals(1, resp);
 		assertEquals(s, "&[a-z0-9A-Z]+ !. identifier_01* \'abc testando\'?");
+	}
+	
+	@Test
+	public void TestPeg_expr() {
+		Object args[] = new Object[1];
+		String s;
+		int resp;
+		// Testing peg_seq and check if the returns string has the correct value
+		resp = executeGrammar(grammar, path + "peg_expr.txt", "peg_expr", args);
+		s = (String) args[0];
+		assertEquals(1, resp);
+		assertEquals(s, "&[a-z0-9A-Z]+ / !. identifier_01* / \'abc testando\'?");
+	}
+	
+	@Test
+	public void TestPeg_rule() {
+		Object args[] = new Object[1];
+		String s;
+		int resp;
+		// Testing peg_rule and check if the returns string has the correct value
+		resp = executeGrammar(grammar, path + "peg_rule.txt", "peg_rule", args);
+		s = (String) args[0];
+		assertEquals(1, resp);
+		assertEquals(s, "JavaType: \'(\' JavaTyype \',\' JavaType \')\';JavaExpr: \'(\' JavaExpr \',\' JavaExpr \')\';");
+	}
+	
+	@Test
+	public void TestSugar_declaration() {
+		Object args[] = new Object[2];
+		String name, s;
+		int resp;
+		// Testing peg_rule and check if the returns string has the correct value
+		resp = executeGrammar(grammar, path + "sugar_declaration.txt", "sugar_declaration", args);
+		name = (String) args[0];
+		s = (String) args[1];
+		assertEquals(1, resp);
+		assertEquals(name, "Test");
+		assertEquals(s, "JavaType: \'(\' JavaTyype \',\' JavaType \')\';JavaExpr: \'(\' JavaExpr \',\' JavaExpr \')\';");
 	}
 }
