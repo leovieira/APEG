@@ -144,7 +144,7 @@ tokens {
     }
     
     /**
-     * O token passado como parâmetro (atributo token) é usado
+     * O token passado como parï¿½metro (atributo token) ï¿½ usado
      * para adicionar a linha e coluna na mensagem de erro.
      */
     public void emitErrorMessage(Token t, String pMessage) {
@@ -204,10 +204,12 @@ compiler_opt :
 functions :
   'functions' 
   (
-  ID
+  // ID
+  package_name
     {
       try {
-          Class c = Class.forName($ID.text);
+          //Class c = Class.forName($ID.text);
+          Class c = Class.forName($package_name.text);
           for (Method m : c.getDeclaredMethods()) {
             if (grammar.addFunction(m) == null) {
               emitErrorMessage($ID, "Function name duplicated: " + m.getName() + " in file " + $ID.text);
@@ -219,9 +221,15 @@ functions :
     }
   )+
   ';'
-    -> ^(FILES ID+)
+    -> ^(FILES package_name+)
   |
     -> ^(FILES )
+  ;
+
+package_name:
+   ID -> ID
+  |
+   ID t1='.' t2=package_name -> ^(DOT[$t1,"DOT"] ID $t2)
   ;
 
 addrules[Grammar g] :

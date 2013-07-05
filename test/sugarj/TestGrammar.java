@@ -60,6 +60,12 @@ public class TestGrammar {
 		assertEquals(1, resp);
 		assertEquals(s, "[A-Z0-9a-z]");
 		
+		// Testing an any (.) as a peg_factor
+		resp = executeGrammar(grammar, path + "peg_factor_any.txt", "peg_factor", args);
+		s = (String) args[0];
+		assertEquals(1, resp);
+		assertEquals(s, ".");
+		
 		// Testing a parenthesis expression as a peg_factor
 		resp = executeGrammar(grammar, path + "peg_factor_parenthesis.txt", "peg_factor", args);
 		s = (String) args[0];

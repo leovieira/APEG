@@ -13,6 +13,8 @@ apeg SugarJ;
  Notes: The modifier must be public;
 **/
 
+functions functions.sugarj.SugarJFunctions;
+
 sugar_declaration[String package]:
   ws modifiers ws 'sugar' ws Id ws '{'  ws defining_syntax ws '}'
   ;
@@ -55,10 +57,10 @@ peg_unary_op locals[String s]:
   ;
   
 peg_factor returns[String s]:
-    s=Literal
-  / s=Id
-  / s=('[' RANGE+ ']')
-  / s='.'
+    s=(Literal
+  / Id
+  / '[' RANGE+ ']'
+  / '.')
   / '(' peg_expr ')' {s='()';}
   ;
   
