@@ -1,46 +1,50 @@
+
+//===========================================================================
+//
+//  This grammar implements the SugarJ language
+//  The original source can be found in http://www.romanredz.se/freesoft.htm 
+//
+//===========================================================================
+
 apeg SugarJ;
 
-/**
- This grammar implements the SugarJ languages
- 
- Conceitualmente, uma definião de "sugar" tem duas partes: definição da sintaxe e regras de transformação ou desugaring
- Eu irei introduzir somente a parte de sintaxe, pois é o que interessa para a gente.
-**/
-
-/**
- This nonterminal defines the syntax of a Sugar 
- 
- Notes: The modifier must be public;
-**/
 
 functions AdaptableFunctions;
 
+//===========================================================================
+//
+//  Sugar Declaration
+//
+//=========================================================================== 
+ 
 sugar_declaration returns[String name, String rules]:
-  ws modifiers ws 'sugar' ws name=Id ws '{'  ws defining_syntax<rules> ws '}'
+  ws modifiers SUGAR Identifier<name> LWING defining_syntax<rules> RWING
   ;
  
 modifiers: 
-  'public'
+  'public' ws
   ;
   
-/**
- This nonterminal defines the syntax of the rules. We use the PEG style
-**/
+//===========================================================================
+//
+//  PEG Rules
+//
+//=========================================================================== 
 
 defining_syntax returns[String s]:
-  'context-free syntax' ws peg_rule<s>
+  CONTEXT_FREE_SYNTAX peg_rule<s>
   ; 
 
 peg_rule returns[String s] locals[String s1, String id]:
-  {s='';} (ws peg_expr<s1> ws '->' ws id=Id ws ';' {s = concat(s, concat(id, concat(': ', concat(s1, ';'))));})*
+  {s='';} (peg_expr<s1> ARROW Identifier<id> SEMI {s = concat(s, concat(id, concat(': ', concat(s1, ';'))));})*
   ;
   
 peg_expr returns[String s] locals[String s1]:
-  peg_seq<s> (ws '/' ws peg_seq<s1> {s = concat(s, concat(' / ', s1));})*
+  peg_seq<s> (CHOICE peg_seq<s1> {s = concat(s, concat(' / ', s1));})*
   ;
   
 peg_seq returns[String s] locals[String s1]:
-  peg_predicate<s> (ws peg_predicate<s1> {s = concat(s, concat(' ', s1));})* / {s ='';}
+  peg_predicate<s> (peg_predicate<s1> {s = concat(s, concat(' ', s1));})* / {s ='';}
   ;
 
 peg_predicate returns[String s]:
@@ -50,10 +54,10 @@ peg_predicate returns[String s]:
   ;
 
 peg_unary_op returns[String s]:
-    peg_factor<s> '*' {s = concat(s, '*');}
-  / peg_factor<s> '+' {s = concat(s, '+');}
-  / peg_factor<s> '?' {s = concat(s, '?');}
-  / peg_factor<s>
+    peg_factor<s> REPEAT {s = concat(s, '*');}
+  / peg_factor<s> ONE_OR_MORE {s = concat(s, '+');}
+  / peg_factor<s> OPTIONAL {s = concat(s, '?');}
+  / peg_factor<s> ws
   ;
   
 peg_factor returns[String s]:
@@ -63,20 +67,26 @@ peg_factor returns[String s]:
   / '.')
   / '(' peg_expr<s> ')' {s = concat('(', concat(s, ')'));}
   ;
-  
-String_Literal:
-  '\'' (!'\'' Char)+ '\''
-  ;
 
-Char:
-    '\\' ('n' / 'r' / 't' / 'b' / 'f' / '"' / '\'' / '\\' )
-  /  !'\\' .
-  ;
-  
+//=========================================================================
+//  Lexical Structure
+//=========================================================================
+
+//-------------------------------------------------------------------------
+//  Identifiers
+//-------------------------------------------------------------------------
+
+Identifier returns[String s]:
+   s=Id ws;     // This defines an identifier following by space
+
 Id:
-  Letter (Letter / Digit / '_')*
-  ;
-  
+   !Keyword (Letter / '_') Letter_Or_Digit*;
+
+Letter_Or_Digit:
+   Letter
+ / Digit
+ / '_';
+
 Letter:
   [a-zA-Z]
   ;
@@ -89,16 +99,76 @@ RANGE:
     Char '-' Char 
   / !']' Char
   ;
+
+//-------------------------------------------------------------------------
+//  Keywords
+//-------------------------------------------------------------------------
+
+Keyword:
+   ( 'sugar'
+   / 'context-free syntax'
+   ) !Letter_Or_Digit;
+
+CONTEXT_FREE_SYNTAX:
+   'context-free syntax' ws;
+
+SUGAR:
+   'sugar' !Letter_Or_Digit ws;
+
+//-------------------------------------------------------------------------
+//  Literals
+//-------------------------------------------------------------------------
   
-/**
- This nonterminal defines white space
-**/
+String_Literal:
+  '\'' (!'\'' Char)+ '\''
+  ;
+
+Char:
+    '\\' ('n' / 'r' / 't' / 'b' / 'f' / '"' / '\'' / '\\' )
+  /  !'\\' .
+  ;
+  
+//-------------------------------------------------------------------------
+//  Separators, Operators
+//------------------------------------------------------------------------- 
+
+ANY:
+   '.' ws;
+
+ARROW:
+   '->' ws;
+
+CHOICE:
+   '/' ws;
+
+LWING:
+   '{' ws;
+
+REPEAT:
+   '*' ws;
+
+ONE_OR_MORE:
+   '+' ws;
+
+OPTIONAL:
+   '?' ws;
+
+RWING:
+   '}' ws;
+
+SEMI:
+   ';' ws;
+
+  
+//-------------------------------------------------------------------------
+//  White space and comments
+//-------------------------------------------------------------------------
 
 ws:
   (space / comment)*;
 
 space:
-  ' ' / '\t' / endOfLine;
+  ' ' / '\t' / '\u000C' / endOfLine;
 
 endOfLine:
   '\r\n' / '\r' / '\n'; 

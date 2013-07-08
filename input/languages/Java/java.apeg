@@ -556,7 +556,7 @@ element_values:
 //-------------------------------------------------------------------------
 
 Identifier:
-   !Keyword (Letter / '_') (Letter / Digit / '_')* Spacing;
+   !Keyword (Letter / '_') Letter_Or_Digit* ws;
 
 Letter:
    [a-zA-Z];
@@ -629,7 +629,7 @@ Keyword:
    / 'volatile'
    / 'while'
    / 'sugar'
-   ) !((Letter / Digit / '_');
+   ) !Letter_Or_Digit;
 
 ASSERT:
    'assert' !(Letter_Or_Digit) ws;
@@ -970,7 +970,6 @@ TILDA:
 EOT:
    !.;
 
-
 //-------------------------------------------------------------------------
 //  White space and comments
 //-------------------------------------------------------------------------
@@ -979,21 +978,11 @@ ws:
   (space / comment)*;
 
 space:
-  ' ' / '\t' / endOfLine;
+  ' ' / '\t' / '\u000C' / endOfLine;
 
 endOfLine:
   '\r\n' / '\r' / '\n'; 
 
 comment:
     '//' (!endOfLine .)* endOfLine
-  / '/*' (!'*/' .)* '*/';   
-  
-  //-------------------------------------------------------------------------
-//  JLS 3.6-7  Spacing
-//-------------------------------------------------------------------------
-
-Spacing
-    = ( [ \t\r\n\u000C]+          // WhiteSpace
-      / "/*" (!"*/" _)* "*/"      // TraditionalComment
-      / "//" (![\r\n] _)* [\r\n]  // EndOfLineComment
-      )* ;
+  / '/*' (!'*/' .)* '*/';
