@@ -57,14 +57,14 @@ peg_unary_op returns[String s]:
   ;
   
 peg_factor returns[String s]:
-    s=(Literal
+    s=(String_Literal
   / Id
   / '[' RANGE+ ']'
   / '.')
   / '(' peg_expr<s> ')' {s = concat('(', concat(s, ')'));}
   ;
   
-Literal:
+String_Literal:
   '\'' (!'\'' Char)+ '\''
   ;
 
