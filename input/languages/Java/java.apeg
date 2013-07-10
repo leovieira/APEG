@@ -10,7 +10,7 @@
 //===========================================================================
 
 apeg Java;
-
+/*
 //-------------------------------------------------------------------------
 //  Compilation Unit
 //-------------------------------------------------------------------------
@@ -71,7 +71,7 @@ method_declarator_rest:
 void_method_declarator_rest:
    formal_parameters (THROWS class_type_list)? (method_body / SEMI);
 
-constructor_declarator_rest
+constructor_declarator_rest:
    formal_parameters (THROWS class_type_list)? method_body;
 
 method_body:
@@ -376,14 +376,14 @@ super_suffix:
  / DOT non_wildcard_type_arguments? Identifier arguments?;
 
 basic_type:
-   ( "byte"
-   / "short"
-   / "char"
-   / "int"
-   / "long"
-   / "float"
-   / "double"
-   / "boolean"
+   ( 'byte'
+   / 'short'
+   / 'char'
+   / 'int'
+   / 'long'
+   / 'float'
+   / 'double'
+   / 'boolean'
    ) !(Letter_Or_Digit) ws;
 
 arguments:
@@ -463,17 +463,17 @@ bound:
 
 modifier:
    Annotation
- / ( "public"
-   / "protected"
-   / "private"
-   / "static"
-   / "abstract"
-   / "final"
-   / "native"
-   / "synchronized"
-   / "transient"
-   / "volatile"
-   / "strictfp"
+ / ( 'public'
+   / 'protected'
+   / 'private'
+   / 'static'
+   / 'abstract'
+   / 'final'
+   / 'native'
+   / 'synchronized'
+   / 'transient'
+   / 'volatile'
+   / 'strictfp'
    ) !(Letter_Or_Digit) ws;
 
     // This common definition of Modifier is part of the modification
@@ -739,11 +739,11 @@ Literal:
    / Integer_Literal          // May be a prefix of FloatLiteral
    / Char_Literal
    / String_Literal
-   / "true"  !Letter_Or_Digit
-   / "false" !Letter_Or_Digit
-   / "null"  !Letter_Or_Digit
+   / 'true'  !Letter_Or_Digit
+   / 'false' !Letter_Or_Digit
+   / 'null'  !Letter_Or_Digit
    ) ws;
-
+*/
 Integer_Literal:
    ( Hex_Numeral
    / Octal_Numeral            // May be a prefix of HexNumeral
