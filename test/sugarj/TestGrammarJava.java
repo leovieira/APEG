@@ -78,11 +78,11 @@ public class TestGrammarJava {
 		assertEquals(-1, resp);
 	}
 	
-	/*@Test
+	@Test
 	public void TestCompilation_unit() {
 		int resp;
 		// Testing a Compilation unit
 		resp = executeGrammar(grammar, path + "TestGrammar.java", "compilation_unit");
 		assertEquals(1, resp);
-	}*/
+	}
 }

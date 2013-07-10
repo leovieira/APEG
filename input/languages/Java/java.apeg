@@ -10,7 +10,7 @@
 //===========================================================================
 
 apeg Java;
-/*
+
 //-------------------------------------------------------------------------
 //  Compilation Unit
 //-------------------------------------------------------------------------
@@ -38,7 +38,7 @@ type_declaration:
 //-------------------------------------------------------------------------
 
 class_declaration:
-  CLASS Identifier type_parameters? (EXTENDS ClassType)? (IMPLEMENTS class_type_list)? class_body;
+  CLASS Identifier type_parameters? (EXTENDS class_type)? (IMPLEMENTS class_type_list)? class_body;
 
 class_body:
   LWING class_body_declaration* RWING;
@@ -120,7 +120,7 @@ void_interface_method_declarator_rest:
 constant_declarators_rest:
    constant_declarator_rest (COMMA constant_declarator)*;
 
-ConstantDeclarator:
+constant_declarator:
    Identifier constant_declarator_rest;
 
 constant_declarator_rest:
@@ -315,7 +315,7 @@ multiplicative_expression:
    unary_expression ((STAR / DIV / MOD) unary_expression)*;
 
 unary_expression:
-   prefix_op unary_uxpression
+   prefix_op unary_expression
  / LPAR type RPAR unary_expression
  / primary (selector)* (postfix_op)*;
 
@@ -324,7 +324,7 @@ primary:
  / non_wildcard_type_arguments (explicit_generic_invocation_suffix / THIS arguments)
  / THIS arguments?
  / SUPER super_suffix
- / literal
+ / Literal
  / NEW creator
  / qualified_identifier identifier_suffix?
  / basic_type dim* DOT CLASS
@@ -462,7 +462,7 @@ bound:
    class_type (AND class_type)*;
 
 modifier:
-   Annotation
+   annotation
  / ( 'public'
    / 'protected'
    / 'private'
@@ -639,9 +639,9 @@ BREAK:
    
 CASE:
    'case' !Letter_Or_Digit ws;
-   
+  
 CATCH:
-   'catch" !Letter_Or_Digit ws;
+   'catch' !Letter_Or_Digit ws;
    
 CLASS:
    'class' !Letter_Or_Digit ws;
@@ -681,19 +681,19 @@ IMPLEMENTS:
    
 IMPORT:
    'import' !Letter_Or_Digit ws;
-   
+
 INTERFACE:
    'interface' !Letter_Or_Digit ws;
    
 INSTANCEOF:
    'instanceof' !Letter_Or_Digit ws;
-   
+
 NEW:
    'new' !Letter_Or_Digit ws;
    
 PACKAGE:
    'package' !Letter_Or_Digit ws;
-   
+
 RETURN:
    'return' !Letter_Or_Digit ws;
    
@@ -743,7 +743,7 @@ Literal:
    / 'false' !Letter_Or_Digit
    / 'null'  !Letter_Or_Digit
    ) ws;
-*/
+
 Integer_Literal:
    ( Hex_Numeral
    / Octal_Numeral            // May be a prefix of HexNumeral
