@@ -163,6 +163,6 @@ public class TestGrammarSugarJ {
 		s = (String) args[1];
 		assertEquals(1, resp);
 		assertEquals(name, "Test");
-		assertEquals(s, "JavaType: \'(\' JavaTyype \',\' JavaType \')\';JavaExpr: \'(\' JavaExpr \',\' JavaExpr \')\';");
+		assertEquals(s, "JavaType: \'(\' JavaType \',\' JavaType \')\';JavaExpr: \'(\' JavaExpr \',\' JavaExpr \')\';");
 	}
 }

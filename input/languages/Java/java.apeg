@@ -628,7 +628,6 @@ Keyword:
    / 'void'
    / 'volatile'
    / 'while'
-   / 'sugar'
    ) !Letter_Or_Digit;
 
 ASSERT:
@@ -726,9 +725,6 @@ VOID:
    
 WHILE:
    'while' !Letter_Or_Digit ws;
-
-SUGAR:
-   'sugar' !Letter_Or_Digit ws;
    
 //-------------------------------------------------------------------------
 //  JLS 3.10  Literals

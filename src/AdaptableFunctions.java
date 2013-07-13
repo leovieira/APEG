@@ -1,6 +1,8 @@
 
 
 
+import java.util.Map;
+
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRStringStream;
@@ -55,5 +57,22 @@ public class AdaptableFunctions {
 			throw new Exception("Extension failed");
 		}
 		return g;
+	}
+	
+	public static Grammar adaptable(Grammar g, Map<String, String> map, String name) throws Exception {
+		if(map.containsKey(name)) {
+			return addRule(copyGrammar(g), map.get(name));
+		} else
+			return g;
+	}
+	
+	public static Map<String,String> add(Map<String,String> map, String pack, String name, String rule) {
+		String entry = pack + "." + name;
+		if(map.containsKey(entry)) {
+			// ERROR
+			return map;
+		} else
+			map.put(entry, rule);
+		return map;		
 	}
 }

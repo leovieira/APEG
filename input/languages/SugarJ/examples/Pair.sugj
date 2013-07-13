@@ -1,12 +1,10 @@
-//package pair;
+package pair;
 
-/*import org.sugarj.languages.Java;
+import org.sugarj.languages.Java;
 import concretesyntax.Java;
 
-import pair.Pair;*/
-
-public sugar Sugar {
+public sugar Pair {
   context-free syntax
-     '(' JavaTyype ',' JavaType ')' -> JavaType;
-     '(' JavaExpr ',' JavaExpr ')' -> JavaExpr;
+     LPAR type COMMA type RPAR -> type;
+     LPAR expression COMMA expression RPAR -> expression;
 }

@@ -1,5 +1,8 @@
 package sugarj;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import util.Util;
 import static org.junit.Assert.*;
 
