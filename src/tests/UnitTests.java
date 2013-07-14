@@ -181,6 +181,10 @@ public class UnitTests {
 			assertEquals(resp, 1);
 			System.out.println("Return value(s) = " + args9_1[0]);
 			assertEquals(args9_1[0], 3);
+			resp = Util.testeGrammar("input/teste09.txt", "input/teste09_input.txt", "c", args9_1);
+			assertEquals(resp, 1);
+			System.out.println("Return value(s) = " + args9_1[0]);
+			assertEquals(args9_1[0], 1);
 		} catch (Exception e) {
 			System.out.println(e);
 			assertTrue(false);
@@ -195,6 +199,17 @@ public class UnitTests {
 			assertEquals(resp, 1);
 			System.out.println("Return value(s) = " + args9_1[0]);
 			assertEquals(args9_1[0], 1);
+		} catch (Exception e) {
+			System.out.println(e);
+			assertTrue(false);
+		}
+	}
+
+	@Test
+	public void Test10() {
+		try {
+			int resp = Util.testeGrammar("input/teste10.txt", "input/teste10_input.txt", "S");
+			assertEquals(resp, 11);
 		} catch (Exception e) {
 			System.out.println(e);
 			assertTrue(false);

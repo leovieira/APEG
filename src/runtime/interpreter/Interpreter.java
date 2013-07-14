@@ -311,9 +311,17 @@ public class Interpreter {
 			CommonTree t = (CommonTree) tree.getChild(0);
 			int ret = pos;
 			int ret1;
+			Environment env = null;
 			while (true) {
+				if (grammar.discardChanges()) {
+					env = environments.peek().copy();
+				}
 				ret1 = process(t, ret);
 				if (ret1 < 0) {
+					if (grammar.discardChanges()) {
+						environments.pop();
+						environments.push(env);
+					}
 					return ret;
 				}
 				ret = ret1;

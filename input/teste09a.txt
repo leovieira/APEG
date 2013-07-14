@@ -1,4 +1,8 @@
 
+/*
+Tests semantics of choice operator, discarding changes on environments
+*/
+
 apeg choiceback;
 
 options {

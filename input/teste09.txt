@@ -1,5 +1,10 @@
 
-apeg choiceback;
+/*
+Tests semantics of operators without discarding changes on environments.
+See teste09a for tests with operators discarding changes on environments.
+*/
+
+apeg notDiscardChanges;
 
 a returns[int k] : b<0,k> ;
  
@@ -11,9 +16,12 @@ b[int x] returns[int x1] :
   { x = x + 1; } '2' { x1 = x; }
   ;
  
- c[int x] returns[int x1] : { x1 = 2*x; } ;
- 
- d returns[int z] locals[int w]:
-   { w = 0; }
-   ( c<w,z> { w = w + 1; } '0' / c<w,z> '1' )
-   ;
+
+c returns[int x] :
+  { x = 0; }
+  (
+    { x = x + 1; }
+    '2'
+  )*
+  ;
+
