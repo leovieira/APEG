@@ -1,6 +1,6 @@
-//package javaclosure;
+package javaclosure;
 
-//import org.sugarj.languages.Java;
+import org.sugarj.languages.Java;
 
 /*
  * http://javac.info/closures-v06a.html
@@ -9,6 +9,6 @@
  
 public sugar Closure {
   context-free syntax
-    '#' JavaType '(' JavaType ')' -> JavaType;
-    '#' JavaType '(' JavaFormalParam ')' JavaBlock -> JavaExpr; 
+    '#' type LPAR type RPAR -> type;
+    '#' type formal_parameters block -> expression; 
 }

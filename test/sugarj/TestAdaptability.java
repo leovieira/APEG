@@ -89,4 +89,55 @@ public class TestAdaptability {
 		resp = executeGrammar(grammar, example + "TestPair.sugj", "compilation_unit", args);
 		assertEquals(1, resp);
 	}
+	
+	@Test
+	public void TestClosure() {
+		Object args[] = new Object[2];
+		args[0] = new HashMap<String, String>();
+		int resp;
+		Map<String,String> map;
+		
+		// Testing a Closure definition and its use
+		args = new Object[2];
+		args[0] = new HashMap<String, String>(); // map of names to rules
+		
+		resp = executeGrammar(grammar, example + "Closure.sugj", "compilation_unit", args);
+		assertEquals(1, resp);
+		
+		map = (Map<String,String>)args[1];
+		assertEquals(true, map.containsKey("javaclosure.Closure"));
+		
+		args = new Object[2];
+		args[0] = map; // the returned map
+		resp = executeGrammar(grammar, example + "TestClosure.sugj", "compilation_unit", args);
+		assertEquals(1, resp);
+	}
+	
+	@Test
+	public void TestPair_Closure() {
+		Object args[] = new Object[2];
+		args[0] = new HashMap<String, String>();
+		int resp;
+		Map<String,String> map;
+		
+		// Testing a Closure definition and its use
+		args = new Object[2];
+		args[0] = new HashMap<String, String>(); // map of names to rules
+				
+		resp = executeGrammar(grammar, example + "Closure.sugj", "compilation_unit", args);
+		
+		// Testing a Pair definition and its use
+		map = (Map<String,String>)args[1];
+		args = new Object[2];
+		args[0] = map; // map of names to rules
+				
+		resp = executeGrammar(grammar, example + "Pair.sugj", "compilation_unit", args);
+		
+		// Tesing the use of Pair and Closure grammar and the same file
+		map = (Map<String,String>)args[1];
+		args = new Object[2];
+		args[0] = map; // the returned map
+		resp = executeGrammar(grammar, example + "Partial.sugj", "compilation_unit", args);
+		assertEquals(1, resp);
+	}
 }
