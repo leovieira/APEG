@@ -9,7 +9,7 @@
 //  at http://java.sun.com/docs/books/jls/third_edition/html/j3TOC.html.
 //===========================================================================
 
-apeg Java;
+apeg SugarJ;
 
 options {
   isAdaptable = true;

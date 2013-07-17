@@ -1,0 +1,184 @@
+apeg Fortress;
+
+
+//-------------------------------------------------------------------------
+//  Components and APIs
+//-------------------------------------------------------------------------
+
+file:
+   compilation_unit w
+ / (w imports)? w exports (w decls)? w
+ / (w imports)? w abs_decls w
+ / w imports (w abs_decls)? w;
+
+compilation_unit:
+   w component w
+ / w api;
+ 
+component:
+   'component' w dotted_id (w imports)? w exports (w decls)? w 'end';
+
+api:
+   'api' w dotted_id (w imports)? (w abs_decls)? w 'end';
+
+imports:
+   import (wr import)*;
+
+import:
+   'import' wr import_from
+ / 'import' wr aliased_dotted_ids;
+
+import_from:
+   '*' (wr 'except' wr names)? wr 'from' wr dotted_id
+ / aliased_names wr 'from' wr dotted_id;
+
+names:
+   name
+ / '{' w name_list w '}';
+
+name_list:
+   name (w ',' w name)*;
+
+aliased_names:
+   aliased_name
+ / '{' w aliased_name_list w '}';
+
+aliased_name:
+   'opr' w op (w 'as' w op)?
+ / 'opr' w left_encloser w right_encloser (w 'as' w left_encloser w right_encloser)?
+ / id (wr 'as' wr dotted_id)?;
+
+aliased_name_list:
+   aliased_name (w ',' w aliased_name)*;
+
+aliased_dotted_ids:
+   aliased_dotted_id
+ / '{' w aliased_dotted_id_list w '}';
+
+aliased_dotted_id:
+   dotted_id (wr 'as' wr dotted_id)?;
+
+aliased_dotted_id_list:
+   aliased_dotted_id (w ',' w aliased_dotted_id)*;
+
+exports:
+   export (wr export)*;
+
+export:
+   'export' wr dotted_ids;
+
+dotted_ids:
+   dotted_id
+ / '{' w dotted_id_list w '}';
+
+dotted_id_list:
+   dotted_id (w ',' w dotted_id)*;
+
+//-------------------------------------------------------------------------
+//  Top-level Declarations
+//-------------------------------------------------------------------------
+
+
+ 
+ //-------------------------------------------------------------------------
+//  Identifiers
+//-------------------------------------------------------------------------
+
+id:
+   id_start id_rest*;
+
+id_start:
+   unicode_id_start / '_';
+
+id_rest:
+   unicode_id_start / '\'' / unicode_id_rest;
+
+id_list:
+   id (w ',' w id)*;
+
+name:
+   'opr' w op / id;
+
+dotted_id:
+   id &('...')     // it ignores the dots
+ / id ('.' id)*;
+
+bind_id:
+   id / .; 
+
+unicode_id_start:     // In the original rats file definition, this nonterminal allow the set of unicode characters
+   [a-zA-Z0-9];
+
+unicode_id_rest:     // This nonterminal is not equal of unicode_id_start
+   unicode_id_start;
+
+//-------------------------------------------------------------------------
+//  Spaces and Comments
+//-------------------------------------------------------------------------
+
+white_space:
+   space / new_line;
+
+space:
+   ' ' / '\t' / '\f' / comment;
+
+new_line:
+   '\r\n' / '\r' / '\n';
+
+comment:
+   '(*' (w comment_content)* w '*)';
+
+comment_content:
+   comment 
+ / ( '*' !')' / !'*' . ); 
+
+w:
+   wr?;
+  
+wr:
+   white_space w;
+
+s:
+   sr?;
+   
+sr:
+   space s;
+
+nl:
+   s new_line w;
+
+br:
+   nl / s ';' w;
+
+rect_separator:
+   w ';'+ w
+ / sr
+ / nl; 
+
+ //-------------------------------------------------------------------------
+//  TODO
+//-------------------------------------------------------------------------
+
+decls:
+   TODO;
+
+abs_decls:
+   'trait' w id w 'end';
+
+op:
+   '=/='
+ / '>='
+ / '<=';
+
+left_encloser:
+   '(/'
+ / '[/'
+ / '{/';
+
+right_encloser:
+   '/)'
+ / '/]'
+ / '/}';
+
+TODO:
+   'TODO';
