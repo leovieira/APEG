@@ -77,15 +77,209 @@ dotted_id_list:
 //-------------------------------------------------------------------------
 //  Top-level Declarations
 //-------------------------------------------------------------------------
+/*
+decls:
+   decl (br decl)*;
 
-
+decl:
+   trait_decl
+ / object_decl
+ / var_decl
+ / fn_decl
+ */
  
- //-------------------------------------------------------------------------
+ /* **************************************************
+ / dim_unit_decl // In the specification said this is not implemented yet
+    **************************************************** */
+ /*
+ / type_alias
+ / test_decl
+ / property_decl
+ / external_syntax;
+
+abs_decls:
+   abs_decl (br abs_decl)*;
+
+abs_decl:
+   abs_trait_decl
+ / abs_object_decl
+ / abs_var_decl
+ / abs_fn_decl
+ */
+ /* **************************************************
+ / dim_unit_decl // In the specification said this is not implemented yet
+    **************************************************** */
+ /*
+ / type_alias
+ / test_decl
+ / property_decl
+ / abs_external_syntax;
+ */
+ 
+//-------------------------------------------------------------------------
+//  Symbols and Operators
+//-------------------------------------------------------------------------
+
+bar:
+   &('|' wr generator_list closing_comprehension) '|';
+
+closing_comprehension:
+   w '}'
+ / w '|>'
+ / br array_comprehension_clause
+ / w ']';
+
+sd:
+   ('*' / '.')?;
+
+bars:
+   '|' (sd '|')*;
+
+slashes:
+   '/' (sd '/')*
+ / '\\' (sd '\\')*;
+
+lesses:
+   '<' (sd '<')*;
+
+greaters:
+   '>' (sd '>')*;
+
+encloser:
+   '///'
+ / '//'
+ / !(bar) bars !('*' / '.' / '>' / '/' / '\\' / '->');
+
+left_encloser:
+   left_encloser_multi
+ / !('|') .;
+
+left_encloser_multi:
+   '(' ('/'+ / '\\'+)
+ / '[' (sd slashes)
+ / '{' (sd slashes)
+ / lesses sd (slashes / bars)
+ / bars sd slashes
+ / '{*'
+ / '[*';
+
+right_encloser:
+   right_encloser_multi
+ / !('|') .;
+
+right_encloser_multi:
+   '/'+ ')'
+ / '\\'+ ')'
+ / slashes sd (greaters / bars / ']' / '}')
+ / bars sd greaters
+ / '*]'
+ / '*}'
+ / ']'
+ / '}';
+
+exponent_op:
+   '^T'
+ / '^';
+
+//----------------------------------------------------------------
+// An operator name has at least two different uppercase letters
+// also it does not begin and end with an underscore
+//----------------------------------------------------------------
+op_name:
+   !(single_accumulator / 'BY') (two_letter_op_name / more_two_letter_name);   
+
+two_letter_op_name locals[String ch1, String ch2]:
+   ch1=[A-Z] ch2=[A-Z] {? ch1 != ch2} !([A-Z] / '_');      // operators with two different letters
+
+more_two_letter_name locals[String ch1, String ch2]:
+   ch1=[A-Z] (
+        '_'* ch2=[A-Z] {?ch1 != ch2} end_op_name+
+      / '_'* &[A-Z] more_two_letter_name
+     );     
+
+end_op_name:
+   '_'* [A-Z];                                                           
+
+op:
+   comp_op
+ / not_comp_op !equals_op;
+
+comp_op:
+   '==='
+ / '=/='
+ / '<='
+ / '>=';
+
+multi_op:
+   '-/->'
+ / '<-/-'
+ / '-->'
+ / '==>'
+ / '>>>'
+ / mapsto_op
+ / '<<<'
+ / '<->'
+ / '<=>'
+ / '->'
+ / double_right_arrow
+ / '>>'
+ / '<<'
+ / '**'
+ / '!!';
+
+single_op:
+   !(encloser / left_encloser / right_encloser / multi_op / comp_op / match) .;
+
+not_comp_op:
+   op_name
+ / multi_op
+ / single_op
+ / exponent_op;
+
+compound_op:
+   not_comp_op equals_op;
+
+/* The operator "=>" should not be in the left-hand sides of case/typecase expressions. */
+
+double_right_arrow:
+   '=>' &(w no_new_line_expr w match);
+
+match:
+   '=>';
+
+/* The operator "BY" should not be used with ExtentRange. */
+
+cross_op:
+   'BY' &(w extend_range);
+
+/** Again, in the specification this definition uses the operator ':'
+*** equals_op = '=':single_op **/
+
+equals_op:
+   '=';
+
+assign_op:
+   ':='
+ / compound_op;
+
+single_accumulator:
+   'SUM'
+ / 'PROD';
+
+accumulator:
+   'SUM'
+ / 'PROD'
+ / 'BIG' w op;
+
+array_comprehension_clause:
+   array_comprehension_left wr bar wr generator_list;
+
+//-------------------------------------------------------------------------
 //  Identifiers
 //-------------------------------------------------------------------------
 
 id:
-   id_start id_rest*;
+   !keywords id_start id_rest*;
 
 id_start:
    unicode_id_start / '_';
@@ -100,17 +294,108 @@ name:
    'opr' w op / id;
 
 dotted_id:
-   id &('...')     // it ignores the dots
+   id &('...')                // it ignores the dots
+ / id ('.' id)* &('...')     // it ignores the dots
  / id ('.' id)*;
 
 bind_id:
-   id / .; 
+   id / '_'; 
 
 unicode_id_start:     // In the original rats file definition, this nonterminal allow the set of unicode characters
+   [a-zA-Z];
+
+unicode_id_rest:
    [a-zA-Z0-9];
 
-unicode_id_rest:     // This nonterminal is not equal of unicode_id_start
-   unicode_id_start;
+ //-------------------------------------------------------------------------
+//  Keywords
+//-------------------------------------------------------------------------
+
+keywords:
+   'absorbs'
+ / 'abstract'
+ / 'also'
+ / 'api'
+ / 'as'
+ / 'asif'
+ / 'at'
+ / 'atomic'
+ / 'bool'
+ / 'case'
+ / 'catch'
+ / 'coerce'
+ / 'coerces'
+ / 'component'
+ / 'comprises'
+ / 'default'
+ / 'dim'
+ / 'do'
+ / 'elif'
+ / 'else'
+ / 'end'
+ / 'ensures'
+ / 'except'
+ / 'excludes'
+ / 'exit'
+ / 'export'
+ / 'extends'
+ / 'finally'
+ / 'fn'
+ / 'for'
+ / 'forbid'
+ / 'from'
+ / 'getter'
+ / 'hidden'
+ / 'if'
+ / 'import'
+ / 'int'
+ / 'invariant'
+ / 'io'
+ / 'juxtaposition'
+ / 'label'
+ / 'most'
+ / 'nat'
+ / 'native'
+ / 'object'
+ / 'of'
+ / 'opr'
+ / 'or'
+ / 'override'
+ / 'private'
+ / 'property'
+ / 'provided'
+ / 'requires'
+ / 'self'
+ / 'settable'
+ / 'setter'
+ / 'spawn'
+ / 'syntax'
+ / 'test'
+ / 'then'
+ / 'throw'
+ / 'throws'
+ / 'trait'
+ / 'transient'
+ / 'try'
+ / 'tryatomic'
+ / 'type'
+ / 'typecase'
+ / 'unit'
+ / 'value'
+ / 'var'
+ / 'where'
+ / 'while'
+ / 'widens'
+ / 'with'
+ / 'wrapped'
+ / 'goto'
+ / 'idiom'
+ / 'public'
+ / 'pure'
+ / 'reciprocal'
+ / 'static';
+
+// BIG, FORALL, SI_unit
 
 //-------------------------------------------------------------------------
 //  Spaces and Comments
@@ -130,19 +415,20 @@ comment:
 
 comment_content:
    comment 
- / ( '*' !')' / !'*' . ); 
+ / '*' !')'
+ / !'*' .; 
 
 w:
-   wr?;
+   white_space*;
   
 wr:
-   white_space w;
+   white_space+;
 
 s:
-   sr?;
+   space*;
    
 sr:
-   space s;
+   space+;
 
 nl:
    s new_line w;
@@ -151,7 +437,7 @@ br:
    nl / s ';' w;
 
 rect_separator:
-   w ';'+ w
+   (w ';')+ w
  / sr
  / nl; 
 
@@ -159,26 +445,26 @@ rect_separator:
 //  TODO
 //-------------------------------------------------------------------------
 
+generator_list:
+   TODO;
+
+mapsto_op:
+   TODO;
+
+no_new_line_expr:
+   TODO;
+
+extend_range:
+   TODO;
+
+array_comprehension_left:
+   TODO;
+
 decls:
    TODO;
 
 abs_decls:
    'trait' w id w 'end';
-
-op:
-   '=/='
- / '>='
- / '<=';
-
-left_encloser:
-   '(/'
- / '[/'
- / '{/';
-
-right_encloser:
-   '/)'
- / '/]'
- / '/}';
 
 TODO:
    'TODO';
