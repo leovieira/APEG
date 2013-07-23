@@ -46,11 +46,64 @@ public class TestGrammar {
 		resp = executeGrammar(grammar, input + "spaces.txt", "wr");
 		assertEquals(1, resp);
 		
-		// Testing a white space
+		resp = executeGrammar(grammar, input + "spaces_fail.txt", "sr"); // tab is not a valid space in Fortress
+		assertEquals(-1, resp);
+		
+		// Testing a comment
 		resp = executeGrammar(grammar, input + "comments.txt", "comment");
 		assertEquals(1, resp);
+		
+		// Testing a comment without new lines
+		resp = executeGrammar(grammar, input + "no_new_line_comment.txt", "no_new_line_comment");
+		assertEquals(1, resp);
+		
+		resp = executeGrammar(grammar, input + "comments.txt", "no_new_line_comment");
+		assertEquals(-1, resp);
 	}
 	
+	@Test
+	public void Test_identifier() throws Exception {
+		String input = path + "identifiers/";
+		int resp = -1;
+		
+		//Testing an identifier name
+		resp = Util.testeGrammar(grammar, input + "identifier.txt", "id");
+		assertEquals(12, resp);
+		
+		resp = executeGrammar(grammar, input + "identifier_fail_01.txt", "id");
+		assertEquals(-1, resp); // an underscore is not a identifier
+		
+		resp = executeGrammar(grammar, input + "identifier_fail_02.txt", "id");
+		assertEquals(-1, resp); // a keyword is not a identifier
+		
+		resp = executeGrammar(grammar, input + "identifier_fail_03.txt", "id");
+		assertEquals(-1, resp); // an operator name is not a identifier
+		
+		//Testing a bind identifier
+		resp = Util.testeGrammar(grammar, input + "bind.txt", "bind_id_list");
+		assertEquals(28, resp);
+		
+		//Testing a bind tuple
+		resp = Util.testeGrammar(grammar, input + "bind_tuple.txt", "bind_id_or_bind_tuple");
+		assertEquals(24, resp);
+		
+		//Testing a qualified name
+		resp = Util.testeGrammar(grammar, input + "qualified_name.txt", "qualified_name");
+		assertEquals(15, resp);
+	}
+	
+	/*
+	@Test
+	public void Test_type() {
+		String input = path + "type/";
+		int resp = -1;
+		
+		// Testing extent range
+		resp = executeGrammar(grammar, input + "extent_range.txt", "array_size");
+		assertEquals(1, resp);
+	}*/
+	
+	/*
 	@Test
 	public void Test_components_and_apis() {
 		String input = path + "component_api/";
@@ -90,5 +143,5 @@ public class TestGrammar {
 		resp = executeGrammar(grammar, input + "component.txt", "component");
 		assertEquals(1, resp);
 		
-	}
+	}*/
 }

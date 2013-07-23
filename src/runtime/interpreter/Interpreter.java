@@ -519,9 +519,12 @@ public class Interpreter {
 		
 		case AdaptablePEGLexer.OP_EQ: {
 			//I suppose there are 2 children
-			int i0 = (Integer) eval((CommonTree) tree.getChild(0));
+			Object i0 = eval((CommonTree) tree.getChild(0));
+			Object i1 = eval((CommonTree) tree.getChild(1));
+			return i0.equals(i1);
+			/*int i0 = (Integer) eval((CommonTree) tree.getChild(0));
 			int i1 = (Integer) eval((CommonTree) tree.getChild(1));
-			return new Boolean(i0 == i1);
+			return new Boolean(i0 == i1);*/
 		}
 			
 		case AdaptablePEGLexer.ID: {
