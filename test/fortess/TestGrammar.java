@@ -224,16 +224,37 @@ public class TestGrammar {
 		assertEquals(false,resp);
 	}
 	
-	/*
 	@Test
-	public void Test_type() {
+	public void Test_type() throws Exception {
 		String input = path + "type/";
-		int resp = -1;
+		boolean resp;
+		int num;
 		
-		// Testing extent range
-		resp = executeGrammar(grammar, input + "extent_range.txt", "array_size");
-		assertEquals(1, resp);
-	}*/
+		// Testing type primary
+		num = Util.testeGrammar(grammar, input + "parenthesized_type.txt", "type_primary");
+		assertEquals(26, num); // parenthesized_type parenthesized_type_left
+		
+		num = Util.testeGrammar(grammar, input + "domain_01.txt", "type_primary");
+		assertEquals(23, num); // domain exponentiation
+		
+		num = Util.testeGrammar(grammar, input + "domain_02.txt", "type_primary");
+		assertEquals(86, num); // domain exponentiation
+		
+		num = Util.testeGrammar(grammar, input + "tuple_type.txt", "type_primary");
+		assertEquals(105, num); // tuple_type array_type_size
+		
+		num = Util.testeGrammar(grammar, input + "type_ref_01.txt", "type_primary");
+		assertEquals(5, num); // type_ref
+		
+		num = Util.testeGrammar(grammar, input + "type_ref_02.txt", "type_primary");
+		assertEquals(19, num); // type_ref
+		
+		num = Util.testeGrammar(grammar, input + "void_type.txt", "type_primary");
+		assertEquals(3, num); // void_type
+		
+		// Testing tight infix postfix
+		
+	}
 	
 	/*
 	@Test

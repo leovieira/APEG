@@ -103,8 +103,8 @@ type_prefix:
  / dim_prefix_op wr type_prefix;
 
 tight_infix_postfix:
-   type_infix_op type_primary (w throws)?
- / type_infix_op type_prefix (w throws)?
+   '->' type_primary (w throws)?
+ / '->' type_prefix (w throws)?
  / dim_infix_op type_primary
  / dim_infix_op type_prefix
  / dim_postfix_op wr type_primary
@@ -112,13 +112,21 @@ tight_infix_postfix:
  / dim_postfix_op;
 
 loose_infix:
-   type_infix_op wr type_primary (w throws)?
- / type_infix_op wr type_prefix (w throws)?
+   '->' wr type_primary (w throws)?
+ / '->' wr type_prefix (w throws)?
  / dim_infix_op wr type_primary
  / dim_infix_op wr type_prefix;
 
+type_infix_op:
+   '->';
+
+dim_infix_op:
+   'DOT'
+ / '/'
+ / 'per';
+
 type_primary_front:
-   type_front type_tail*;
+   type_front type_tail*; // na definição não exige espaço. Achei estranho!
 
 type_front:
    parenthesized_type
@@ -178,14 +186,6 @@ parenthesized_type_left:
 id_left:
    id;
 
-type_infix_op:
-   '->';
-
-dim_infix_op:
-   'DOT'
- / '/'
- / 'per';
-
 dim_prefix_op:
    'square'
  / 'cubic'
@@ -219,8 +219,37 @@ exponentiation_trait:
 //-------------------------------------------------------------------------
 //  Types without Newlines
 //-------------------------------------------------------------------------
-   
- 
+
+no_new_line_type:
+   !'1' no_new_line_type_primary (w 'in' w no_new_line_expr)?;
+
+no_new_line_type_primary:
+   type_primary_front no_new_line_tight_infix_postfix
+ / type_primary_front sr no_new_line_type_primary
+ / type_primary_front sr no_new_line_loose_infix
+ / type_primary_front;
+
+no_new_line_type_prefix:
+   dim_prefix_op no_new_line_type_primary
+ / dim_prefix_op no_new_line_type_prefix
+ / dim_prefix_op sr no_new_line_type_primary
+ / dim_prefix_op sr no_new_line_type_prefix;
+
+no_new_line_tight_infix_postfix:
+   type_infix_op no_new_line_type_primary (s throws)?
+ / type_infix_op no_new_line_type_prefix (s throws)?
+ / dim_infix_op no_new_line_type_primary
+ / dim_infix_op no_new_line_type_prefix
+ / dim_postfix_op sr no_new_line_type_primary
+ / dim_postfix_op sr no_new_line_type_prefix
+ / dim_postfix_op;
+
+no_new_line_loose_infix:
+   type_infix_op sr no_new_line_type_primary (s throws)?
+ / type_infix_op sr no_new_line_type_prefix (s throws)?
+ / dim_infix_op sr no_new_line_type_primary
+ / dim_infix_op sr no_new_line_type_prefix;
+
 //-------------------------------------------------------------------------
 //  Symbols and Operators
 //-------------------------------------------------------------------------
@@ -530,6 +559,9 @@ key:
  / 'static';
 
 keyword_operator:
+   key_op ! id_rest;
+
+key_op:
    'juxtaposition'
  / 'in'
  / 'per'
@@ -639,10 +671,10 @@ abs_decls:
    'trait' w id w 'end';
 
 expr:
-   TODO;
+   id w assign_op w op;
 
 static_args:
-   TODO;
+   '[\\' w 'Unity' w '\\]';
 
 TODO:
    'TODO';
