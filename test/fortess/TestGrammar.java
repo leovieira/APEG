@@ -9,75 +9,48 @@ public class TestGrammar {
 	private final String grammar = "input/languages/Fortress/fortress.apeg";
 	private final String path = "input/languages/Fortress/tests/";
 	
-	public int executeGrammar(String grammar, String file, String start) {
-		try {
-			int resp = Util.testeGrammar(grammar, file, start);
-			if(resp < 0)
-				resp = -1;
-			else
-				resp = 1;
-			return resp;
-		} catch (Exception e) {
-			System.out.println(e);
-			return -1;
-		}
-	}
-	
-	public int executeGrammar(String grammar, String file, String start, Object[] args) {
-		try {
-			int resp = Util.testeGrammar(grammar, file, start, args);
-			if(resp < 0)
-				resp = -1;
-			else
-				resp = 1;
-			return resp;
-		} catch (Exception e) {
-			System.out.println(e);
-			return -1;
-		}
-	}
-	
 	@Test
 	public void Test_spaces_and_comments() {
 		String input = path + "space_comment/";
-		int resp = -1;
+		boolean resp;
 		
 		// Testing a white space
-		resp = executeGrammar(grammar, input + "spaces.txt", "wr");
-		assertEquals(1, resp);
+		resp = Util.isRecognized(grammar, input + "spaces.txt", "wr");
+		assertEquals(true, resp);
 		
-		resp = executeGrammar(grammar, input + "spaces_fail.txt", "sr"); // tab is not a valid space in Fortress
-		assertEquals(-1, resp);
+		resp = Util.isRecognized(grammar, input + "spaces_fail.txt", "sr"); // tab is not a valid space in Fortress
+		assertEquals(false, resp);
 		
 		// Testing a comment
-		resp = executeGrammar(grammar, input + "comments.txt", "comment");
-		assertEquals(1, resp);
+		resp = Util.isRecognized(grammar, input + "comments.txt", "comment");
+		assertEquals(true, resp);
 		
 		// Testing a comment without new lines
-		resp = executeGrammar(grammar, input + "no_new_line_comment.txt", "no_new_line_comment");
-		assertEquals(1, resp);
+		resp = Util.isRecognized(grammar, input + "no_new_line_comment.txt", "no_new_line_comment");
+		assertEquals(true, resp);
 		
-		resp = executeGrammar(grammar, input + "comments.txt", "no_new_line_comment");
-		assertEquals(-1, resp);
+		resp = Util.isRecognized(grammar, input + "comments.txt", "no_new_line_comment");
+		assertEquals(false, resp);
 	}
 	
 	@Test
 	public void Test_identifier() throws Exception {
 		String input = path + "identifiers/";
-		int resp = -1;
+		int resp;
+		boolean b;
 		
 		//Testing an identifier name
 		resp = Util.testeGrammar(grammar, input + "identifier.txt", "id");
 		assertEquals(12, resp);
 		
-		resp = executeGrammar(grammar, input + "identifier_fail_01.txt", "id");
-		assertEquals(-1, resp); // an underscore is not a identifier
+		b = Util.isRecognized(grammar, input + "identifier_fail_01.txt", "id");
+		assertEquals(false, b); // an underscore is not a identifier
 		
-		resp = executeGrammar(grammar, input + "identifier_fail_02.txt", "id");
-		assertEquals(-1, resp); // a keyword is not a identifier
+		b = Util.isRecognized(grammar, input + "identifier_fail_02.txt", "id");
+		assertEquals(false, b); // a keyword is not a identifier
 		
-		resp = executeGrammar(grammar, input + "identifier_fail_03.txt", "id");
-		assertEquals(-1, resp); // an operator name is not a identifier
+		b = Util.isRecognized(grammar, input + "identifier_fail_03.txt", "id");
+		assertEquals(false, b); // an operator name is not a identifier
 		
 		//Testing a bind identifier
 		resp = Util.testeGrammar(grammar, input + "bind.txt", "bind_id_list");
@@ -90,6 +63,165 @@ public class TestGrammar {
 		//Testing a qualified name
 		resp = Util.testeGrammar(grammar, input + "qualified_name.txt", "qualified_name");
 		assertEquals(15, resp);
+	}
+	
+	@Test
+	public void Test_operator_comp() throws Exception {
+		String input = path + "operator/";
+		int resp;
+		
+		// Testing operator '->'
+		resp = Util.testeGrammar(grammar, input + "implies_01.txt", "implies");
+		assertEquals(2,resp);
+		
+		resp = Util.testeGrammar(grammar, input + "implies_02.txt", "implies");
+		assertEquals(7,resp);
+		
+		//Testing operator '>'
+		resp = Util.testeGrammar(grammar, input + "greater_than_01.txt", "greater_than");
+		assertEquals(1,resp);
+		
+		resp = Util.testeGrammar(grammar, input + "greater_than_02.txt", "greater_than");
+		assertEquals(2,resp);
+		
+		//Testing operator '>='
+		resp = Util.testeGrammar(grammar, input + "greater_than_equal_01.txt", "greater_than_equal");
+		assertEquals(2,resp);
+		
+		resp = Util.testeGrammar(grammar, input + "greater_than_equal_02.txt", "greater_than_equal");
+		assertEquals(2,resp);
+		
+		// Testing operator '<'
+		resp = Util.testeGrammar(grammar, input + "less_than_01.txt", "less_than");
+		assertEquals(1,resp);
+		
+		resp = Util.testeGrammar(grammar, input + "less_than_02.txt", "less_than");
+		assertEquals(2,resp);
+		
+		// Testing operator '<='
+		resp = Util.testeGrammar(grammar, input + "less_than_equal_01.txt", "less_than_equal");
+		assertEquals(2,resp);
+		
+		resp = Util.testeGrammar(grammar, input + "less_than_equal_02.txt", "less_than_equal");
+		assertEquals(2,resp);
+	}
+	
+	@Test
+	public void Test_operator_multi() throws Exception {
+		String input = path + "operator/";
+		int resp;
+				
+		// Testing operator '-/->'
+		resp = Util.testeGrammar(grammar, input + "multi_01.txt", "multi_op");
+		assertEquals(4,resp);
+		
+		// Testing operator '<-/-'
+		resp = Util.testeGrammar(grammar, input + "multi_02.txt", "multi_op");
+		assertEquals(4,resp);
+		
+		// Testing opeartor '-->'
+		resp = Util.testeGrammar(grammar, input + "multi_03.txt", "multi_op");
+		assertEquals(3,resp);
+		
+		// Testing operator '==>'
+		resp = Util.testeGrammar(grammar, input + "multi_04.txt", "multi_op");
+		assertEquals(3,resp);
+		
+		// Testing operator '>>>'
+		resp = Util.testeGrammar(grammar, input + "multi_05.txt", "multi_op");
+		assertEquals(3,resp);
+		
+		// Testing operator '|->'
+		resp = Util.testeGrammar(grammar, input + "multi_06.txt", "multi_op");
+		assertEquals(3,resp);
+		
+		// Testing operator '<<<'
+		resp = Util.testeGrammar(grammar, input + "multi_07.txt", "multi_op");
+		assertEquals(3,resp);
+		
+		// Testing operator '<->'
+		resp = Util.testeGrammar(grammar, input + "multi_08.txt", "multi_op");
+		assertEquals(3,resp);
+		
+		// Testing operator '<-'
+		resp = Util.testeGrammar(grammar, input + "multi_09.txt", "multi_op");
+		assertEquals(2,resp);
+		
+		// Testing opeartor '<=>'
+		resp = Util.testeGrammar(grammar, input + "multi_10.txt", "multi_op");
+		assertEquals(3,resp);
+		
+		// Testing operator '->'
+		resp = Util.testeGrammar(grammar, input + "multi_11.txt", "multi_op");
+		assertEquals(2,resp);
+		
+		// Testing a double right arrow operator, '=>'
+		/*resp = Util.testeGrammar(grammar, input + "multi_12.txt", "multi_op");
+		assertEquals(2,resp);*/
+		
+		// Testing operator '>>'
+		resp = Util.testeGrammar(grammar, input + "multi_13.txt", "multi_op");
+		assertEquals(2,resp);
+		
+		// Testing operator '<<'
+		resp = Util.testeGrammar(grammar, input + "multi_14.txt", "multi_op");
+		assertEquals(2,resp);
+		
+		// Testing operator '**'
+		resp = Util.testeGrammar(grammar, input + "multi_15.txt", "multi_op");
+		assertEquals(2,resp);
+		
+		// Testing operator '!!'
+		resp = Util.testeGrammar(grammar, input + "multi_16.txt", "multi_op");
+		assertEquals(2,resp);
+		
+		// Testing operator '::'
+		resp = Util.testeGrammar(grammar, input + "multi_17.txt", "multi_op");
+		assertEquals(2,resp);
+		
+		// Testing operator '///'
+		resp = Util.testeGrammar(grammar, input + "multi_18.txt", "multi_op");
+		assertEquals(3,resp);
+		
+		// Testing operator '//'
+		resp = Util.testeGrammar(grammar, input + "multi_19.txt", "multi_op");
+		assertEquals(2,resp);
+	}
+	
+	@Test
+	public void Test_operator_name() throws Exception {
+		String input = path + "operator/";
+		int num;
+		boolean resp;
+		
+		// Testing a operator name with two letters
+		num = Util.testeGrammar(grammar, input + "op_name_01.txt", "op_name");
+		assertEquals(2,num);
+		
+		resp = Util.isRecognized(grammar, input + "op_name_fail_01.txt", "op_name");
+		assertEquals(false,resp);
+		
+		resp = Util.isRecognized(grammar, input + "op_name_fail_02.txt", "op_name");
+		assertEquals(false,resp);
+		
+		// Testing a operator name with more than two letters
+		num = Util.testeGrammar(grammar, input + "op_name_02.txt", "op_name");
+		assertEquals(3,num);
+		
+		num = Util.testeGrammar(grammar, input + "op_name_03.txt", "op_name");
+		assertEquals(10,num);
+		
+		num = Util.testeGrammar(grammar, input + "op_name_04.txt", "op_name");
+		assertEquals(7,num);
+		
+		resp = Util.isRecognized(grammar, input + "op_name_fail_03.txt", "op_name");
+		assertEquals(false,resp);
+		
+		resp = Util.isRecognized(grammar, input + "op_name_fail_04.txt", "op_name");
+		assertEquals(false,resp);
+		
+		resp = Util.isRecognized(grammar, input + "op_name_fail_05.txt", "op_name");
+		assertEquals(false,resp);
 	}
 	
 	/*

@@ -130,6 +130,23 @@ public class Util {
 		return sb.toString();
 	}
 	
+	public static boolean isRecognized(String grammar, String file, String start) {
+		return isRecognized(grammar, file, start, null);
+	}
+	
+	public static boolean isRecognized(String grammar, String file, String start, Object[] args) {
+		try {
+			int resp = Util.testeGrammar(grammar, file, start, args);
+			if(resp < 0)
+				return false;
+			else
+				return true;
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+	}
+
 	
 	public static void main(String args[]) {
 		String s = "a\'\t\"b\n\\c";

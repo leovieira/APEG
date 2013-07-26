@@ -83,107 +83,143 @@ dotted_id_list:
 //  Types
 //-------------------------------------------------------------------------
 
-is_type:
-   ':' w type_ref;
-   
-/* TypeRef and TraitType/ArrowType/DimType are mutually left recursive.
-We’ve inlined them into each other and removed the left recursion. */
+type:
+   !'1' ('io' w)? type_primary (w 'in' w expr)?;
 
-type_ref:
-   trait_type
- / type_ref_front type_ref_tail*;
+op_type:
+   type_primary 
+ / type_prefix;
 
-type_ref_front:
-   tuple_type
- / '(' (w type_ref)? w ')';
+type_primary:
+   type_primary_front tight_infix_postfix
+ / type_primary_front wr type_primary
+ / type_primary_front wr loose_infix
+ / type_primary_front;
 
-trait_type:
-   trait_type_front type_ref_tail*;
+type_prefix:
+   dim_prefix_op type_primary
+ / dim_prefix_op type_prefix
+ / dim_prefix_op wr type_primary
+ / dim_prefix_op wr type_prefix;
 
-trait_type_front:
-   qualified_name (w '[\\' w static_arg_list w '\\]')?
- / '{' w type_ref w mapsto w type_ref w '}'
- / '<|' w type_ref w '|>';
+tight_infix_postfix:
+   type_infix_op type_primary (w throws)?
+ / type_infix_op type_prefix (w throws)?
+ / dim_infix_op type_primary
+ / dim_infix_op type_prefix
+ / dim_postfix_op wr type_primary
+ / dim_postfix_op wr type_prefix
+ / dim_postfix_op;
 
-type_ref_tail:
-   array_type_tail
- / matrix_type_tail
- / arrow_type_tail;
+loose_infix:
+   type_infix_op wr type_primary (w throws)?
+ / type_infix_op wr type_prefix (w throws)?
+ / dim_infix_op wr type_primary
+ / dim_infix_op wr type_prefix;
 
-array_type_tail:
-   w '[' (w array_size)? w ']';
+type_primary_front:
+   type_front type_tail*;
 
-matrix_type_tail:
-   '^' static_arg_front
- / '^' '(' w extent_range (w 'BY' w extent_range)* w ')';
+type_front:
+   parenthesized_type
+ / domain
+ / tuple_type
+ / type_ref
+ / void_type
+ / '1';
 
-arrow_type_tail:
-   w '->' w type_ref (w throws)?;
+parenthesized_type:
+   '(' w type w ')';
 
-arrow_type:
-   (trait_type_front / type_ref_front) arrow_type_action_tail*;
-
-arrow_type_action_tail:
-   arrow_type_action;
-
-arrow_type_action:
-   w '->' w type_ref (w throws)?;
-
-tuple_type:
-   '(' w (type_ref w ',' w)* (type_ref w '...' w ',' w)? keyword_type (w ',' w keyword_type w)* w ')'
- / '(' w (type_ref w ',' w)* type_ref w '...' w ')'
- / simple_tuple_type;
+domain:
+   '(' w (type w ',' w)* (type w '...' w ',' w)? keyword_type (w ',' w keyword_type)* w ')'
+ / '(' w (type w ',' w)* type w '...' w ')';
 
 keyword_type:
-   id w '=' type_ref;
+   bind_id w '=' w type;
 
-simple_tuple_type:
-   '(' w type_ref w ',' w type_ref_list w ')';
+tuple_type:
+   '(' w type w ',' w type_list w ')';
 
-type_ref_list:
-   type_ref (w ',' w type_ref)*;
+type_list:
+   type (w ',' w type)*;
 
-static_arg_list:
-   static_arg (w ',' w static_arg)*;
+type_ref:
+   'Unity'
+ / id static_args?;
 
-static_arg:
-   static_arg_front static_arg_tail*;
+void_type:
+   '(' w ')';
 
-static_arg_front:
-   number
- / op
- / '1' w '/' w static_arg
- / type_ref
- / '(' static_arg ')';
+type_tail:
+   array_type_size
+ / exponentiation
+ / parenthesized_type_left
+ / id_left;
 
-static_arg_tail:
-   sum_static_arg
- / product_static_arg
- / quotient_static_arg
- / exponent_static_arg;
-
-sum_static_arg:
-   w '+' w static_arg;
-
-product_static_arg:
-   (w '.' w / sr) static_arg;
-
-quotient_static_arg:
-   w '/' w static_arg;
-
-exponent_static_arg:
-   '^' static_arg;
+array_type_size:
+   '[' (w array_size)? w ']';
 
 array_size:
    extent_range (w ',' w extent_range)*;
 
 extent_range:
-   (static_arg w)? '#' (w static_arg)?
- / (static_arg w)? ':' (w static_arg)?
- / static_arg;
+   (static_args w)? '#' (w static_args)?
+ / (static_args w)? ':' (w static_args)?
+ / static_args;
 
-number:
-   int_literal; 
+exponentiation:
+   '^' int_expr
+ / '^' '(' w extent_range (w 'BY' w extent_range)* w ')';
+
+parenthesized_type_left:
+   '(' w op_type w ')';
+
+id_left:
+   id;
+
+type_infix_op:
+   '->';
+
+dim_infix_op:
+   'DOT'
+ / '/'
+ / 'per';
+
+dim_prefix_op:
+   'square'
+ / 'cubic'
+ / 'inverse';
+
+dim_postfix_op:
+   'squared'
+ / 'cubed';
+
+trait_type:
+   trait_type_front trait_type_tail+
+ / type_ref;
+
+trait_type_front:
+   parenthesized_type
+ / tuple_type
+ / type_ref
+ / void_type;
+
+trait_type_tail:
+   array_type_size_trait
+ / exponentiation_trait;
+
+array_type_size_trait:
+   '[' (w array_size)? w ']';
+
+exponentiation_trait:
+   '^' int_expr
+ / '^' '(' w extent_range (w 'BY' w extent_range)* w ')'; 
+
+//-------------------------------------------------------------------------
+//  Types without Newlines
+//-------------------------------------------------------------------------
+   
  
 //-------------------------------------------------------------------------
 //  Symbols and Operators
@@ -264,20 +300,18 @@ exponent_op:
 // also it does not begin and end with an underscore
 //----------------------------------------------------------------
 op_name:
-   !(single_accumulator / 'BY') (two_letter_op_name / more_two_letter_name)
- / keyword_operator;   
+   !('SUM' / 'PROD' / 'BY') head_op_name
+ / keyword_operator;
 
-two_letter_op_name locals[String ch1, String ch2]:
-   ch1=[A-Z] ch2=[A-Z] !({? ch1 == ch2}) !([A-Za-z0-9] / '_');      // operators with two different letters
-
-more_two_letter_name locals[String ch1, String ch2]:
+head_op_name locals[String ch1, String ch2]:
    ch1=[A-Z] (
-        '_'* ch2=[A-Z] !({?ch1 == ch2}) end_op_name+ !([A-Za-z0-9] / '_')
-      / '_'* &[A-Z] more_two_letter_name
+        '_'* ch2=[A-Z] !({?ch1 == ch2}) tail_op_name
+      / '_'* &[A-Z] head_op_name
      );     
 
-end_op_name:
-   '_'* [A-Z];                                                           
+tail_op_name:
+   !([A-Za-z0-9] / '_')       // there is no more symbols
+ / ('_'* [A-Z])+ !([A-Za-z0-9] / '_');                                                         
 
 op:
    cond_op
@@ -300,7 +334,7 @@ multi_op:
  / '-->'
  / '==>'
  / '>>>'
- / mapsto_op
+ / '|->'
  / '<<<'
  / '<->'
  / '<-'
@@ -353,10 +387,6 @@ implies:
 assign_op:
    ':='
  / compound_op;
-
-single_accumulator:
-   'SUM'
- / 'PROD';
 
 accumulator:
    'SUM'
@@ -413,6 +443,9 @@ qualified_name:
 //-------------------------------------------------------------------------
 
 keywords:
+   key !id_rest;
+
+key:
    'absorbs'
  / 'abstract'
  / 'also'
@@ -572,6 +605,9 @@ rect_separator:
 //  TODO
 //-------------------------------------------------------------------------
 
+int_expr:
+   int_literal;
+
 int_literal:
    '0' / [1-9] [0-9]*;
 
@@ -601,6 +637,12 @@ decls:
 
 abs_decls:
    'trait' w id w 'end';
+
+expr:
+   TODO;
+
+static_args:
+   TODO;
 
 TODO:
    'TODO';
