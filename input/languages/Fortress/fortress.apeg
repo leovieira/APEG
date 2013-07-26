@@ -78,6 +78,155 @@ dotted_id_list:
 //  Top-level Declarations
 //-------------------------------------------------------------------------
 
+//-------------------------------------------------------------------------
+//  Expressions Enclosed by Keywords or Symbols
+//-------------------------------------------------------------------------
+
+
+
+
+//-------------------------------------------------------------------------
+//  Local Declarations
+//-------------------------------------------------------------------------
+
+block_elems:
+   block_elem br block_elems
+ / block_elem w ';' &(w 'elif' / w 'also' / w 'end' / w 'catch' / w 'forbid' / w 'finally' / w ')')
+ / block_elem &(w 'elif' / w 'also' / w 'end' / w 'catch' / w 'forbid' / w 'finally' / w ')')
+ / block_elem &(w else / br case_clause / br (id w ':' w)? type_or_pattern / br case_else)
+ / block_elem w ';' &(w else);
+
+block_elem:
+   local_var_fn_decl
+ / no_new_line_expr (s ',' w no_new_line_generator_clause_list)?;
+
+local_var_fn_decl:
+   local_fn_decl (br local_fn_decl)*
+ / local_var_decl;
+
+local_fn_decl:
+   mods? id (w static_params)? w val_param fn_header_clause w '=' no_new_line_expr;
+
+val_param:
+   '(' (w params)? w ')'
+ / bind_id;
+
+params:
+   (param w ',' w)* (var_args w ',' w)? keyword (w ',' w keyword)*
+ / (param w ',' w)* var_args
+ / param (w ',' w param)*;
+
+param:
+   bind_id s ':' s pattern
+ / bind_id s ':' s no_new_line_pattern
+ / bind_id; 
+
+var_args:
+   bind_id s ':' s no_new_line_type '...';
+
+keyword:
+   param s '=' w no_new_line_expr;
+
+local_var_decl:
+   ('var' w)? var_may_types s '=' w no_new_line_expr
+ / ('var' w)? no_new_line_var_w_type_or_pattern s ':=' w no_new_line_expr
+ / ('var' w)? no_new_line_var_w_types
+ / var_wo_types s '=' w no_new_line_expr
+ / ('var' w)? var_wo_types s ':' s no_new_line_type s '...' (s init_val)? 
+ / ('var' w)? var_wo_types s ':' s tuple_type s '...' (s init_val)?;
+
+var_may_types:
+   var_may_type
+ / '(' w var_may_type (w ',' w var_may_type)+ w ')';
+
+var_may_type:
+   bind_id (s ':' s (no_new_line_pattern / no_new_line_type))?;
+
+var_wo_types:
+   var_wo_type
+ / '(' w var_wo_type (w ',' w var_wo_type)+ w ')';
+
+var_wo_type:
+   bind_id
+ / unpasting;
+
+no_new_line_var_w_type_or_patterns:
+   no_new_line_var_w_type_or_pattern
+ / '(' no_new_line_var_w_type_or_pattern (w ',' w no_new_line_var_w_type_or_pattern)+ w ')';
+
+no_new_line_var_w_type_or_pattern:
+   bind_id s no_new_line_is_type_or_pattern;
+
+no_new_line_is_type_or_pattern:
+   ':' s no_new_line_pattern
+ / ':' s no_new_line_type;
+
+unpasting:
+   '[' w unpasting_elems w ']';
+
+unpasting_elems:
+   unpasting_elem (rect_separator unpasting_elem)*;
+
+unpasting_elem:
+   bind_id ('[' w unpasting_dim w ']')?
+ / unpasting;
+
+unpasting_dim:
+   extent_range ( w 'BY' w extent_range)+;
+
+case_clause:
+   no_new_line_expr w '=>' w block_elems;
+
+//-------------------------------------------------------------------------
+//  Literals
+//-------------------------------------------------------------------------
+
+literal_expr:
+   '(' w ')'
+ / numeric_literal_expr
+ / char_literal_expr
+ / string_literal_expr;
+
+/* This part is not in the Rats! specification
+array_expr:
+   '[' w rect_elements w ']';
+
+rect_elements:
+   no_space_expr multi_dim_cons*;
+
+multi_dim_cons:
+   rect_separator no_space_expr;
+*/
+
+escape_sequence:
+   '\\' ('b' / 't' / 'n' / 'f' / 'r' / '"' / '\\');
+
+numeric_literal_expr:    // there is some differences in Rats! specification about numeric_literal
+   float_literal_expr
+ / int_literal_expr;
+
+float_literal_expr:
+   digit_string '.' digit_string;
+
+int_literal_expr:
+   digit_string;
+
+digit_string:
+   [0-9]+;
+
+char_literal_expr:
+   '\'' char_literal_content '\'';
+
+string_literal_expr:
+   '\"' string_literal_content '\"';
+
+string_literal_content:
+   escape_sequence
+ / !('\"' / '\\') .;
+
+char_literal_content:
+   escape_sequence
+ / !'\'' .;
 
 //-------------------------------------------------------------------------
 //  Types
@@ -637,6 +786,39 @@ rect_separator:
 //  TODO
 //-------------------------------------------------------------------------
 
+mods:
+   'var';
+
+case_else:
+   TODO;
+
+no_new_line_var_w_types:
+   TODO;
+
+pattern:
+   TODO;
+
+type_or_pattern:
+   TODO;
+
+static_params:
+   TODO;
+
+fn_header_clause:
+   TODO;
+
+init_val:
+   TODO;
+
+no_new_line_pattern:
+   TODO;
+
+no_new_lien_var_w_types:
+   TODO;
+
+else:
+   TODO;
+
 int_expr:
    int_literal;
 
@@ -646,17 +828,14 @@ int_literal:
 throws:
    'throws' w '{' w '}';
 
-block_elems:
-   TODO;
-
 generator_clause_list:
    TODO;
 
-mapsto:
-   mapsto_op;
-
 mapsto_op:
    '|->';
+
+no_space_expr:
+   TODO;
 
 no_new_line_expr:
    TODO;
@@ -678,3 +857,6 @@ static_args:
 
 TODO:
    'TODO';
+
+no_new_line_generator_clause_list:
+   TODO;
