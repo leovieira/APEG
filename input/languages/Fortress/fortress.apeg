@@ -79,11 +79,439 @@ dotted_id_list:
 //-------------------------------------------------------------------------
 
 //-------------------------------------------------------------------------
+//  Expressions
+//-------------------------------------------------------------------------
+
+expr:
+   expr_front expr_tail*;
+
+expr_front:
+   assign_expr
+ / op_expr
+ / delimited_expr
+ / flow_expr
+ / 'fn' w bind_id (w throws)? w '=>' w expr
+ / 'fn' w '(' (w params)? w ')' (w is_type)? (w throws)? w '=>' w expr;
+
+expr_tail:
+   w 'typed' w type
+ / w 'asif' w type;
+
+assign_expr:
+   assign_lefts w assign_op w expr;
+
+assign_lefts:
+   '(' w assign_left (w ',' w assign_left)* w ')'
+ / assign_left;
+
+assign_left:
+   primary_front assing_left_tail+
+ / qualified_name;
+
+assing_left_tail:
+   subscript_assign
+ / field_selection_assign;
+
+subscript_assign:
+   left_encloser (w static_args)? (w expr_list)? w right_encloser;
+
+field_selection_assign:
+   '.' id;
+
+op_expr:
+   op_expr_no_enc
+ / op_expr_left_encloser
+ / encloser;
+
+op_expr_no_enc:
+   op_expr_primary
+ / op_expr_prefix
+ / op;
+
+tight_infix_right:
+   encloser op_expr_primary
+ / encloser op_expr_prefix
+ / encloser wr op_expr_primary
+ / encloser wr loose_infix_EXPR
+ / encloser wr left_loose_infix
+ / encloser;
+
+left_loose_infix:
+   op_expr_left_encloser
+ / encloser wr op_expr_primary
+ / encloser wr op_expr_prefix
+ / encloser wr op_expr_left_encloser;
+
+op_expr_left_encloser:
+   encloser op_expr_no_enc;
+
+op_expr_primary:
+   primary tight_infix_postfix_EXPR
+ / primary tight_infix_right
+ / primary wr op_expr_primary
+ / primary wr loose_infix_EXPR
+ / primary wr left_loose_infix
+ / primary;
+
+op_expr_prefix:
+   op op_expr_primary
+ / op op_expr_prefix
+ / op op_expr_left_encloser
+ / op wr op_expr_primary
+ / op wr op_expr_prefix
+ / op wr op_expr_left_encloser;
+
+tight_infix_postfix_EXPR:
+   op op_expr_primary
+ / op op_expr_primary
+ / op op_expr_left_encloser
+ / op wr op_expr_primary
+ / op wr op_expr_prefix
+ / op wr op_expr_left_encloser
+ / op;
+
+loose_infix_EXPR:
+   op wr op_expr_primary
+ / op wr op_expr_prefix
+ / op wr op_expr_left_encloser;
+
+primary:
+   primary_item (w ',' w primary_item)*;
+
+primary_item:
+   left_associated_primary
+ / math_primary;
+
+left_associated_primary:
+   dotted_id_chain w static_args parenthesis_delimited parenthesis_delimited_left* selector*
+ / dotted_id_chain subscripting_left+ parenthesis_delimited_left* selector*
+ / dotted_id_chain parenthesis_delimited parenthesis_delimited_left* selector*
+ / dotted_id_chain selector*
+ / primary_front subscripting_left* parenthesis_delimited_left* selector+;
+
+dotted_id_chain:
+   id ('.' w id)+;
+
+math_primary:
+   primary_front math_item*;
+
+primary_front:
+   array_expr
+ / map_expr
+ / comprehension
+ / left_encloser (w static_args)? (w expr_list)? w right_encloser
+ / parenthesis_delimited
+ / literal_expr
+ / var_or_fn_ref
+ / 'self';
+
+var_or_fn_ref:
+   id (w static_args)?;
+
+subscripting_left:
+   '{' (w static_args)? (w expr_list)? w '}'
+ / '[' (w static_args)? (w expr_list)? w ']'
+ / left_encloser (w static_args)? (w expr_list)? w right_encloser;
+
+parenthesis_delimited_left:
+   parenthesis_delimited;
+
+parenthesis_delimited:
+   parenthesized
+ / arg_expr
+ / '(' w ')';
+
+selector:
+   method_invocation_selector
+ / field_selection_selector;
+
+method_invocation_selector:
+   '.' w id (w static_args)? parenthesis_delimited parenthesis_delimited_left*;
+
+field_selection_selector:
+   '.' w id subscripting_left* parenthesis_delimited_left*;
+
+math_item:
+   subscripting
+ / exponentiation_EXPR
+ / parenthesis_delimited
+ / literal_expr
+ / var_or_fn_ref
+ / 'self';
+
+// There are two different definitions od exponentiation in specification and in Rats! files
+exponentiation_EXPR:
+   '^' exponent
+ / exponent_op;
+
+exponent:
+   parenthesis_delimited
+ / literal_expr
+ / id
+ / 'self';
+
+flow_expr:
+   'exit' (w id)? (w 'with' w expr)?
+ / accumulator (w static_args)? (w '[' generator_clause_list w ']')? w expr
+ / 'BIG' left_encloser w '|->' (w static_args)? w right_encloser w expr
+ / 'BIG' left_encloser w (w static_args)? w right_encloser w expr
+ / 'atomic' w atomic_back
+ / 'tryatomic' w atomic_back
+ / 'spawn' w expr
+ / 'throw' w expr;
+
+atomic_back:
+   assign_expr
+ / op_expr
+ / delimited_expr;
+
+generator_clause_list:
+   generator_binding (w ',' w generator_clause)*;
+
+generator_binding:
+   bind_id_or_bind_tuple w '<-' w expr;
+
+generator_clause:
+   generator_binding
+ / expr; 
+
+subscripting:
+   '[' (w static_args)? (w expr_list)? w ']'
+ / '{' (w static_args)? (w expr_list)? w '}'
+ / left_encloser (w static_args)? (w expr_list)? w right_encloser;
+
+//-------------------------------------------------------------------------
 //  Expressions Enclosed by Keywords or Symbols
 //-------------------------------------------------------------------------
 
+delimited_expr locals[String n1, String n2]:
+   arg_expr
+ / parenthesized
+ / 'object' (w extends_where)? (nl go_in_an_object)? w 'end'
+ / do
+ / 'label' w n1=id w block_elems w 'end' w n2=id {? n1 == n2}
+ / 'while' w generator_clause w do
+ / 'for' w generator_clause_list w do_front w 'end'
+ / 'if' w generator_clause w 'then' w block_elems (w elifs)? (w else)? w 'end'
+ / '(' w 'if' w generator_clause w 'then' w block_elems (w elifs)? w else (w 'end')? w ')'
+ / 'case' w expr (w (encloser / op))? w 'of' w case_clauses (br case_else)? w 'end'
+ / 'case' w 'most' (encloser / op) w 'of' w case_clauses w 'end'
+ / 'typecase' w expr w 'of' w type_case_clauses (br case_else)? w 'end'
+ / 'try' w block_elems (w catch)? (w 'forbid' w trait_types)? (w 'finally' w block_elems)? w 'end';
 
+do:
+   (do_front w 'also' w)* do_front w 'end';
 
+do_front:
+   ('at' w expr w)? ('atomic' w)? 'do' (w block_elems)?;
+
+arg_expr:
+   '(' w (expr w ',' w)* (expr w '...' w ',' w)? keyword_expr (w ',' w keyword_expr)* w ')'
+ / '(' w (expr w ',' w)* expr w '...' w ')'
+ / tuple_expr;
+
+tuple_expr:
+   '(' w (expr w ',' w)+ expr w ')';
+
+keyword_expr:
+   bind_id w '=' w expr;
+
+parenthesized:
+   '(' w expr w ')';
+
+elifs:
+   elif(w elif)*;
+
+elif:
+   'elif' w generator_clause w 'then' w block_elems;
+
+else:
+   'else' w block_elems;
+
+case_clauses:
+   case_clause (br case_clause)*;
+
+case_else:
+   'else' w '=>' w block_elems;
+
+type_case_clauses:
+   type_case_clause (br type_case_clause)*;
+
+type_case_clause:
+   id w '=>' w block_elems
+ / (id w ':' w)? type_or_pattern w '=>' w block_elems;
+
+catch:
+   'catch' w bind_id w catch_clauses;
+
+catch_clauses:
+   catch_clause (br catch_clause)*;
+
+catch_clause:
+   trait_type w '=>' w block_elems;
+
+map_expr:
+   left_encloser (w static_args)? w entry_list w right_encloser;
+
+comprehension:
+   ('BIG' w)? '[' (w static_args)? w array_comprehension_clause (br array_comprehension_clause)* w 	']'
+ / ('BIG' w)? left_encloser (w static_args)? w entry wr '|' wr generator_clause_list w right_encloser
+ / ('BIG' w)? left_encloser (w static_args)? w expr wr '|' wr generator_clause_list w right_encloser;
+
+/****
+ The operator "|->" should not be in the left-hand sides of map expressions
+ and map/array comprehensions.
+****/
+mapsto_op:
+   '|->' !(w expr (w '|->' / wr '|' / w '}' / w ','));
+
+/****
+ The operator "<-" should not be in the left-hand sides of
+ generator clause lists.
+*****/
+left_arrow_op:
+   '<-' !(w expr (w '<-' / w ','));
+
+entry:
+   expr w '|->' w expr;
+
+array_comprehension_left:
+   id_or_int w '|->' w expr
+ / '(' w id_or_int w ',' w id_or_int_list w ')' w '|->' w expr;
+
+id_or_int:
+   id
+ / int_literal_expr;
+
+id_or_int_list:
+   id_or_int (w ',' w id_or_int)*;
+
+expr_list:
+   expr (w ',' w expr)*;
+
+entry_list:
+   entry (w ',' w entry)*;
+
+//-------------------------------------------------------------------------
+//  Expressions without Newlines
+//-------------------------------------------------------------------------
+
+no_new_line_expr:
+   no_new_line_expr_front no_new_line_expr_tail*;
+
+no_new_line_expr_front:
+   no_new_line_assign_expr
+ / no_new_line_op_expr
+ / delimited_expr
+ / no_new_line_flow_expr
+ / 'fn' w bind_id (w throws)? w '=>' w no_new_line_expr
+ / 'fn' w '(' (w params)? w ')' (w is_type)? (w throws)? w '=>' w no_new_line_expr;
+
+no_new_line_expr_tail:
+   s 'typed' w no_new_line_type
+ / s 'asif' w no_new_line_type;
+
+no_new_line_assign_expr:
+   assign_lefts s assign_op w no_new_line_expr;
+
+no_new_line_op_expr:
+   no_new_line_op_expr_no_enc
+ / no_new_line_op_expr_left_encloser
+ / encloser;
+
+no_new_line_op_expr_no_enc:
+   no_new_line_op_expr_primary
+ / no_new_line_op_expr_prefix
+ / op;
+
+no_new_line_tight_infix_right:
+   encloser no_new_line_op_expr_primary
+ / encloser no_new_line_op_expr_prefix
+ / encloser sr no_new_line_op_expr_primary
+ / encloser sr no_new_line_loose_infix_EXPR
+ / encloser sr no_new_line_left_loose_infix
+ / encloser;
+
+no_new_line_left_loose_infix:
+   no_new_line_op_expr_left_encloser
+ / encloser sr no_new_line_op_expr_primary
+ / encloser sr no_new_line_op_expr_prefix
+ / encloser sr no_new_line_op_expr_left_encloser;
+
+no_new_line_op_expr_left_encloser:
+   encloser no_new_line_op_expr_no_enc;
+
+no_new_line_op_expr_primary:
+   primary no_new_line_tight_infix_postfix_EXPR
+ / primary no_new_line_tight_infix_right
+ / primary sr no_new_line_op_expr_primary
+ / primary sr no_new_line_loose_infix_EXPR
+ / primary sr no_new_line_left_loose_infix
+ / primary;
+
+no_new_line_op_expr_prefix:
+   op no_new_line_op_expr_primary
+ / op no_new_line_op_expr_prefix
+ / op no_new_line_op_expr_left_encloser
+ / op sr no_new_line_op_expr_primary
+ / op sr no_new_line_op_expr_prefix
+ / op sr no_new_line_op_expr_left_encloser;
+
+no_new_line_tight_infix_postfix_EXPR:
+   op no_new_line_op_expr_primary
+ / op no_new_line_op_expr_primary
+ / op no_new_line_op_expr_left_encloser
+ / op sr no_new_line_op_expr_primary
+ / op sr no_new_line_op_expr_prefix
+ / op sr no_new_line_op_expr_left_encloser
+ / op;
+
+no_new_line_loose_infix_EXPR:
+   op wr no_new_line_op_expr_primary
+ / op wr no_new_line_op_expr_prefix
+ / op sr no_new_line_op_expr_left_encloser;
+
+no_new_line_generator_binding:
+   bind_id_or_bind_tuple w '<-' w no_new_line_expr;
+
+no_new_line_generator_clause:
+   no_new_line_generator_binding
+ / no_new_line_expr; 
+
+no_new_line_flow_expr:
+   'exit' (w id)? (w 'with' w no_new_line_expr)?
+ / accumulator (w static_args)? (w '[' generator_clause_list w ']')? w no_new_line_expr
+ / 'BIG' left_encloser w '|->' (w static_args)? w right_encloser w no_new_line_expr
+ / 'BIG' left_encloser w (w static_args)? w right_encloser w no_new_line_expr
+ / 'atomic' w no_new_line_atomic_back
+ / 'tryatomic' w no_new_line_atomic_back
+ / 'spawn' w no_new_line_expr
+ / 'throw' w no_new_line_expr;
+
+no_new_line_atomic_back:
+   assign_expr
+ / no_new_line_op_expr
+ / delimited_expr;
+
+no_new_line_generator_clause_list:
+   generator_binding (s ',' w no_new_line_generator_clause)*;
+
+no_new_line_var_w_types:
+   no_new_line_var_w_type
+ / '(' w no_new_line_var_w_type (w ',' w no_new_line_var_w_type)+ w ')';
+
+no_new_line_var_w_type:
+   bind_id s no_new_line_is_type;
+
+no_new_line_is_type:
+   ':' w no_new_line_type;
+
+no_new_line_is_type_or_none:
+   ':' w no_new_line_type_or_none;
+
+no_new_line_type_or_none:
+   no_new_line_type
+ / 'None';
 
 //-------------------------------------------------------------------------
 //  Local Declarations
@@ -786,14 +1214,14 @@ rect_separator:
 //  TODO
 //-------------------------------------------------------------------------
 
+is_type:
+   TODO;
+
+array_expr:
+   TODO;
+
 mods:
    'var';
-
-case_else:
-   TODO;
-
-no_new_line_var_w_types:
-   TODO;
 
 pattern:
    TODO;
@@ -813,12 +1241,6 @@ init_val:
 no_new_line_pattern:
    TODO;
 
-no_new_lien_var_w_types:
-   TODO;
-
-else:
-   TODO;
-
 int_expr:
    int_literal;
 
@@ -828,19 +1250,16 @@ int_literal:
 throws:
    'throws' w '{' w '}';
 
-generator_clause_list:
+extends_where:
    TODO;
 
-mapsto_op:
-   '|->';
+go_in_an_object:
+   TODO;
+
+trait_types:
+   TODO;
 
 no_space_expr:
-   TODO;
-
-no_new_line_expr:
-   TODO;
-
-array_comprehension_left:
    TODO;
 
 decls:
@@ -849,14 +1268,8 @@ decls:
 abs_decls:
    'trait' w id w 'end';
 
-expr:
-   id w assign_op w op;
-
 static_args:
    '[\\' w 'Unity' w '\\]';
 
 TODO:
    'TODO';
-
-no_new_line_generator_clause_list:
-   TODO;
