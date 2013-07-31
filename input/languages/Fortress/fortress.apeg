@@ -79,6 +79,158 @@ dotted_id_list:
 //-------------------------------------------------------------------------
 
 //-------------------------------------------------------------------------
+//  Header Maybe with Newlines - MayNewlineHeader.rats
+//-------------------------------------------------------------------------
+
+pattern:
+   type_ref w pattern_val_param
+ / !('(' w ')' / tuple_type) pattern_val_param !(w ('->' / '.' / '/' / 'per' / 'square' / 'cubic' / 'inverse' / 'squared' / 'cubed'));
+
+pattern_val_param:
+   '(' (w pattern_params)? w ')';
+
+type_or_pattern:
+   pattern
+ / type;
+
+is_type_or_pattern:
+   ':' w pattern
+ / is_type;
+
+pattern_params:
+   (pattern_param w ',' w)* pattern_keyword (w ',' w pattern_keyword)*
+ / pattern_param (w ',' w pattern_param)*;
+
+pattern_param:
+   pattern_plain_param
+ / pattern_val_param;
+
+pattern_keyword:
+   pattern_plain_param w '=' w id;
+
+pattern_plain_param:
+   bind_id w is_type_or_pattern
+ / pattern
+ / !bind_id type
+ / bind_id;
+
+no_new_line_pattern:
+   type_ref s pattern_val_param
+ / !('(' w ')' / tuple_type) pattern_val_param !(w ('->' / '.' / '/' / 'per' / 'square' / 'cubic' / 'inverse' / 'squared' / 'cubed'));
+
+is_type:
+   ':' w type;
+
+where_constraint_list:
+   where_constraint (w ',' w where_constraint)*;
+
+where_constraint:
+   id_or_op_name w extends
+ / type_alias
+ / type w 'coerces' w type
+ / type w 'widens' w type
+ / unit_constraint
+ / int_expr w '<=' w int_expr                         // here begins the definition of a int_constraint
+ / int_expr w '<' w int_expr
+ / int_expr w '>=' w int_expr
+ / int_expr w '>' w int_expr
+ / int_expr w '=' w int_expr                         // here ends the definition of a int_constraint
+ / bool_expr
+ / type w 'widens' w 'or' w 'coerces' w type;
+
+unit_constraint:
+   'dimensionless' w '=' w id_or_op_name
+ / id_or_op_name w '=' w 'dimensionless';
+
+int_val:
+   int_literal_expr
+ / qualified_name;
+
+int_expr:
+   sum_expr (w '+' w sum_expr / w '-' w sum_expr)*;
+
+sum_expr:
+   mul_expr ((w '.' w / sr) mul_expr)*;
+
+mul_expr:
+   int_base '^' int_val
+ / int_base;
+
+int_base:
+   int_val
+ / '(' w int_expr w ')';
+
+bool_expr:
+   op_bool;
+
+op_bool:
+   bool_primary
+ / bool_prefix;
+
+bool_primary:
+   bool_primary_front bool_prefix
+ / bool_primary_front wr bool_primary
+ / bool_primary_front wr op wr op_bool
+ / bool_primary_front;
+
+bool_prefix:
+   op op_bool
+ / op wr op_bool;
+
+bool_primary_front:
+   'true'
+ / 'false'
+ / qualified_name
+ / '(' w op_bool w ')';
+
+unit_val:
+   'dimensionless'
+ / qualified_name;
+
+unit_expr:
+   mul_div_unit ( (w '.' w / sr) mul_div_unit / ('/' / 'per') mul_div_unit )*;
+
+mul_div_unit:
+   unit_base '^' unit_val
+ / unit_base;
+
+unit_base:
+   unit_val
+ / '(' w unit_expr w ')';
+
+requires:
+   'requires' w '{' (w expr_list)? '}';
+
+ensures:
+   'ensures' w '{' (w expr (w 'provided' w expr)? (w ',' w expr (w 'provided' w expr)?)*)? w '}';
+
+invariant:
+   'invariant' w '{' (w expr_list)? w '}';
+
+static_args:
+   '[\\' w static_arg_list w '\\]';
+
+static_arg_list:
+   static_arg (w ',' w static_arg)*;
+
+static_arg:
+   op &(w ',' / w '\\]')
+ / !(qualified_name (w 
+                       ('\\]' / ']' / ',' / '[\\' / '[' / '->' / 'OR' / 'AND' / 'IMPLIES' / '=')
+                    )
+                     / 'Unity' / 'dimensionless' / 'true' / 'false'
+     ) int_expr
+ / !(qualified_name (w 
+                       ('\\]' / ']' / ',' / '[\\' / '[' / '->')
+                    ) 
+                    / 'Unity' / 'dimensionless'
+     ) bool_expr
+ / 'true'
+ / 'false'
+ / !(qualified_name (w ('.' / '/' / 'per' / dim_postfix_op)) / 'dimensionless') type
+ / unit_expr;
+
+//-------------------------------------------------------------------------
 //  Parameters - Parameter.rats
 //-------------------------------------------------------------------------
 
@@ -1142,6 +1294,10 @@ array_comprehension_clause:
 //  Identifiers - Identifier.rats
 //-------------------------------------------------------------------------
 
+id_or_op_name:
+   id
+ / op_name;
+
 id:
    !(keywords / op_name) (id_start id_rest+ / unicode_id_start) ;  // It can not be '_'
 
@@ -1357,10 +1513,7 @@ rect_separator:
 //  TODO
 //-------------------------------------------------------------------------
 
-is_type:
-   TODO;
-
-is_type_or_pattern:
+init_val:
    TODO;
 
 array_expr:
@@ -1368,12 +1521,6 @@ array_expr:
 
 mods:
    'var';
-
-pattern:
-   TODO;
-
-type_or_pattern:
-   TODO;
 
 static_params:
    TODO;
@@ -1383,15 +1530,6 @@ fn_clauses:
 
 fn_header_clause:
    TODO;
-
-init_val:
-   TODO;
-
-no_new_line_pattern:
-   TODO;
-
-int_expr:
-   int_literal;
 
 int_literal:
    '0' / [1-9] [0-9]*;
@@ -1417,8 +1555,11 @@ abs_decls:
 abs_named_header_front:
    TODO;
 
-static_args:
-   '[\\' w 'Unity' w '\\]';
+extends:
+   TODO;
+
+type_alias:
+   TODO;
 
 TODO:
    'TODO';
