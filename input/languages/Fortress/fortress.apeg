@@ -2,7 +2,7 @@ apeg Fortress;
 
 
 //-------------------------------------------------------------------------
-//  Components and APIs
+//  Components and APIs - Compilation.rats
 //-------------------------------------------------------------------------
 
 file:
@@ -1878,11 +1878,167 @@ rect_separator:
  / nl;
 
 //-------------------------------------------------------------------------
-//  TODO
+// Extensibility - Syntax.rats
 //-------------------------------------------------------------------------
 
 grammar_def:
-   TODO;
+   'native' w 'grammar' w id (br nonterminal_decl)* w 'end'
+ / 'grammar' w id (w grammar_extends)? (br nonterminal_def)* w 'end';
 
-TODO:
-   'TODO';
+grammar_extends:
+   'extends' w qualified_names;
+
+qualified_names:
+   qualified_name
+ / '{' qualified_name (w ',' w qualified_name)* '}';
+
+nonterminal_def:
+   id w '|' w ':=' w syntax_extension_def (w syntax_extension_def_or)*
+ / nonterminal_header w ':' (w trait_type)? w ':=' w syntax_def (w syntax_def_or)*
+ / nonterminal_decl;
+
+nonterminal_decl:
+   nonterminal_header w ':' w trait_type;
+
+nonterminal_header:
+   ('private' w)? id (w syntax_params)? (w static_params)? (':' w type)? (w where)?;
+
+syntax_params:
+   '(' w syntax_param (w ',' w syntax_param)* w ')';
+
+syntax_param:
+   id ':' trait_type;
+
+syntax_def:
+   (choice_modifier w)? syntax_symbols w '=>' w pre_transformer_decl;
+
+syntax_extension_def:
+    syntax_def
+  / (super_choice_modifier w)? id w 'from' w id;
+
+syntax_def_or:
+   '|' w syntax_def;
+
+syntax_extension_def_or:
+   '|' w syntax_extension_def;
+
+choice_modifier:
+   'private';
+
+super_choice_modifier:
+   'private'
+ / 'without';
+
+pre_transformer_decl:
+   pre_transformer;
+
+pre_transformer:
+   'case' w id w 'of' w case_transformer_clauses w 'end'
+ / (id w )? '<[' w (']' !'>' / !']' .)* w ']>';   // Na implementação de Fortress o trecho entre '<[' e ']>' é guardado sem checagem com o parser
+
+case_transformer_clauses:
+   case_transformer_clause (br case_transformer_clause)*;
+
+case_transformer_clause:
+   id (w '(' w bind_id_list w ')')? w '=>' w pre_transformer;
+
+syntax_symbols:
+   syntax_symbol symbs* &(w '=>');
+
+syntax_symbols_x:
+   syntax_symbol symbs*;
+
+symbs:
+   space_or_breakline+ syntax_symbol;
+
+space_or_breakline:
+   (' ' / '\f')+
+ / ('\r\n' / '\r' / '\n');
+
+syntax_symbol:
+   'NOT' w symbol_mod
+ / 'AND' w symbol_mod
+ / symbol_mod;
+
+symbol_mod:
+   single '?'
+ / single '*'
+ / single '+'
+ / single;
+
+single:
+   group_symbol
+ / base_symbol;
+
+base_symbol:
+   (id ':')? symbol;
+
+group_symbol:
+   '{' w syntax_symbols_x w '}';
+
+symbol:
+   item '#'?;
+
+item:
+   !(w '=>') item_text
+ / '[' character_class* ']'
+ / '_'
+ / 'TAB'
+ / 'FORMFEED'
+ / 'RETURN'
+ / 'NEWLINE'
+ / 'SPACE'
+ / 'BACKSPACE';
+
+character_class:
+   char (':' char)?;
+
+char:
+   'TAB'
+ / 'FORMFEED'
+ / 'RETURN'
+ / 'NEWLINE'
+ / 'SPACE'
+ / 'BACKSPACE'
+ / utf16;
+
+item_text:
+   !special_symbols utf16+
+ / special_symbols utf16+;   // ????? In Rats!, the definition is in that form.
+
+utf16:
+   '`' special_chars
+ / '`' special_symbols
+ / !special_symbols .;
+
+special_chars:
+   ' '
+ / '\f'
+ / '\r\n'
+ / '\r'
+ / '\n'
+ / ':'
+ / '?'
+ / '#'
+ / '+'
+ / '*'
+ / '['
+ / ']'
+ / '`'
+ / '|'
+ / '_'
+ / '{'
+ / '}';
+
+special_symbols:
+   'TAB'
+ / 'FORMFEED'
+ / 'RETURN'
+ / 'NEWLINE'
+ / 'SPACE'
+ / 'BACKSPACE'
+ / 'AND'
+ / 'NOT'
+ / '=>';
+
+
