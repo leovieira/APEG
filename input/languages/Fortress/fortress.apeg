@@ -4,79 +4,372 @@ apeg Fortress;
 //-------------------------------------------------------------------------
 //  Components and APIs
 //-------------------------------------------------------------------------
-/*
+
 file:
-   compilation_unit w
- / (w imports)? w exports (w decls)? w
- / (w imports)? w abs_decls w
- / w imports (w abs_decls)? w;
+   w program w !.;
+
+program:
+   compilation_unit
+ / import_or_exports (w ';')? w decls (w ';')?
+ / imports (w ';')? (w abs_decls (w ';')?)?
+ / (imports (w ';')? w)? abs_decls (w ';')?;
 
 compilation_unit:
-   w component w
- / w api;
+   component
+ / api;
  
 component:
-   'component' w dotted_id (w imports)? w exports (w decls)? w 'end';
+   ('native' w)? 'component' w api_name w 'comprises' w api_names (w import_or_exports (w ';')?)? w 'end' ((s 'component')? s api_name)?
+ / ('native' w)? 'component' w api_name w imports? w export w import_or_export? (w ';')? (w decls (w ';')?)? w 'end' ((s 'component')? s api_name)?;
 
 api:
-   'api' w dotted_id (w imports)? (w abs_decls)? w 'end';
+   'api' w api_name w 'comprises' w api_names w 'end' ((s 'api')? s api_name)?
+ / 'api' w api_name (w imports (w ';')?)? (w abs_decls (w ';')?)? w 'end' ((s 'api')? s api_name)?;
+
+import_or_exports:
+   import_or_export (br import_or_export)*;
+
+import_or_export:
+   import
+ / export;
 
 imports:
-   import (wr import)*;
+   import (br import)*;
 
 import:
-   'import' wr import_from
- / 'import' wr aliased_dotted_ids;
+   'import' (w foreign_lang)? w 'api' w aliased_api_names
+ / 'import' w imported_names;
 
-import_from:
-   '*' (wr 'except' wr names)? wr 'from' wr dotted_id
- / aliased_names wr 'from' wr dotted_id;
+foreign_lang:
+   !(id w '.') id
+ / string_literal_expr;
 
-names:
-   name
- / '{' w name_list w '}';
+imported_names:
+   (foreign_lang w)? api_name '.' w '{' w '...' w '}' (w 'except' w simple_names)?
+ / foreign_lang w api_name '.' w '{' w aliased_qualified_name_list (w ',' w '...')? w '}'
+ / (foreign_lang w)? api_name '.' w '{' w aliased_simple_name_list (w ',' w '...')? w '}'
+ / (foreign_lang w)? id '.' qualified_name (w '=>' w id)?;
 
-name_list:
-   name (w ',' w name)*;
+simple_names:
+   simple_name
+ / '{' w simple_name (w ',' w simple_name)* w '}';
 
-aliased_names:
-   aliased_name
- / '{' w aliased_name_list w '}';
+aliased_simple_name:
+   id (w '=>' w id)?
+ / 'opr' (w 'BIG')? w encloser_pair (w '=>' w encloser_pair)?
+ / 'opr' (w 'BIG')? w (encloser / op) (w '=>' w (encloser / op))?;
 
-aliased_name:
-   'opr' w op (w 'as' w op)?
- / 'opr' w left_encloser w right_encloser (w 'as' w left_encloser w right_encloser)?
- / id (wr 'as' wr dotted_id)?;
+aliased_simple_name_list:
+   aliased_simple_name (w ',' w aliased_simple_name)*;
 
-aliased_name_list:
-   aliased_name (w ',' w aliased_name)*;
+aliased_qualified_name:
+   qualified_name (w '=>' w qualified_name)?;
 
-aliased_dotted_ids:
-   aliased_dotted_id
- / '{' w aliased_dotted_id_list w '}';
+aliased_qualified_name_list:
+   aliased_qualified_name (w ',' w aliased_qualified_name)*;
 
-aliased_dotted_id:
-   dotted_id (wr 'as' wr dotted_id)?;
+aliased_api_name:
+   api_name (w '=>' w id)?;
 
-aliased_dotted_id_list:
-   aliased_dotted_id (w ',' w aliased_dotted_id)*;
-
-exports:
-   export (wr export)*;
+aliased_api_names:
+   aliased_api_name
+ / '{' w aliased_api_name (w ',' w aliased_api_name)*;
 
 export:
-   'export' wr dotted_ids;
+   'export' w api_names;
 
-dotted_ids:
-   dotted_id
- / '{' w dotted_id_list w '}';
+api_names:
+   api_name
+ / '{' w api_name (w ',' w api_name)* w '}';
 
-dotted_id_list:
-   dotted_id (w ',' w dotted_id)*;
-*/
 //-------------------------------------------------------------------------
-//  Top-level Declarations
+//  Top-level Declarations - Declaration.rats
 //-------------------------------------------------------------------------
+
+decls:
+   decl (br decl)*;
+
+decl:
+   trait_decl
+ / object_decl
+ / var_decl
+ / top_level_fn_decl
+ / dim_unit_decl
+ / type_alias
+ / test_decl
+ / property_decl;
+
+abs_decls:
+   abs_decl (br abs_decl)*;
+
+abs_decl:
+   abs_trait_decl
+ / abs_object_decl
+ / abs_var_decl
+ / dim_unit_decl
+ / type_alias
+ / test_decl
+ / property_decl
+ / grammar_def;
+
+//-------------------------------------------------------------------------
+//  Trait and Object Declarations - TraitObject.rats
+//-------------------------------------------------------------------------
+
+trait_decl:
+   mods? trait_header_front (w trait_clause)* (w go_in_a_trait)? w 'end' ((s 'trait')? s id)?;
+
+trait_header_front:
+   'trait' w id (w static_params)? (w trait_val_param)? (w extends_where)?;
+
+trait_val_param:
+   '(' (w trait_params)? w ')';
+
+trait_params:
+   trait_param (w ',' w trait_param)*;
+
+trait_param:
+   bind_id w is_type;
+
+trait_clause:
+   excludes
+ / comprises
+ / where;
+
+go_in_a_trait:
+   goes_in_a_trait (br goes_in_a_trait)*;
+
+goes_in_a_trait:
+   coercion
+ / abs_var_decl
+ / md_decl
+ / property_decl;
+
+object_decl:
+   mods? object_header (w go_in_an_object)? w 'end' ((s 'object')? s id)?;
+
+object_header:
+   'object' w id (w static_params)? (w object_val_param)? (w extends_where)? fn_clauses;
+
+object_val_param:
+   '(' (w object_params)? w ')';
+
+object_parameter:
+   object_param w '=' w expr
+ / object_param;
+
+object_params:
+   object_parameter (w ',' w object_parameter)*;
+
+object_param:
+   mods? plain_param;
+
+go_in_an_object:
+   goes_in_an_object (br goes_in_an_object)*;
+
+goes_in_an_object:
+   coercion
+ / var_decl
+ / md_decl
+ / property_decl;
+
+abs_trait_decl:
+   mods? trait_header_front (w trait_clause)*
+     (w abs_go_in_a_trait)? w 'end' ((s 'trait')? s id)?;
+
+abs_go_in_a_trait:
+   abs_goes_in_a_trait (br abs_goes_in_a_trait)*;
+
+abs_goes_in_a_trait:
+   coercion
+ / abs_var_decl
+ / property_decl;
+
+abs_object_decl:
+   mods? object_header (w abs_go_in_an_object)? w 'end' ((s 'object')? s id)?;
+
+abs_go_in_an_object:
+   abs_goes_in_an_object (br abs_goes_in_an_object)*;
+
+abs_goes_in_an_object:
+   coercion
+ / abs_var_decl
+ / property_decl;
+ 
+
+//-------------------------------------------------------------------------
+//  Variable Declarations - Variable.rats
+//-------------------------------------------------------------------------
+
+var_decl:
+   mods? var_may_types w init_val
+ / mods? bind_id_or_bind_tuple w '=' w no_new_line_expr
+ / mods? bind_id_or_bind_tuple w ':' w no_new_line_type w '...' w init_val
+ / mods? bind_id_or_bind_tuple w ':' w no_new_line_tuple_type w w init_val;
+
+var_may_types:
+   var_may_type
+ / '(' w var_may_type (w ',' w var_may_type)+ w ')';
+
+var_may_type:
+   bind_id (w is_type_or_pattern)?;
+
+init_val:
+   ('=' / ':=') w no_new_line_expr;
+
+abs_var_decl:
+   mods? no_new_line_var_w_types
+ / mods? bind_id_or_bind_tuple w ':' w no_new_line_type w '...'
+ / mods? bind_id_or_bind_tuple w ':' w no_new_line_tuple_type;
+
+//-------------------------------------------------------------------------
+//  Function Declarations - Function.rats
+//-------------------------------------------------------------------------
+
+top_level_fn_decl:
+   fn_decl;
+
+fn_decl:
+   mods? fn_header_front fn_header_clause w '=' w no_new_line_expr
+ / abs_fn_decl;
+
+abs_fn_decl:
+   mods? abs_fn_header_front fn_header_clause
+ / fn_sig;
+
+fn_header_front:
+   named_fn_header_front
+ / op_header_front;
+
+abs_fn_header_front:
+   abs_named_fn_header_front
+ / abs_op_header_front;
+
+named_fn_header_front:
+   id (w static_params)? w val_param;
+
+abs_named_fn_header_front:
+   id (w static_params)? w abs_val_param;
+
+fn_sig:
+   simple_name w ':' w no_new_line_type;
+
+//-------------------------------------------------------------------------
+//  Dimiension, Unit, Type Alias, Test, Property - OtherDecl.rats
+//-------------------------------------------------------------------------
+
+dim_unit_decl:
+   'dim' w id (w '=' w no_new_line_type)? s ('unit' / 'SI_unit') w id (wr id)* (w '=' w no_new_line_expr)?
+ / 'dim' w id (w '=' w no_new_line_type)? (w 'default' w id)?
+ / ('unit' / 'SI_unit') w id (wr id)*;
+
+type_alias:
+   'type' w id (w static_params)? w '=' w no_new_line_type; 
+
+test_decl:
+   'test' w id w '[' w generator_clause_list w ']' w '=' w no_new_line_expr;
+
+property_decl:
+   'property' (w id w '=')? (w 'FORALL' w val_param)? w no_new_line_expr;
+
+//-------------------------------------------------------------------------
+//  Header without Newlines - NoNewlineHeader.rats
+//-------------------------------------------------------------------------
+
+extends_where:
+   'extends' w trait_type_where
+ / 'extends' w '{' w trait_type_where (w ',' w trait_type_where)* w '}';
+
+trait_type_where:
+   trait_type (w where)?;
+
+extends:
+   'extends' w trait_types;
+
+excludes:
+   'excludes' w trait_types;
+
+trait_types:
+   trait_type
+ / '{' w trait_type (w ',' w trait_type)* w '}';
+
+comprises:
+   'comprises' w comprising_types
+ / 'comprises' w '{' w abs_comprising_type_list w '}';
+
+abs_comprising_type_list:
+   '...'
+ / comprising_type_list (w ',' w '...')?;
+
+comprising_types:
+   comprising_type
+ / '{' w comprising_type_list w '}';
+
+comprising_type_list:
+   comprising_type (w ',' w comprising_type)*;
+
+comprising_type:
+   trait_type
+ / id;
+
+where:
+   'where' w '[\\' w where_binding (w ',' w where_binding)* w '\\]' (w '{' w where_constraint_list w '}')?
+ / 'where' w '{' w where_constraint_list w '}';
+
+where_binding:
+   'nat' w id_or_op_name
+ / 'int' w id_or_op_name
+ / 'bool' w id_or_op_name
+ / 'unit' w id_or_op_name
+ / id_or_op_name (w extends)?;
+
+fn_header_clause:
+   (w no_new_line_type_or_none)? fn_clauses;
+
+fn_clauses:
+   fn_clause*;
+
+fn_clause:
+   w throws
+ / w where
+ / w requires
+ / w ensures
+ / w invariant
+ / w extends_where;
+
+throws:
+   'throws' w '{' w '}'
+ / 'throws' w trait_type;
+
+mods:
+   (mod w)+;
+
+mod:
+   'abstract'
+ / 'atomic'
+ / 'getter'
+ / 'hidden'
+ / 'io'
+ / 'override'
+ / 'private'
+ / 'settable'
+ / 'setter'
+ / 'test'
+ / 'value'
+ / 'var'
+ / 'wrapped';
+
+static_params:
+   '[\\' w static_param (w ',' w static_param)* '\\]';
+
+static_param:
+   'nat' w id_or_op_name
+ / 'int' w id_or_op_name
+ / 'bool' w id_or_op_name
+ / 'dim' w id_or_op_name
+ / 'unit' w id_or_op_name (w ':' w no_new_line_type)? (w 'absorbs' w 'unit')?
+ /  'opr' w op
+ / id_or_op_name (w extends)? (w 'absorbs' w 'unit')?; 
 
 //-------------------------------------------------------------------------
 //  Header Maybe with Newlines - MayNewlineHeader.rats
@@ -265,9 +558,15 @@ keyword:
    param w '=' w expr;
 
 param:
+   plain_param;
+
+plain_param:
    bind_id (w is_type_or_pattern)?;
 
 abs_param:
+   abs_plain_param;
+
+abs_plain_param:
    bind_id w is_type
  / type;
 
@@ -301,21 +600,78 @@ md_def:
 
 md_header_front:
    named_md_header_front
- / op_header_front;
+ / method_op_header_front;
 
 abs_md_header_front:
-   abs_named_header_front
- / abs_op_header_front;
+   abs_named_md_header_front
+ / method_abs_op_header_front;
 
 named_md_header_front:
-   id (w static_params)? w val_param;
+   id (w static_params)? w method_val_param;
 
 abs_named_md_header_front:
-   id (w static_params)? w abs_val_param;
+   id (w static_params)? w method_abs_val_param;
 
 coercion:
    'coerce' (w static_params)? w '(' w bind_id w is_type_or_pattern w ')' fn_clauses (w 'widens')? w '=' w no_new_line_expr;
 
+//-------------------------------------------------------------------------
+//  Method Parameters - MethodParam.rats
+//-------------------------------------------------------------------------
+
+method_val_param:
+   '(' (w method_params)? w ')';
+
+method_abs_val_param:
+   '(' (w method_abs_params)? w ')';
+
+method_parameter:
+   method_keyword
+ / var_args
+ / method_param;
+
+method_params:
+   method_parameter (w ',' w method_parameter)*;
+
+method_abs_parameter:
+   method_keyword
+ / var_args
+ / method_abs_param;
+
+method_abs_params:
+   method_abs_parameter (w ',' w method_abs_parameter)*;
+
+method_keyword:
+   method_param w '=' w expr;
+
+method_param:
+   plain_param
+ / 'self';
+
+method_abs_param:
+   'self'
+ / abs_plain_param;
+
+method_op_header_front:
+   'opr' (w 'BIG')? w (left_encloser w '|->' / left_encloser / encloser) (w static_params)?
+            (w method_params)? w (right_encloser / encloser) (w ':=' w '(' w subscript_assign_param w ')')?
+ / 'opr' w method_val_param w (op / exponent_op / '^') (w static_params)?
+ / 'opr' (w 'BIG')? w single_op_PARAM (w static_params)? w method_val_param;
+
+method_abs_op_header_front:
+   'opr' (w 'BIG')? w (left_encloser w '|->' / left_encloser / encloser) (w static_params)?
+         (w method_abs_params)? w (right_encloser / encloser) (w ':=' w '(' w abs_subscript_assign_param w ')')?
+ / 'opr' w method_abs_val_param w (op / exponent_op / '^') (w static_params)?
+ / 'opr' (w 'BIG')? w single_op_PARAM (w static_params)? w method_abs_val_param;
+
+subscript_assign_param:
+   var_args
+ / method_param;
+
+abs_subscript_assign_param:
+   var_args
+ / method_abs_param;
+   
 
 //-------------------------------------------------------------------------
 //  Expressions - Expression.rats
@@ -802,8 +1158,14 @@ no_space_tight_infix_postfix:
  / op;
 
 //-------------------------------------------------------------------------
-//  Local Declarations - LocalDecl.rats
+//  Local Declarations - LocalDecl.rats and NoSpaceLiteral.rats
 //-------------------------------------------------------------------------
+
+array_expr:
+   '[' (w static_args)? w no_space_expr multi_dim_cons* w ']';
+
+multi_dim_cons:
+   rect_separator no_space_expr;
 
 block_elems:
    block_elem br block_elems
@@ -844,18 +1206,18 @@ keyword_local:
    param_local s '=' w no_new_line_expr;
 
 local_var_decl:
-   ('var' w)? var_may_types s '=' w no_new_line_expr
+   ('var' w)? local_var_may_types s '=' w no_new_line_expr
  / ('var' w)? no_new_line_var_w_type_or_pattern s ':=' w no_new_line_expr
  / ('var' w)? no_new_line_var_w_types
  / var_wo_types s '=' w no_new_line_expr
  / ('var' w)? var_wo_types s ':' s no_new_line_type s '...' (s init_val)? 
  / ('var' w)? var_wo_types s ':' s tuple_type s '...' (s init_val)?;
 
-var_may_types:
-   var_may_type
- / '(' w var_may_type (w ',' w var_may_type)+ w ')';
+local_var_may_types:
+   local_var_may_type
+ / '(' w local_var_may_type (w ',' w local_var_may_type)+ w ')';
 
-var_may_type:
+local_var_may_type:
    bind_id (s ':' s (no_new_line_pattern / no_new_line_type))?;
 
 var_wo_types:
@@ -1087,6 +1449,12 @@ exponentiation_trait:
 
 no_new_line_type:
    !'1' no_new_line_type_primary (w 'in' w no_new_line_expr)?;
+
+no_new_line_type_list:
+   no_new_line_type (w ',' w no_new_line_type)*;
+
+no_new_line_tuple_type:
+   '(' w no_new_line_type w ',' w no_new_line_type_list w ')';
 
 no_new_line_type_primary:
    type_primary_front no_new_line_tight_infix_postfix
@@ -1513,52 +1881,7 @@ rect_separator:
 //  TODO
 //-------------------------------------------------------------------------
 
-init_val:
-   TODO;
-
-array_expr:
-   TODO;
-
-mods:
-   'var';
-
-static_params:
-   TODO;
-
-fn_clauses:
-   TODO;
-
-fn_header_clause:
-   TODO;
-
-int_literal:
-   '0' / [1-9] [0-9]*;
-
-throws:
-   'throws' w '{' w '}';
-
-extends_where:
-   TODO;
-
-go_in_an_object:
-   TODO;
-
-trait_types:
-   TODO;
-
-decls:
-   TODO;
-
-abs_decls:
-   'trait' w id w 'end';
-
-abs_named_header_front:
-   TODO;
-
-extends:
-   TODO;
-
-type_alias:
+grammar_def:
    TODO;
 
 TODO:
