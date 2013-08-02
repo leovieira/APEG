@@ -678,7 +678,7 @@ abs_subscript_assign_param:
 
 expr:
 //   expr_front expr_tail*;
-id w ':=' w int_literal_expr / id / literal_expr;
+param_local w (':=' / '+=') w int_literal_expr / id / literal_expr;
 
 expr_front:
    assign_expr
@@ -882,17 +882,17 @@ subscripting:
 delimited_expr locals[String n1, String n2]:
    arg_expr
  / parenthesized
- / 'object' (w extends_where)? (nl go_in_an_object)? w 'end'
+ / 'object' (wr extends_where)? (nl go_in_an_object)? w 'end'
  / do
- / 'label' w n1=id w block_elems w 'end' w n2=id {? n1 == n2}
- / 'while' w generator_clause w do
- / 'for' w generator_clause_list w do_front w 'end'
- / 'if' w generator_clause w 'then' w block_elems (w elifs)? (w else)? w 'end'
- / '(' w 'if' w generator_clause w 'then' w block_elems (w elifs)? w else (w 'end')? w ')'
- / 'case' w expr (w (encloser / op))? w 'of' w case_clauses (br case_else)? w 'end'
- / 'case' w 'most' (encloser / op) w 'of' w case_clauses w 'end'
- / 'typecase' w expr w 'of' w type_case_clauses (br case_else)? w 'end'
- / 'try' w block_elems (w catch)? (w 'forbid' w trait_types)? (w 'finally' w block_elems)? w 'end';
+ / 'label' wr n1=id w block_elems w 'end' wr n2=id {? n1 == n2}
+ / 'while' wr generator_clause w do
+ / 'for' wr generator_clause_list w do_front w 'end'
+ / 'if' wr generator_clause w 'then' w block_elems (w elifs)? (w else)? w 'end'
+ / '(' w 'if' wr generator_clause w 'then' wr block_elems (w elifs)? w else (w 'end')? w ')'
+ / 'case' wr expr (w (encloser / op))? w 'of' wr case_clauses (br case_else)? w 'end'
+ / 'case' wr 'most' (encloser / op) wr 'of' wr case_clauses w 'end'
+ / 'typecase' wr expr w 'of' w type_case_clauses (br case_else)? w 'end'
+ / 'try' wr block_elems (w catch)? (w 'forbid' wr trait_types)? (w 'finally' w block_elems)? w 'end';
 
 do:
    (do_front w 'also' w)* do_front w 'end';
@@ -1162,11 +1162,11 @@ no_space_tight_infix_postfix:
 //  Local Declarations - LocalDecl.rats
 //-------------------------------------------------------------------------
 
-block_elems:
+block_elems: // Inserir catch_clause na definição, pois acredito que faltava
    block_elem br block_elems
  / block_elem w ';' &(w 'elif' / w 'also' / w 'end' / w 'catch' / w 'forbid' / w 'finally' / w ')')
  / block_elem &(w 'elif' / w 'also' / w 'end' / w 'catch' / w 'forbid' / w 'finally' / w ')')
- / block_elem &(w else / br case_clause / br (id w ':' w)? type_or_pattern / br case_else)
+ / block_elem &(w else / br catch_clause / br case_clause / br (id w ':' w)? type_or_pattern / br case_else)
  / block_elem w ';' &(w else);
 
 block_elem:

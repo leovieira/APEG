@@ -1,0 +1,3 @@
+label L1
+  f(x) = x
+end L1

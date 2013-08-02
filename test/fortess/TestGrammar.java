@@ -10,6 +10,21 @@ public class TestGrammar {
 	private final String path = "input/languages/Fortress/tests/";
 	
 	@Test
+	public void Test_expression() throws Exception {
+		String input = path + "expression/";
+		int ch;
+		
+		// Testing a primary front
+		//ch = Util.testeGrammar(grammar, input + "map_expr.txt", "primary_front");
+		//assertEquals(30,ch);  // map expression
+		
+		//ch = Util.testeGrammar(grammar, input + "comprehension.txt", "comprehension");
+		//assertEquals(47,ch);  // comprehension
+		
+		
+	}
+	
+	@Test
 	public void Test_keyword_expression() throws Exception {
 		String input = path + "expression/keyword/";
 		int ch;
@@ -51,23 +66,67 @@ public class TestGrammar {
 		
 		ch = Util.testeGrammar(grammar, input + "comprehension_03.txt", "comprehension");
 		assertEquals(38,ch);
+		
+		// Testing a catch
+		ch = Util.testeGrammar(grammar, input + "catch.txt", "catch");
+		assertEquals(105,ch);
+		
+		// Testing  type case
+		ch = Util.testeGrammar(grammar, input + "type_case.txt", "type_case_clauses");
+		assertEquals(36,ch);
+		
+		// Testing a clause case
+		ch = Util.testeGrammar(grammar, input + "case_clause.txt", "case_clauses");
+		assertEquals(56,ch);
+		
+		// Testing else case		
+		ch = Util.testeGrammar(grammar, input + "else_case.txt", "case_else");
+		assertEquals(16,ch);
+		
+		// Testing parenthesized expression
+		ch = Util.testeGrammar(grammar, input + "parenthesized.txt", "delimited_expr");
+		assertEquals(10,ch);
+		
+		// Testing an arg expression
+		ch = Util.testeGrammar(grammar, input + "tuple_expr.txt", "delimited_expr");
+		assertEquals(11,ch); // tuple expression
+		
+		ch = Util.testeGrammar(grammar, input + "keyword_expr.txt", "delimited_expr");
+		assertEquals(25,ch); // arg expression with keyword
+		
+		// Testing a do expression
+		ch = Util.testeGrammar(grammar, input + "do.txt", "delimited_expr");
+		assertEquals(180,ch);
+		
+		// Testing a object expression
+		ch = Util.testeGrammar(grammar, input + "object.txt", "delimited_expr");
+		assertEquals(13,ch);
+		
+		// Testing a label expression
+		ch = Util.testeGrammar(grammar, input + "label.txt", "delimited_expr");
+		assertEquals(26,ch);
+		
+		// Testing a while expression
+		ch = Util.testeGrammar(grammar, input + "while.txt", "delimited_expr");
+		assertEquals(25,ch);
+		
+		// Testing a for expression
+		ch = Util.testeGrammar(grammar, input + "for.txt", "delimited_expr");
+		assertEquals(38,ch);
+		
+		// Testing a if expression
+		ch = Util.testeGrammar(grammar, input + "if.txt", "delimited_expr");
+		assertEquals(111,ch); // it has elif and else case
+		
+		ch = Util.testeGrammar(grammar, input + "parenthesized_if.txt", "delimited_expr");
+		assertEquals(115,ch); // parenthesized if
+		
+		// Testing a case expression
+		//ch = Util.testeGrammar(grammar, input + "for.txt", "delimited_expr");
+		//assertEquals(38,ch);
 	}
 	
-	@Test
-	public void Test_expression() throws Exception {
-		String input = path + "expression/";
-		int ch;
-		
-		// Testing a primary front
-		//ch = Util.testeGrammar(grammar, input + "map_expr.txt", "primary_front");
-		//assertEquals(30,ch);  // map expression
-		
-		//ch = Util.testeGrammar(grammar, input + "comprehension.txt", "comprehension");
-		//assertEquals(47,ch);  // comprehension
-		
-		
-	}
-	
+	/*
 	@Test
 	public void Test_local_declaration() throws Exception {
 		String input = path + "local_declaration/";
@@ -106,7 +165,6 @@ public class TestGrammar {
 		assertEquals(57,ch);
 	}
 	
-	/*
 	@Test
 	public void Test_literal() throws Exception {
 		String input = path + "literal/";
