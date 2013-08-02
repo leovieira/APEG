@@ -10,6 +10,161 @@ public class TestGrammar {
 	private final String path = "input/languages/Fortress/tests/";
 	
 	@Test
+	public void Test_keyword_expression() throws Exception {
+		String input = path + "expression/keyword/";
+		int ch;
+		
+		// Testing a do expression
+		//ch = Util.testeGrammar(grammar, input + "do.txt", "delimited_expr");
+		//assertEquals(16,ch);
+		//assertEquals(175,ch);
+		
+		// Testing a map expression
+		ch = Util.testeGrammar(grammar, input + "map_expr.txt", "map_expr");
+		assertEquals(30,ch);
+		
+		// Testing an entry
+		ch = Util.testeGrammar(grammar, input + "entry.txt", "entry_list");
+		assertEquals(27,ch);
+		
+		// Testing a list of expressions
+		ch = Util.testeGrammar(grammar, input + "expr_list.txt", "expr_list");
+		assertEquals(25,ch);
+		
+		// Testing a left side of an array comprehension
+		ch = Util.testeGrammar(grammar, input + "array_comprehension_left_01.txt", "array_comprehension_left");
+		assertEquals(7,ch);
+		
+		ch = Util.testeGrammar(grammar, input + "array_comprehension_left_02.txt", "array_comprehension_left");
+		assertEquals(30,ch);
+		
+		// Testing an array comprehension clause
+		ch = Util.testeGrammar(grammar, input + "array_comprehension_clause.txt", "array_comprehension_clause");
+		assertEquals(33,ch);
+		
+		// Testing a comprehension expression
+		ch = Util.testeGrammar(grammar, input + "comprehension_01.txt", "comprehension");
+		assertEquals(41,ch);
+		
+		ch = Util.testeGrammar(grammar, input + "comprehension_02.txt", "comprehension");
+		assertEquals(39,ch);
+		
+		ch = Util.testeGrammar(grammar, input + "comprehension_03.txt", "comprehension");
+		assertEquals(38,ch);
+	}
+	
+	@Test
+	public void Test_expression() throws Exception {
+		String input = path + "expression/";
+		int ch;
+		
+		// Testing a primary front
+		//ch = Util.testeGrammar(grammar, input + "map_expr.txt", "primary_front");
+		//assertEquals(30,ch);  // map expression
+		
+		//ch = Util.testeGrammar(grammar, input + "comprehension.txt", "comprehension");
+		//assertEquals(47,ch);  // comprehension
+		
+		
+	}
+	
+	@Test
+	public void Test_local_declaration() throws Exception {
+		String input = path + "local_declaration/";
+		int ch;
+			
+		// Testing var args
+		ch = Util.testeGrammar(grammar, input + "var_args.txt", "var_args_local");
+		assertEquals(11,ch);
+		
+		// Testing a local parameter
+		ch = Util.testeGrammar(grammar, input + "param.txt", "params_local");
+		assertEquals(19,ch);
+		
+		// Testing a definition of a keyword
+		ch = Util.testeGrammar(grammar, input + "keyword.txt", "keyword_local");
+		assertEquals(13,ch);
+		
+		// Testing a local variavle declaration
+		ch = Util.testeGrammar(grammar, input + "local_var_01.txt", "local_var_decl");
+		assertEquals(17,ch);
+		
+		ch = Util.testeGrammar(grammar, input + "local_var_02.txt", "local_var_decl");
+		assertEquals(35,ch);
+		
+		ch = Util.testeGrammar(grammar, input + "local_var_03.txt", "local_var_decl");
+		assertEquals(40,ch);
+		
+		ch = Util.testeGrammar(grammar, input + "local_var_04.txt", "local_var_decl");
+		assertEquals(34,ch);
+		
+		ch = Util.testeGrammar(grammar, input + "local_var_05.txt", "local_var_decl");
+		assertEquals(32,ch);
+		
+		// Testing a case clause
+		ch = Util.testeGrammar(grammar, input + "block_elems.txt", "case_clause");
+		assertEquals(57,ch);
+	}
+	
+	/*
+	@Test
+	public void Test_literal() throws Exception {
+		String input = path + "literal/";
+		int ch;
+		boolean resp;
+		
+		// Testing a char literal
+		ch = Util.testeGrammar(grammar, input + "char_01.txt", "literal_expr");
+		assertEquals(3,ch); // it's not a escape character
+		
+		resp = Util.isRecognized(grammar, input + "char_fail_01.txt", "literal_expr");
+		assertEquals(false,resp); // there are more then one character between ' and '
+		
+		resp = Util.isRecognized(grammar, input + "char_fail_02.txt", "literal_expr");
+		assertEquals(false,resp); // there is no character between ' and '
+		
+		ch = Util.testeGrammar(grammar, input + "char_02.txt", "literal_expr");
+		assertEquals(4,ch); // it's a escape character
+		
+		resp = Util.isRecognized(grammar, input + "char_fail_03.txt", "literal_expr");
+		assertEquals(false,resp); // it is not a escape character
+		
+		// Testing a String Literal
+		ch = Util.testeGrammar(grammar, input + "string.txt", "literal_expr");
+		assertEquals(40,ch);
+		
+		// Testing a int literal
+		ch = Util.testeGrammar(grammar, input + "integer.txt", "literal_expr");
+		assertEquals(5,ch);
+		
+		// Testing a float literal
+		ch = Util.testeGrammar(grammar, input + "float.txt", "literal_expr");
+		assertEquals(6,ch);
+		
+		// Testing a void expression
+		ch = Util.testeGrammar(grammar, input + "void.txt", "literal_expr");
+		assertEquals(3,ch);
+	}
+	
+	@Test
+	public void Test_decl() throws Exception {
+		String input = path + "declaration/";
+		int ch;
+		
+		// Testing a declaration of a type alias
+		ch = Util.testeGrammar(grammar, input + "type_alias.txt", "decl");
+		assertEquals(27, ch);
+		
+		// Testing a property declaration
+		ch = Util.testeGrammar(grammar, input + "test.txt", "decl");
+		assertEquals(74, ch);
+		
+		// Testing a declaration of a test
+		//ch = Util.testeGrammar(grammar, input + "test.txt", "decl");
+		//assertEquals(54, ch);
+	}
+
+	@Test
 	public void Test_spaces_and_comments() {
 		String input = path + "space_comment/";
 		boolean resp;
@@ -154,11 +309,7 @@ public class TestGrammar {
 		// Testing operator '->'
 		resp = Util.testeGrammar(grammar, input + "multi_11.txt", "multi_op");
 		assertEquals(2,resp);
-		
-		// Testing a double right arrow operator, '=>'
-		/*resp = Util.testeGrammar(grammar, input + "multi_12.txt", "multi_op");
-		assertEquals(2,resp);*/
-		
+			
 		// Testing operator '>>'
 		resp = Util.testeGrammar(grammar, input + "multi_13.txt", "multi_op");
 		assertEquals(2,resp);
@@ -254,47 +405,6 @@ public class TestGrammar {
 		
 		// Testing tight infix postfix
 		
-	}
-	
-	/*
-	@Test
-	public void Test_components_and_apis() {
-		String input = path + "component_api/";
-		int resp = -1;
-		
-		// Testing exports
-		resp = executeGrammar(grammar, input + "exports.txt", "exports");
-		assertEquals(1, resp);
-		
-		// Testing aliased dotted ids
-		resp = executeGrammar(grammar, input + "aliased_dotted_id_01.txt", "aliased_dotted_ids");
-		assertEquals(1, resp);
-		
-		resp = executeGrammar(grammar, input + "aliased_dotted_id_02.txt", "aliased_dotted_ids");
-		assertEquals(1, resp);
-		
-		// Testing aliased names
-		resp = executeGrammar(grammar, input + "aliased_name_01.txt", "aliased_names");
-		assertEquals(1, resp);
-		
-		resp = executeGrammar(grammar, input + "aliased_name_02.txt", "aliased_names");
-		assertEquals(1, resp);
-		
-		//Testing names
-		resp = executeGrammar(grammar, input + "names.txt", "names");
-		assertEquals(1, resp);
-		
-		//Testing imports
-		resp = executeGrammar(grammar, input + "imports.txt", "imports");
-		assertEquals(1, resp);
-		
-		//Testing api
-		resp = executeGrammar(grammar, input + "api.txt", "api");
-		assertEquals(1, resp);
-		
-		//Testing component
-		resp = executeGrammar(grammar, input + "component.txt", "component");
-		assertEquals(1, resp);
-		
 	}*/
+	
 }

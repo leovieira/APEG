@@ -1,0 +1,1 @@
+var (x : Type, y, z : Object ) = 20

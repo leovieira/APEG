@@ -1,4 +1,0 @@
-api
-   x.y.z import * from w
-   trait x end
-end

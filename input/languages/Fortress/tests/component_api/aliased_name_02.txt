@@ -1,9 +1,0 @@
-{
- w,
- x as y.z,
- opr >=,
- opr >= as =/=,
- opr <=,
- opr (/ /),
- opr [/ /] as {/ /}
-}

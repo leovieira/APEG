@@ -1,3 +1,0 @@
-component
-   x.y.z export x
-end

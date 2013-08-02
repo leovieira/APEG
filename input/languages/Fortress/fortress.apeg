@@ -1,6 +1,5 @@
 apeg Fortress;
 
-
 //-------------------------------------------------------------------------
 //  Components and APIs - Compilation.rats
 //-------------------------------------------------------------------------
@@ -678,7 +677,8 @@ abs_subscript_assign_param:
 //-------------------------------------------------------------------------
 
 expr:
-   expr_front expr_tail*;
+//   expr_front expr_tail*;
+id w ':=' w int_literal_expr / id / literal_expr;
 
 expr_front:
    assign_expr
@@ -992,7 +992,8 @@ entry_list:
 //-------------------------------------------------------------------------
 
 no_new_line_expr:
-   no_new_line_expr_front no_new_line_expr_tail*;
+//   no_new_line_expr_front no_new_line_expr_tail*;
+expr;
 
 no_new_line_expr_front:
    no_new_line_assign_expr
@@ -1158,14 +1159,8 @@ no_space_tight_infix_postfix:
  / op;
 
 //-------------------------------------------------------------------------
-//  Local Declarations - LocalDecl.rats and NoSpaceLiteral.rats
+//  Local Declarations - LocalDecl.rats
 //-------------------------------------------------------------------------
-
-array_expr:
-   '[' (w static_args)? w no_space_expr multi_dim_cons* w ']';
-
-multi_dim_cons:
-   rect_separator no_space_expr;
 
 block_elems:
    block_elem br block_elems
@@ -1183,7 +1178,7 @@ local_var_fn_decl:
  / local_var_decl;
 
 local_fn_decl:
-   mods? id (w static_params)? w val_param_local fn_header_clause w '=' no_new_line_expr;
+   mods? id (w static_params)? w val_param_local fn_header_clause w '=' w no_new_line_expr;
 
 val_param_local:
    '(' (w params_local)? w ')'
@@ -1196,7 +1191,7 @@ params_local:
 
 param_local:
    bind_id s ':' s pattern
- / bind_id s ':' s no_new_line_pattern
+ / bind_id s ':' s no_new_line_type
  / bind_id; 
 
 var_args_local:
@@ -1207,7 +1202,7 @@ keyword_local:
 
 local_var_decl:
    ('var' w)? local_var_may_types s '=' w no_new_line_expr
- / ('var' w)? no_new_line_var_w_type_or_pattern s ':=' w no_new_line_expr
+ / ('var' w)? no_new_line_var_w_type_or_patterns s ':=' w no_new_line_expr
  / ('var' w)? no_new_line_var_w_types
  / var_wo_types s '=' w no_new_line_expr
  / ('var' w)? var_wo_types s ':' s no_new_line_type s '...' (s init_val)? 
@@ -1230,7 +1225,7 @@ var_wo_type:
 
 no_new_line_var_w_type_or_patterns:
    no_new_line_var_w_type_or_pattern
- / '(' no_new_line_var_w_type_or_pattern (w ',' w no_new_line_var_w_type_or_pattern)+ w ')';
+ / '(' w no_new_line_var_w_type_or_pattern (w ',' w no_new_line_var_w_type_or_pattern)+ w ')';
 
 no_new_line_var_w_type_or_pattern:
    bind_id s no_new_line_is_type_or_pattern;
@@ -1256,8 +1251,14 @@ case_clause:
    no_new_line_expr w '=>' w block_elems;
 
 //-------------------------------------------------------------------------
-//  Literals - Literal.rats
+//  Literals - Literal.rats and NoSpaceLiteral.rats
 //-------------------------------------------------------------------------
+
+array_expr:
+   '[' (w static_args)? w no_space_expr multi_dim_cons* w ']';
+
+multi_dim_cons:
+   rect_separator no_space_expr;
 
 literal_expr:
    '(' w ')'
@@ -1265,19 +1266,10 @@ literal_expr:
  / char_literal_expr
  / string_literal_expr;
 
-/* This part is not in the Rats! specification
-array_expr:
-   '[' w rect_elements w ']';
-
-rect_elements:
-   no_space_expr multi_dim_cons*;
-
-multi_dim_cons:
-   rect_separator no_space_expr;
-*/
-
 escape_sequence:
-   '\\' ('b' / 't' / 'n' / 'f' / 'r' / '"' / '\\');
+   '\\' ('b' / 't' / 'n' / 'f' / 'r' / '"' / '\\')
+ / '\\u' [0-9A-Z] [0-9A-Z] [0-9A-Z] [0-9A-Z]
+ / '\\u' [0-9a-f] [0-9a-f] [0-9a-f] [0-9a-f];
 
 numeric_literal_expr:    // there is some differences in Rats! specification about numeric_literal
    float_literal_expr
@@ -1296,7 +1288,7 @@ char_literal_expr:
    '\'' char_literal_content '\'';
 
 string_literal_expr:
-   '\"' string_literal_content '\"';
+   '\"' string_literal_content* '\"';
 
 string_literal_content:
    escape_sequence
@@ -1304,7 +1296,7 @@ string_literal_content:
 
 char_literal_content:
    escape_sequence
- / !'\'' .;
+ / !('\'' / '\\') .;
 
 //-------------------------------------------------------------------------
 //  Types - Type.rats
@@ -2040,5 +2032,3 @@ special_symbols:
  / 'AND'
  / 'NOT'
  / '=>';
-
-

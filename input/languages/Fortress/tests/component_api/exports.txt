@@ -1,3 +1,0 @@
-export x.y
-
-export { x, x.y.z.w, y }  export { y }
