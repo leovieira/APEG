@@ -1,4 +1,0 @@
-catch exception type01 => f(x) = x
-                type02 => h(z) = z
-                type03 => g(y) = y;
-end

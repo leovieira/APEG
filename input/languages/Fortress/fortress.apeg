@@ -890,7 +890,7 @@ delimited_expr locals[String n1, String n2]:
  / 'if' wr generator_clause w 'then' w block_elems (w elifs)? (w else)? w 'end'
  / '(' w 'if' wr generator_clause w 'then' wr block_elems (w elifs)? w else (w 'end')? w ')'
  / 'case' wr expr (w (encloser / op))? w 'of' wr case_clauses (br case_else)? w 'end'
- / 'case' wr 'most' (encloser / op) wr 'of' wr case_clauses w 'end'
+ / 'case' wr 'most' wr (encloser / op) wr 'of' wr case_clauses w 'end'
  / 'typecase' wr expr w 'of' w type_case_clauses (br case_else)? w 'end'
  / 'try' wr block_elems (w catch)? (w 'forbid' wr trait_types)? (w 'finally' w block_elems)? w 'end';
 

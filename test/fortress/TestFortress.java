@@ -1,4 +1,4 @@
-package fortess;
+package fortress;
 
 import util.Util;
 import static org.junit.Assert.*;

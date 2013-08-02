@@ -1,4 +1,4 @@
-package fortess;
+package fortress;
 
 import util.Util;
 import static org.junit.Assert.*;
@@ -67,22 +67,6 @@ public class TestGrammar {
 		ch = Util.testeGrammar(grammar, input + "comprehension_03.txt", "comprehension");
 		assertEquals(38,ch);
 		
-		// Testing a catch
-		ch = Util.testeGrammar(grammar, input + "catch.txt", "catch");
-		assertEquals(105,ch);
-		
-		// Testing  type case
-		ch = Util.testeGrammar(grammar, input + "type_case.txt", "type_case_clauses");
-		assertEquals(36,ch);
-		
-		// Testing a clause case
-		ch = Util.testeGrammar(grammar, input + "case_clause.txt", "case_clauses");
-		assertEquals(56,ch);
-		
-		// Testing else case		
-		ch = Util.testeGrammar(grammar, input + "else_case.txt", "case_else");
-		assertEquals(16,ch);
-		
 		// Testing parenthesized expression
 		ch = Util.testeGrammar(grammar, input + "parenthesized.txt", "delimited_expr");
 		assertEquals(10,ch);
@@ -122,8 +106,19 @@ public class TestGrammar {
 		assertEquals(115,ch); // parenthesized if
 		
 		// Testing a case expression
-		//ch = Util.testeGrammar(grammar, input + "for.txt", "delimited_expr");
-		//assertEquals(38,ch);
+		ch = Util.testeGrammar(grammar, input + "case_01.txt", "delimited_expr");
+		assertEquals(105,ch);
+		
+		ch = Util.testeGrammar(grammar, input + "case_02.txt", "delimited_expr");
+		assertEquals(92,ch);
+		
+		// Testing type case expression
+		ch = Util.testeGrammar(grammar, input + "type_case.txt", "delimited_expr");
+		assertEquals(60,ch);
+		
+		// Testing a try expression
+		ch = Util.testeGrammar(grammar, input + "try.txt", "delimited_expr");
+		assertEquals(146,ch);
 	}
 	
 	/*
