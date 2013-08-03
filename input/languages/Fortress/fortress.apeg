@@ -677,8 +677,8 @@ abs_subscript_assign_param:
 //-------------------------------------------------------------------------
 
 expr:
-//   expr_front expr_tail*;
-param_local w (':=' / '+=') w int_literal_expr / id / literal_expr;
+   expr_front (w expr_tail)*;
+//param_local w (':=' / '+=') w int_literal_expr / id / literal_expr;
 
 expr_front:
    assign_expr
@@ -689,8 +689,8 @@ expr_front:
  / 'fn' w '(' (w params)? w ')' (w is_type)? (w throws)? w '=>' w expr;
 
 expr_tail:
-   w 'typed' w type
- / w 'asif' w type;
+   'typed' w type
+ / 'asif' w type;
 
 assign_expr:
    assign_lefts w assign_op w expr;
@@ -758,7 +758,7 @@ op_expr_prefix:
 
 tight_infix_postfix_EXPR:
    op op_expr_primary
- / op op_expr_primary
+ / op op_expr_prefix
  / op op_expr_left_encloser
  / op wr op_expr_primary
  / op wr op_expr_prefix
@@ -771,7 +771,8 @@ loose_infix_EXPR:
  / op wr op_expr_left_encloser;
 
 primary:
-   primary_item (w ',' w primary_item)*;
+   primary_item (w ',' w primary_item)+ &(encloser (wr / br / w ',' / w right_encloser))
+ / primary_item;
 
 primary_item:
    left_associated_primary
@@ -834,7 +835,7 @@ math_item:
  / var_or_fn_ref
  / 'self';
 
-// There are two different definitions od exponentiation in specification and in Rats! files
+// There are two different definitions of exponentiation in specification and in Rats! files
 exponentiation_EXPR:
    '^' exponent
  / exponent_op;
@@ -848,8 +849,8 @@ exponent:
 flow_expr:
    'exit' (w id)? (w 'with' w expr)?
  / accumulator (w static_args)? (w '[' generator_clause_list w ']')? w expr
- / 'BIG' left_encloser w '|->' (w static_args)? w right_encloser w expr
- / 'BIG' left_encloser w (w static_args)? w right_encloser w expr
+ / 'BIG' w left_encloser w '|->' (w static_args)? w right_encloser w expr
+ / 'BIG' w left_encloser w (w static_args)? w right_encloser w expr
  / 'atomic' w atomic_back
  / 'tryatomic' w atomic_back
  / 'spawn' w expr
@@ -882,17 +883,17 @@ subscripting:
 delimited_expr locals[String n1, String n2]:
    arg_expr
  / parenthesized
- / 'object' (wr extends_where)? (nl go_in_an_object)? w 'end'
+ / 'object' (w extends_where)? (nl go_in_an_object)? w 'end'
  / do
- / 'label' wr n1=id w block_elems w 'end' wr n2=id {? n1 == n2}
- / 'while' wr generator_clause w do
- / 'for' wr generator_clause_list w do_front w 'end'
- / 'if' wr generator_clause w 'then' w block_elems (w elifs)? (w else)? w 'end'
+ / 'label' w n1=id w block_elems w 'end' w n2=id {? n1 == n2}
+ / 'while' w generator_clause w do
+ / 'for' w generator_clause_list w do_front w 'end'
+ / 'if' w generator_clause w 'then' w block_elems (w elifs)? (w else)? w 'end'
  / '(' w 'if' wr generator_clause w 'then' wr block_elems (w elifs)? w else (w 'end')? w ')'
- / 'case' wr expr (w (encloser / op))? w 'of' wr case_clauses (br case_else)? w 'end'
- / 'case' wr 'most' wr (encloser / op) wr 'of' wr case_clauses w 'end'
- / 'typecase' wr expr w 'of' w type_case_clauses (br case_else)? w 'end'
- / 'try' wr block_elems (w catch)? (w 'forbid' wr trait_types)? (w 'finally' w block_elems)? w 'end';
+ / 'case' w expr (w (encloser / op))? w 'of' w case_clauses (br case_else)? w 'end'
+ / 'case' w 'most' w (encloser / op) w 'of' w case_clauses w 'end'
+ / 'typecase' w expr w 'of' w type_case_clauses (br case_else)? w 'end'
+ / 'try' w block_elems (w catch)? (w 'forbid' w trait_types)? (w 'finally' w block_elems)? w 'end';
 
 do:
    (do_front w 'also' w)* do_front w 'end';
@@ -992,8 +993,7 @@ entry_list:
 //-------------------------------------------------------------------------
 
 no_new_line_expr:
-//   no_new_line_expr_front no_new_line_expr_tail*;
-expr;
+   no_new_line_expr_front no_new_line_expr_tail*;
 
 no_new_line_expr_front:
    no_new_line_assign_expr
@@ -1154,7 +1154,7 @@ no_space_op_expr_prefix:
 
 no_space_tight_infix_postfix:
    op no_space_op_expr_primary
- / op no_space_op_expr_primary
+ / op no_space_op_expr_prefix
  / op no_space_op_expr_left_encloser
  / op;
 
@@ -1511,8 +1511,8 @@ encloser:
    !bar bars !('*' / '.' / '>' / '/' / '\\' / '->');
 
 left_encloser:
-   left_encloser_multi
- / !('|') .;
+   left_encloser_multi;
+// / !('|') .;        // I igonre this because the implementation in Rats! use auxiliar functions to check if is a valid left encloser
 
 left_encloser_multi:
    '(.' ('/'+ / '\\'+)
@@ -1528,8 +1528,8 @@ left_encloser_multi:
  / '(.<';
 
 right_encloser:
-   right_encloser_multi
- / !('|') .;
+   right_encloser_multi;
+// / !('|') .;      // I igonre this because the implementation in Rats! use auxiliar functions to check if is a valid right encloser
 
 right_encloser_multi:
    '/'+ '.)'
@@ -1588,10 +1588,10 @@ multi_op:
  / '-->'
  / '==>'
  / '>>>'
- / '|->'
+ / mapsto_op
  / '<<<'
  / '<->'
- / '<-'
+ / left_arrow_op
  / '<=>'
  / '->'
  / double_right_arrow
@@ -1605,7 +1605,7 @@ multi_op:
 
 // The definition in Rats! uses a function the test if the character read is a valid operator
 single_op:
-   !(encloser / left_encloser / right_encloser / multi_op / comp_op / '=>') .;
+   !(encloser / left_encloser / right_encloser / multi_op / comp_op / '=>') . !'*';
 
 not_comp_op:
    op_name

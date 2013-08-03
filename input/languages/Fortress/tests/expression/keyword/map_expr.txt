@@ -1,1 +1,1 @@
-{* 2 |-> 3, "abc" |-> 12.19 *}
+{* "Nathi" asif String |-> 3 asif ZZ32 *}

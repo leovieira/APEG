@@ -14,14 +14,9 @@ public class TestGrammar {
 		String input = path + "expression/";
 		int ch;
 		
-		// Testing a primary front
-		//ch = Util.testeGrammar(grammar, input + "map_expr.txt", "primary_front");
-		//assertEquals(30,ch);  // map expression
-		
-		//ch = Util.testeGrammar(grammar, input + "comprehension.txt", "comprehension");
-		//assertEquals(47,ch);  // comprehension
-		
-		
+		// Testing a primary
+		boolean b = Util.isRecognized(grammar, input + "test.txt", "op_expr");
+		assertEquals(true,b);
 	}
 	
 	@Test
@@ -29,18 +24,13 @@ public class TestGrammar {
 		String input = path + "expression/keyword/";
 		int ch;
 		
-		// Testing a do expression
-		//ch = Util.testeGrammar(grammar, input + "do.txt", "delimited_expr");
-		//assertEquals(16,ch);
-		//assertEquals(175,ch);
-		
-		// Testing a map expression
-		ch = Util.testeGrammar(grammar, input + "map_expr.txt", "map_expr");
-		assertEquals(30,ch);
-		
 		// Testing an entry
 		ch = Util.testeGrammar(grammar, input + "entry.txt", "entry_list");
 		assertEquals(27,ch);
+		/*
+		// Testing a map expression
+		ch = Util.testeGrammar(grammar, input + "map_expr.txt", "map_expr");
+		assertEquals(30,ch);
 		
 		// Testing a list of expressions
 		ch = Util.testeGrammar(grammar, input + "expr_list.txt", "expr_list");
@@ -118,9 +108,8 @@ public class TestGrammar {
 		
 		// Testing a try expression
 		ch = Util.testeGrammar(grammar, input + "try.txt", "delimited_expr");
-		assertEquals(146,ch);
+		assertEquals(146,ch);*/
 	}
-	
 	/*
 	@Test
 	public void Test_local_declaration() throws Exception {
@@ -209,7 +198,7 @@ public class TestGrammar {
 		assertEquals(27, ch);
 		
 		// Testing a property declaration
-		ch = Util.testeGrammar(grammar, input + "test.txt", "decl");
+		ch = Util.testeGrammar(grammar, input + "test_decl.txt", "decl");
 		assertEquals(74, ch);
 		
 		// Testing a declaration of a test

@@ -33,10 +33,10 @@ public class Memoization {
 	 */
 	public Result getMemoization(String nonterminal, Object[] attr, int pos) {
 		//disable memoization
-		return null;
+		//return null;
 		
-		/*Entry entry = new Entry(nonterminal, pos, attr);
-		return map.get(entry);*/
+		Entry entry = new Entry(nonterminal, pos, attr);
+		return map.get(entry);
 		
 	}
 	
