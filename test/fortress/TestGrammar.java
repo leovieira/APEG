@@ -15,8 +15,22 @@ public class TestGrammar {
 		int ch;
 		
 		// Testing a primary
-		boolean b = Util.isRecognized(grammar, input + "test.txt", "op_expr");
+		boolean b = Util.isRecognized(grammar, input + "test.txt", "entry");
 		assertEquals(true,b);
+	}
+	
+	@Test
+	public void Test_decl() throws Exception {
+		String input = path + "declaration/";
+		int ch;
+		
+		// Testing a declaration of a type alias
+		ch = Util.testeGrammar(grammar, input + "type_alias.txt", "decl");
+		assertEquals(27, ch);
+		
+		// Testing a property declaration
+		ch = Util.testeGrammar(grammar, input + "test_decl.txt", "decl");
+		assertEquals(54, ch);
 	}
 	
 	@Test
@@ -27,10 +41,10 @@ public class TestGrammar {
 		// Testing an entry
 		ch = Util.testeGrammar(grammar, input + "entry.txt", "entry_list");
 		assertEquals(27,ch);
-		/*
+		
 		// Testing a map expression
 		ch = Util.testeGrammar(grammar, input + "map_expr.txt", "map_expr");
-		assertEquals(30,ch);
+		assertEquals(41,ch);
 		
 		// Testing a list of expressions
 		ch = Util.testeGrammar(grammar, input + "expr_list.txt", "expr_list");
@@ -52,10 +66,10 @@ public class TestGrammar {
 		assertEquals(41,ch);
 		
 		ch = Util.testeGrammar(grammar, input + "comprehension_02.txt", "comprehension");
-		assertEquals(39,ch);
+		assertEquals(37,ch);
 		
 		ch = Util.testeGrammar(grammar, input + "comprehension_03.txt", "comprehension");
-		assertEquals(38,ch);
+		assertEquals(36,ch);
 		
 		// Testing parenthesized expression
 		ch = Util.testeGrammar(grammar, input + "parenthesized.txt", "delimited_expr");
@@ -108,9 +122,9 @@ public class TestGrammar {
 		
 		// Testing a try expression
 		ch = Util.testeGrammar(grammar, input + "try.txt", "delimited_expr");
-		assertEquals(146,ch);*/
+		assertEquals(146,ch);
 	}
-	/*
+	
 	@Test
 	public void Test_local_declaration() throws Exception {
 		String input = path + "local_declaration/";
@@ -186,24 +200,6 @@ public class TestGrammar {
 		// Testing a void expression
 		ch = Util.testeGrammar(grammar, input + "void.txt", "literal_expr");
 		assertEquals(3,ch);
-	}
-	
-	@Test
-	public void Test_decl() throws Exception {
-		String input = path + "declaration/";
-		int ch;
-		
-		// Testing a declaration of a type alias
-		ch = Util.testeGrammar(grammar, input + "type_alias.txt", "decl");
-		assertEquals(27, ch);
-		
-		// Testing a property declaration
-		ch = Util.testeGrammar(grammar, input + "test_decl.txt", "decl");
-		assertEquals(74, ch);
-		
-		// Testing a declaration of a test
-		//ch = Util.testeGrammar(grammar, input + "test.txt", "decl");
-		//assertEquals(54, ch);
 	}
 
 	@Test
@@ -447,6 +443,6 @@ public class TestGrammar {
 		
 		// Testing tight infix postfix
 		
-	}*/
+	}
 	
 }

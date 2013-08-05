@@ -1511,7 +1511,8 @@ encloser:
    !bar bars !('*' / '.' / '>' / '/' / '\\' / '->');
 
 left_encloser:
-   left_encloser_multi;
+   left_encloser_multi
+ / '{' / '[';
 // / !('|') .;        // I igonre this because the implementation in Rats! use auxiliar functions to check if is a valid left encloser
 
 left_encloser_multi:
@@ -1528,7 +1529,8 @@ left_encloser_multi:
  / '(.<';
 
 right_encloser:
-   right_encloser_multi;
+   right_encloser_multi
+ / '}' / ']';
 // / !('|') .;      // I igonre this because the implementation in Rats! use auxiliar functions to check if is a valid right encloser
 
 right_encloser_multi:
@@ -1576,11 +1578,13 @@ comp_op:
    '==='
  / '=/='
  / '<='
- / '>=';
+ / '<'         // i put this
+ / '>='
+ / '>';        // i put this
 
 cond_op:
-   ':' (encloser / not_comp_op) ':' !not_comp_op
- / (encloser / not_comp_op) ':' !not_comp_op;
+   ':' (encloser / not_comp_op) ':'
+ / (encloser / not_comp_op) ':';
 
 multi_op:
    '-/->'
@@ -1604,8 +1608,11 @@ multi_op:
  / !right_encloser_multi '//';
 
 // The definition in Rats! uses a function the test if the character read is a valid operator
+// The op_expr was failured because a single_op could be anything. Then, i changed this for the usually operators.
 single_op:
-   !(encloser / left_encloser / right_encloser / multi_op / comp_op / '=>') . !'*';
+//   !(encloser / left_encloser / right_encloser / multi_op / comp_op / '=>') . !'*';
+   !(encloser / left_encloser / right_encloser / multi_op / comp_op / '=>')
+        ('+' / '*' / '-' / '/' / '%') !'*';
 
 not_comp_op:
    op_name
@@ -1712,10 +1719,10 @@ key:
  / 'abstract'
  / 'also'
  / 'api'
- / 'as'
  / 'asif'
- / 'at'
+ / 'as'
  / 'atomic'
+ / 'at'
  / 'bool'
  / 'case'
  / 'catch'
@@ -1737,8 +1744,8 @@ key:
  / 'extends'
  / 'finally'
  / 'fn'
- / 'for'
  / 'forbid'
+ / 'for'
  / 'from'
  / 'getter'
  / 'hidden'
@@ -1750,8 +1757,8 @@ key:
  / 'juxtaposition'
  / 'label'
  / 'most'
- / 'nat'
  / 'native'
+ / 'nat'
  / 'object'
  / 'of'
  / 'opr'
@@ -1768,14 +1775,14 @@ key:
  / 'syntax'
  / 'test'
  / 'then'
- / 'throw'
  / 'throws'
+ / 'throw'
  / 'trait'
  / 'transient'
- / 'try'
  / 'tryatomic'
- / 'type'
+ / 'try'
  / 'typecase'
+ / 'type'
  / 'unit'
  / 'value'
  / 'var'
@@ -1792,7 +1799,7 @@ key:
  / 'static';
 
 keyword_operator:
-   key_op ! id_rest;
+   key_op !id_rest;
 
 key_op:
    'juxtaposition'
