@@ -17,6 +17,9 @@ public class TestFortress {
 		
 		ch = Util.testeGrammar(grammar, path + "DeclTest.fss", "file");
 		assertEquals(570, ch);
+		
+		ch = Util.testeGrammar(grammar, path + "fib.fss", "file");
+		assertEquals(558, ch);
 	}
 	
 
