@@ -14,7 +14,7 @@ public class TestSyntax {
 	private final String grammar = "input/languages/Fortress/fortress.apeg";
 	private final String path = "input/languages/Fortress/tests/syntax/";
 	
-	/*
+	
 	@Test
 	public void TestFortressExamples() throws Exception {
 		//boolean resp;
@@ -28,43 +28,21 @@ public class TestSyntax {
 	}
 	
 	@Test
-	public void Test_item() throws Exception {
-		Object args[] = new Object[1];
-		int ch;
-		
-		// Testing a item text
-		ch = Util.testeGrammar(grammar, path + "item_01.txt", "item", args);
-		assertEquals(3, ch);
-		assertEquals("for", (String) args[0]);
-		
-		// Testing a character class
-		ch = Util.testeGrammar(grammar, path + "class.txt", "item", args);
-		assertEquals(11, ch);
-		assertEquals("[a-zA-Z0-9]", (String) args[0]);
-		
-		// Testing an any character
-		ch = Util.testeGrammar(grammar, path + "any.txt", "item", args);
-		assertEquals(1, ch);
-		assertEquals(".", (String) args[0]);
-		
-	}*/
-	
-	@Test
 	public void Test_grammar() throws Exception {
 		Object args[] = new Object[3];
 		args[0] = grammars();
 		int ch;
 		
-		ch = Util.testeGrammar(grammar, path + "grammar_for.txt", "grammar_def", args);
+		/*ch = Util.testeGrammar(grammar, path + "grammar_for.txt", "grammar_def", args);
+		assertEquals(ch, 530);
+		assertEquals("ForLoop", args[1]);*/
 		
-		System.out.println(args[1]);
-		System.out.println(args[2]);
+		// New test
 		
-		
-		
-		/*args = new Object[1];
-		ch = Util.testeGrammar(grammar, path + "test.txt", "syntax_symbols_x", args);
-		System.out.println(args[0]);*/
+		//args = new Object[1];
+		ch = Util.testeGrammar(grammar, path + "test.txt", "grammar_def", args);
+		String s = (String)args[2];
+		System.out.println(s);
 	}
 	
 	public Map<String, List<String>> grammars() {

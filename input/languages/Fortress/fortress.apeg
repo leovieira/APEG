@@ -111,7 +111,7 @@ abs_decl locals[Map m, String n, String r]:
  / type_alias
  / test_decl
  / property_decl
- / grammar_def<m, n, r>;
+ / {m = grammars();} grammar_def<m, n, r>;
 
 //-------------------------------------------------------------------------
 //  Trait and Object Declarations - TraitObject.rats
@@ -1886,12 +1886,11 @@ rect_separator:
 // Extensibility - Syntax.rats
 //-------------------------------------------------------------------------
 
-grammar_def[Map map] returns[String name, String rules] locals[String n, String r, String r1, List l, List l1]:
-   'native' w 'grammar' w name=id (br nonterminal_decl<n>)* w 'end'
-     {l = addList(l,n);} {rules = formatTerminal(map, l, concat(n, ' : {?false};'));}
- / 'grammar' w name=id (w grammar_extends<map>)? {l = addList(l, '');}
-     {r = '';} (br nonterminal_def<l,r1,l1> {r = concat(r, concat('\n', r1));})*
-     {rules = formatTerminal(map, l1, r);} w 'end';
+grammar_def[Map map] returns[String name, String r] locals[String n, String r1, List l, List l1]:
+   'native' w 'grammar' w name=id &(collect_nonterminal_decl<l>) {r = '';}
+     (br nonterminal_decl<n> {r = concat(r, concat(n, ' : {?false};\n'));})* w 'end'
+ / 'grammar' w name=id (w grammar_extends<map>)? &(collect_nonterminal_def<l>) {l1 = availableNonterminals(map, l);}
+     {r = '';} (br nonterminal_def<l1,r1> {r = concat(r, concat(r1, '\n'));})* w 'end';
 
 grammar_extends[Map map]:
    'extends' w qualified_names<map>;
@@ -1901,19 +1900,18 @@ qualified_names[Map map] locals[String n, boolean b]:
  / '{' n=qualified_name {? true == checkGrammarName(map, n) }
       (w ',' w n=qualified_name {? true == checkGrammarName(map, n) })* '}';
 
-nonterminal_def[List l] returns[String r, List l1] locals[String n, String r1]:
-   n=id w '|' w ':=' w syntax_extension_def<r1> {r = concat(n,concat(' : ', r1));} {l1 = l;}
-         (w syntax_extension_def_or<r1> {r = concat(r, concat(' / ', r1));})* {r = concat(r, '$END$');}
- / nonterminal_header<n> w ':' (w trait_type)? w ':=' w syntax_def<r1> {r = concat(n, concat(' : ', r1));}
-         (w syntax_def_or<r1> {r = concat(r, concat(' / ', r1));})* {r = concat(r, '$END$');}
-         {l1 = addList(l, n);}
- / nonterminal_decl<n> {r = concat(n, ' : {?false}$END$');} {l1 = addList(l, n);};
+nonterminal_def[List l] returns[String r] locals[String n, String r1]:
+   n=id w '|' w ':=' w syntax_extension_def<l, r1> {r = concat(n,concat(' : ', r1));}
+         (w syntax_extension_def_or<l,r1> {r = concat(r, concat(' / ', r1));})* {r = concat(r, ';');}
+ / nonterminal_header<n> w ':' (w trait_type)? w ':=' w syntax_def<l,r1> {r = concat(n, concat(' : ', r1));}
+         (w syntax_def_or<l,r1> {r = concat(r, concat(' / ', r1));})* {r = concat(r, ';');}
+ / nonterminal_decl<n> {r = concat(n, ' : {?false};');};
 
 nonterminal_decl returns[Strng name]:
    nonterminal_header<name> w ':' w trait_type;
 
 nonterminal_header returns[String name]:
-   ('private' w)? name=id (w syntax_params)? (w static_params)? (':' w type)? (w where)?;
+   ('private' w)? name=id (w syntax_params)? (w static_params)? (':' type)? (w where)?;
 
 syntax_params:
    '(' w syntax_param (w ',' w syntax_param)* w ')';
@@ -1921,18 +1919,18 @@ syntax_params:
 syntax_param:
    id ':' trait_type;
 
-syntax_def returns[String r]:
-   (choice_modifier w)? syntax_symbols<r> w '=>' w pre_transformer_decl;
+syntax_def[List l] returns[String r]:
+   (choice_modifier w)? syntax_symbols<l,r> w '=>' w pre_transformer_decl;
 
-syntax_extension_def returns[String r]:
-    syntax_def<r>
+syntax_extension_def[List l] returns[String r]:
+    syntax_def<l,r>
   / (super_choice_modifier w)? id w 'from' w id;
 
-syntax_def_or returns[String r]:
-   '|' w syntax_def<r>;
+syntax_def_or[List l] returns[String r]:
+   '|' w syntax_def<l,r>;
 
-syntax_extension_def_or returns[String r]:
-   '|' w syntax_extension_def<r>;
+syntax_extension_def_or[List l] returns[String r]:
+   '|' w syntax_extension_def<l,r>;
 
 choice_modifier:
    'private';
@@ -1954,53 +1952,53 @@ case_transformer_clauses:
 case_transformer_clause:
    id (w '(' w bind_id_list w ')')? w '=>' w pre_transformer;
 
-syntax_symbols returns[String s] locals[String s1]:
-   syntax_symbol<s> (symbs<s1> {s = concatW(s, s1);})* &(w '=>');
+syntax_symbols[List l] returns[String s] locals[String s1]:
+   syntax_symbol<l,s> (symbs<l,s1> {s = concatW(s, s1);})* &(w '=>');
 
-syntax_symbols_x returns[String s] locals[String s1]:
-   syntax_symbol<s> (symbs<s1> {s = concatW(s, s1);})*;
+syntax_symbols_x[List l] returns[String s] locals[String s1]:
+   syntax_symbol<l,s> (symbs<l,s1> {s = concatW(s, s1);})*;
 
-symbs returns[String s]:
-   space_or_breakline+ syntax_symbol<s>;
+symbs[List l] returns[String s]:
+   space_or_breakline+ syntax_symbol<l,s>;
 
 space_or_breakline:
    (' ' / '\f')+
  / ('\r\n' / '\r' / '\n');
 
-syntax_symbol returns[String s] locals[String s1]:
-   'NOT' w symbol_mod<s1> {s = concat('! ', s1);}
- / 'AND' w symbol_mod<s1> {s = concat('& ', s1);}
- / symbol_mod<s>;
+syntax_symbol[List l] returns[String s] locals[String s1]:
+   'NOT' w symbol_mod<l,s1> {s = concat('!', s1);}
+ / 'AND' w symbol_mod<l,s1> {s = concat('&', s1);}
+ / symbol_mod<l,s>;
 
-symbol_mod returns[String s] locals[String s1]:
-   single<s1> '?' {s = concat(s1, ' ?');}
- / single<s1> '*' {s = concat(s1, ' *');}
- / single<s1> '+' {s = concat(s1, ' +');}
- / single<s>;
+symbol_mod[List l] returns[String s] locals[String s1]:
+   single<l,s1> '?' {s = concat(s1, '?');}
+ / single<l,s1> '*' {s = concat(s1, '*');}
+ / single<l,s1> '+' {s = concat(s1, '+');}
+ / single<l,s>;
 
-single returns[String s]:
-   group_symbol<s>
- / base_symbol<s>;
+single[List l] returns[String s]:
+   group_symbol<l,s>
+ / base_symbol<l,s>;
 
-base_symbol returns[String s]:
-   (id ':')? symbol<s>;
+base_symbol[List l] returns[String s]:
+   (id ':')? symbol<l,s>;
 
-group_symbol returns[String s] locals[String s1]:
-   '{' w syntax_symbols_x<s1> w '}' {s = concat('( ', concat(s1, ' )'));};
+group_symbol[List l] returns[String s] locals[String s1]:
+   '{' w syntax_symbols_x<l,s1> w '}' {s = concat('(', concat(s1, ')'));};
 
-symbol returns[String s]:
-   item<s> '#'?;
+symbol[List l] returns[String s]:
+   item<l,s> '#'?;
 
-item returns[String s] locals[String ch]:
+item[List l] returns[String s] locals[String ch]:
    '_' {s = '.';}
- / '[' {s = '[ ';} (character_class<ch> {s = concat(s,ch);})* ']' {s = concat(s, ' ]');}
+ / '[' {s = '[';} (character_class<ch> {s = concat(s,ch);})* ']' {s = concat(s, ']');}
  / 'TAB' {s = '\t';}
  / 'FORMFEED' {s = '\f';}
  / 'RETURN' {s = '\r';}
  / 'NEWLINE' {s = 'br';}
  / 'SPACE' {s = 'wr';}
  / 'BACKSPACE' {s = '\u2408';}
- /  !(w '=>') item_text<s>;
+ /  !(w '=>') item_text<l,s>;
 
 character_class returns[String ch] locals[String ch1]:
    char<ch> (':' char<ch1> {ch = concat(ch, concat('-', ch1));})?;
@@ -2015,8 +2013,8 @@ char returns[String ch]:
  / utf16<ch>;
 
 // Look if is a nonterminal name or a terminal. A terminal name is all text that if not an available nonterminal name
-item_text returns[String s] locals[String ch]:
-   !special_symbols {s= '';} (utf16<ch> {s = concat(s, ch);})+;
+item_text[List l] returns[String s] locals[String ch]:
+   !special_symbols {s= '';} (utf16<ch> {s = concat(s, ch);})+ {s = formatTerminal(l,s);};
 
 utf16 returns[String ch]:
    '`' special_chars {ch='';}           // look this
@@ -2052,3 +2050,20 @@ special_symbols:
  / 'AND'
  / 'NOT'
  / '=>';
+
+
+// ----------------------------
+//  Rules for Catching all Nonterminais Definition
+// -----------------------------
+
+collect_nonterminal_decl returns[List l] locals[String n]:
+   (br nonterminal_decl<n> {l = addList(l, n);})*;
+
+collect_nonterminal_def returns[List l] locals[List l1]:
+  {l1 = newList();} (br nonterminal_name_def<l1, l> {l1 = l;})*;
+
+nonterminal_name_def[List l] returns[List l1] locals[String n, String r]:
+   n=id w '|' w ':=' w syntax_extension_def<l,r> (w syntax_extension_def_or<l,r>)* {l1 = l;}
+ / nonterminal_header<n> w ':' (w trait_type)? w ':=' w syntax_def<l,r>
+         (w syntax_def_or<l,r>)* {l1 = addList(l, n);}
+ / nonterminal_decl<n> {l1 = addList(l, n);};

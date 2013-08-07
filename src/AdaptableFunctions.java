@@ -2,6 +2,7 @@
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,11 +79,16 @@ public class AdaptableFunctions {
 		return map;		
 	}
 	
-	private static List<String> availableNonterminals(Map<String, List<String>> map) {
+	public static Map<String, List<String>> addGrammar(Map<String, List<String>> map, String grammar, String rule) {
+		return map;
+	}
+	
+	public static List<String> availableNonterminals(Map<String, List<String>> map, List<String> l) {
 		List<String> resp = new ArrayList<String> ();
 		for( List<String> s : map.values()) {
 			resp.addAll(s);
 		}
+		resp.addAll(l);
 		return resp;
 	}
 	
@@ -97,23 +103,11 @@ public class AdaptableFunctions {
 		return false;
 	}
 	
-	public static String formatTerminal(Map<String, List<String>> map, List<String> list, String rule) {
-		List<String> nonterminals = availableNonterminals(map);
-		nonterminals.addAll(list);
-		String args[] = rule.split("$END$"); // split in a list of APEG rules
-		String resp = "";
-		for(String s : args) {
-			String aux[] = s.split(":"); // split the nonterminal name of its rule
-			resp += aux[0] + " :";
-			for(String item : aux[1].split(" ")) {
-				if(nonterminals.contains(item) || specialSymbols(item))
-					resp += " " + item; // it is a nonterminal name
-				else
-					resp += " \'" + item + "\'"; // it is a terminal name
-			}
-			resp += ";\n";
-		}	
-		return resp;
+	public static String formatTerminal(List<String> l, String s) {
+		if(l.contains(s) || specialSymbols(s))
+			return s; // it is a nonterminal name
+		else
+			return "\'" + s + "\'"; // it is a terminal name
 	}
 	
 	public static String concatW(String s1, String s2) {
@@ -132,5 +126,37 @@ public class AdaptableFunctions {
 			l = new ArrayList<String> ();
 		l.add(n);
 		return l;
+	}
+	
+	public static List<String> newList() {
+		return new ArrayList<String>();
+	}
+	
+	public static Map<String, List<String>> grammars() {
+		Map<String, List<String>> map = new HashMap<String, List<String>>();
+		
+		// Creating the default available nonterminals: they are the spaces nonterminals
+		String name = "default";
+		List<String> nonterminals = new ArrayList<String>();
+		nonterminals.add("w");
+		nonterminals.add("wr");
+		nonterminals.add("br");
+		nonterminals.add("sr");
+		nonterminals.add("s");
+		map.put(name, nonterminals);
+		
+		// Creating the name of the nonterminals of expression. This is not the all names
+		name = "Expression";
+		nonterminals = new ArrayList<String>();
+		nonterminals.add("Expr");
+		map.put(name, nonterminals);
+		
+		// Creating the name of the nonterminals of identifiers. This is not the all names
+		name = "Identifier";
+		nonterminals = new ArrayList<String>();
+		nonterminals.add("Id");
+		map.put(name, nonterminals);
+		
+		return map;
 	}
 }

@@ -479,6 +479,10 @@ factor :
   |
   STRING_LITERAL
   |
+  TRUE
+  |
+  FALSE
+  |
   '('! expr ')'!
   ;
 

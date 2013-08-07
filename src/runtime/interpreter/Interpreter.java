@@ -193,7 +193,7 @@ public class Interpreter {
 				int last = first + nt.getNumRet();
 				Object[] list = result.getReturns_attr();				
 				for(int i = first; i < last; i++) {
-					Object x = list[i];
+					Object x = list[i-first];
 //					System.out.print(x + " ");
 					SemanticNode y = (SemanticNode) t.getChild(i);
 					currEnvironment().setValue(((Attribute) y.getSymbol()).getIndex(), x);
