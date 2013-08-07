@@ -1,6 +1,8 @@
 
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.antlr.runtime.tree.CommonTree;
@@ -74,5 +76,61 @@ public class AdaptableFunctions {
 		} else
 			map.put(entry, rule);
 		return map;		
+	}
+	
+	private static List<String> availableNonterminals(Map<String, List<String>> map) {
+		List<String> resp = new ArrayList<String> ();
+		for( List<String> s : map.values()) {
+			resp.addAll(s);
+		}
+		return resp;
+	}
+	
+	private static boolean specialSymbols(String s) {
+		String specials[] = new String[] {
+				             "(", ")", "!", "+", "*", "?",
+				             "&", "[", "]", "/"
+		                    };
+		for(String ch : specials)
+			if(s.equals(ch))
+				return true;
+		return false;
+	}
+	
+	public static String formatTerminal(Map<String, List<String>> map, List<String> list, String rule) {
+		List<String> nonterminals = availableNonterminals(map);
+		nonterminals.addAll(list);
+		String args[] = rule.split("$END$"); // split in a list of APEG rules
+		String resp = "";
+		for(String s : args) {
+			String aux[] = s.split(":"); // split the nonterminal name of its rule
+			resp += aux[0] + " :";
+			for(String item : aux[1].split(" ")) {
+				if(nonterminals.contains(item) || specialSymbols(item))
+					resp += " " + item; // it is a nonterminal name
+				else
+					resp += " \'" + item + "\'"; // it is a terminal name
+			}
+			resp += ";\n";
+		}	
+		return resp;
+	}
+	
+	public static String concatW(String s1, String s2) {
+		if(s2.equals("wr") || s2.equals("br") || s2.equals("s") || s2.equals("sr"))
+			return s1 + " " + s2; // do not include optional space
+		else
+			return s1 + " w " + s2;
+	}
+	
+	public static boolean checkGrammarName(Map<String, List<String>> map, String name) {
+		return map.containsKey(name);
+	}
+	
+	public static List<String> addList(List<String> l, String n) {
+		if(l == null)
+			l = new ArrayList<String> ();
+		l.add(n);
+		return l;
 	}
 }

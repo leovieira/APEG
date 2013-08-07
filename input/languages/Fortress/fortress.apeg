@@ -103,7 +103,7 @@ decl:
 abs_decls:
    abs_decl (br abs_decl)*;
 
-abs_decl:
+abs_decl locals[Map m, String n, String r]:
    abs_trait_decl
  / abs_object_decl
  / abs_var_decl
@@ -111,7 +111,7 @@ abs_decl:
  / type_alias
  / test_decl
  / property_decl
- / grammar_def;
+ / grammar_def<m, n, r>;
 
 //-------------------------------------------------------------------------
 //  Trait and Object Declarations - TraitObject.rats
@@ -677,6 +677,8 @@ abs_subscript_assign_param:
 //-------------------------------------------------------------------------
 //  Expressions - Expression.rats
 //-------------------------------------------------------------------------
+
+Expr: expr; // this is for the names used in the Fortress definition of syntax.
 
 expr:
    expr_front (w expr_tail)*;
@@ -1663,6 +1665,8 @@ array_comprehension_clause:
 //  Identifiers - Identifier.rats
 //-------------------------------------------------------------------------
 
+Id: id; // this is for compatibility with the Fortress names used in the api grammars
+
 id_or_op_name:
    id
  / op_name;
@@ -1882,26 +1886,31 @@ rect_separator:
 // Extensibility - Syntax.rats
 //-------------------------------------------------------------------------
 
-grammar_def locals[String r]:
-   'native' w 'grammar' w id (br nonterminal_decl<r>)* w 'end'
- / 'grammar' w id (w grammar_extends)? (br nonterminal_def<r>)* w 'end';
+grammar_def[Map map] returns[String name, String rules] locals[String n, String r, String r1, List l, List l1]:
+   'native' w 'grammar' w name=id (br nonterminal_decl<n>)* w 'end'
+     {l = addList(l,n);} {rules = formatTerminal(map, l, concat(n, ' : {?false};'));}
+ / 'grammar' w name=id (w grammar_extends<map>)? {l = addList(l, '');}
+     {r = '';} (br nonterminal_def<l,r1,l1> {r = concat(r, concat('\n', r1));})*
+     {rules = formatTerminal(map, l1, r);} w 'end';
 
-grammar_extends:
-   'extends' w qualified_names;
+grammar_extends[Map map]:
+   'extends' w qualified_names<map>;
 
-qualified_names:
-   qualified_name
- / '{' qualified_name (w ',' w qualified_name)* '}';
+qualified_names[Map map] locals[String n, boolean b]:
+   n=qualified_name {? true == checkGrammarName(map, n)}
+ / '{' n=qualified_name {? true == checkGrammarName(map, n) }
+      (w ',' w n=qualified_name {? true == checkGrammarName(map, n) })* '}';
 
-nonterminal_def returns[String r] locals[String n, String r1]:
-   n=id w '|' w ':=' w syntax_extension_def<r1> {r = concat(n,concat(' : ', r1));}
-         (w syntax_extension_def_or<r1> {r = concat(r, concat(' / ', r1));})* {r = concat(r, ';');}
- / nonterminal_header<n> w ':' (w trait_type)? w ':=' w syntax_def<r1> {r = concat(r, concat(' : ', r1));}
-         (w syntax_def_or<r1> {r = concat(r, concat(' / ', r1));})* {r = concat(r, ';');}
- / nonterminal_decl<r>;
+nonterminal_def[List l] returns[String r, List l1] locals[String n, String r1]:
+   n=id w '|' w ':=' w syntax_extension_def<r1> {r = concat(n,concat(' : ', r1));} {l1 = l;}
+         (w syntax_extension_def_or<r1> {r = concat(r, concat(' / ', r1));})* {r = concat(r, '$END$');}
+ / nonterminal_header<n> w ':' (w trait_type)? w ':=' w syntax_def<r1> {r = concat(n, concat(' : ', r1));}
+         (w syntax_def_or<r1> {r = concat(r, concat(' / ', r1));})* {r = concat(r, '$END$');}
+         {l1 = addList(l, n);}
+ / nonterminal_decl<n> {r = concat(n, ' : {?false}$END$');} {l1 = addList(l, n);};
 
-nonterminal_decl returns[Strng r]:
-   nonterminal_header<r> w ':' w trait_type {r = concat(r, ' : ;');};
+nonterminal_decl returns[Strng name]:
+   nonterminal_header<name> w ':' w trait_type;
 
 nonterminal_header returns[String name]:
    ('private' w)? name=id (w syntax_params)? (w static_params)? (':' w type)? (w where)?;
@@ -1946,10 +1955,10 @@ case_transformer_clause:
    id (w '(' w bind_id_list w ')')? w '=>' w pre_transformer;
 
 syntax_symbols returns[String s] locals[String s1]:
-   syntax_symbol<s> (symbs<s1> {s = concat(s, concat(' w ', s1));})* &(w '=>');
+   syntax_symbol<s> (symbs<s1> {s = concatW(s, s1);})* &(w '=>');
 
 syntax_symbols_x returns[String s] locals[String s1]:
-   syntax_symbol<s> (symbs<s1> {s = concat(s, concat(' w ', s1));})*;
+   syntax_symbol<s> (symbs<s1> {s = concatW(s, s1);})*;
 
 symbs returns[String s]:
    space_or_breakline+ syntax_symbol<s>;
@@ -1959,14 +1968,14 @@ space_or_breakline:
  / ('\r\n' / '\r' / '\n');
 
 syntax_symbol returns[String s] locals[String s1]:
-   'NOT' w symbol_mod<s1> {s = concat('!', s1);}
- / 'AND' w symbol_mod<s1> {s = concat('&', s1);}
+   'NOT' w symbol_mod<s1> {s = concat('! ', s1);}
+ / 'AND' w symbol_mod<s1> {s = concat('& ', s1);}
  / symbol_mod<s>;
 
 symbol_mod returns[String s] locals[String s1]:
-   single<s1> '?' {s = concat(s1, '?');}
- / single<s1> '*' {s = concat(s1, '*');}
- / single<s1> '+' {s = concat(s1, '+');}
+   single<s1> '?' {s = concat(s1, ' ?');}
+ / single<s1> '*' {s = concat(s1, ' *');}
+ / single<s1> '+' {s = concat(s1, ' +');}
  / single<s>;
 
 single returns[String s]:
@@ -1976,7 +1985,7 @@ single returns[String s]:
 base_symbol returns[String s]:
    (id ':')? symbol<s>;
 
-group_symbol returns[String s] locals[Striung s1]:
+group_symbol returns[String s] locals[String s1]:
    '{' w syntax_symbols_x<s1> w '}' {s = concat('( ', concat(s1, ' )'));};
 
 symbol returns[String s]:
@@ -1984,14 +1993,14 @@ symbol returns[String s]:
 
 item returns[String s] locals[String ch]:
    '_' {s = '.';}
- / '[' {s = '[';} (character_class<ch> {s = concat(s,ch);})* ']' {s = concat(s, ']');}
- /  !(w '=>') item_text<s>
+ / '[' {s = '[ ';} (character_class<ch> {s = concat(s,ch);})* ']' {s = concat(s, ' ]');}
  / 'TAB' {s = '\t';}
  / 'FORMFEED' {s = '\f';}
  / 'RETURN' {s = '\r';}
  / 'NEWLINE' {s = 'br';}
  / 'SPACE' {s = 'wr';}
- / 'BACKSPACE' {s = '\u2408';};
+ / 'BACKSPACE' {s = '\u2408';}
+ /  !(w '=>') item_text<s>;
 
 character_class returns[String ch] locals[String ch1]:
    char<ch> (':' char<ch1> {ch = concat(ch, concat('-', ch1));})?;
@@ -2007,13 +2016,12 @@ char returns[String ch]:
 
 // Look if is a nonterminal name or a terminal. A terminal name is all text that if not an available nonterminal name
 item_text returns[String s] locals[String ch]:
-   !special_symbols {s= '';} (utf16<ch> {s = concat(s, ch);})+
- / special_symbols (utf16<ch> {s = concat(s, ch);})+;   // ????? In Rats!, the definition is in that form.
+   !special_symbols {s= '';} (utf16<ch> {s = concat(s, ch);})+;
 
 utf16 returns[String ch]:
    '`' special_chars {ch='';}           // look this
  / '`' special_symbols {ch='';}         // look this
- / !special_symbols ch=.;
+ / !special_chars ch=.;
 
 special_chars:
    ' '
