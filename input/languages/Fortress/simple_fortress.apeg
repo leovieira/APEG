@@ -1,6 +1,10 @@
 apeg Fortress;
 
-functions AdaptableFunctions;
+options {
+  isAdaptable = true;
+}
+
+functions AdaptableFunctions FortressFunctions;
 
 trait_type:
    id;
@@ -8,30 +12,52 @@ trait_type:
 type:
    id;
 
+Expr:
+   expr;
+
+expr:
+   [0-9]+ / id / '()';
+
 //-------------------------------------------------------------------------
 // Extensibility - Syntax.rats
 //-------------------------------------------------------------------------
 
-grammar_def[Map map] returns[String name, String r] locals[String n, String r1, List l, List l1]:
-   'native' w 'grammar' w name=id &(collect_nonterminal_decl<l>) {r = '';}
-     (br nonterminal_decl<n> {r = concat(r, concat(n, ' : {?false};\n'));})* w 'end'
- / 'grammar' w name=id (w grammar_extends<map>)? &(collect_nonterminal_def<l>) {l1 = availableNonterminals(map, l);}
-     {r = '';} (br nonterminal_def<l1,r1> {r = concat(r, concat(r1, '\n'));})* w 'end';
+grammar_def[Grammar x, Map map] returns[GrammarDef g1] locals[String n, String r1, List l, List l1, GrammarDef g]:
+   'native' w 'grammar' w n=id &(collect_nonterminal_decl<l>)
+     {g = newGrammarDef(n,l);} collect_gram_decl<g, g1> w 'end'
+ / 'grammar' w n=id (w grammar_extends<map,l1>)? &(collect_nonterminal_def<l>)
+     {l1 = concatList(l,l1);} {g = newGrammarDef(n,l);} &collect_gram_def<l1,g, g1>
+     {x = adapt(x,g1);} nt_adapt_gram_def<x,l1> w 'end';
 
-grammar_extends[Map map]:
-   'extends' w qualified_names<map>;
+grammar_extends[Map map] returns[List l]:
+   'extends' w qualified_names<map,l>;
 
-qualified_names[Map map] locals[String n, boolean b]:
-   n=qualified_name {? true == checkGrammarName(map, n)}
- / '{' n=qualified_name {? true == checkGrammarName(map, n) }
-      (w ',' w n=qualified_name {? true == checkGrammarName(map, n) })* '}';
+qualified_names[Map map] returns[List l] locals[String n]:
+   n=qualified_name {? true == checkGrammarName(map, n)} {l = getNonterminals(map,n);}
+ / '{' n=qualified_name {? true == checkGrammarName(map, n) } {l = getNonterminals(map,n);}
+      (w ',' w n=qualified_name {? true == checkGrammarName(map, n) }
+        {l = concatList(l,getNonterminals(map,n));} )* '}';
 
-nonterminal_def[List l] returns[String r] locals[String n, String r1]:
-   n=id w '|' w ':=' w syntax_extension_def<l, r1> {r = concat(n,concat(' : ', r1));}
-         (w syntax_extension_def_or<l,r1> {r = concat(r, concat(' / ', r1));})* {r = concat(r, ';');}
- / nonterminal_header<n> w ':' (w trait_type)? w ':=' w syntax_def<l,r1> {r = concat(n, concat(' : ', r1));}
-         (w syntax_def_or<l,r1> {r = concat(r, concat(' / ', r1));})* {r = concat(r, ';');}
- / nonterminal_decl<n> {r = concat(n, ' : {?false};');};
+// ------------------------------------------------------
+//  Rules for Catching all Nonterminais Definition
+// ------------------------------------------------------
+
+collect_gram_def[List l, GrammarDef g] returns[GrammarDef g1] locals[String n, String r]:
+   {g1 = g;} (br nonterminal_def<l,n,r> {g1 = insertRule(g1,n,r);})*;
+
+collect_gram_decl[GrammarDef g] returns[GrammarDef g1] locals[String n]:
+   {g1 = g;} (br nonterminal_decl<n> {g1 = insertRule(g1,n,'{?false}');})*;
+
+// ------------------------------------------------------
+//  Nonterminais Definition
+// ------------------------------------------------------
+
+nonterminal_def[List l] returns[String nt, String r] locals[String r1]:
+   nt=id w '|' w ':=' w syntax_extension_def<l, r>
+         (w syntax_extension_def_or<l,r1> {r = concat(r, concat(' / ', r1));})*
+ / nonterminal_header<nt> w ':' (w trait_type)? w ':=' w syntax_def<l,r>
+         (w syntax_def_or<l,r1> {r = concat(r, concat(' / ', r1));})*
+ / nonterminal_decl<nt> {r = '{?false}';};
 
 nonterminal_decl returns[Strng name]:
    nonterminal_header<name> w ':' w trait_type;
@@ -177,10 +203,9 @@ special_symbols:
  / 'NOT'
  / '=>';
 
-
-// ----------------------------
-//  Rules for Catching all Nonterminais Definition
-// -----------------------------
+// ------------------------------------------------------
+//  Rules for Catching all Nonterminais Declarations
+// ------------------------------------------------------
 
 collect_nonterminal_decl returns[List l] locals[String n]:
    (br nonterminal_decl<n> {l = addList(l, n);})*;
@@ -194,6 +219,45 @@ nonterminal_name_def[List l] returns[List l1] locals[String n, String r]:
          (w syntax_def_or<l,r>)* {l1 = addList(l, n);}
  / nonterminal_decl<n> {l1 = addList(l, n);};
 
+// ------------------------------------------------------
+//  New rules for Nonterminsl Considering the Adaptability
+// ------------------------------------------------------
+
+nt_adapt_gram_def[Grammar g, List l]:
+   (br nt_adapt_def<g,l>)*;
+
+nt_adapt_def[Grammar g, List l] locals[String n]:
+   id w '|' w ':=' w nt_adapt_extension_def<g,l>
+         (w nt_adapt_extension_def_or<g,l>)*
+ / nonterminal_header<n> w ':' (w trait_type)? w ':=' w nt_syntax_def<g,l>
+         (w nt_syntax_def_or<g,l>)*
+ / nonterminal_decl<n>;
+
+nt_syntax_def[Grammar g, List l] locals[String r]:
+   (choice_modifier w)? syntax_symbols<l,r> w '=>' w adapt_pre_transformer_decl<g>;
+
+nt_syntax_def_or[Grammar g, List l]:
+   '|' w nt_syntax_def<g,l>;
+
+nt_adapt_extension_def[Grammar g, List l]:
+    nt_syntax_def<g,l>
+  / (super_choice_modifier w)? id w 'from' w id;
+
+nt_adapt_extension_def_or[Grammar g, List l]:
+   '|' w nt_adapt_extension_def<g,l>;
+
+adapt_pre_transformer_decl[Grammar g]:
+   adapt_pre_transformer<g>;
+
+adapt_pre_transformer[Grammar g]:
+   'case' w id w 'of' w adapt_case_transformer_clauses<g> w 'end'
+ / (id w )? '<[' w expr w ']>';
+
+adapt_case_transformer_clauses[Grammar g]:
+   adapt_case_transformer_clause<g> (br adapt_case_transformer_clause<g>)*;
+
+adapt_case_transformer_clause[Grammar g]:
+   id (w '(' w bind_id_list w ')')? w '=>' w adapt_pre_transformer<g>;
 
 //-------------------------------------------------------------------------
 //  Identifiers - Identifier.rats

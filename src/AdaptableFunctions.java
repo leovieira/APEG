@@ -83,15 +83,6 @@ public class AdaptableFunctions {
 		return map;
 	}
 	
-	public static List<String> availableNonterminals(Map<String, List<String>> map, List<String> l) {
-		List<String> resp = new ArrayList<String> ();
-		for( List<String> s : map.values()) {
-			resp.addAll(s);
-		}
-		resp.addAll(l);
-		return resp;
-	}
-	
 	private static boolean specialSymbols(String s) {
 		String specials[] = new String[] {
 				             "(", ")", "!", "+", "*", "?",
@@ -115,10 +106,6 @@ public class AdaptableFunctions {
 			return s1 + " " + s2; // do not include optional space
 		else
 			return s1 + " w " + s2;
-	}
-	
-	public static boolean checkGrammarName(Map<String, List<String>> map, String name) {
-		return map.containsKey(name);
 	}
 	
 	public static List<String> addList(List<String> l, String n) {

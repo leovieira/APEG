@@ -17,46 +17,44 @@ public class TestSimpleFortress {
 	
 	@Test
 	public void Test_grammar() throws Exception {
-		Object args[] = new Object[3];
+		Object args[] = new Object[2];
 		args[0] = grammars();
 		int ch;
-		
-		/*ch = Util.testeGrammar(grammar, path + "grammar_for.txt", "grammar_def", args);
-		assertEquals(ch, 530);
-		assertEquals("ForLoop", args[1]);*/
 		
 		// New test
 		
 		//args = new Object[1];
 		ch = Util.testeGrammar(grammar, path + "test.txt", "grammar_def", args);
-		String s = (String)args[2];
-		System.out.println(s);
+		GrammarDef g = (GrammarDef) args[1];
+		for(String nt : g.getNonterminals()) {
+			System.out.println(nt + " : " + g.getRule(nt) + ";");
+		}
 	}
 	
-	public Map<String, List<String>> grammars() {
-		Map<String, List<String>> map = new HashMap<String, List<String>>();
+	public Map<String, GrammarDef> grammars() {
+		Map<String, GrammarDef> map = new HashMap<String, GrammarDef>();
 		
 		// Creating the default available nonterminals: they are the spaces nonterminals
-		String name = "default";
-		List<String> nonterminals = new ArrayList<String>();
-		nonterminals.add("w");
-		nonterminals.add("wr");
-		nonterminals.add("br");
-		nonterminals.add("sr");
-		nonterminals.add("s");
-		map.put(name, nonterminals);
+		GrammarDef gram_default = new GrammarDef("default");
+		gram_default.addNonterminal("w"); // no rule yet
+		gram_default.addNonterminal("wr"); // no rule yet
+		gram_default.addNonterminal("br"); // no rule yet
+		gram_default.addNonterminal("s"); // no rule yet
+		gram_default.addNonterminal("sr"); // no rule yet
+		
+		map.put("default", gram_default);	
 		
 		// Creating the name of the nonterminals of expression. This is not the all names
-		name = "Expression";
-		nonterminals = new ArrayList<String>();
-		nonterminals.add("Expr");
-		map.put(name, nonterminals);
+		GrammarDef gram_expr = new GrammarDef("Expression");
+		gram_expr.addNonterminal("Expr"); // no rule yet
+		
+		map.put("Expression", gram_expr);
 		
 		// Creating the name of the nonterminals of identifiers. This is not the all names
-		name = "Identifier";
-		nonterminals = new ArrayList<String>();
-		nonterminals.add("Id");
-		map.put(name, nonterminals);
+		GrammarDef gram_id = new GrammarDef("Identifier");
+		gram_id.addNonterminal("Id"); // no rule yet
+		
+		map.put("Identifier", gram_id);
 		
 		return map;
 	}
