@@ -1,3 +1,0 @@
-for x <- 1, y, z <- 2 do
- f(x) = y
-end

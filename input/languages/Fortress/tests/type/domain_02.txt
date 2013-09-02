@@ -1,5 +1,0 @@
-(
-  type_name ...
-)^(
-     [\ Unity \] # [\ Unity \] BY [\ Unity \] : [\ Unity \]
-   )

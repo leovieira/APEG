@@ -1,1 +1,0 @@
-property fIsMonotonic = FORALL(x: ZZ, y: ZZ) (x < y) IMPLIES (f(x) < f(y))

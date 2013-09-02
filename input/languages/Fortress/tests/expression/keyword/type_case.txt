@@ -1,4 +1,0 @@
-typecase x of
-   x => f(x) = x
-   y : Object => g(y) = y
-end

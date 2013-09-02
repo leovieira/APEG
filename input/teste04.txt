@@ -1,9 +1,0 @@
-
-apeg testmemo;
-
-root : teste !. ;
-teste : number A / number B ;
-number : digit number / digit ;
-digit : [0-9] ;
-A : 'A' ;
-B : 'B' ;

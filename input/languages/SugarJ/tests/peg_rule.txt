@@ -1,2 +1,0 @@
-'(' JavaTyype ',' JavaType ')' -> JavaType;
-'(' JavaExpr ',' JavaExpr ')' -> JavaExpr;

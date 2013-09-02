@@ -1,6 +1,0 @@
-case x of
-   "case01" => f(x) = x
-   "case02" => g(y) = y
-   "case03" => h(z) = z
-   else => f(x) = x
-end

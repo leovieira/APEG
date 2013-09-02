@@ -1,5 +1,0 @@
-sugar Test {
-  context-free syntax
-     '(' JavaType ',' JavaType ')' -> JavaType;
-     '(' JavaExpr ',' JavaExpr ')' -> JavaExpr;
-}
