@@ -1,0 +1,21 @@
+grammar G extends {Expression, Identifier}
+   Expr |:= for b:forStart => <[ none ]>
+   
+   forStart :Expr:=
+      i:Id <- e:Expr d:doFront => <[ none ]>
+    | e:Expr d:doFront => <[ none ]>
+    | i:Id <- e:Expr , b:forStart => <[ none ]>
+    | e:Expr , b:forStart => <[ none ]>
+    
+    doFront :Expr:=
+       a:atomicFront => <[ a ]>
+     | at e:Expr a:atomicFront => <[ a ]>
+    
+    atomicFront :Expr:=
+       do d:doBody => <[ d ]>
+     | atomic do d:doBody => <[ none ]>
+    
+    doBody :Expr:=
+       end => <[ () ]>
+     | block:Expr end => <[ block ]>
+end

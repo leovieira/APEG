@@ -1,0 +1,5 @@
+public sugar Test {
+  context-free syntax
+     LPAR type COMMA type RPAR -> type;
+     LPAR expression COMMA expression LPAR -> expression;
+}

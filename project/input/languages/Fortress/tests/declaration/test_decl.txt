@@ -1,0 +1,1 @@
+test fxLessThnFy[x <- E, y <- F] = assert(f(x) < f(y))

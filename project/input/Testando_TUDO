@@ -1,0 +1,24 @@
+As armas e os barões assinalados,
+Que da ocidental praia Lusitana,
+Por mares nunca de antes navegados,
+Passaram ainda além da Taprobana,
+Em perigos e guerras esforçados,
+Mais do que prometia a força humana,
+E entre gente remota edificaram
+Novo Reino, que tanto sublimaram;
+
+
+Turotial
+
+quando houver conflito faça:
+ 1) clique com o botão direito do mauso no projeto
+ 2) vá em team -> merge tool
+ 3) resolva os conflitos
+ 4) em GitStaging, passe para Staged Changes os arquivos que conflito
+ 5) Faça o commit
+ 6) Seja feliz
+ 
+Foi assim que eue o ratinho conseguimos resolver o conflito.
+Espero que não tenhamos mais problemas e esse plugin do Eclipse para o EGit
+não é uma coisa confiável :(
+    

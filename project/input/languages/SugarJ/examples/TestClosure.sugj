@@ -1,0 +1,7 @@
+
+
+import javaclosure.Closure;
+
+public class TestClosure {
+	private #int (char) p = #int(char c) {return c;};
+}

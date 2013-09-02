@@ -1,0 +1,984 @@
+
+//===========================================================================
+//
+//  This is a adaptation version of the Java grammar specification for Mouse.
+//  The original source can be found in http://www.romanredz.se/freesoft.htm 
+//
+//  Parsing Expression Grammar for Java 1.6 for Mouse 1.1 - 1.6.
+//  Based on Chapters 3 and 18 of Java Language Specification, Third Edition,
+//  at http://java.sun.com/docs/books/jls/third_edition/html/j3TOC.html.
+//===========================================================================
+
+apeg Java;
+
+//-------------------------------------------------------------------------
+//  Compilation Unit
+//-------------------------------------------------------------------------
+
+compilation_unit:
+  ws package_declaration? import_declaration* type_declaration* EOT;
+
+package_declaration:
+  annotation* PACKAGE qualified_identifier SEMI;
+
+import_declaration:
+  IMPORT STATIC? qualified_identifier (DOT STAR)? SEMI;
+
+type_declaration:
+  modifier*
+  ( class_declaration
+   / enum_declaration
+   / interface_declaration
+   / annotation_type_declaration
+  )
+   / SEMI;   
+
+//-------------------------------------------------------------------------
+//  Class Declaration
+//-------------------------------------------------------------------------
+
+class_declaration:
+  CLASS Identifier type_parameters? (EXTENDS class_type)? (IMPLEMENTS class_type_list)? class_body;
+
+class_body:
+  LWING class_body_declaration* RWING;
+
+class_body_declaration:
+   SEMI
+ / STATIC? block                                    // Static or Instance Initializer
+ / modifier* member_decl                             // ClassMemberDeclaration
+   ;
+
+member_decl:
+   type_parameters generic_method_or_constructor_rest    // Generic Method or Constructor
+ / type Identifier method_declarator_rest             // Method
+ / type variable_declarators SEMI                    // Field
+ / VOID Identifier void_method_declarator_rest         // Void method
+ / Identifier constructor_declarator_rest             // Constructor
+ / interface_declaration                             // Interface
+ / class_declaration                                 // Class
+ / enum_declaration                                  // Enum
+ / annotation_type_declaration                        // Annotation
+   ;
+
+generic_method_or_constructor_rest:
+   (type / VOID) Identifier method_declarator_rest
+ / Identifier constructor_declarator_rest;
+
+method_declarator_rest:
+   formal_parameters dim* (THROWS class_type_list)? (method_body / SEMI);
+
+void_method_declarator_rest:
+   formal_parameters (THROWS class_type_list)? (method_body / SEMI);
+
+constructor_declarator_rest:
+   formal_parameters (THROWS class_type_list)? method_body;
+
+method_body:
+   block;
+
+
+//-------------------------------------------------------------------------
+//  Interface Declaration
+//-------------------------------------------------------------------------
+
+interface_declaration:
+   INTERFACE Identifier type_parameters? (EXTENDS class_type_list)? interface_body;
+
+interface_body:
+   LWING interface_body_declaration* RWING;
+
+interface_body_declaration:
+   modifier* interface_member_decl
+ / SEMI;
+
+interface_member_decl:
+   interface_method_or_field_decl
+ / interface_generic_method_decl
+ / VOID Identifier void_interface_method_declarator_rest
+ / interface_declaration
+ / annotation_type_declaration
+ / class_declaration
+ / enum_declaration;
+
+interface_method_or_field_decl:
+   type Identifier interface_method_or_field_rest;
+
+interface_method_or_field_rest:
+   constant_declarators_rest SEMI
+ / interface_method_declarator_rest;
+
+interface_method_declarator_rest:
+   formal_parameters dim* (THROWS class_type_list)? SEMI;
+
+interface_generic_method_decl:
+   type_parameters (type / VOID) Identifier interface_method_declarator_rest;
+
+void_interface_method_declarator_rest:
+   formal_parameters (THROWS class_type_list)? SEMI;
+
+constant_declarators_rest:
+   constant_declarator_rest (COMMA constant_declarator)*;
+
+constant_declarator:
+   Identifier constant_declarator_rest;
+
+constant_declarator_rest:
+   dim* EQU variable_initializer;
+
+//-------------------------------------------------------------------------
+//  Enum Declaration
+//-------------------------------------------------------------------------
+
+enum_declaration:
+   ENUM Identifier (IMPLEMENTS class_type_list)? enum_body;
+
+enum_body:
+   LWING enum_constants? COMMA? enum_body_declarations? RWING;
+
+enum_constants:
+   enum_constant (COMMA enum_constant)*;
+
+enum_constant:
+   annotation* Identifier arguments? class_body?;
+
+enum_body_declarations:
+   SEMI class_body_declaration*;
+
+//-------------------------------------------------------------------------
+//  Variable Declarations
+//-------------------------------------------------------------------------
+
+local_variable_declaration_statement:
+   (FINAL / annotation)* type variable_declarators SEMI;
+
+variable_declarators:
+   variable_declarator (COMMA variable_declarator)*;
+
+variable_declarator:
+   Identifier dim* (EQU variable_initializer)?;
+
+//-------------------------------------------------------------------------
+//  Formal Parameters
+//-------------------------------------------------------------------------
+
+formal_parameters:
+   LPAR formal_parameter_list? RPAR;
+
+formal_parameter:
+   (FINAL / annotation)* type variable_declarator_id;
+
+last_formal_parameter:
+   (FINAL / annotation)* type ELLIPSIS variable_declarator_id;
+
+formal_parameter_list:
+   formal_parameter (COMMA formal_parameter)* (COMMA last_formal_parameter)?
+ / last_formal_parameter;
+
+variable_declarator_id:
+   Identifier dim*;
+
+//-------------------------------------------------------------------------
+//  Statements
+//-------------------------------------------------------------------------
+
+block:
+   LWING block_statements RWING;
+
+block_statements:
+   block_statement*;
+
+block_statement:
+   local_variable_declaration_statement
+ / modifier*
+   ( class_declaration
+   / enum_declaration
+   )
+ / statement;
+
+statement:
+   block
+ / ASSERT expression (COLON expression)? SEMI
+ / IF par_expression statement (ELSE statement)?
+ / FOR LPAR for_init? SEMI expression? SEMI for_update? RPAR statement
+ / FOR LPAR formal_parameter COLON expression RPAR statement
+ / WHILE par_expression statement
+ / DO statement WHILE par_expression SEMI
+ / TRY block (catch+ finally? / finally)
+ / SWITCH par_expression LWING switch_block_statement_groups RWING
+ / SYNCHRONIZED par_expression block
+ / RETURN expression? SEMI
+ / THROW expression SEMI
+ / BREAK Identifier? SEMI
+ / CONTINUE Identifier? SEMI
+ / SEMI
+ / statement_expression SEMI
+ / Identifier COLON statement;
+
+catch:
+   CATCH LPAR formal_parameter RPAR block;
+
+finally:
+   FINALLY block;
+
+switch_block_statement_groups:
+   switch_block_statement_group*;
+
+switch_block_statement_group:
+   switch_label block_statements;
+
+switch_label:
+   CASE constant_expression COLON
+ / CASE enum_constant_name COLON
+ / DEFAULT COLON;
+
+for_init:
+   (FINAL / annotation)* type variable_declarators
+ / statement_expression (COMMA statement_expression)*;
+
+for_update:
+   statement_expression (COMMA statement_expression)*;
+
+enum_constant_name:
+   Identifier;
+
+
+//-------------------------------------------------------------------------
+//  Expressions
+//-------------------------------------------------------------------------
+
+statement_expression:
+   expression;
+
+    // This is more generous than definition in section 14.8, which allows only
+    // specific forms of Expression.
+
+constant_expression:
+   expression;
+
+expression:
+   conditional_expression (assignment_operator conditional_expression)*;
+
+    // This definition is part of the modification in JLS Chapter 18
+    // to minimize look ahead. In JLS Chapter 15.27, Expression is defined
+    // as AssignmentExpression, which is effectively defined as
+    // (LeftHandSide AssignmentOperator)* ConditionalExpression.
+    // The above is obtained by allowing ANY ConditionalExpression
+    // as LeftHandSide, which results in accepting statements like 5 = a.
+
+
+assignment_operator:
+   EQU
+ / PLUSEQU
+ / MINUSEQU
+ / STAREQU
+ / DIVEQU
+ / ANDEQU
+ / OREQU
+ / HATEQU
+ / MODEQU
+ / SLEQU
+ / SREQU
+ / BSREQU;
+
+conditional_expression:
+   conditional_or_expression (QUERY expression COLON conditional_or_expression)*;
+
+conditional_or_expression:
+   conditional_and_expression (OROR conditional_and_expression)*;
+
+conditional_and_expression:
+   inclusive_or_expression (ANDAND inclusive_or_expression)*;
+
+inclusive_or_expression:
+   exclusive_or_expression (OR exclusive_or_expression)*;
+
+exclusive_or_expression:
+   and_expression (HAT and_expression)*;
+
+and_expression:
+   equality_expression (AND equality_expression)*;
+
+equality_expression:
+   relational_expression ((EQUAL /  NOTEQUAL) relational_expression)*;
+
+relational_expression:
+   shift_expression ((LE / GE / LT / GT) shift_expression / INSTANCEOF reference_type)*;
+
+shift_expression:
+   additive_expression ((SL / SR / BSR) additive_expression)*;
+
+additive_expression:
+   multiplicative_expression ((PLUS / MINUS) multiplicative_expression)*;
+
+multiplicative_expression:
+   unary_expression ((STAR / DIV / MOD) unary_expression)*;
+
+unary_expression:
+   prefix_op unary_expression
+ / LPAR type RPAR unary_expression
+ / primary (selector)* (postfix_op)*;
+
+primary:
+   par_expression
+ / non_wildcard_type_arguments (explicit_generic_invocation_suffix / THIS arguments)
+ / THIS arguments?
+ / SUPER super_suffix
+ / Literal
+ / NEW creator
+ / qualified_identifier identifier_suffix?
+ / basic_type dim* DOT CLASS
+ / VOID DOT CLASS;
+
+identifier_suffix:
+   LBRK ( RBRK dim* DOT CLASS / expression RBRK)
+ / arguments
+ / DOT
+   ( CLASS
+   / explicit_generic_invocation
+   / THIS
+   / SUPER arguments
+   / NEW non_wildcard_type_arguments? inner_creator
+   );
+
+explicit_generic_invocation:
+   non_wildcard_type_arguments explicit_generic_invocation_suffix;
+
+non_wildcard_type_arguments:
+   LPOINT reference_type (COMMA reference_type)* RPOINT;
+
+explicit_generic_invocation_suffix:
+   SUPER super_suffix
+ / Identifier arguments;
+
+prefix_op:
+   INC
+ / DEC
+ / BANG
+ / TILDA
+ / PLUS
+ / MINUS;
+
+postfix_op:
+   INC
+ / DEC;
+
+selector:
+   DOT Identifier arguments?
+ / DOT explicit_generic_invocation
+ / DOT THIS
+ / DOT SUPER super_suffix
+ / DOT NEW non_wildcard_type_arguments? inner_creator
+ / dim_expr;
+
+super_suffix:
+   arguments
+ / DOT non_wildcard_type_arguments? Identifier arguments?;
+
+basic_type:
+   ( 'byte'
+   / 'short'
+   / 'char'
+   / 'int'
+   / 'long'
+   / 'float'
+   / 'double'
+   / 'boolean'
+   ) !(Letter_Or_Digit) ws;
+
+arguments:
+   LPAR (expression (COMMA expression)*)? RPAR;
+
+creator:
+   non_wildcard_type_arguments? created_name class_creator_rest
+ / non_wildcard_type_arguments? (class_type / basic_type) array_creator_rest;
+
+created_name:
+   Identifier non_wildcard_type_arguments? (DOT Identifier non_wildcard_type_arguments?)*;
+
+inner_creator:
+   Identifier class_creator_rest;
+
+array_creator_rest:
+   LBRK ( RBRK dim* array_initializer / expression RBRK dim_expr* dim* );
+
+    // This is more generous than JLS 15.10. According to that definition,
+    // basic_type must be followed by at least one dim_expr or by array_initializer.
+
+
+class_creator_rest:
+   arguments class_body?;
+
+array_initializer:
+   LWING (variable_initializer (COMMA variable_initializer)*)? COMMA?  RWING;
+
+variable_initializer:
+   array_initializer
+ / expression;
+
+par_expression:
+   LPAR expression RPAR;
+
+qualified_identifier:
+   Identifier (DOT Identifier)*;
+
+dim:
+   LBRK RBRK;
+
+dim_expr:
+   LBRK expression RBRK;
+
+//-------------------------------------------------------------------------
+//  Types and Modifiers
+//-------------------------------------------------------------------------
+
+type:
+   (basic_type / class_type) dim*;
+
+reference_type:
+   basic_type dim+
+ / class_type dim*;
+
+class_type:
+   Identifier type_arguments? (DOT Identifier type_arguments?)*;
+
+class_type_list:
+   class_type (COMMA class_type)*;
+
+type_arguments:
+   LPOINT type_argument (COMMA type_argument)* RPOINT;
+
+type_argument:
+   reference_type
+ / QUERY ((EXTENDS / SUPER) reference_type)?;
+
+type_parameters:
+   LPOINT type_parameter (COMMA type_parameter)* RPOINT;
+
+type_parameter:
+   Identifier (EXTENDS bound)?;
+
+bound:
+   class_type (AND class_type)*;
+
+modifier:
+   annotation
+ / ( 'public'
+   / 'protected'
+   / 'private'
+   / 'static'
+   / 'abstract'
+   / 'final'
+   / 'native'
+   / 'synchronized'
+   / 'transient'
+   / 'volatile'
+   / 'strictfp'
+   ) !(Letter_Or_Digit) ws;
+
+    // This common definition of Modifier is part of the modification
+    // in JLS Chapter 18 to minimize look ahead. The main body of JLS has
+    // different lists of modifiers for different language elements.
+
+
+//-------------------------------------------------------------------------
+//  Annotations
+//-------------------------------------------------------------------------
+
+annotation_type_declaration:
+   AT INTERFACE Identifier annotation_type_body;
+
+annotation_type_body:
+   LWING annotation_type_element_declaration* RWING;
+
+annotation_type_element_declaration:
+   modifier* annotation_type_element_rest
+ / SEMI;
+
+annotation_type_element_rest:
+   type annotation_method_or_constant_rest SEMI
+ / class_declaration
+ / enum_declaration
+ / interface_declaration
+ / annotation_type_declaration;
+
+annotation_method_or_constant_rest:
+   annotation_method_rest
+ / annotation_constant_rest;
+
+annotation_method_rest:
+   Identifier LPAR RPAR default_value?;
+
+annotation_constant_rest:
+   variable_declarators;
+
+default_value:
+   DEFAULT element_value;
+
+annotation:
+   normal_annotation
+ / single_element_annotation
+ / marker_annotation;
+
+normal_annotation:
+   AT qualified_identifier LPAR element_value_pairs? RPAR;
+
+single_element_annotation:
+   AT qualified_identifier LPAR element_value RPAR;
+
+marker_annotation:
+   AT qualified_identifier;
+
+element_value_pairs:
+   element_value_pair (COMMA element_value_pair)*;
+
+element_value_pair:
+   Identifier EQU element_value;
+
+element_value:
+   conditional_expression
+ / annotation
+ / element_value_array_initializer;
+
+element_value_array_initializer:
+   LWING element_values? COMMA? RWING;
+
+element_values:
+   element_value (COMMA element_value)*;
+
+
+//=========================================================================
+//  Lexical Structure
+//=========================================================================
+
+//-------------------------------------------------------------------------
+//  JLS 3.8  Identifiers
+//-------------------------------------------------------------------------
+
+Identifier:
+   !Keyword (Letter / '_') Letter_Or_Digit* ws;
+
+Letter:
+   [a-zA-Z];
+
+Letter_Or_Digit:
+   Letter
+ / Digit
+ / '_';
+
+//-------------------------------------------------------------------------
+//  JLS 3.9  Keywords
+//  More precisely: reserved words. According to JLS, "true", "false",
+//  and "null" are technically not keywords - but still must not appear
+//  as identifiers. Keywords "const" and "goto" are not used; JLS explains
+//  the reason.
+//-------------------------------------------------------------------------
+
+Keyword:
+   ( 'abstract'
+   / 'assert'
+   / 'boolean'
+   / 'break'
+   / 'byte'
+   / 'case'
+   / 'catch'
+   / 'char'
+   / 'class'
+   / 'const'
+   / 'continue'
+   / 'default'
+   / 'double'
+   / 'do'
+   / 'else'
+   / 'enum'
+   / 'extends'
+   / 'false'
+   / 'finally'
+   / 'final'
+   / 'float'
+   / 'for'
+   / 'goto'
+   / 'if'
+   / 'implements'
+   / 'import'
+   / 'interface'
+   / 'int'
+   / 'instanceof'
+   / 'long'
+   / 'native'
+   / 'new'
+   / 'null'
+   / 'package'
+   / 'private'
+   / 'protected'
+   / 'public'
+   / 'return'
+   / 'short'
+   / 'static'
+   / 'strictfp'
+   / 'super'
+   / 'switch'
+   / 'synchronized'
+   / 'this'
+   / 'throws'
+   / 'throw'
+   / 'transient'
+   / 'true'
+   / 'try'
+   / 'void'
+   / 'volatile'
+   / 'while'
+   ) !Letter_Or_Digit;
+
+ASSERT:
+   'assert' !(Letter_Or_Digit) ws;
+   
+BREAK:
+   'break' !Letter_Or_Digit ws;
+   
+CASE:
+   'case' !Letter_Or_Digit ws;
+  
+CATCH:
+   'catch' !Letter_Or_Digit ws;
+   
+CLASS:
+   'class' !Letter_Or_Digit ws;
+   
+CONTINUE:
+   'continue' !Letter_Or_Digit ws;
+   
+DEFAULT:
+   'default' !Letter_Or_Digit ws;
+   
+DO:
+   'do' !Letter_Or_Digit ws;
+   
+ELSE:
+   'else' !Letter_Or_Digit ws;
+   
+ENUM:
+   'enum' !Letter_Or_Digit ws;
+   
+EXTENDS:
+   'extends' !Letter_Or_Digit ws;
+   
+FINALLY:
+   'finally' !Letter_Or_Digit ws;
+   
+FINAL:
+   'final' !Letter_Or_Digit ws;
+   
+FOR:
+   'for' !Letter_Or_Digit ws;
+   
+IF:
+   'if' !Letter_Or_Digit ws;
+   
+IMPLEMENTS:
+   'implements' !Letter_Or_Digit ws;
+   
+IMPORT:
+   'import' !Letter_Or_Digit ws;
+
+INTERFACE:
+   'interface' !Letter_Or_Digit ws;
+   
+INSTANCEOF:
+   'instanceof' !Letter_Or_Digit ws;
+
+NEW:
+   'new' !Letter_Or_Digit ws;
+   
+PACKAGE:
+   'package' !Letter_Or_Digit ws;
+
+RETURN:
+   'return' !Letter_Or_Digit ws;
+   
+STATIC:
+   'static' !Letter_Or_Digit ws;
+   
+SUPER:
+   'super' !Letter_Or_Digit ws;
+   
+SWITCH:
+   'switch' !Letter_Or_Digit ws;
+   
+SYNCHRONIZED:
+   'synchronized' !Letter_Or_Digit ws;
+   
+THIS:
+   'this' !Letter_Or_Digit ws;
+   
+THROWS:
+   'throws' !Letter_Or_Digit ws;
+   
+THROW:
+   'throw' !Letter_Or_Digit ws;
+   
+TRY:
+   'try' !Letter_Or_Digit ws;
+   
+VOID:
+   'void' !Letter_Or_Digit ws;
+   
+WHILE:
+   'while' !Letter_Or_Digit ws;
+   
+//-------------------------------------------------------------------------
+//  JLS 3.10  Literals
+//-------------------------------------------------------------------------
+
+Literal:
+   ( Float_Literal
+   / Integer_Literal          // May be a prefix of FloatLiteral
+   / Char_Literal
+   / String_Literal
+   / 'true'  !Letter_Or_Digit
+   / 'false' !Letter_Or_Digit
+   / 'null'  !Letter_Or_Digit
+   ) ws;
+
+Integer_Literal:
+   ( Hex_Numeral
+   / Octal_Numeral            // May be a prefix of HexNumeral
+   / Decimal_Numeral          // May be a prefix of OctalNumeral
+   ) ('l' / 'L')?;
+
+Decimal_Numeral:
+   '0'
+ / [1-9][0-9]*;
+
+Hex_Numeral:
+   ('0x' / '0X') Hex_Digit+;
+
+Hex_Digit:
+   [a-fA-F0-9];
+
+Octal_Numeral:
+   '0' [0-7]+;
+
+Float_Literal:
+   Hex_Float
+ / Decimal_Float;
+
+Decimal_Float:
+   Digit+ '.' Digit*  Exponent? ('f' / 'F' / 'd' / 'D')?
+ / '.' Digit+ Exponent? ('f' / 'F' / 'd' / 'D')?
+ / Digit+ Exponent ('f' / 'F' / 'd' / 'D')?
+ / Digit+ Exponent? ('f' / 'F' / 'd' / 'D');
+
+Exponent:
+   ('e' / 'E') ('+' / '-')? Digit+;
+
+Digit:
+   [0-9];
+
+Hex_Float:
+   Hex_Significand Binary_Exponent ('f' / 'F' / 'd' / 'D')?;
+
+Hex_Significand:
+   ('0x' / '0X') Hex_Digit* '.' Hex_Digit+
+ / Hex_Numeral '.'?                           // May be a prefix of above
+    ;
+
+Binary_Exponent:
+   ('p' / 'P') ('+' / '-')? Digit+;
+
+Char:
+    Escape
+  /  !'\\' .;
+  
+Escape:
+   '\\' ('n' / 'r' / 't' / 'b' / 'f' / '"' / '\'' / '\\' )
+ / OctalEscape
+ / UnicodeEscape;
+
+OctalEscape:
+   '\\' [0-3][0-7][0-7]
+ / '\\' [0-7][0-7]
+ / '\\' [0-7];
+
+UnicodeEscape:
+   '\\' 'u'+ Hex_Digit Hex_Digit Hex_Digit Hex_Digit;
+
+Char_Literal:
+   '\'' Char '\'';
+
+String_Literal:
+   '"' (!'"' Char)+ '"';
+
+//-------------------------------------------------------------------------
+//  JLS 3.11-12  Separators, Operators
+//-------------------------------------------------------------------------
+
+AT:
+   '@' ws;
+   
+AND:
+   '&' !('&' / '=') ws;
+   
+ANDAND:
+   '&&' ws;
+   
+ANDEQU:
+   '&=' ws;
+   
+BANG:
+   '!' !'=' ws;
+   
+BSR:
+   '>>>' !'=' ws;
+   
+BSREQU:
+   '>>>=' ws;
+   
+COLON:
+   ':' ws;
+   
+COMMA:
+   ',' ws;
+   
+DEC:
+   '--' ws;
+   
+DIV:
+   '/' !'=' ws;
+   
+DIVEQU:
+   '/=' ws;
+   
+DOT:
+   '.' ws;
+   
+ELLIPSIS:
+   '...' ws;
+   
+EQU:
+   '=' !'=' ws;
+   
+EQUAL:
+   '==' ws;
+   
+GE:
+   '>=' ws;
+   
+GT:
+   '>' !('=' / '>') ws;
+   
+HAT:
+   '^' !'=' ws;
+   
+HATEQU:
+   '^=' ws;
+   
+INC:
+   '++' ws;
+   
+LBRK:
+   '[' ws;
+   
+LE:
+   '<=' ws;
+   
+LPAR:
+   '(' ws;
+   
+LPOINT:
+   '<' ws;
+   
+LT:
+   '<' !('=' / '<') ws;
+   
+LWING:
+   '{' ws;
+   
+MINUS:
+   '-' !('=' / '-') ws;
+   
+MINUSEQU:
+   '-=' ws;
+   
+MOD:
+   '%' !'=' ws;
+   
+MODEQU:
+   '%=' ws ;
+   
+NOTEQUAL:
+   '!=' ws;
+   
+OR:
+   '|' !('=' / '|') ws;
+   
+OREQU:
+   '|=' ws;
+   
+OROR:
+   '||' ws;
+   
+PLUS:
+   '+' !('=' / '+') ws;
+   
+PLUSEQU:
+   '+=' ws;
+   
+QUERY:
+   '?' ws;
+   
+RBRK:
+   ']' ws;
+   
+RPAR:
+   ')' ws;
+   
+RPOINT:
+   '>' ws;
+   
+RWING:
+   '}' ws;
+   
+SEMI:
+   ';' ws;
+   
+SL:
+   '<<' !'=' ws;
+   
+SLEQU:
+   '<<=' ws;
+   
+SR:
+   '>>' !('=' / '>') ws;
+   
+SREQU:
+   '>>=' ws;
+   
+STAR:
+   '*' !'=' ws;
+   
+STAREQU:
+   '*=' ws;
+   
+TILDA:
+   '~' ws;
+
+EOT:
+   !.;
+
+//-------------------------------------------------------------------------
+//  White space and comments
+//-------------------------------------------------------------------------
+
+ws:
+  (space / comment)*;
+
+space:
+  ' ' / '\t' / '\u000C' / endOfLine;
+
+endOfLine:
+  '\r\n' / '\r' / '\n'; 
+
+comment:
+    '//' (!endOfLine .)* endOfLine
+  / '/*' (!'*/' .)* '*/';
