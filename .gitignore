@@ -1,4 +1,9 @@
-/bin
-/antlr-generated
-grammar/*.tokens
+project/bin
+project/antlr-generated
+project/grammar/*.tokens
+
+# ignoring all .class files, but does not to ignore .classpath (it is necessary for eclipse project)
+*.class
+!.classpath
+!.project
 
