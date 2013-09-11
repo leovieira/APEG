@@ -33,6 +33,7 @@ public class DataTable {
 			putColumnElement(t);
 		}
 		output.endRecord();
+		pos_column = 1;
 	}
 	
 	public void putLine(String[] column) throws DataException, IOException {
@@ -43,7 +44,7 @@ public class DataTable {
 	
 	public void putColumnElement(String elem) throws DataException, IOException {
 		if(pos_column > columns) {
-			throw new DataException("Trying to insert an new element out of the bound of the number of columns");
+			throw new DataException("Trying to insert a new element out of the bound of the number of columns");
 		}
 		output.write(elem);
 		pos_column++;
@@ -68,4 +69,16 @@ public class DataTable {
 	public String getBlank() {
 		return blank;
 	}
+
+	public void close() {
+		output.close();
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		close();
+	}
+	
+	
 }
