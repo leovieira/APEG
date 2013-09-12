@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/java"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.sugarj.stdlib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.apeg.data"/>
+	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/make_permissive.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.resources_3.8.1.v20120802-154922.jar"/>
+	<classpathentry kind="lib" path="lib/org.strategoxt.imp.debug.core_1.2.0.201308190125.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

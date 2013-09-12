@@ -1,0 +1,1 @@
+Module("org/sugarj/languages/Model",[Signature([Constructors([OpDecl("TransApp",FunType([ConstType(SortNoArgs("TransformationExpr")),ConstType(SortNoArgs("TransformationExpr"))],ConstType(SortNoArgs("TransformationExpr")))),OpDecl("TransformationDef",FunType([ConstType(SortVar("x")),ConstType(SortVar("y"))],ConstType(SortVar("z"))))])])])
