@@ -37,9 +37,9 @@ public class Main {
 				allInputFiles.add(sourceLocation);
 			}
 
-			// Compile every source file
+			// parse every source file
 			for(RelativePath sourceFile : allInputFiles) {
-				Driver.run(sourceFile);
+				Driver.run(sourceFile, env.getSourcePath());
 			}
 			
 		} catch (Exception e) {

@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.sugarj.common"/>
 	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/APEG"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
