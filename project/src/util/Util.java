@@ -1,20 +1,11 @@
 package util;
 
-import java.io.StringWriter;
-import java.text.Normalizer;
-
 import org.antlr.runtime.ANTLRFileStream;
-import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.Token;
-import org.antlr.runtime.tree.CommonTree;
-import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 
 import runtime.interpreter.Interpreter;
 import semantics.Grammar;
-import semantics.NonTerminal;
-import semantics.SemanticNode;
 import semantics.SemanticTreeAdaptor;
 import srcparser.AdaptablePEGLexer;
 import srcparser.AdaptablePEGParser;
@@ -43,10 +34,10 @@ public class Util {
 		)
 	throws Exception {
 		
-		System.out.println("-----------------------------------------");
-		System.out.println("Testing grammar " + grammarFileName);
-		System.out.println("Input file: " + inputFileName);
-		System.out.println("Initial Symbol: " + initSymbol);
+		//System.out.println("-----------------------------------------");
+		//System.out.println("Testing grammar " + grammarFileName);
+		//System.out.println("Input file: " + inputFileName);
+		//System.out.println("Initial Symbol: " + initSymbol);
 		
 		Grammar grammar = new Grammar();
 		

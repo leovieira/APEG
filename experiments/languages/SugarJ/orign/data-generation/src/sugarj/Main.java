@@ -1,3 +1,5 @@
+package sugarj;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -6,7 +8,7 @@ import java.io.IOException;
 
 public class Main {
 
-	private static final int NUM_EXEC=50;
+	private static final int NUM_EXEC=1;
 	
 	/**
 	 * @param cmd
@@ -43,9 +45,9 @@ public class Main {
 		for(int j = 0; j < files.length; ++j) {
 			args[7+j] = files[j];
 		}
-		org.apeg.data.DataManager.init(outputName, "data/" + project);
+		apeg.data.DataManager.init(outputName, "data/" + project);
 		org.sugarj.driver.cli.Main.main(args);
-		org.apeg.data.DataManager.flush();
+		apeg.data.DataManager.flush();
 	}
 	
 	public static void createDir(String path) {

@@ -8,11 +8,12 @@ import java.util.Map;
 import org.sugarj.common.path.Path;
 import org.sugarj.common.path.RelativePath;
 
+import apeg.data.DataManager;
 import apeg.sugarj.common.FileCommands;
 
 public class Driver {
 	
-	private static final String grammar="grammar/sugarj.apeg";
+	private static final String grammar="/home/leo/workspace/APEG/experiments/languages/SugarJ/apeg/compiler/grammar/sugarj.apeg";
 	
 	// a map of sugars to rules
 	private static Map<String, String> sugars = new HashMap<String, String>();
@@ -22,15 +23,19 @@ public class Driver {
 	private static List<RelativePath> processed = new ArrayList<RelativePath>();
 	
 	public static void run(RelativePath sourceFile, List<Path> sourcePath) throws Exception {
+		System.out.println("Analysing source file: " + sourceFile.toString());
 		// insert the current file in the list of files that are being processed
 		currentlyProcessing.add(sourceFile);
 		
 		// parameters of compilation unit
-		Object args[] = new Object[2];
-		args[0] = sugars;
+		Object args[] = new Object[1];
+		args[0] = sourcePath;
 		
 		// parse the file using the apeg interpreter
+		long beginTime = System.currentTimeMillis();
 		util.Util.testeGrammar(grammar, sourceFile.toString(), "compilation_unit", args);
+		long endTime = System.currentTimeMillis();
+		DataManager.addParseTime(endTime-beginTime); // parse time of the all project, including adapt time 
 		
 		// remote the file of the list of file being currently processed and insert it in the list of processed files
 		currentlyProcessing.remove(sourceFile);
@@ -38,7 +43,8 @@ public class Driver {
 	}
 	
 	public static void processImport(String name, List<Path> sourcePath) throws Exception {
-		RelativePath file = FileCommands.locateSourceFile(name, sourcePath);
+		System.out.println("Processing import: " + name);
+		RelativePath file = FileCommands.locateSourceModule(name, sourcePath);
 		if(file == null) {
 			return; // I assume that it imports a module that is not a sugar definition 
 		} // else
@@ -53,5 +59,23 @@ public class Driver {
 		} // else
 		// processes the file
 		run(file, sourcePath);
+	}
+
+	public static boolean containsSugarlibrary(String entry) {
+		return sugars.containsKey(entry);
+	}
+
+	public static void addSugarLibrary(String entry, String rule) {
+		sugars.put(entry, rule);		
+	}
+
+	public static String getSugarLibrary(String name) {
+		return sugars.get(name);
+	}
+	
+	public static void clear() {
+		sugars.clear();
+		processed.clear();
+		currentlyProcessing.clear();
 	}
 }

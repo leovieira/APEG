@@ -1,4 +1,4 @@
-package org.apeg.exception;
+package apeg.exception;
 
 public class DataException extends Exception {
 

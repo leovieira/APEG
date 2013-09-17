@@ -15,31 +15,31 @@ options {
   isAdaptable = true;
 }
 
-functions AdaptableFunctions;
+functions SugarJAdaptabilityFunctions;
 
 //-------------------------------------------------------------------------
 //  Compilation Unit
 //-------------------------------------------------------------------------
 
-compilation_unit[Grammar g, Map m] returns[Map m1] locals[Grammar g1, String p]:
-  ws {p='';} package_declaration<p>? (import_declaration<g, m, g1> {g=g1;})*
-             (type_declaration<g, p,m,m1> {m=m1;})* EOT;
+compilation_unit[Grammar g, List path] locals[Grammar g1, String p]:
+  ws {p='';} package_declaration<p>? (import_declaration<g, path, g1> {g=g1;})*
+             (type_declaration<g, p>)* EOT;
 
 package_declaration returns[String p]:
   annotation* PACKAGE p=qualified_id SEMI;
 
 // For now, I ignore the star. It's necessary look up in all the package if there is any sugar declaration.
 // However, for a concept proof, the first alternative is enough. 
-import_declaration[Grammar g, Map map] returns[Grammar g1] locals[String name]:
-  IMPORT STATIC? name=qualified_id (DOT STAR)? {g1= adaptable(g,map,name);} SEMI;
+import_declaration[Grammar g, List path] returns[Grammar g1] locals[String name]:
+  IMPORT STATIC? name=qualified_id (DOT STAR)? {g1= adapt(g,name,path);} SEMI;
 
-type_declaration[Grammar g, String p, Map m] returns[Map m1] locals[String s, String r]:
-  {m1=m;} modifier*
+type_declaration[Grammar g, String p] locals[String s, String r]:
+  modifier*
   ( class_declaration
    / enum_declaration
    / interface_declaration
    / annotation_type_declaration
-   / sugar_declaration<s,r> {m1= add(m,p,s,r);}
+   / sugar_declaration<s,r> {? true == resgisterSugarLibrary(p,s,r) }
   )
    / SEMI;   
 

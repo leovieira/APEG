@@ -19,8 +19,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 
-import org.apeg.data.DataManager;
-import org.apeg.exception.DataException;
 import org.spoofax.interpreter.library.IOAgent;
 import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.ITreeBuilder;
@@ -52,6 +50,9 @@ import org.sugarj.driver.caching.ModuleKeyCache;
 import org.sugarj.driver.transformations.extraction.extract_sdf_0_0;
 import org.sugarj.stdlib.StdLib;
 import org.sugarj.util.Pair;
+
+import apeg.data.DataManager;
+import apeg.exception.DataException;
 
 /**
  * This class provides methods for various SDF commands. Each

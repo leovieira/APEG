@@ -1,14 +1,14 @@
-package org.apeg.data;
+package apeg.data;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apeg.exception.DataException;
+import apeg.exception.DataException;
 
 public class DataManager {
-	//private String project_name;	
+	private String project_name;	
 	private String[] unit = {"", "(ms)", "(ms)"};
 	private DataTable csv_file;
 	private Map<String, long[]> rows;
@@ -28,13 +28,21 @@ public class DataManager {
 	
 	public static DataManager init(String project, String path) throws IOException, DataException {
 		instance = new DataManager();
-		//instance.project_name = project;
+		instance.project_name = project;
 		instance.csv_file = new DataTable(new FileWriter(path + "/" + project + "_data.csv", false),
 				                                         row_title.length, ';', "0");
 		instance.csv_file.createTableTitle(row_title);
 		instance.rows = new HashMap<String, long[]>();
 		
 		return getInstance();
+	}
+	
+	public static void addAdaptabilityTime(long time) throws DataException, IOException {
+		putTime(getInstance().project_name, time, ADAPT);
+	}
+	
+	public static void addParseTime(long time) throws DataException, IOException {
+		putTime(getInstance().project_name, time, PARSE);
 	}
 	
 	public static void addAdaptabilityTime(String file, long time) throws DataException, IOException {

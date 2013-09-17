@@ -2,10 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.sugarj.common"/>
-	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/antlr-3.5-complete.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/APEG"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.apeg.data"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/apeg.sugarj.compiler"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

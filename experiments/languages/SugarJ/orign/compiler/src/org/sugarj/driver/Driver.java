@@ -29,8 +29,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apeg.data.DataManager;
-import org.apeg.exception.DataException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.spoofax.interpreter.terms.IStrategoAppl;
 import org.spoofax.interpreter.terms.IStrategoList;
@@ -70,6 +68,9 @@ import org.sugarj.stdlib.StdLib;
 import org.sugarj.util.Pair;
 import org.sugarj.util.ProcessingListener;
 import org.sugarj.util.Renaming;
+
+import apeg.data.DataManager;
+import apeg.exception.DataException;
 
 
 /**

@@ -1,9 +1,10 @@
-package org.apeg.data;
+package apeg.data;
 
 import java.io.IOException;
 import java.io.Writer;
 
-import org.apeg.exception.DataException;
+
+import apeg.exception.DataException;
 
 import com.csvreader.CsvWriter;
 

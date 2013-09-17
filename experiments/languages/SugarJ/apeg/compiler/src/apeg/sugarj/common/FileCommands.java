@@ -18,6 +18,14 @@ public class FileCommands {
 
 	// ************************ Functions to find out a source file ************
 
+	public static RelativePath locateSourceModule(String module, List<Path> sourcePath) {
+		String fileName = module.replace('.', '/');
+		RelativePath file = searchFileInSourceLocationPath(fileName, "sugj", sourcePath);
+		if(file == null)
+			searchFileInSourceLocationPath(fileName, "java", sourcePath);
+		return file;
+	}
+	
 	public static RelativePath locateSourceFile(String source,
 			List<Path> sourcePath) {
 		int i = source.lastIndexOf('.');
