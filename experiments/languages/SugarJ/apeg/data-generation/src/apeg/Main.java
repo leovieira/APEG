@@ -11,7 +11,7 @@ public class Main {
 		final String path = "/home/leo/workspace/APEG/experiments/languages/SugarJ/apeg/case-studies";
 		String project[] = { "closures" };
 		String source[] = { "src" };
-		String files[][] = { { "javaclosure/TestClosure.sugj" } };
+		String files[][] = { { "javaclosure/Test.sugj" } };
 
 		for (int i = 0; i < project.length; ++i) {
 			for (int j = 1; j <= NUM_EXEC; ++j) {

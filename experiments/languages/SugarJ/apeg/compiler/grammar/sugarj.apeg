@@ -891,7 +891,7 @@ Char_Literal:
    '\'' Char '\'';
 
 String_Literal:
-   '"' (!'"' Char)+ '"';
+   '"' (!'"' Char)* '"';
 
 PEG_Literal:
   '\'' (!'\'' Char)+ '\''
