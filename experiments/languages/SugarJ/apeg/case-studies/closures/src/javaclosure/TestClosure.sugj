@@ -1,6 +1,6 @@
 package javaclosure;
 
-import javaclosure.Closure;
+import javaclosure.Syntax;
 
 public class TestClosure {
 	private #int (char) p = #int(char c) {return c;};

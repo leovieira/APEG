@@ -15,13 +15,14 @@ public class Main {
 	 */
 	public static void main(String[] cmd) throws Throwable {
 		final String path = "/home/leo/workspace/APEG/experiments/languages/SugarJ/orign/case-studies";
-		String project[] = {"closures"};
-		String source[] = {"src"};
-		String bin[] = {"bin"};
-		String files[][] = {{"javaclosure/Test.sugj", "javaclosure/Closure.sugj"}};
+		String project[] = {/*"closures", "pairs",*/ "xml"};
+		String source[] = {"src", "src", "src"};
+		String bin[] = {"bin", "bin", "bin"};
+		String files[][] = {/*{"javaclosure/Test.sugj"}, {"pair/TestPair.sugj"},*/ {"xml/Test.sugj"}};
 		
 		for(int i=0; i < project.length; ++i) {
 			createDir("./data/" + project[i]);
+			clear(path + "/" + project[i] + "/" + bin[i]);
 			for(int j = 1; j <= NUM_EXEC; ++j) {
 				//clear(path + "/" + project[i] + "/" + bin[i]);
 				run(path, project[i], files[i], source[i], bin[i], project[i] + "_" + j);
