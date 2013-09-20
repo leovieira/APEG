@@ -1,0 +1,118 @@
+module xml/XmlSyntax
+
+ imports org/sugarj/java/init/InitTrans org/sugarj/languages/Java
+
+
+signature
+  constructors
+    ToMetaStm : ObjectStm() -> JavaStm()
+    WriteDoc  : JavaId() * Document() -> ObjectStm()
+
+
+signature
+  constructors
+    FromMetaStm : JavaStm() -> Content()
+    Attribute   : AttrName() * JavaAttValue() -> Attribute()
+
+
+signature
+  constructors
+    FromMetaExpr     : cfJavaExpr() -> cfJavaAttValue()
+    TextFromMetaExpr : cfJavaExpr() -> cfContent()
+
+
+signature
+  constructors
+    Attribute : AttrName() * AttValue() -> Attribute()
+    AttrName  : QName() -> AttrName()
+
+
+signature
+  constructors
+    DoubleQuoted : iter-star() -> cfAttValue()
+    SingleQuoted : iter-star() -> cfAttValue()
+    CharDataPart : FooDoubleQuotedText() -> DoubleQuotedPart()
+    CharDataPart : FooSingleQuotedText() -> SingleQuotedPart()
+
+
+signature
+  constructors
+    Text         : iter() -> CharData()
+    CharDataPart : FooCharDataText() -> CharDataPart()
+    CDATASection : lexCData() -> CharDataPart()
+
+
+signature
+  constructors
+    DecCharRef : lexNatConst() -> cfDecCharRef()
+    HexCharRef : lexHexConst() -> cfHexCharRef()
+    EntityRef  : lexNCName() -> cfEntityRef()
+
+
+signature
+  constructors
+    
+
+
+signature
+  constructors
+    SystemExternalID : SystemLit() -> ExternalID()
+    PublicExternalID : PublicLit() * SystemLit() -> ExternalID()
+    PublicID         : PublicLit() -> PublicID()
+
+
+signature
+  constructors
+    PI : PITarget() * PIChars() -> PI()
+
+
+signature
+  constructors
+    Prologue : opt() * iter-star() * opt() -> Prologue()
+    Epilogue : iter-star() -> Epilogue()
+    Comment  : Comment() -> Misc()
+
+
+signature
+  constructors
+    XMLDecl          : VersionInfo() * opt() * opt() -> XMLDecl()
+    StandaloneDecl   : StandaloneValue() -> StandaloneDecl()
+    VersionDecl      : VersionValue() -> VersionInfo()
+    EncodingDecl     : EncodingValue() -> EncodingDecl()
+    Standalone       : YesNo() -> StandaloneValue()
+    StandaloneSingle : YesNo() -> StandaloneValue()
+    Encoding         : EncodingName() -> EncodingValue()
+    EncodingSingle   : EncodingName() -> EncodingValue()
+    Version          : VersionNum() -> VersionValue()
+    VersionSingle    : VersionNum() -> VersionValue()
+
+
+signature
+  constructors
+    DocTypePrologue : DocTypeDecl() * iter-star() -> DocTypePrologue()
+    DocTypeDecl     : QName() * ExternalID() -> DocTypeDecl()
+
+
+signature
+  constructors
+    Document : Prologue() * Element() * Epilogue() -> Document()
+    Comment  : Comment() -> Content()
+
+
+signature
+  constructors
+    
+
+
+signature
+  constructors
+    EmptyElement : ElemName() * iter-star() -> Element()
+    Element      : ElemName() * iter-star() * iter-star() * ElemName() -> Element()
+    ElemName     : QName() -> ElemName()
+
+
+signature
+  constructors
+    QName     : opt() * NCName() -> QName()
+    Prefix    : NCName() -> Qualifier()
+    URIPrefix : NamespaceURI() -> Qualifier()
