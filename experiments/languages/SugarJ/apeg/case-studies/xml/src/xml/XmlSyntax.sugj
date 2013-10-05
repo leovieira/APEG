@@ -11,25 +11,23 @@ public sugar XmlSyntax {
 
 /**
   Java-XML
-
+**/
 		ObjectStm -> statement;	
 		Identifier DOT Document SEMI -> ObjectStm;
 
-		'<{' ws statement  ws '}/>' -> Content;
-		AttrName EQU JavaAttValue -> Attribute;
+//		'<{' ws statement  ws '}/>' -> Content;
+//		AttrName EQU JavaAttValue -> Attribute;
 
-		'\"{' ws expr ws '}\"' -> JavaAttValue;
-		LWING  expr '::' ws 'cdata' ws RWING -> Content;
-
-**/
+//		'\"{' ws expr ws '}\"' -> JavaAttValue;
+//		LWING  expr '::' ws 'cdata' ws RWING -> Content;
 
 /**
   A XML document
 **/
 		Prologue Element Epilogue -> Document;
 
-		  '<' ElemName (s Attribute)* s? '/>'
-    / '<' ElemName (s Attribute)* s? '>' Content* '</' ElemName s? '>' -> Element;
+		  '<' ElemName (spacing Attribute)* spacing? '/>'
+    / '<' ElemName (spacing Attribute)* spacing? '>' Content* '</' ElemName spacing? '>' -> Element;
 
 		(Element / Comment / PI / Ref / CDataSection / CharData) -> Content;
 
@@ -61,7 +59,7 @@ public sugar XmlSyntax {
 **/
 
 		Qualifier? NCName -> QName;
-		'{' NamespaceURI '} / NCName ':' -> Qualifier;
+		'{' spacing? NamespaceURI spacing? '}' / NCName ':' -> Qualifier;
 
 		([A-Za-z] / '_') ([A-Za-z0-9] / '.' / '-' / '_')* -> NCName;
     ([a-zA-Z0-9] / '_' / '-' / ':' / '/' / '.')+ -> NamespaceURI;
@@ -71,7 +69,7 @@ public sugar XmlSyntax {
 **/
 
 		'<?' PITarget (spacing PIChars)? '?>' -> PI;
-		!(('X' / 'x') ('M' / 'm') / ('L' / 'l') !NCName) NCName -> PITarget;
+		!(('X' / 'x') ('M' / 'm') ('L' / 'l') !NCName) NCName -> PITarget;
 		(!'?>' .)* -> PIChars;
 
 /**
@@ -80,7 +78,7 @@ public sugar XmlSyntax {
 
 		'<!--' (!'--' .)* '-->' -> Comment;
 
-		' ' / '\n\t' / '\n' / '\t' -> spacing;
+		(' ' / '\n\t' / '\n' / '\t')+ -> spacing;
 
 /**
   XML Prologue

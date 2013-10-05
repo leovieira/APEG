@@ -9,9 +9,9 @@ public class Main {
 
 	public static void main(String[] cmd) throws Throwable {
 		final String path = "/home/leo/workspace/APEG/experiments/languages/SugarJ/apeg/case-studies";
-		String project[] = { "closures", "pairs" };
-		String source[] = { "src", "src" };
-		String files[][] = { { "javaclosure/Test.sugj" }, {"pair/TestPair.sugj"} };
+		String project[] = { "closures", "pairs", "xml" };
+		String source[] = { "src", "src", "src" };
+		String files[][] = { { "javaclosure/Test.sugj" }, {"pair/TestPair.sugj"}, {"xml/XmlSyntax.sugj"} };
 
 		for (int i = 0; i < project.length; ++i) {
 			for (int j = 1; j <= NUM_EXEC; ++j) {
