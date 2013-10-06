@@ -1,6 +1,0 @@
-module eblock/ConcatIds
- imports org/sugarj/java/init/initGrammar
-exports 
-  (/)
-context-free syntax
-  {JavaID "#"}+ -> JavaID {cons("ConcatIds"), avoid}

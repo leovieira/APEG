@@ -1,0 +1,148 @@
+apeg XML;
+
+/**
+  A XML document
+**/
+Document:
+   Prologue Element Epilogue;
+
+Element:
+   '<' ElemName (spacing Attribute)* spacing? '/>'
+ / '<' ElemName (spacing Attribute)* spacing? '>' Content* '</' ElemName spacing? '>';
+
+Content:
+   (Element / Comment / PI / Ref / CDataSection / CharData);
+
+ElemName:
+   QName;
+
+CharData:
+   (!('&' / '<') .)+;
+
+CDataSection:
+   '<![CDATA[' CData ']]>';
+
+CData:
+   (!']]>' .)*;
+
+Ref:
+   CharRef / EntityRef;
+
+CharRef:
+   '&#x' [0-9a-fA-F]+ ';' / '&#' [0-9]+ ';';
+
+EntityRef:
+   '&' NCName ';';
+
+/**
+  XML Attributes
+**/
+Attribute:
+   AttrName spacing? '=' spacing? AttValue;
+
+AttrName:
+   QName;
+
+AttValue:
+   '\"' DoubleQuotedPart* '\"' / '\'' SingleQuotedPart* '\'';
+
+DoubleQuotedPart:
+   (!('&' / '\"' / '<') .)+ / Ref;
+
+SingleQuotedPart:
+   (!('&' / '\'' / '<') .)+ / Ref;
+
+/**
+   XML names
+**/
+QName:
+   Qualifier? NCName;
+
+Qualifier:
+   '{' spacing? NamespaceURI spacing? '}' / NCName ':';
+
+NCName:
+   ([A-Za-z] / '_') ([A-Za-z0-9] / '.' / '-' / '_')*;
+
+NamespaceURI:
+   ([a-zA-Z0-9] / '_' / '-' / ':' / '/' / '.')+;
+
+/**
+  XML Processing Instructions
+**/
+PI:
+   '<?' PITarget (spacing PIChars)? '?>';
+
+PITarget:
+   !(('X' / 'x') ('M' / 'm') ('L' / 'l') !NCName) NCName;
+
+PIChars:
+   (!'?>' .)*;
+
+/**
+  XML Comments and spacing
+**/
+Comment:
+   '<!--' (!'--' .)* '-->';
+
+spacing:
+   (' ' / '\n\t' / '\n' / '\t')+;
+
+/**
+  XML Prologue
+**/
+
+Prologue:
+   XMLDecl? Misc* DocTypePrologue?;
+
+Epilogue:
+   Misc*;
+
+Misc:
+   Comment / PI / spacing;
+
+XMLDecl:
+   '<?xml' VersionInfo EncodingDecl? StandaloneDecl? spacing? '?>';
+
+StandaloneDecl:
+   spacing 'standalone' spacing? '=' spacing? StandaloneValue;
+
+VersionInfo:
+   spacing 'version' spacing? '=' spacing? ('\"' VersionNum '\"' / '\'' VersionNum '\'');
+
+EncodingDecl:
+   spacing 'encoding' spacing? '=' spacing? ('\"' EncodingName '\"' / '\'' EncodingName '\'');
+
+StandaloneValue:
+   '\"' YesNo '\"' / '\'' YesNo '\'';
+
+YesNo:
+   'yes' / 'no';
+
+EncodingName:
+   [A-Za-z] ([A-Za-z0-9] / '.' / '_' / '-')*;
+
+VersionNum:
+   ([a-zA-Z0-9] / '.' / '_' / ':' / '-')+;
+
+DocTypePrologue:
+   DocTypeDecl Misc*;
+
+DocTypeDecl:
+   '<!DOCTYPE' spacing QName ExternalID '>';
+
+/**
+  XML External Entity Declaration
+**/
+ExternalID:
+   'SYSTEM' spacing SystemLit / 'PUBLIC' spacing PublicLit spacing SystemLit;
+
+SystemLit:
+   '\"' (!'\"' .)* '\"' / '\'' (!'\'' .)* '\'';
+
+PublicLit:
+   '\"' PubIDChar* '\"' / '\'' (!'\'' PubIDChar)* '\'';
+
+PubIDChar:
+   [a-zA-Z0-9] / ' ' / '\n\t' / '\t' / '-' / '\'' / '(' / ')' / '+' / ',' / '.' / '/' / ':' 
+ / '=' / '?' / ';' / '!' / '*' / '#' / '@' / '_' / '$' / '%';

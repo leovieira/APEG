@@ -1,4 +1,0 @@
-module xml/XmlTextTools
- imports org/sugarj/java/init/initGrammar concretesyntax/Java xml/XmlSyntax
-exports 
-  (/)

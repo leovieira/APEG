@@ -26,12 +26,13 @@ public class DataManager {
 		return instance;
 	}
 	
-	public static DataManager init(String project, String path) throws IOException, DataException {
+	public static DataManager init(String project, String path, boolean append) throws IOException, DataException {
 		instance = new DataManager();
 		instance.project_name = project;
-		instance.csv_file = new DataTable(new FileWriter(path + "/" + project + "_data.csv", false),
+		instance.csv_file = new DataTable(new FileWriter(path + "/" + project + "_data.csv", append),
 				                                         row_title.length, ';', "0");
-		instance.csv_file.createTableTitle(row_title);
+		if(!append)
+			instance.csv_file.createTableTitle(row_title);
 		instance.rows = new HashMap<String, long[]>();
 		
 		return getInstance();
@@ -89,6 +90,10 @@ public class DataManager {
 		instance.csv_file.close();
 	}
 	
+	public static String getFileName() {
+		return instance.project_name + "_data.csv";
+	}
+	
 	//---------------
 	public void setUnit(String unit, int pos) throws DataException {
 		if(pos > this.unit.length-1)
@@ -98,7 +103,7 @@ public class DataManager {
 	
 	public static void main(String args[]) {
 		try {
-			DataManager.init("test", "/home/leo/workspace/APEG/experiments/languages/SugarJ/data");
+			DataManager.init("test", "/home/leo/workspace/APEG/experiments/languages/SugarJ/data", false);
 			
 			DataManager.addParseTime("test01", 2);
 			DataManager.addParseTime("test01", 3);

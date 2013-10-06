@@ -1,4 +1,0 @@
-module xml/AsSax
- imports org/sugarj/java/init/initGrammar concretesyntax/Java eblock/EBlock xml/XmlSyntax xml/XmlTextTools
-exports 
-  (/)

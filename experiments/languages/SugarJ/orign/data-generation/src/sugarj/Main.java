@@ -3,8 +3,10 @@ package sugarj;
 import java.io.File;
 import java.io.IOException;
 
+import apeg.data.DataManager;
+import apeg.exception.DataException;
 
-
+import com.csvreader.CsvReader;
 
 public class Main {
 
@@ -20,6 +22,11 @@ public class Main {
 		String bin[] = {"bin", "bin", "bin"};
 		String files[][] = {/*{"javaclosure/Test.sugj"}, {"pair/TestPair.sugj"},*/ {"xml/Test.sugj"}};
 		
+		String files_to_include[][] = { /*{"javaclosure/Test.sugj", "javaclosure/Syntax.sugj"},
+                {"pair/TestPair.sugj", "pair/Pair.sugj"},*/
+                {"xml/Test.sugj", "xml/XmlSyntax.sugj"}
+              };
+		
 		for(int i=0; i < project.length; ++i) {
 			createDir("./data/" + project[i]);
 			clear(path + "/" + project[i] + "/" + bin[i]);
@@ -28,6 +35,7 @@ public class Main {
 				run(path, project[i], files[i], source[i], bin[i], project[i] + "_" + j);
 				clear(path + "/" + project[i] + "/" + bin[i]);
 			}
+			sumaryData("./data/" + project[i], project[i], files_to_include[i]);
 		}
 		System.exit(0);
 	}
@@ -46,7 +54,7 @@ public class Main {
 		for(int j = 0; j < files.length; ++j) {
 			args[7+j] = files[j];
 		}
-		apeg.data.DataManager.init(outputName, "data/" + project);
+		apeg.data.DataManager.init(outputName, "data/" + project, false);
 		org.sugarj.driver.cli.Main.main(args);
 		apeg.data.DataManager.flush();
 	}
@@ -72,4 +80,38 @@ public class Main {
 		
 	}
 	
+	private static boolean isOneOf(String file, String[] files) {
+		if(file.isEmpty())
+			return false;
+		for(String f : files) {
+			if(file.endsWith(f))
+				return true;
+		}
+		return false;
+	}
+	
+	private static void sumaryData(String path, String project, String[] files) throws DataException, IOException {
+		DataManager.init(project + "_sumary", path, false);
+		File dir = new File("data/" + project);
+		int i = 1;
+		for(String file : dir.list()) {
+			if(file.equals(DataManager.getFileName()))
+				continue;
+			System.out.println(file);
+			CsvReader csv = new CsvReader(dir.getAbsolutePath() + "/" + file, ';');
+			csv.readHeaders(); // read the first line as header columns
+			while(csv.readRecord()) {
+				String file_name = csv.get("File");
+				String parse_time = csv.get("Parse");
+				String adapt_time = csv.get("Adapt");
+				if(isOneOf(file_name, files) || file_name.equals("init")) {
+					DataManager.addAdaptabilityTime("execution " + i, Long.parseLong(adapt_time));
+					DataManager.addParseTime("execution " + i, Long.parseLong(parse_time));
+				}				
+			}
+			csv.close();
+			i++;
+		}	
+		DataManager.flush();
+	}
 }

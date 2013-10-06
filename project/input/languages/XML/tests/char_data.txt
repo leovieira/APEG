@@ -1,0 +1,1 @@
+qualquer caracter que não seja AND ou LESS_EQUAL symbols é um char data!

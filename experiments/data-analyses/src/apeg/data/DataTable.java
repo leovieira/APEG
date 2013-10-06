@@ -21,7 +21,7 @@ public class DataTable {
 
 	private int pos_column; // current column position
 	
-	DataTable(Writer output, int columns, char separator, String blank) {
+	public DataTable(Writer output, int columns, char separator, String blank) {
 		this.output = new CsvWriter(output, separator);
 		this.columns = columns;
 		this.blank = blank;

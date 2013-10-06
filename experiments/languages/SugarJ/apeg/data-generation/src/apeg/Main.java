@@ -5,14 +5,14 @@ import java.io.File;
 import apeg.sugarj.driver.Driver;
 
 public class Main {
-	private static final int NUM_EXEC = 1;
+	private static final int NUM_EXEC = 3;
 
 	public static void main(String[] cmd) throws Throwable {
 		final String path = "/home/leo/workspace/APEG/experiments/languages/SugarJ/apeg/case-studies";
-		String project[] = { "closures", "pairs", "xml" };
+		String project[] = { /*"closures", "pairs",*/ "xml" };
 		String source[] = { "src", "src", "src" };
-		String files[][] = { { "javaclosure/Test.sugj" }, {"pair/TestPair.sugj"}, {"xml/XmlSyntax.sugj"} };
-
+		String files[][] = { /*{ "javaclosure/Test.sugj" }, {"pair/TestPair.sugj"},*/ {"xml/Test.sugj"} };
+		
 		for (int i = 0; i < project.length; ++i) {
 			for (int j = 1; j <= NUM_EXEC; ++j) {
 				createDir("./data/" + project[i]);
@@ -31,7 +31,7 @@ public class Main {
 		for (int j = 0; j < files.length; ++j) {
 			args[2 + j] = files[j];
 		}
-		apeg.data.DataManager.init(outputName, "data/" + project);
+		apeg.data.DataManager.init(outputName, "data/" + project, false);
 		apeg.sugarj.driver.cli.Main.main(args);
 		apeg.data.DataManager.flush();
 	}
