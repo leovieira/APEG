@@ -5,5 +5,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.apeg.data"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/apeg.sugarj.compiler"/>
 	<classpathentry kind="lib" path="/sugarj_data/lib/javacsv.jar"/>
+	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

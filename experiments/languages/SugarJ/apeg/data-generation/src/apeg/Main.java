@@ -1,45 +1,66 @@
 package apeg;
 
-import java.io.File;
-
-import apeg.sugarj.driver.Driver;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.Options;
 
 public class Main {
-	private static final int NUM_EXEC = 3;
 
 	public static void main(String[] cmd) throws Throwable {
-		final String path = "/home/leo/workspace/APEG/experiments/languages/SugarJ/apeg/case-studies";
-		String project[] = { /*"closures", "pairs",*/ "xml" };
-		String source[] = { "src", "src", "src" };
-		String files[][] = { /*{ "javaclosure/Test.sugj" }, {"pair/TestPair.sugj"},*/ {"xml/Test.sugj"} };
-		
-		for (int i = 0; i < project.length; ++i) {
-			for (int j = 1; j <= NUM_EXEC; ++j) {
-				createDir("./data/" + project[i]);
-				run(path, project[i], files[i], source[i], project[i] + "_" + j);
-				Driver.clear();
+		try {
+			CommandLine opts = parseOptions(specifyOptions(), cmd);
+			String files[] = opts.getArgs();
+			if(files.length < 1) {
+				throw new Exception("No source files specified.");
 			}
+			String args[] = new String[2 + files.length];
+			args[0] = "--sourcepath";
+			args[1] = opts.getOptionValue("sourcepath");
+			for (int j = 0; j < files.length; ++j) {
+				args[2 + j] = files[j];
+			}
+			String output;
+			if(opts.getOptionValue("output").endsWith(".csv"))
+				output = opts.getOptionValue("output").substring(0, opts.getOptionValue("output").length() - 4);
+			else
+				output = opts.getOptionValue("output");
+			String project = output.substring(output.lastIndexOf("/")+1, output.length());
+			String path = output.substring(0, output.lastIndexOf("/")+1);
+			boolean append = opts.hasOption("append");
+			
+			apeg.data.DataManager.init(project, path, append);
+			apeg.sugarj.driver.cli.Main.main(args);
+			apeg.data.DataManager.flush();
+		} catch(org.apache.commons.cli.ParseException exp) {
+			
 		}
+		
+		//String files[][] = { /*{ "javaclosure/Test.sugj" }, {"pair/TestPair.sugj"},*/ {"xml/Test.sugj"} };
+	}
+	
+	// *************************************************************************
+	// ******************** Handle Options *************************************
+	// ************************************************************************
+
+	private static CommandLine parseOptions(Options options, String[] args)
+			throws org.apache.commons.cli.ParseException {
+		CommandLineParser parser = new GnuParser();
+		return parser.parse(options, args);
 	}
 
-	private static void run(String path, String project, String[] files,
-			String source, String outputName) throws Throwable {
-		// Generating the input arguments
-		String args[] = new String[2 + files.length];
-		args[0] = "--sourcepath";
-		args[1] = path + "/" + project + "/" + source;
-		for (int j = 0; j < files.length; ++j) {
-			args[2 + j] = files[j];
-		}
-		apeg.data.DataManager.init(outputName, "data/" + project, false);
-		apeg.sugarj.driver.cli.Main.main(args);
-		apeg.data.DataManager.flush();
-	}
+	private static Options specifyOptions() {
+		Options options = new Options();
 
-	private static void createDir(String path) {
-		File file = new File(path);
-		if (!file.exists()) {
-			file.mkdir();
-		}
+		options.addOption("sp", "sourcepath", true,
+				"Specify where to find source files.");
+		options.addOption("o", "output", true,
+				"Specify the output name path of the generated file with the execution time.");
+		options.addOption(null, "append", false,
+				"Specify if it is to create a new output file or append in an existing one");
+		
+		options.addOption(null, "help", false, "Print this synopsis of options");
+
+		return options;
 	}
 }
