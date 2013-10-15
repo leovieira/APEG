@@ -11,8 +11,12 @@ NUM_EXEC=30
 
 #################
 
-NAME='xml'
-FILES='xml/Test.sugj'
+NAME='all'
+FILES='test/TestAll.sugj test/TestClosureXML.sugj test/TestPairXML.sugj test/TestXML.sugj test/TestPair.sugj test/TestClosure.sugj test/Partial.sugj'
+
+
+#NAME='xml'
+#FILES='xml/Test.sugj'
 
 #NAME='closures'
 #FILES='javaclosure/Test.sugj'

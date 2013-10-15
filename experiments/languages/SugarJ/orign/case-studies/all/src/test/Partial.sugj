@@ -1,0 +1,14 @@
+package test;
+
+import javaclosure.Syntax;
+import javaclosure.Transformation;
+
+import pair.Pair;
+
+public class Partial {
+	public static <R,X,Y> #R(Y) invoke(final #R((X,Y)) f, final X x) {
+		return #R(Y y) {
+				return f.invoke((x,y));
+			};
+	}
+}

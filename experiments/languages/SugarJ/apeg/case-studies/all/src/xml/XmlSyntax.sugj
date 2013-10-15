@@ -1,0 +1,118 @@
+package xml;
+
+import org.sugarj.languages.Java;
+
+/*
+ * https://svn.strategoxt.org/repos/StrategoXT/java-borg/trunk/syn/Java-XML.sdf
+ * https://svn.strategoxt.org/repos/StrategoXT/java-borg/trunk/sig/java-meta-markers.str
+ */
+public sugar XmlSyntax {
+	context-free syntax
+
+/**
+  Java-XML
+**/
+		ObjectStm -> statement;	
+		Identifier DOT Document SEMI -> ObjectStm;
+
+//		'<{' ws statement  ws '}/>' -> Content;
+//		AttrName EQU JavaAttValue -> Attribute;
+
+//		'\"{' ws expr ws '}\"' -> JavaAttValue;
+//		LWING  expr '::' ws 'cdata' ws RWING -> Content;
+
+/**
+  A XML document
+**/
+		Prologue Element Epilogue -> Document;
+
+		  '<' ElemName (spacing Attribute)* spacing? '/>'
+    / '<' ElemName (spacing Attribute)* spacing? '>' Content* '</' ElemName spacing? '>' -> Element;
+
+		(Element / Comment / PI / Ref / CDataSection / CharData) -> Content;
+
+		QName -> ElemName;
+
+		(!('&' / '<') .)+ -> CharData;
+
+		'<![CDATA[' CData ']]>' -> CDataSection;
+		(!']]>' .)* -> CData;
+
+		CharRef / EntityRef -> Ref;
+		'&#x' [0-9a-fA-F]+ ';' / '&#' [0-9]+ ';' -> CharRef;
+		'&' NCName ';' -> EntityRef;
+
+/**
+  XML Attributes
+**/
+
+		AttrName spacing? '=' spacing? AttValue -> Attribute;
+		QName -> AttrName;
+
+		'\"' DoubleQuotedPart* '\"' / '\'' SingleQuotedPart* '\'' -> AttValue;
+
+		(!('&' / '\"' / '<') .)+ / Ref -> DoubleQuotedPart;
+		(!('&' / '\'' / '<') .)+ / Ref -> SingleQuotedPart;
+
+/**
+   XML names
+**/
+
+		Qualifier? NCName -> QName;
+		'{' spacing? NamespaceURI spacing? '}' / NCName ':' -> Qualifier;
+
+		([A-Za-z] / '_') ([A-Za-z0-9] / '.' / '-' / '_')* -> NCName;
+    ([a-zA-Z0-9] / '_' / '-' / ':' / '/' / '.')+ -> NamespaceURI;
+
+/**
+  XML Processing Instructions
+**/
+
+		'<?' PITarget (spacing PIChars)? '?>' -> PI;
+		!(('X' / 'x') ('M' / 'm') ('L' / 'l') !NCName) NCName -> PITarget;
+		(!'?>' .)* -> PIChars;
+
+/**
+  XML Comments and spacing
+**/
+
+		'<!--' (!'--' .)* '-->' -> Comment;
+
+		(' ' / '\n\t' / '\n' / '\t')+ -> spacing;
+
+/**
+  XML Prologue
+**/
+
+		XMLDecl? Misc* DocTypePrologue? -> Prologue;
+		Misc* -> Epilogue;
+		Comment / PI / spacing -> Misc;
+
+		'<?xml' VersionInfo EncodingDecl? StandaloneDecl? spacing? '?>' -> XMLDecl;
+
+    spacing 'standalone' spacing? '=' spacing? StandaloneValue -> StandaloneDecl;
+    spacing 'version' spacing? '=' spacing? ('\"' VersionNum '\"' / '\'' VersionNum '\'') -> VersionInfo;
+    spacing 'encoding' spacing? '=' spacing? ('\"' EncodingName '\"' / '\'' EncodingName '\'') -> EncodingDecl;
+
+		'\"' YesNo '\"' / '\'' YesNo '\'' -> StandaloneValue;
+		'yes' / 'no' -> YesNo;
+
+		[A-Za-z] ([A-Za-z0-9] / '.' / '_' / '-')* -> EncodingName;
+
+		([a-zA-Z0-9] / '.' / '_' / ':' / '-')+ -> VersionNum;
+
+		DocTypeDecl Misc* -> DocTypePrologue;
+		'<!DOCTYPE' spacing QName ExternalID '>' -> DocTypeDecl;
+
+/**
+  XML External Entity Declaration
+**/
+
+		'SYSTEM' spacing SystemLit / 'PUBLIC' spacing PublicLit spacing SystemLit -> ExternalID;
+
+		'\"' (!'\"' .)* '\"' / '\'' (!'\'' .)* '\'' -> SystemLit;
+		'\"' PubIDChar* '\"' / '\'' (!'\'' PubIDChar)* '\'' -> PublicLit;
+
+		  [a-zA-Z0-9] / ' ' / '\n\t' / '\t' / '-' / '\'' / '(' / ')' / '+' / ',' / '.' / '/' / ':' 
+    / '=' / '?' / ';' / '!' / '*' / '#' / '@' / '_' / '$' / '%' -> PubIDChar;
+}
