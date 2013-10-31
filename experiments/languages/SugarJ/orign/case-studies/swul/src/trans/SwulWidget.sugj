@@ -1,0 +1,506 @@
+package trans;
+
+import eblock.EBlock;
+
+import swul.SwulSyntax;
+
+/*
+ * https://svn.strategoxt.org/repos/StrategoXT/java-swul/trunk/trans/swul-assimilate-widgets.str
+ */
+public sugar SwulWidget {
+/*******************************************************************************
+ *
+ * Component transformations
+ *  Component -> JavaExpr
+ */
+rules 
+
+// JComponent
+  SwulAs-JComponent = SwulAs-AbstractButton
+                    + SwulAs-JLabel
+                    + SwulAs-JTextComponent
+                    + SwulAs-JComboBox
+                    + SwulAs-JTree
+                    + SwulAs-JProgressBar
+                    + SwulAs-JSlider
+                    + SwulAs-JSeparator
+
+// JTextComponent
+  SwulAs-JTextComponent = SwulAs-JTextArea
+                        + SwulAs-JTextField
+    
+// AbstractButton
+  SwulAs-AbstractButton = SwulAs-JButton
+                        + SwulAs-JToggleButton
+                        + SwulAs-JMenuItem
+
+// JButton 
+  SwulAs-JButton :
+    swul c |[ button { ps* } ]|{x} -> expr |[ {| x = new JButton() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJButton: ",<id>)
+          ; <map(SwulAs-JButtonProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JButton; ]| )
+
+// JLabel
+  SwulAs-JLabel :
+    swul c |[ label { ps* } ]|{x} -> expr |[ {| x = new JLabel() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJLabel: ",<id>)
+          ; <map(SwulAs-JLabelProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JLabel; ]| )
+
+// TextArea
+  SwulAs-JTextArea :
+    swul c |[ textarea { ps* } ]|{x} -> expr |[ {| x = new JTextArea() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJTextArea: ",<id>)
+          ; <map(SwulAs-JTextAreaProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JTextArea; ]| )
+
+// JTextField
+  SwulAs-JTextField :
+    swul c |[ textfield { ps* } ]|{x} -> expr |[ {| x = new JTextField() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJTextField: ",<id>)
+          ; <map(SwulAs-JTextFieldProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JTextField; ]| )
+
+  SwulAs-JTextField :
+    swul c |[ textfield of c ]|{x} -> expr |[ {| x = new JTextField() ; x.setText(e) ;| x  |} ]|
+      where log(|Debug,"\nJTextField of: ",<id>)
+          ; <SwulAs-JavaExpr> c => e
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JTextField; ]| )
+
+
+// JCheckBox
+  SwulAs-JCheckBox :
+    swul c |[ checkbox { ps* } ]|{x} -> expr |[ {| x = new JCheckBox() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJCheckBox: ",<id>)
+          ; <map(SwulAs-JCheckBoxProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JCheckBox; ]| )
+
+// JRadioButton
+  SwulAs-JRadioButton :
+    swul c |[ radiobutton { ps* } ]|{x} -> expr |[ {| x = new JRadioButton() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJRadioButton: ",<id>)
+          ; <map(SwulAs-JRadioButtonProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JRadioButton; ]| )
+
+// JComboBox
+  SwulAs-JComboBox :
+    swul c |[ combobox { ps* } ]|{x} -> expr |[ {| x = new JComboBox() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJComboBox: ",<id>)
+          ; <map(SwulAs-JComboBoxProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JComboBox; ]| )
+
+// JTree
+  SwulAs-JTree :
+    swul c |[ tree { ps* } ]|{x} -> expr |[ {| x = new JTree() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJTree: ",<id>)
+          ; <map(SwulAs-JTreeProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JTree; ]| )
+
+// JProgressBar
+  SwulAs-JProgressBar :
+    swul c |[ progressbar { ps* } ]|{x} -> expr |[ {| x = new JProgressBar() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJProgressBar: ",<id>)
+          ; <map(SwulAs-JProgressBarProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JProgressBar; ]| )
+
+// JSlider
+  SwulAs-JSlider :
+    swul c |[ slider { ps* } ]|{x} -> expr |[ {| x = new JSlider() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJSlider: ",<id>)
+          ; <map(SwulAs-JSliderProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JSlider; ]| )
+
+// JToggleButton
+  SwulAs-JToggleButton = SwulAs-JCheckBox
+                       + SwulAs-JRadioButton  
+                       
+  SwulAs-JToggleButton :
+    swul c |[ togglebutton { ps* } ]|{x} -> expr |[ {| x = new JToggleButton() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJToggleButton: ",<id>)
+          ; <map(SwulAs-JToggleButtonProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JToggleButton; ]| )
+
+// JSeparator
+  SwulAs-JSeparator :
+    swul c |[ separator { ps* } ]|{x} -> expr |[ {| x = new JSeparator(); bstm* | x |} ]|
+      where log(|Debug,"\nSeparator: ",<id>)
+          ;  <map(SwulAs-JSeparatorProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JSeparator; ]| )
+
+
+/*******************************************************************************
+ * Component Properties transformations
+ *  ComponentProp -> JavaBstm
+ *  @param x : Identifier x of the component that needs his properties 
+ *  set ( x.setProp(val) )
+ */
+ 
+// JTree 
+rules 
+  SwulAs-JTreeProp(|x) :
+    swul cp |[ model = c ]| -> bstm |[ x.setModel(e) ; ]|
+      where log(|Debug,"\nJTreeProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JTreeProp(|x) :
+    swul cp |[ rootvisible = c ]| -> bstm |[ x.setRootVisible(e) ; ]|
+      where log(|Debug,"\nJTreeProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  
+  SwulAs-JTreeProp(|x) :
+    swul cp |[ toggleclickcount = c ]| -> bstm |[ x.setToggleClickCount(e) ; ]|
+      where log(|Debug,"\nJTreeProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JTreeProp(|x) :
+    swul cp |[ cellrenderer = c ]| -> bstm |[ x.setCellRenderer(e) ; ]|
+      where log(|Debug,"\nJTreeProp: ",<id>)
+          ; <SwulAs-Component> c => e
+    
+  SwulAs-JTreeProp(|x) :
+    swul cp |[ tooltipmanager = c ]| -> bstm |[ ToolTipManager.sharedInstance().registerComponent(e); ]|
+      where log(|Debug,"\nJTreeProp: ",<id>)
+          ; <SwulAs-Component> c => e
+            
+  SwulAs-JTreeProp(|x) = SwulAs-JComponentProp(|x)
+
+// JTextArea
+
+  SwulAs-JTextAreaProp(|x) :
+    swul cp |[ rows = c ]| -> bstm |[ x.setRows(e) ; ]|
+      where log(|Debug,"\nJTextAreaProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JTextAreaProp(|x) :
+    swul cp |[ columns = c ]| -> bstm |[ x.setColumns(e) ; ]|
+      where log(|Debug,"\nJTextAreaProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JTextAreaProp(|x) = SwulAs-JTextComponentProp(|x)
+
+// JTextField
+
+  SwulAs-JTextFieldProp(|x) = SwulAs-JTextComponentProp(|x)
+
+// JTextComponent    
+    
+  SwulAs-JTextComponentProp(|x) :
+    swul cp |[ editable = c ]| -> bstm |[ x.setEditable(e) ; ]|
+      where log(|Debug,"\nJTextComponentProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JTextComponentProp(|x) :
+    swul cp |[ text = c ]| -> bstm |[ x.setText(e) ; ]|
+      where log(|Debug,"\nText: ",<id>)
+          ; <SwulAs-Component> c => e
+  
+  SwulAs-JTextComponentProp(|x) = SwulAs-JComponentProp(|x)
+                                + SwulAs-CaretListenerProp(|x)
+
+// JLabel    
+
+  SwulAs-JLabelProp(|x) :
+    swul cp |[ horizontalalignment = c ]| -> bstm |[ x.setHorizontalAlignment(e) ; ]|
+      where <SwulAs-Alignment> c => e
+
+  SwulAs-JLabelProp(|x) :
+    swul cp |[ verticalalignment = c  ]| -> bstm |[ x.setVerticalAlignment(e) ; ]|
+      where <SwulAs-Alignment> c => e
+   
+  SwulAs-JLabelProp(|x) :
+    swul cp |[ text = c ]| -> bstm |[ x.setText(e) ; ]|
+      where log(|Debug,"\nText: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JLabelProp(|x) :
+    swul cp |[ mnemonic = k ]| -> bstm |[ x.setDisplayedMnemonic(e) ; ]|
+      where log(|Debug,"\nMnemonic: ",<id>)
+          ; <SwulAs-Key2Char> k => e
+
+//TODO!! Identifier in e must a instantiated component! (postblock abuse is a hack...)
+  SwulAs-JLabelProp(|x) :
+    swul cp |[ label for = c ]| -> bstm |[ {| null | x.setLabelFor(e) ; |};  ]|
+      where log(|Debug,"\nLabel for: ",<id>)
+          ; <SwulAs-Component> c => e
+          ; log(|Debug,"\nLabel for: ",<id>)
+
+
+  SwulAs-JLabelProp(|x) = SwulAs-JComponentProp(|x)
+
+// JProgressBar    
+
+  SwulAs-JProgressBarProp(|x) :
+    swul cp |[ minimum = c ]| -> bstm |[ x.setMinimum(e) ; ]|
+      where log(|Debug,"\nJProgressBarProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JProgressBarProp(|x) :
+    swul cp |[ maximum = c ]| -> bstm |[ x.setMaximum(e) ; ]|
+      where log(|Debug,"\nJProgressBarProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JProgressBarProp(|x) :
+    swul cp |[ value = c ]| -> bstm |[ x.setValue(e) ; ]|
+      where log(|Debug,"\nJProgressBarProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JProgressBarProp(|x) = SwulAs-JComponentProp(|x)
+
+// JSlider
+
+  SwulAs-JSliderProp(|x) :
+    swul cp |[ orientation = c ]| -> bstm |[ x.setOrientation(e) ; ]|
+      where log(|Debug,"\nOrientation: ",<id>)
+          ; <SwulAs-Orientation> c => e
+
+  SwulAs-JSliderProp(|x) :
+    swul cp |[ minimum = c ]| -> bstm |[ x.setMinimum(e) ; ]|
+      where log(|Debug,"\nJProgressBarProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JSliderProp(|x) :
+    swul cp |[ maximum = c ]| -> bstm |[ x.setMaximum(e) ; ]|
+      where log(|Debug,"\nJProgressBarProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JSliderProp(|x) :
+    swul cp |[ value = c ]| -> bstm |[ x.setValue(e) ; ]|
+      where log(|Debug,"\nJProgressBarProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JSliderProp(|x) = SwulAs-JComponentProp(|x)
+                         + SwulAs-ChangeListenerProp(|x) 
+
+// JSeparator
+
+  SwulAs-JSeparatorProp(|x) = SwulAs-JComponentProp(|x)
+
+// JComboBox
+  SwulAs-JComboBoxProp(|x) :
+    swul cp |[ model = c ]| -> bstm |[ x.setModel(e) ; ]|
+      where log(|Debug,"\nJTreeProp: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JComboBoxProp(|x) = SwulAs-JComponentProp(|x)
+
+// JRadioButton
+
+  SwulAs-JRadioButtonProp(|x) = SwulAs-JToggleButtonProp(|x)
+
+// JCheckBox
+
+  SwulAs-JCheckBoxProp(|x) = SwulAs-JToggleButtonProp(|x)
+  
+
+// JToggleButton
+  
+  SwulAs-JToggleButtonProp(|x) = SwulAs-AbstractButtonProp(|x)
+
+// JButton
+  
+  SwulAs-JButtonProp(|x) = SwulAs-AbstractButtonProp(|x)
+
+// AbstractButton
+
+  SwulAs-AbstractButtonProp(|x) :
+    swul cp |[ selected = c ]| -> bstm |[ x.setSelected(e) ; ]|
+      where log(|Debug,"\nSelected: ",<id>)
+         ; <SwulAs-Component> c => e
+
+  SwulAs-AbstractButtonProp(|x) :
+    swul cp |[ enabled = c ]| -> bstm |[ x.setEnabled(e) ; ]|
+      where log(|Debug,"\nEnabled: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-AbstractButtonProp(|x) :
+    swul cp |[ group = c ]| -> bstm |[ z.add(x) ; ]|
+      where log(|Debug,"\nAbstractButtonProp: ",<id>)
+          ; <get-group-identifier> c => z
+
+  SwulAs-AbstractButtonProp(|x) :
+    swul cp |[ icon = c ]| -> bstm |[ x.setIcon( e ) ; ]|
+      where log(|Debug,"\nIcon: ",<id>)
+          ; <SwulAs-IconString <+ SwulAs-Component> c => e
+  
+  SwulAs-AbstractButtonProp(|x) :
+    swul cp |[ text = c ]| -> bstm |[ x.setText( e ) ; ]|
+      where log(|Debug,"\nText: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-AbstractButtonProp(|x) :
+    swul cp |[ mnemonic = k ]| -> bstm |[ x.setMnemonic(e) ; ]|
+      where log(|Debug,"\nMnemonic: ",<id>)
+          ; <SwulAs-KeyEvent> k => e
+          
+  SwulAs-AbstractButtonProp(|x) = SwulAs-JComponentProp(|x)
+                                + SwulAs-ActionListenerProp(|x)
+                                + SwulAs-ItemListenerProp(|x)
+                                + SwulAs-ChangeListenerProp(|x)
+
+// JComponent
+      
+  SwulAs-JComponentProp(|x) :
+    swul cp |[ tip = c ]| -> bstm |[ x.setToolTipText(e) ; ]|
+      where log(|Debug,"\nTooltip: ",<id>) 
+          ; <SwulAs-Component> c => e 
+ 
+  SwulAs-JComponentProp(|x) :
+    swul cp |[ doublebuffered = c ]| -> bstm |[ x.setDoubleBuffered(e) ; ]|
+      where log(|Debug,"\nDoublebuffered: ",<id>)
+          ; <SwulAs-Component> c => e 
+
+  SwulAs-JComponentProp(|x) :
+    swul cp |[ opaque = c ]| -> bstm |[ x.setOpaque(e) ; ]|
+      where log(|Debug,"\nOpaque: ",<id>)
+           ; <SwulAs-Component> c => e 
+
+  SwulAs-JComponentProp(|x) :
+    swul cp |[ border = c ]| -> bstm |[ x.setBorder(e) ;]|
+      where log(|Debug,"\nBorder: ",<id>)
+          ; <SwulAs-Border> c => e
+  
+  SwulAs-JComponentProp(|x) :
+    swul cp |[ border = c ]| -> bstm |[ x.setBorder(e) ;]|
+      where log(|Debug,"\nBorder: ",<id>)
+          ; <SwulAs-JavaExpr> c => e
+            
+  SwulAs-JComponentProp(|x) :
+    swul cp |[ minimumsize = v ]| -> bstm |[ x.setMinimumSize(new Dimension(e1,e2)) ;]|
+      where log(|Debug,"\nMinimumsize: ",<id>)
+          ; <SwulAs-TwoTuple> v => (e1,e2)
+                               
+  SwulAs-JComponentProp(|x) = SwulAs-ContainerProp(|x)
+
+
+
+/*******************************************************************************
+ * Auxiliry transformations
+ * 
+ */
+   
+/*
+ * Alignment transformations
+ *   Alignment -> JavaExpr
+ */
+ 
+rules 
+  SwulAs-Alignment :
+    Left ->  expr |[ SwingConstants.LEFT ]|
+  SwulAs-Alignment :         
+    Center ->  expr |[ SwingConstants.CENTER ]|
+  SwulAs-Alignment :  
+    Right ->  expr |[ SwingConstants.RIGHT ]|
+  SwulAs-Alignment :  
+    Leading ->  expr |[ SwingConstants.LEADING ]|
+  SwulAs-Alignment :  
+    Trailing ->  expr |[ SwingConstants.TRAILING ]|
+  SwulAs-Alignment :  
+    Top ->  expr |[ SwingConstants.TOP ]|
+  SwulAs-Alignment :  
+    Bottom ->  expr |[ SwingConstants.BOTTOM ]|
+
+/*
+ *  Creating an icon from a string representing the file name
+ *
+ */
+ 
+ SwulAs-IconString =
+      ?FromExpr(<?Lit(String([Chars(a)]))>)
+    ; ?e
+    ; !expr |[ new ImageIcon(e) ]|
+
+/*
+ * JComponent Properties auxilary transformations
+ *
+ */
+  
+  get-group-identifier = 
+      buttongroup 
+    <+ 
+      ?x
+    ; new                                                      => ident
+    ; rules( buttongroup : x -> ident )
+    ; !ClassOrInterfaceType(TypeName(Id("ButtonGroup")), None) => t
+    ; bagof-FieldModifiers                                     => fieldmods
+    ; !VarDec( Id(ident) 
+             , NewInstance(
+                  None
+                , ClassOrInterfaceType(TypeName(Id("ButtonGroup")), None)
+                , []
+                , None
+               )
+              ) => dec
+    ; rules ( field-declarations :+ 
+                _ -> FieldDec(fieldmods, t, [dec])
+            )
+    ; !ident
+
+/*
+ * Border transformations
+ *   SwulBorder -> JavaExpr
+ */
+rules  
+  SwulAs-Border :
+    swul c |[ empty border ]| -> expr |[ BorderFactory.createEmptyBorder() ]|
+      where log(|Debug,"\nEmpty Border: ",<id>)
+  
+  SwulAs-Border :        
+    swul c |[ line border c ]| -> expr |[ BorderFactory.createLineBorder(e) ]| 
+      where log(|Debug,"\nLine Border: ",<id>)
+          ; <SwulAs-Color> c => e
+       
+  SwulAs-Border :
+    swul c |[ raised etched border ]| -> 
+    expr |[ BorderFactory.createEtchedBorder(EtchedBorder.RAISED)  ]|
+      where log(|Debug,"\nRaised Etched Border: ",<id>)
+  SwulAs-Border :
+    swul c |[ lowered etched border ]| -> 
+    expr |[ BorderFactory.createEtchedBorder(EtchedBorder.LOWERED)  ]|
+      where log(|Debug,"\nLowered Etched Border: ",<id>)
+ 
+  SwulAs-Border :
+    swul c |[ raised bevel border ]| -> 
+    expr |[ BorderFactory.createRaisedBevelBorder()  ]|
+      where log(|Debug,"\nRaised Bevel Border: ",<id>)
+ 
+  SwulAs-Border :
+    swul c |[  lowered bevel border ]| -> 
+    expr |[ BorderFactory.createEmptyBorder()  ]|
+      where log(|Debug,"\nLowered Bevel Border: ",<id>)
+
+/*
+ * Border transformations
+ *   SwulColorr -> JavaExpr
+ */
+rules 
+  SwulAs-Color :
+    swul c |[ black ]| -> expr |[ Color.BLACK ]|
+  SwulAs-Color :
+    swul c |[ orange ]| -> expr |[ Color.ORANGE ]|
+  SwulAs-Color :
+    swul c |[ blue ]| -> expr |[ Color.BLUE ]|
+  SwulAs-Color :
+    swul c |[ white ]| -> expr |[ Color.WHITE ]|
+  SwulAs-Color :
+    swul c |[ red ]| -> expr |[ Color.RED ]|
+  SwulAs-Color :
+    swul c |[ gray ]| -> expr |[ Color.GRAY ]|
+  SwulAs-Color :
+    swul c |[ borggreen ]| -> expr |[ new Color( 82, 144, 33) ]|
+    
+  SwulAs-TwoTuple :
+    TwoTuple( c1 , c2 )  -> (e1,e2)
+      where log(|Debug,"\nTuple of components: ",<id>)
+          ; <SwulAs-Component> c1 => e1
+          ; <SwulAs-Component> c2 => e2
+
+
+  SwulAs-Key2Char :
+    string -> expr |[ ~char:i ]|
+      where <explode-string> string => list
+          ; <?[<id>|_]> list        => char
+          ; !Char(Single(char))     => i
+
+}

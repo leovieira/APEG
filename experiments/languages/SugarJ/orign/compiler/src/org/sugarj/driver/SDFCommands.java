@@ -369,9 +369,10 @@ public class SDFCommands {
     long beginTime = System.currentTimeMillis();
     
     final SGLR parser = new SGLR(treeBuilder, table);
-    parser.setUseStructureRecovery(useRecovery);
-
+    
     long endTime = System.currentTimeMillis(); // TODO leonardo
+    
+    parser.setUseStructureRecovery(useRecovery);    
     try {
       DataManager.addAdaptabilityTime(sourceFile.getAbsolutePath(), endTime-beginTime);
     } catch (DataException e1) {

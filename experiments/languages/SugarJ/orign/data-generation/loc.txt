@@ -1,0 +1,11 @@
+Scratch code for adaptation
+ - class org.sugarj.driver.Driver
+  * field for saving the results (prefix parsed and remaind of the input as string): line 95
+  * field for storing the path of the current grammar and module: lines 102-103 and 106
+  * field for storing the current parser and the sdf parser: lines 114 and 117
+  * field for storing the current TBL: line 128
+  * function process: lines 364, 368, 393, 395-396, 433-434 and 453
+  * function processTopLevelDeclaration: 480-544; 7 comments lines
+
+ - Class SourceTopLevelDeclarationProvider
+  * all this class is relative to adaptation. This class has functions to provide a new top-level declaration, parsing it and also save the intermediate results. Lines 161; Comments: 9; functions: 6 function and 1 constructor

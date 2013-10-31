@@ -1038,13 +1038,22 @@ public class Driver{
        * Considerei a criacao da string com as regras + geracao do arquivo como tempo de parse
        *   de moda a uniformizar com a implementacao em APEG
        */
-      long beginTime = System.currentTimeMillis();
+      long time = 0;
+      long beginTime;
+      long endTime;
       //----------------------------------------------------
       
       RelativePath sdfExtension = environment.createOutPath(baseProcessor.getRelativeNamespaceSep() + extName + ".sdf");
       RelativePath strExtension = environment.createOutPath(baseProcessor.getRelativeNamespaceSep() + extName + ".str");
       
+      // Time for creating the list of imports
+      beginTime = System.currentTimeMillis(); // TODO Leonardo
+      
       String sdfImports = " imports " + StringCommands.printListSeparated(availableSDFImports, " ") + "\n";
+      
+      endTime = System.currentTimeMillis(); // TODO Leonardo
+      time += endTime - beginTime;
+      
       String strImports = " imports " + StringCommands.printListSeparated(availableSTRImports, " ") + "\n";
       
       // this is a list of SDF and Stratego statements
@@ -1054,6 +1063,9 @@ public class Driver{
       IStrategoTerm sdfExtract = fixSDF(extractSDF(extensionBody), baseProcessor.getInterpreter());
       IStrategoTerm strExtract = extractSTR(extensionBody);
       IStrategoTerm editorExtract = extractEditor(extensionBody);
+      
+      // Time for the head of the SDF file, generate the body and send it to a file
+      beginTime = System.currentTimeMillis(); // TODO Leonardo
       
       String sdfExtensionHead =
         "module " + fullExtName + "\n" 
@@ -1065,6 +1077,10 @@ public class Driver{
 
       String sdfSource = SDFCommands.makePermissiveSdf(sdfExtensionHead + sdfExtensionContent);
       driverResult.generateFile(sdfExtension, sdfSource);
+      
+      endTime = System.currentTimeMillis(); // TODO
+      time += endTime - beginTime;
+      
       availableSDFImports.add(fullExtName);
       
       if (CommandExecution.FULL_COMMAND_LINE)
@@ -1101,7 +1117,10 @@ public class Driver{
        * adapt current grammar
        */
       if (FileCommands.exists(sdfExtension)) {
+        beginTime = System.currentTimeMillis(); // TODO Leonardo
         buildCompoundSdfModule();
+        endTime = System.currentTimeMillis();
+        time += endTime - beginTime; // TODO Leonardo
       }
 
       /*
@@ -1113,11 +1132,11 @@ public class Driver{
       //---------------------------------------
       /**
        * TODO leonardo
-       * fiz da criacao da gramatica
+       * faz da criacao da gramatica
        */
-      long endTime = System.currentTimeMillis();
       try {
-        DataManager.addParseTime(sourceFile.getAbsolutePath(), endTime-beginTime);
+        //System.out.println("########## Tempo: " + time + " ###############");
+        DataManager.addParseTime(sourceFile.getAbsolutePath(), time);
       } catch (DataException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();

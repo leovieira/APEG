@@ -1,0 +1,120 @@
+module Swul 
+imports Swul-Widgets Swul-Menubar Swul-Events
+
+exports
+  context-free start-symbols Component 
+
+%%
+ %%  The general structure of the Swul language
+  %%
+  sorts Component 
+  context-free syntax  
+    ComponentType Named? ComponentProps?                        -> Component {cons("Component")}
+   
+  sorts Named
+  context-free syntax   
+    "named" Id -> Named {cons("SwulNamed")}
+
+  sorts ComponentProps    
+  context-free syntax   
+    "{" ComponentProp* "}" -> ComponentProps {cons("ComponentProps")}
+    "of" Component         -> ComponentProps {cons("DefaultPropsWithComponent")}
+
+
+  sorts ComponentProp ComponentPropValues
+  context-free syntax
+    ComponentPropType "=" ComponentPropValues                   -> ComponentProp {cons("ComponentProp")}
+    "{" Component* "}"                                          -> ComponentPropValues {cons("ComponentPropMultiValue")}
+    "(" Component "," Component "," Component "," Component ")" -> ComponentPropValues {cons("FourTuple")}
+    "(" Component "," Component ")"                             -> ComponentPropValues {cons("TwoTuple")}   
+    Component                                                   -> ComponentPropValues {cons("ComponentPropSingleValue")}
+
+%%
+ %%  Keywords that symbolize a component derived of a javax.swing.JComponent
+  %%
+  sorts ComponentType
+  context-free syntax  
+    "panel"                             -> ComponentType {cons("JPanel")}
+    "toolbar"                           -> ComponentType {cons("JToolBar")}    
+    "splitpane"                         -> ComponentType {cons("JSplitPane")}
+    "scrollpane"                        -> ComponentType {cons("JScrollPane")}  
+    "tabbedpane"                        -> ComponentType {cons("JTabbedPane")}
+    "tab"                               -> ComponentType {cons("Tab")}
+              
+    
+%%
+ %%  Keywords that symbolize a component implementing java.awt.LayoutManager2
+  %%    
+    "border" "layout"                   -> ComponentType {cons("BorderLayout")}
+    "gridbag" "layout"                  -> ComponentType {cons("GridBagLayout")}
+    "box" "layout"                      -> ComponentType {cons("BoxLayout")}
+    "card" "layout"                     -> ComponentType {cons("CardLayout")}
+%%
+ %%  Keywords that symbolize a component implementing java.awt.LayoutManager
+  %%    
+    "grid" "layout"                     -> ComponentType {cons("GridLayout")}
+%%
+ %%  Keywords that symbolize a component implementing java.awt.Window
+  %%
+    "frame"                             -> ComponentType {cons("JFrame")}      
+%%
+ %%  Misc ComponentType
+  %%    
+    "this"                              -> ComponentType {cons("SwulThis")}    
+    "nothing "                          -> ComponentType {cons("Nothing")}
+    "hide "                             -> ComponentType {cons("Hide")}
+    "dispose"                           -> ComponentType {cons("Dispose")}
+    "exit"                              -> ComponentType {cons("Close")}
+    "___"                               -> ComponentType {cons("NoGridbagComponent")}
+    "<<<"                               -> ComponentType {cons("LeftGridbagComponent")}
+    "^^^"                               -> ComponentType {cons("UpperGridbagComponent")}
+%%
+ %%  All the types of keywords that symbolize a component property
+  %%
+  sorts ComponentPropType
+  context-free syntax
+    "tip"                -> ComponentPropType {cons("ToolTip")}
+    "content"            -> ComponentPropType {cons("Content")}
+    "tabs"               -> ComponentPropType {cons("Tabs")}
+    "closeoperation"     -> ComponentPropType {cons("CloseOperation")}
+    "menubar"            -> ComponentPropType {cons("MenuBar")}
+    "title"              -> ComponentPropType {cons("Title")}
+    "icon"               -> ComponentPropType {cons("Icon")}
+    "split"              -> ComponentPropType {cons("Split")}
+    "resizeweight"       -> ComponentPropType {cons("ResizeWeight")}
+    "top"                -> ComponentPropType {cons("TopComponent")}
+    "left"               -> ComponentPropType {cons("LeftComponent")}
+    "bottom"             -> ComponentPropType {cons("BottomComponent")}
+    "right"              -> ComponentPropType {cons("RightComponent")}
+    "layout"             -> ComponentPropType {cons("Layout")}
+    "floatable"          -> ComponentPropType {cons("Floatable")}
+    "view"               -> ComponentPropType {cons("ScrollPaneContent")}
+    "row"                -> ComponentPropType {cons("Row")}
+    "horizontal" "gap"   -> ComponentPropType {cons("HorizontalGap")}
+    "vertical" "gap"     -> ComponentPropType {cons("VerticalGap")}
+    "orientation"        -> ComponentPropType {cons("Orientation")}
+    "anchor"             -> ComponentPropType {cons("Anchor")}
+    "fill"               -> ComponentPropType {cons("Fill")}
+    "external" "padding" -> ComponentPropType {cons("Insets")}
+    "inner" "padding"    -> ComponentPropType {cons("Padding")}
+    "north"              -> ComponentPropType {cons("North")}
+    "south"              -> ComponentPropType {cons("South")}
+    "east"               -> ComponentPropType {cons("East")}
+    "west"               -> ComponentPropType {cons("West")}
+    "center"             -> ComponentPropType {cons("Center")}
+
+    "horizontal"         -> Component {cons("Horizontal")}
+    "vertical"           -> Component {cons("Vertical")}
+
+%%
+%% Lexial syntax
+%%
+  sorts Id
+  lexical syntax
+    [a-zA-Z][a-zA-Z0-9]* -> Id
+
+  lexical syntax
+    [\t\ \r\n] -> LAYOUT {prefer}
+
+  context-free restrictions 
+    LAYOUT? -/- [\t\r\n\ ] 

@@ -1,0 +1,7 @@
+module pair/Pair
+ imports org/sugarj/java/init/initGrammar concretesyntax/Java
+exports 
+  (/)
+context-free syntax
+  "(" JavaType "," JavaType ")" -> JavaType {cons("PType")}
+  "(" JavaExpr "," JavaExpr ")" -> JavaExpr {cons("PExpr")}

@@ -1,0 +1,18 @@
+module Swul-Events
+
+exports
+
+%%
+ %% Creating events listeners
+  %%
+  sorts ComponentType ComponentPropType  
+  context-free syntax
+  "window" "event"         -> ComponentPropType {cons("Window")}
+  "action" "event"         -> ComponentPropType {cons("Action")}
+  "caret" "event"          -> ComponentPropType {cons("Caret")}
+  "change" "event"         -> ComponentPropType {cons("Change")}
+  "undo" "event"           -> ComponentPropType {cons("UndoableEdit")}
+  "document" "event"       -> ComponentPropType {cons("Document")}
+  "item" "event"           -> ComponentPropType {cons("Item")}
+  "list" "event"           -> ComponentPropType {cons("ListSelection")}
+  "menu" "event"           -> ComponentPropType {cons("Menu")}

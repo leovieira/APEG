@@ -1,0 +1,161 @@
+package trans;
+
+import eblock.EBlock;
+
+import swul.SwulSyntax;
+
+/*
+ * https://svn.strategoxt.org/repos/StrategoXT/java-swul/trunk/trans/swul-assimilate-gridbag.str
+ */
+public sugar SwulGridbag {
+strategies
+
+rules
+  SwulAs-GridBagLayout(|x) :
+    swul c |[ gridbag layout { ps* } ]| -> 
+    expr |[ {| GridBagLayout y = new GridBagLayout() ; | y  | bstm3*  |}
+         ]|
+      where log(|Debug,"\nGridBagLayout: ",<id>)
+          ; <new-java-id> "GridBagLayout"       => y
+          ; <nr-of-columns> ps*                 => j
+          ; <filter(not( ?swul cp |[ row = { c* }]| ))> ps* => ps1*
+          ; <filter(\swul cp |[ row = { c* }]| -> c*\)> ps* => ps2*
+          ; <map(SwulAs-LayoutProp(|x,y))> ps1* => bstm1*
+          ; <SwulAs-GridbagRows(|x, y)> ps2*    => bstm2*
+          ; <conc> (bstm1*, bstm2*)             => bstm3*
+
+  SwulAs-GridbagRows(|x, y) =
+    {|  create-statements , 
+        item-width-height ,
+        current-x ,
+        current-y :
+          rules( current-x : [] -> 0 )
+        ; rules( current-y : [] -> 0 )
+        ; SwulAs-Rows(|x, y)
+        ; <bagof-create-statements> [] => bstm*
+    |}
+  
+  SwulAs-Rows(|x2, y2) = 
+      ?[ x ]
+    ; <SwulAs-Row(|x2, y2)> x
+    <+
+      ?[x | xs]
+    ; raise-y
+    ; <SwulAs-Rows(|x2, y2)> xs
+    ; lower-y
+    ; <SwulAs-Row(|x2, y2)> x
+      
+  SwulAs-Row(|x2, y2) = 
+      ?[ x ]
+    ; <
+       SwulAs-GridbagLayoutComponent(|x2, y2)
+       <+
+       SwulAs-GridbagComponent(|x2, y2)
+      > x
+    <+
+      ?[x | xs] 
+    ; raise-x
+    ; <SwulAs-Row(|x2, y2)> xs
+    ; lower-x
+    ; <
+       SwulAs-GridbagLayoutComponent(|x2, y2)
+       <+
+       SwulAs-GridbagComponent(|x2, y2)
+      > x
+    
+  SwulAs-GridbagLayoutComponent(|x2, y2) =
+      ?swul c |[ ___ ]|{}
+
+  SwulAs-GridbagLayoutComponent(|x2, y2) =
+      ?swul c |[ <<< ]|{}
+    ; <current-x> [] => x
+    ; <current-y> [] => y
+    ; <shift-to-left> (x, y)
+  
+  SwulAs-GridbagLayoutComponent(|x2, y2) =
+      ?swul c |[ ^^^ ]|{}
+    ; <current-x> [] => x
+    ; <current-y> [] => y
+    ; <shift-to-upper> (x, y)  
+    
+  SwulAs-GridbagComponent(|x, y) =
+       ?swul c |[ c ]|                    => component
+     ; <current-x> []                     => te2
+     ; <current-y> []                     => te3
+     ; <get-item-width-height> (te2, te3) => (te4, te5)
+     ; <SwulAs-Component> component       => e1
+     ; <int-to-string> te2                => e2   
+     ; <int-to-string> te3                => e3
+     ; <int-to-string> te4                => e4   
+     ; <int-to-string> te5                => e5
+     ; <newname> "constraint"             => z
+     ; !bstm |[ {| GridBagConstraints z = new GridBagConstraints() ;
+                z.gridx = ~i:e2 ; 
+                z.gridy = ~i:e3 ;
+                z.fill = GridBagConstraints.BOTH ;
+                z.gridwidth  = ~i:e4 ; 
+                z.gridheight = ~i:e5 ;
+                x.add(e1, z) ; |} ]| 
+       => bstm
+     ; rules( create-statements :+ [] -> bstm )
+     ; !(<current-x> [], <current-y> [], z)
+
+/*
+ * Auxiliary layout strategies
+ */
+
+  nr-of-rows =
+      filter(?swul cp |[ row = { c* } ]| )
+    ; length
+    ; int-to-string
+    ; log(|Debug,"\nNumber of rows: ",<id>)
+
+  nr-of-columns =
+      filter(?swul cp |[ row = { c* } ]|)
+    ; map(\swul cp |[ row = { c* } ]| -> i where <length> c* => i\) => lengths
+    ; <foldr1(min) <+ ?[<id>]> lengths => min
+    ; <foldr1(max) <+ ?[<id>]> lengths => max
+    ; (<eq> (min, max) <+ !lengths;debug(!"\nNot all rows have equal length\n"))
+    ; !max
+    ; int-to-string
+    ; log(|Debug,"\nNumber of columns: ",<id>)
+
+  raise-x = 
+      <current-x> [] => x
+    ; <add> (x,1)    => new-x
+    ; rules( current-x : [] -> new-x )
+  lower-x = 
+      <current-x> [] => x
+    ; <subt> (x,1)   => new-x
+    ; rules( current-x : [] -> new-x )
+  raise-y = 
+      <current-y> [] => y
+    ; <add> (y,1)    => new-y
+    ; rules( current-y : [] -> new-y )
+  lower-y = 
+      <current-y> [] => y
+    ; <subt> (y,1)   => new-y
+    ; rules( current-y : [] -> new-y )
+
+  get-item-width-height =
+        item-width-height
+    <+
+        !(1,1)
+
+  shift-to-left = 
+      ?(x,y)
+    ; <get-item-width-height> (x,y)       => (shift,_)
+    ; <add> (1, shift)                    => new-w
+    ; <subt> (x,1)                        => new-x
+    ; <get-item-width-height> (new-x,y)   => (_,h)
+    ; rules(item-width-height : (new-x,y) -> (new-w,h) )
+
+  shift-to-upper = 
+      ?(x,y)
+    ; <get-item-width-height> (x,y)       => (_,shift)
+    ; <add> (1, shift)                    => new-h
+    ; <subt> (y,1)                        => new-y
+    ; <get-item-width-height> (x,new-y)   => (w,_)
+    ; rules(item-width-height : (x,new-y) -> (w,new-h) )  
+
+}

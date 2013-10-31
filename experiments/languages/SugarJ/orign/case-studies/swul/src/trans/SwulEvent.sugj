@@ -1,0 +1,187 @@
+package trans;
+
+import eblock.EBlock;
+
+import swul.SwulSyntax;
+
+import org.sugarj.stdlib.StdTrans;
+import org.sugarj.languages.Stratego;
+import org.sugarj.Java;
+
+/*
+ * https://svn.strategoxt.org/repos/StrategoXT/java-swul/trunk/trans/swul-assimilate-events.str
+ */
+public sugar SwulEvent {
+rules
+// FromBlock
+
+SwulAs-JavaBlock :
+   FromBlock(bstm) -> bstm |[ bstm ]|
+      where log(|Debug,"\nFromExpr: ",<id>)
+
+// All the different actionlisteners
+
+  SwulAs-ActionListenerProp(|x) : 
+    swul cp |[ action event = c ]| -> bstm |[ bstm ]|
+      where log(|Debug,"\nActionListener: ",<id>)
+          ; !"Action"                            => action
+          ; <SwulAs-JavaBlock> c                 => bstm*
+          ; <generate-methode(|action, x)> bstm* => bstm
+
+
+  SwulAs-WindowListenerProp(|x) : 
+    swul cp |[ window event = c ]| -> bstm |[ bstm ]|
+      where log(|Debug,"\nWindowListener: ",<id>)
+          ; !"Window"                            => action
+          ; <SwulAs-JavaBlock> c                 => bstm*
+          ; <generate-methode(|action, x)> bstm* => bstm
+
+  SwulAs-CaretListenerProp(|x) : 
+    swul cp |[ caret event = c ]| -> bstm |[ bstm ]|
+      where log(|Debug,"\nCaretListener: ",<id>)
+          ; !"Caret"                             => action
+          ; <SwulAs-JavaBlock> c                 => bstm*
+          ; <generate-methode(|action, x)> bstm* => bstm
+
+  SwulAs-ChangeListenerProp(|x) : 
+    swul cp |[ change event = c ]| -> bstm |[ bstm ]|
+      where log(|Debug,"\nChangeListener: ",<id>)
+          ; !"Change"                            => action
+          ; <SwulAs-JavaBlock> c                 => bstm*
+          ; <generate-methode(|action, x)> bstm* => bstm
+          
+  SwulAs-UndoableEditListenerProp(|x) : 
+    swul cp |[ undo event = c ]| -> bstm |[ bstm ]|
+      where log(|Debug,"\nUndoableEdit: ",<id>)
+          ; !"UndoableEdit"                      => action
+          ; <SwulAs-JavaBlock> c                 => bstm*
+          ; <generate-methode(|action, x)> bstm* => bstm
+
+  SwulAs-DocumentListenerProp(|x) : 
+    swul cp |[ document event = c ]| -> bstm |[ bstm ]|
+      where log(|Debug,"\nDocumentListener: ",<id>)
+          ; !"Document"                          => action
+          ; <SwulAs-JavaBlock> c                 => bstm*
+          ; <generate-methode(|action, x)> bstm* => bstm
+
+  SwulAs-ItemListenerProp(|x) : 
+    swul cp |[ item event = c ]| -> bstm |[ bstm ]|
+      where log(|Debug,"\nItemListener: ",<id>)
+          ; !"Item"                              => action
+          ; <SwulAs-JavaBlock> c                 => bstm*
+          ; <generate-methode(|action, x)> bstm* => bstm
+
+  SwulAs-ListSelectionListenerProp(|x) : 
+    swul cp |[ list event = c ]| -> bstm |[ bstm ]|
+      where log(|Debug,"\nListSelectionListener: ",<id>)
+          ; !"ListSelection"                     => action
+          ; <SwulAs-JavaBlock> c                 => bstm*
+          ; <generate-methode(|action, x)> bstm* => bstm
+
+  SwulAs-MenuListenerProp(|x) : 
+    swul cp |[ menu event = c ]| -> bstm |[ bstm ]|
+      where log(|Debug,"\nMenuListener: ",<id>)
+          ; !"Menu"                              => action
+          ; <SwulAs-JavaBlock> c                 => bstm*
+          ; <generate-methode(|action, x)> bstm* => bstm          
+
+/*******************************************************************************
+ * Auxiliry transformations
+ * 
+ */
+strategies
+  generate-methode(|event, x) = 
+      ?Block(bstm*)
+    ; if  bagof-FieldModifiers ; fetch(?Static())
+        then classEvent-handlingclass    => (classname, ident, xs)
+        else instanceEvent-handlingclass => (classname, ident, xs)
+      end      
+    ; <try(create-needed-fielddec)> (classname, ident, xs)
+    
+    ; <concat-strings;new-java-id> [event,"Listener" ] => functionname
+    ; !Id(functionname)                                => fname1
+    ; <swulevent-eventtype> event                      => tname1  
+    ; !class-body-dec |[ public void ~fname1 (tname1 event){
+                            ~bstm* 
+                          } 
+                      ]|                               => newMethod    
+    ; if  bagof-FieldModifiers ; fetch(?Static()) 
+        then rules( classEvent-handlingclass:   _ -> (classname, ident, [newMethod|xs]) )
+        else rules( instanceEvent-handlingclass: _ -> (classname, ident, [newMethod|xs]) )     
+      end
+    ; !Id(<concat-strings> ["add", event, "Listener"])   => fname2
+    ; !TypeName(Id( <conc-strings> (event, "Listener"))) => tname2
+    ; !ExprName(Id(ident))                => e1
+    ; !Lit(String([Chars(functionname)])) => e2
+    ; !bstm |[ x.~fname2( (tname2)EventHandler.create(tname2.class, e1, e2, "") ); ]|   
+
+  build-event-handlingclass =
+      ?(_, _,[], _)
+    ; ![]
+    <+
+      ?(classname, ident, methods, mod*)
+    ; !Id(classname)                       => fname
+    ; !class-body-dec |[ ~id:fname(){ } ]| => contructor
+    ; !Id(classname)                       => cname
+    ; ![contructor | methods ]             => body
+    ; !class-body-dec |[ mod* class ~cname { ~*body } ]|
+
+
+  create-needed-fielddec =
+      ?(classname, identifier, [])
+    ; bagof-FieldModifiers         => fieldmods
+    ; !FieldDec(
+            fieldmods
+          , ClassOrInterfaceType(TypeName(Id( classname )), None)
+          , [ VarDec(
+                Id(identifier)
+              , NewInstance(
+                  None
+                , ClassOrInterfaceType(TypeName(Id( classname )), None)
+                , []
+                , None
+                )
+              )
+            ]
+          )
+      => fdec
+    ; rules ( field-declarations :+ _ -> fdec )
+
+  swulevent-eventtype =
+      ?event
+    ; <fetch(?event)> ["Window", "Action", "Item"]
+    ; <conc-strings> (event, "Event") => eventId
+    ;  !ClassOrInterfaceType(
+          TypeName(
+            PackageOrTypeName(
+              PackageOrTypeName(PackageOrTypeName( Id("java"))
+                                                 , Id("awt"))
+                                                 , Id("event")
+            )
+          , Id(eventId)
+          )
+        , None
+        )
+
+  swulevent-eventtype =
+       ?event 
+    ; <fetch(?event)> ["Caret", "Change", "UndoableEdit",  "Document", 
+                       "ListSelection", "Menu"]
+    ; <conc-strings> (event, "Event") => eventId
+    ;  !ClassOrInterfaceType(
+          TypeName(
+            PackageOrTypeName(
+              PackageOrTypeName(PackageOrTypeName( Id("javax"))
+                                                 , Id("swing"))
+                                                 , Id("event")
+            )
+          , Id(eventId)
+          )
+        , None
+        )
+
+signature
+  constructors
+    FromBlock      : JavaBlock              -> SwulComponent
+
+}

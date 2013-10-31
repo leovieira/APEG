@@ -7,7 +7,7 @@ DATA_PATH='/home/leo/workspace/APEG/experiments/languages/SugarJ/apeg/data-gener
 SRC='src'
 BIN='bin'
 
-NUM_EXEC=30
+NUM_EXEC=1
 
 #################
 

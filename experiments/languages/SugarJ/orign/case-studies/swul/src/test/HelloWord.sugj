@@ -1,0 +1,45 @@
+package test;
+
+import javax.swing.*;
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
+
+import swul.SwulSyntax;
+import trans.SwulAssimilate;
+
+public class HelloWorld {
+  public static void main(String[] ps) {
+    JPanel framepanel = panel of border layout {
+      north = label { text = "Hello World" }
+
+      center = scrollpane of textarea {
+        rows    = 20
+        columns = 40
+      }
+
+      south = panel of border layout {
+        east = panel of grid layout {
+          row = {
+            button { text = "Ok" }
+            button { text = "Cancel" }
+          }
+        }
+      }
+    };
+
+    JFrame frame = frame {
+      title   = "Hello world!"
+      content = panel {
+        border = empty border 
+        layout = border layout {
+          center = framepanel
+        }
+      }
+    };
+
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.pack();
+    frame.setVisible(true);
+  }
+}
+

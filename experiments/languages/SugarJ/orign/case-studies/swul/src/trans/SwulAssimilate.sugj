@@ -1,0 +1,636 @@
+package trans;
+
+import org.sugarj.languages.Stratego;
+
+import concretesyntax.Java;
+import eblock.EBlock;
+
+import trans.SwulEvent;
+import trans.SwulGridbag;
+import trans.SwulMenubar;
+import trans.SwulWidget;
+
+import swul.SwulSyntax;
+
+/*
+ * https://svn.strategoxt.org/repos/StrategoXT/java-swul/trunk/trans/swul-assimilate.str
+ */
+public sugar SwulAssimilate {
+strategies
+
+  io-swul-assimilate =
+    io-wrap
+    (
+        log(|Debug,"\n--- start debug ---\n","")
+      ; swul-assimilate
+      ; log(|Debug,"\n---  end debug  ---\n","")
+    )
+ swul-assimilate =
+    compilation-unit
+    <+
+    class-declaration
+    <+
+    class-initializer 
+    <+
+    class-method
+    <+
+    swul-expression
+    <+
+    all(swul-assimilate)
+
+  compilation-unit =
+      ?CompilationUnit( package, imports, decls )
+    ; {| importdecl :
+            <swul-assimilate> decls => new_decls
+          ; bagof-importdecl        => dyn_imports
+      |}
+    ; <concat> [ dyn_imports , imports ] => new_imports
+    ; !CompilationUnit( package, new_imports, new_decls )
+
+  class-declaration = 
+      ?ClassDec(head, ClassBody(xs))
+    ; {|  buttongroup                 ,
+          field-declarations          ,
+          classEvent-handlingclass    ,
+          instanceEvent-handlingclass ,
+          FieldModifiers          :
+        rules( FieldModifiers          :+ _ ->  |[ private ]| )
+      ; rules( instanceEvent-handlingclass : _ -> (<new-java-name> "InstanceHandler", <new-java-id> "InstanceHandler", []) )
+      ; rules( classEvent-handlingclass    : _ -> (<new-java-name> "ClassHandler",    <new-java-id> "ClassHandler",    []) )
+      ; rules( field-declarations          :- _    )
+      
+
+      ; <swul-assimilate> xs             => swul-statements
+
+      ; bagof-field-declarations    => fields   
+      ; instanceEvent-handlingclass => (instanceClassName, instanceId, instance-methods)  
+      ; classEvent-handlingclass    => (staticClassName  , staticId,   static-methods)
+
+      ; <build-event-handlingclass> (instanceClassName, instanceId,  instance-methods, [Public])       => instanceEvent-handlingclass-field
+      ; <build-event-handlingclass> (staticClassName,   staticId,    static-methods, [Public, Static]) => classEvent-handlingclass-field    
+      ; <concat> [fields, swul-statements, [instanceEvent-handlingclass-field],
+[classEvent-handlingclass-field]]  => body          
+      ; !ClassDec(head, ClassBody( body ) )
+    |}
+
+  class-initializer :
+    StaticInit(block) -> StaticInit(newBlock) 
+      where {| FieldModifiers :
+                 rules( FieldModifiers :+ _ -> |[ static ]|  )
+                 ; <swul-assimilate> block        => newBlock
+            |}
+
+  class-method = ?MethodDec( MethodDecHead( 
+                      modifiers
+                    , a, b, c, d, e)
+                  , bstm*
+                  )
+               ; <fetch(?Static)> modifiers
+               ; {| FieldModifiers :
+                        rules( FieldModifiers :+ _ -> |[ static ]| )
+                     ; <swul-assimilate> bstm*         => bstm_new* 
+                 |}
+               ; !MethodDec( MethodDecHead(
+                      modifiers
+                    , a, b, c, d, e)
+                  ,  bstm_new* 
+                  )
+  
+  swul-expression =  
+      ?ToExpr(swul)
+    ; {|  local-declarations :
+              <SwulAs-Component> swul => e
+            ; bagof-local-declarations => bstm*
+      |}
+    ; <?[] < !e + !java|[ {| bstm* | e |} ]|> bstm*
+
+  SwulAs-Component : swul -> expr
+    where <Swul-Declarations> swul  => declared
+        ; log(|Debug,"\nDid declaring: ",<id>)
+        ; <SwulAs-Component> declared    => expr
+
+  SwulAs-LayoutManager(|x) : swul -> expr
+    where <Swul-Declarations> swul  => declared
+        ; <SwulAs-LayoutManager(|x)> declared    => expr
+                                                              
+/*
+ *
+ * Naming transformations
+ *
+ */
+rules
+ 
+  Swul-Declarations =  SwulNamed <+ SwulUnNamed
+                   
+  SwulNamed : 
+    Component(ct, Some( SwulNamed(x) ), ps*){} 
+    ->  
+    Component(ct, None, ps*){x}
+      where log(|Debug,"\nNamed Swul : ",<id>)
+          ; <java-type-of> ct  => t
+          ; bagof-FieldModifiers => fieldmods     
+          ; rules (
+              field-declarations :+ 
+                _ -> 
+                FieldDec(fieldmods, t, [VarDec(Id(x))]) 
+            )
+  
+  SwulUnNamed :
+    Component(ct, None, ps*){} 
+    ->  
+    Component(ct, None, ps*){x}
+      where log(|Debug,"\nUnNamed Swul : ",<id>)
+          ; <java-type-of> ct             => t
+          ; <get-type-name;new-java-id> t => x
+          ; rules ( local-declarations :+  _ -> 
+                          LocalVarDecStm( LocalVarDec([], 
+                                             t, 
+                                             [VarDec(Id(x))] 
+                                             ))
+            )
+
+
+
+    
+/*******************************************************************************
+ *
+ * Component transformations
+ *  Component -> JavaExpr
+ */
+rules
+// JavaExpressie
+  SwulAs-JavaExpr :
+   FromExpr(e) -> expr |[ e ]|
+      where log(|Debug,"\nFromExpr: ",<id>)
+
+// Component 
+  SwulAs-Component :
+      swul c |[ this { ps* } ]| -> expr |[ {|  bstm* | x |} ]|
+        where log(|Debug,"\nThis: ",<id>)
+            ;  !"this"                        => x
+            ;  <map(SwulAs-ThisProp(|x))> ps* => bstm*
+    
+  SwulAs-Component  = SwulAs-Container
+                    + SwulAs-JavaExpr
+
+// Container
+  SwulAs-Container  = SwulAs-JComponent
+
+  SwulAs-Container  = SwulAs-Window
+
+// JComponent
+  SwulAs-JComponent = SwulAs-JPanel 
+                    + SwulAs-JToolBar 
+                    + SwulAs-JSplitPane 
+                    + SwulAs-JScrollPane
+                    + SwulAs-JTabbedPane
+
+// Window
+  SwulAs-Window     = SwulAs-Frame
+
+// JFrame
+  SwulAs-Frame      = SwulAs-JFrame
+
+// JPanel
+  SwulAs-JPanel :
+    swul c |[ panel { ps* } ]|{x} -> expr |[ {| x = new JPanel() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJPanel: ",<id>)
+          ; <map(SwulAs-JPanelProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JPanel;]|)
+  
+  SwulAs-JPanel :
+    swul c |[ panel of c ]|{x} -> expr |[ {| x = new JPanel() ; x.setLayout(e) ;| x  |} ]|
+      where log(|Debug,"\nJPanel of: ",<id>)
+          ; <SwulAs-LayoutManager(|x)> c => e  
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JPanel;]|)
+
+  SwulAs-JButton :
+    swul c |[ button of c ]|{x} -> expr |[ {| x = new JButton() ; x.setText(e) ;| x  |} ]|
+      where log(|Debug,"\nJButton of: ",<id>)
+          ; <SwulAs-JavaExpr> c => e  
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JButton; ]| )
+
+  SwulAs-JLabel :
+    swul c |[ label of c ]|{x} -> expr |[ {| x = new JLabel() ; x.setText(e) ;| x  |} ]|
+      where log(|Debug,"\nJLabel of: ",<id>)
+          ; <SwulAs-JavaExpr> c => e  
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JLabel;]|)
+
+// JToolBar
+  SwulAs-JToolBar :
+    swul c |[ toolbar { ps* } ]|{x} -> expr |[ {| x = new JToolBar() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJToolBar: ",<id>)
+          ; <map(SwulAs-JToolBarProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JToolBar;]|)
+
+// JSplitPane
+  SwulAs-JSplitPane :
+    swul c |[ splitpane { ps* } ]|{x} -> expr |[ {| x = new JSplitPane() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJSplitPane: ",<id>)
+          ; <map(SwulAs-JSplitPaneProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JSplitPane;]|)
+
+// JScrollPane
+  SwulAs-JScrollPane :
+    swul c |[ scrollpane { ps* } ]|{x} -> expr |[ {| x = new JScrollPane() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJScrollPane: ",<id>)
+          ; <map(SwulAs-JScrollPaneProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JScrollPane ;]|)
+
+  SwulAs-JScrollPane :
+    swul c |[ scrollpane of c ]|{x} -> expr |[ {| x = new JScrollPane(e) ;| x  |} ]|
+      where log(|Debug,"\nJScrollPane: ",<id>)
+          ; <SwulAs-Component> c => e
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JScrollPane ;]|)
+
+// JTabbedPane
+  SwulAs-JTabbedPane :
+    swul c |[ tabbedpane { ps* } ]|{x} -> expr |[ {| x = new JTabbedPane() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJTabbedPane: ",<id>)
+          ; <map(SwulAs-JTabbedPaneProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JTabbedPane;]|)
+
+// JFrame
+  SwulAs-JFrame :
+    swul c |[ frame { ps* } ]|{x} -> expr |[ {| x = new JFrame() ; bstm* | x  |} ]|
+      where log(|Debug,"\nJFrame: ",<id>)
+          ; <map(SwulAs-JFrameProp(|x))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JFrame;]|)
+
+  SwulAs-JFrame :
+    swul c |[ frame of c  ]|{x} -> expr |[ {| x = new JFrame() ; x.setContentPane(e) ; | x  |} ]|
+      where log(|Debug,"\nJFrame: ",<id>)
+          ; <SwulAs-Component> c => e
+          ; rules( importdecl :+ _ -> importdecl |[ import javax.swing.JFrame;]|)
+
+
+
+
+
+
+    
+/*******************************************************************************
+ * Component Properties transformations
+ *  ComponentProp -> JavaBstm
+ *  @param x : Identifier x of the component that needs his properties 
+ *  set ( x.setProp(val) )
+ */  
+ 
+ 
+ 
+// TODO: Hack to handle unknow this 
+  SwulAs-ThisProp(|x) = SwulAs-JPanelProp(|x)
+                      + SwulAs-JFrameProp(|x)
+                      + SwulAs-JScrollPaneProp(|x)
+                      + SwulAs-JToolBarProp(|x)
+                      + SwulAs-JSplitPaneProp(|x)
+                      + SwulAs-JTabbedPaneProp(|x)
+
+// javax.swing.JPanel  
+
+  SwulAs-JPanelProp(|x) = SwulAs-JComponentProp(|x)
+  
+// javax.swing.JFrame  
+
+  SwulAs-JFrameProp(|x) :
+    swul cp |[ content = c ]| -> bstm |[  x.setContentPane(e) ;  ]|
+      where log(|Debug,"\nContent: ",<id>)
+          ; <SwulAs-Component> c => e
+  
+  SwulAs-JFrameProp(|x) = SwulAs-FrameProp(|x)          
+
+// java.awt.Frame
+  SwulAs-FrameProp(|x) :
+    swul cp |[ title = c ]| -> bstm |[ x.setTitle( e) ; ]|
+      where log(|Debug,"\nTitle: ",<id>)
+          ; <SwulAs-Component> c => e
+  
+  SwulAs-FrameProp(|x) = SwulAs-WindowProp(|x)          
+  
+// java.awt.Window
+
+  SwulAs-WindowProp(|x) = SwulAs-ContainerProp(|x)
+                        + SwulAs-WindowListenerProp(|x)
+  
+// javax.swing.JScrollPane      
+
+  SwulAs-JScrollPaneProp(|x) :
+    swul cp |[ view = c ]| -> bstm |[  x.setViewportView(e) ;  ]|
+      where log(|Debug,"\nView: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JScrollPaneProp(|x) = SwulAs-JComponentProp(|x)    
+  
+// javax.swing.JToolBar     
+      
+  SwulAs-JToolBarProp(|x) :
+     swul cp |[ floatable = c ]| -> bstm |[ x.setFloatable(e) ; ]|
+      where log(|Debug,"\nFloatable: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JToolBarProp(|x) :
+     swul cp |[ orientation = c ]| -> bstm |[ x.setOrientation(e) ; ]|
+      where log(|Debug,"\nOrientation: ",<id>)
+          ; <SwulAs-Orientation> c => e
+  
+  SwulAs-JToolBarProp(|x)    = SwulAs-JComponentProp(|x)
+
+// javax.swing.JSplitPane     
+   
+  SwulAs-JSplitPaneProp(|x) :
+    swul cp |[ resizeweight = c ]| -> bstm |[ x.setResizeWeight(e) ; ]|
+      where log(|Debug,"\nResizeWeight: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JSplitPaneProp(|x) :
+    swul cp |[ top = c ]| -> bstm |[ x.setTopComponent(e) ; ]|
+      where log(|Debug,"\nTop: ",<id>)
+          ; <SwulAs-Component> c => e
+          
+  SwulAs-JSplitPaneProp(|x) :
+    swul cp |[ left = c ]| -> bstm |[ x.setLeftComponent(e) ; ]|
+      where log(|Debug,"\nLeft: ",<id>)
+          ; <SwulAs-Component> c => e
+          
+  SwulAs-JSplitPaneProp(|x) :
+    swul cp |[ bottom = c ]| -> bstm |[ x.setBottomComponent(e) ; ]|
+      where log(|Debug,"\nBottom: ",<id>)
+          ; <SwulAs-Component> c => e
+          
+  SwulAs-JSplitPaneProp(|x) :
+    swul cp |[ right = c ]| -> bstm |[ x.setRightComponent(e) ; ]|
+      where log(|Debug,"\nRight: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-JSplitPaneProp(|x) :
+     swul cp |[ split = c ]| -> bstm |[ x.setOrientation(e) ; ]|
+      where log(|Debug,"\nOrientation: ",<id>)
+          ; <SwulAs-Orientation> c => e
+
+  SwulAs-JSplitPaneProp(|x)  = SwulAs-JComponentProp(|x)
+
+// javax.swing.JTabbedPane     
+
+  SwulAs-JTabbedPaneProp(|x) :
+    swul cp |[ tabs =  { c* } ]| -> bstm |[ {| bstm* |}  ]|
+      where log(|Debug,"\nTabs: ",<id>)
+          ; <map(SwulAs-Tab(|x))> c* => bstm*
+                  
+  SwulAs-JTabbedPaneProp(|x) = SwulAs-JComponentProp(|x)
+  
+// javax.swing.JComponent     
+
+  SwulAs-JComponentProp(|x) = SwulAs-ContainerProp(|x)
+
+// java.awt.Container     
+
+  SwulAs-ContainerProp(|x) :
+    swul cp |[ layout = c ]| -> bstm |[  x.setLayout( e ) ; ]|
+      where log(|Debug,"\nLayout: ",<id>)
+          ; <SwulAs-LayoutManager(|x)> c => e 
+ 
+  SwulAs-ContainerProp(|x) = SwulAs-ComponentProp(|x)
+  
+// java.awt.Component     
+
+  SwulAs-ComponentProp(|x) = fail
+ 
+/*******************************************************************************
+ * Layout transformations
+ *  Layout -> JavaExpr
+ *  @param x : Identifier x of the component that needs the layout set 
+ *             ( x.setLayout( layout ) ) and is also passed to the layout 
+ *             properties sinces they set the properties to the component, 
+ *             not into the  manager
+ */
+  
+  
+  SwulAs-LayoutManager(|x) = SwulAs-BorderLayout(|x) 
+                           + SwulAs-GridLayout(|x)
+                           + SwulAs-GridBagLayout(|x)
+                           + SwulAs-BoxLayout(|x)
+  
+  SwulAs-BorderLayout(|x) :
+    swul c |[ border layout { ps* } ]|{y} -> 
+    expr |[ {| {| y = new BorderLayout() ; | y |} | bstm*  |} ]|
+      where log(|Debug,"\nBorderLayout: ",<id>)
+          ; <map(SwulAs-BorderLayoutProp(|x,y))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import java.awt.BorderLayout;]|)
+
+  SwulAs-GridLayout(|x) :
+    swul c |[ grid layout { ps* } ]|{y} -> 
+    expr |[ {| {| y = new GridLayout(i, j) ; | y |} | bstm*  |} ]|
+      where log(|Debug,"\nGridLayout: ",<id>)
+          ; <nr-of-rows> ps*       => i
+          ; <nr-of-columns> ps*    => j
+          ; <map(SwulAs-GridLayoutProp(|x,y))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import java.awt.GridLayout;]|)
+
+  SwulAs-BoxLayout(|x) :
+    swul c |[ box layout { ps* } ]|{y} -> 
+    expr |[ {| {| y = new BoxLayout(x, SwingConstants.HORIZONTAL) ; 
+                | y |}
+             | bstm*  |}
+         ]|
+      where log(|Debug,"\nBoxLayout: ",<id>)
+          ; <map(SwulAs-BoxLayoutProp(|x,y))> ps* => bstm*
+          ; rules( importdecl :+ _ -> importdecl |[ import java.awt.BoxLayout;]|)
+
+
+
+    
+/*******************************************************************************
+ * Layout Properties transformations
+ *   LayoutProp -> JavaBstm
+ *   @param x : Identifier x of the component that needs this layoutadjustment 
+ *   set ( x.add(comp, place) )
+ *   @param y : Identifier y of the layoutmanager that needs this 
+ *   layoutadjustment set ( y.setProp(i) )
+ */    
+
+// BoxLayout
+   
+  SwulAs-BoxLayoutProp(|x,y) = SwulAs-LayoutProp(|x,y) 
+
+// BorderLayout
+
+  SwulAs-BorderLayoutProp(|x,y) :
+    swul cp |[ cpt = c ]| -> bstm |[ x.add( e1, e2 ) ; ]|
+      where log(|Debug,"\nBordercomponent: ",<id>)
+          ; <SwulAs-Component> c       => e1
+          ; <SwulAs-LayoutRegion> cpt  => e2
+
+  SwulAs-BorderLayoutProp(|x,y) = SwulAs-LayoutProp(|x,y) 
+
+// GridLayout
+
+  SwulAs-GridLayoutProp(|x,y) = SwulAs-LayoutProp(|x,y) 
+
+// Layout
+          
+  SwulAs-LayoutProp(|x,y) :
+    swul cp |[ row = { c* } ]| -> bstm |[ {| bstm* |} ]|
+      where log(|Debug,"\nRow: ",<id>)
+          ; <map( SwulAs-RowElement(|x) )> c* => bstm*
+
+  SwulAs-LayoutProp(|x,y) :
+    swul cp |[ horizontal gap = c ]| -> bstm |[ y.setHgap(e) ; ]|
+      where log(|Debug,"\nHorizontal gap: ",<id>)
+          ; <SwulAs-Component> c => e
+  
+  SwulAs-LayoutProp(|x,y) :
+    swul cp |[ vertical gap = c ]| -> bstm |[ y.setVgap(e) ; ]|
+      where log(|Debug,"\nVertical gap: ",<id>)
+          ; <SwulAs-Component> c => e
+
+  SwulAs-LayoutProp(|x,y) :
+     swul cp |[ orientation = c ]| -> bstm |[ y.setOrientation(e) ; ]|
+      where log(|Debug,"\nOrientation: ",<id>)
+          ; <SwulAs-Component> c => e
+
+/*
+ * Layout Region transformations
+ *  LayoutRegion -> JavaExpr
+ */  
+   
+  SwulAs-LayoutRegion :
+    Center -> expr |[ BorderLayout.CENTER ]|
+      where log(|Debug,"\nCenter: ",<id>)
+    
+  SwulAs-LayoutRegion :
+    North  -> expr |[ BorderLayout.NORTH ]|
+      where log(|Debug,"\nNorth: ",<id>)
+
+  SwulAs-LayoutRegion :
+    South  -> expr |[ BorderLayout.SOUTH ]|
+      where log(|Debug,"\nSouth: ",<id>)
+    
+  SwulAs-LayoutRegion :
+    East   -> expr |[ BorderLayout.EAST ]|
+      where log(|Debug,"\nEast: ",<id>)
+
+  SwulAs-LayoutRegion :
+    West   -> expr |[ BorderLayout.WEST ]|
+      where log(|Debug,"\nWest: ",<id>)
+
+  SwulAs-Orientation :
+    Horizontal -> expr |[ SwingConstants.HORIZONTAL ]|
+      where log(|Debug,"\nHorizontal: ",<id>)
+  SwulAs-Orientation :
+    Vertical   -> expr |[ SwingConstants.VERTICAL ]|
+      where log(|Debug,"\nVertical: ",<id>)
+ 
+/********************************************************************************
+ * Auxiliary Component strategies
+ */
+  
+  fetchComponentProp(s) = fetch-elem(s) <+ !expr |[ null ]| 
+  
+  SwulAs-RowElement(|x) :
+    swul c |[ c ]| -> stm |[ x.add(e) ; ]|
+      where <SwulAs-Component> c => e
+
+  SwulAs-Tab(|x) : 
+    swul c |[ tab { ps* } ]| -> bstm |[ x.addTab(e1, e2, e3, e4) ; ]|
+      where log(|Debug,"\nTab: ",<id>)
+          ; <SwulAs-TabProps> ps* => (e1, e2, e3, e4)
+
+/*
+ * Doing all the tab properties at once to produce null values for 
+ * undeclared properties
+ */
+  SwulAs-TabProps =
+      ?ps* 
+    ; <filter( \swul |[ title   = c ]| -> c\ );toComponent> ps* => e1
+    ; <filter( \swul |[ icon    = c ]| -> c\ );toComponent> ps* => e2
+    ; <filter( \swul |[ content = c ]| -> c\ );toComponent> ps* => e3
+    ; <filter( \swul |[ tip     = c ]| -> c\ );toComponent> ps* => e4
+    ; !(e1, e2, e3, e4)
+    
+    toComponent : []  -> expr |[ null ]|
+    toComponent = ?[<SwulAs-Component>]
+  
+
+/*
+ * Orientation transformations
+ *  Orientation -> JavaExpr
+ */
+ 
+/*
+ * Component Properties transformations
+ *  ComponentProp -> JavaBstm
+ *  @param x : Identifier x of the component that needs his properties
+ *  set ( x.setProp(val) )
+ *
+ *
+ *SwulAs-ComponentProps(|x) :
+ *  swul cps |[ { ps* } ]| -> bstm* 
+ *    where log(|Debug,"\nMultiple componentprops creation: ",<id>)
+ *        ; <map(SwulAs-CompProp(|x))> ps* => bstm*
+ *
+ *SwulAs-ComponentProps(|x) :
+ *  swul cps |[ of c ]| -> bstm* 
+ *    where log(|Debug,"\nLayout with default component creation: ",<id>)
+ *        ; <SwulAs-Component> c         => e
+ *        ; !bstm* |[ x.setLayout(e) ;]| => bstm* 
+ *
+ *SwulAs-ComponentProps(|x) :
+ *  swul cps |[ of c ]| -> bstm*
+ *    where log(|Debug,"\nComponent with component as inner: ",<id>)
+ *        ; <SwulAs-Component> c  => e
+ *        ; !bstm* |[ x.setViewportView(e) ;]| => bstm* 
+ */ 
+
+
+/*
+ * Type generation
+ * Generates the types of components for type declarations 
+ *
+ */
+  SwulAs-ComponentType = 
+      not(?swul ct |[ this ]|)
+    ; write-to-string
+  
+  java-type-of = 
+    !ClassOrInterfaceType(TypeName(Id(<SwulAs-ComponentType>)), None)
+      
+    
+  java-type-of = 
+      ?FromExpr(x)
+    ; (
+          <java-type-of-expr> x 
+        <+ 
+          !ClassOrInterfaceType(TypeName(Id("JComponent")),None)
+      )
+
+  java-type-of-expr =   
+        (
+            ?ClassOrInterfaceType(TypeName(Id(x)),None)
+          ; !ClassOrInterfaceType(TypeName(Id(x)),None)
+        )
+        <+
+        (
+            ?f#(xs)
+          ; <fetch-elem(java-type-of-expr)> xs
+        )
+        
+  get-type-name = 
+      ?ClassOrInterfaceType(TypeName(Id(<id>)),None)
+  
+  new-java-name =
+      upper-first
+    ; newname
+  
+  new-java-id =
+      lower-first
+    ; newname
+
+  upper-first = string-as-chars( \[x|xs] -> [ <to-upper> x | xs] \ )
+  lower-first = string-as-chars( \[x|xs] -> [ <to-lower> x | xs] \ )
+
+signature
+  constructors
+    FromExpr      : JavaExpr              -> SwulComponent
+    ToExpr        : SwulComponent         -> JavaExpr
+
+}

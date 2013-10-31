@@ -1,0 +1,128 @@
+package trans;
+
+import eblock.EBlock;
+
+import swul.SwulSyntax;
+
+/*
+ * https://svn.strategoxt.org/repos/StrategoXT/java-swul/trunk/trans/swul-assimilate-menubar.str
+ */
+public sugar SwulMenubar {
+/*******************************************************************************
+ *
+ * Component transformations
+ *  Component -> JavaExpr
+ */
+rules 
+  SwulAs-JMenu :
+    swul c |[ menu { ps* } ]|{y} -> expr |[ {| y = new JMenu(); bstm* | y |} ]|
+      where log(|Debug,"\nMenu: ",<id>)
+          ; <map(SwulAs-JMenuProp(|y))> ps* => bstm*
+
+rules
+  SwulAs-JMenuItem :
+    swul c |[ menu item { ps* } ]|{y} ->  expr |[ {| y = new JMenuItem(); bstm* |  y |} ]|
+      where log(|Debug,"\nMI_Label: ",<id>)
+          ; <map(SwulAs-JMenuItemProp(|y))> ps* => bstm*
+
+  SwulAs-JMenuItem = SwulAs-JMenu
+                   + SwulAs-JCheckBoxMenuItem
+                   + SwulAs-JRadioButtonMenuItem
+                   + SwulAs-JSeparator
+
+rules
+  SwulAs-JCheckBoxMenuItem :
+    swul c |[ menu checkbox { ps* } ]|{y} -> expr |[ {| y = new JCheckBoxMenuItem(); bstm* | y |} ]|
+      where log(|Debug,"\nMI_Checkbox: ",<id>)
+          ; <map(SwulAs-JMenuItemProp(|y))> ps* => bstm*
+
+rules
+  SwulAs-JRadioButtonMenuItem :
+    swul c |[ menu radiobutton { ps* } ]|{y} -> expr |[ {| y = new JRadioButtonMenuItem();  bstm* | y |} ]|
+      where log(|Debug,"\nMI_Radiobutton: ",<id>)
+          ; <map(SwulAs-JMenuItemProp(|y))> ps* => bstm*
+
+rules
+  SwulAs-JSeparator :
+    swul c |[ menu separator ]|{y} -> expr |[ {| y = new JSeparator(); | y |} ]|
+      where log(|Debug,"\nMI_Seperator: ",<id>)
+      
+
+/*******************************************************************************
+ * Component Properties transformations
+ *  ComponentProp -> JavaBstm
+ *  @param x : Identifier x of the component that needs his properties 
+ *  set ( x.setProp(val) )
+ */  
+rules
+ 
+// javax.swing.JFrame 
+
+  SwulAs-JFrameProp(|x) :
+    swul cp |[ menubar = { c* } ]| -> 
+    bstm |[ {| JMenuBar y = new JMenuBar(); 
+               {| bstm* |} 
+               x.setJMenuBar(y); 
+            |} 
+         ]|
+      where log(|Debug,"\nMenubar: ",<id>)
+          ; <new-java-id> "JMenubar"        => y
+          ; <map(SwulAs-RowElement(|y))> c* => bstm*
+
+// javax.swing.JMenu
+
+  SwulAs-JMenuProp(|x) = SwulAs-JMenuItemProp(|x) 
+                       + SwulAs-MenuListenerProp(|x)
+
+// javax.swing.JMenuItem
+
+  SwulAs-JMenuItemProp(|x) :
+    swul cp |[ mnemonic = k ]| -> bstm |[ x.setMnemonic(e) ; ]|
+      where log(|Debug,"\nMP_Mnemonic: ",<id>)
+          ; <SwulAs-KeyEvent> k => e
+
+  SwulAs-JMenuItemProp(|x) :
+    swul cp |[ accelerator = m* k ]| -> 
+    bstm |[ x.setAccelerator( KeyStroke.getKeyStroke(e1, e2) ) ; ]|
+      where log(|Debug,"\nMP_Accelerator: ",<id>)
+          ; <SwulAs-KeyEvent> k   => e1
+          ; <SwulAs-Modifiers> m* => e2
+ 
+  SwulAs-JMenuItemProp(|x) :
+    swul cp |[ items = { c* } ]| -> bstm |[ {| bstm* |} ]|
+      where log(|Debug,"\nMP_Items: ",<id>)
+          ; <map(SwulAs-RowElement(|x))> c* => bstm*
+
+  SwulAs-JMenuItemProp(|x) = SwulAs-AbstractButtonProp(|x)
+
+/*
+ * KeyEvent/Modifiers transformations 
+ * 
+ *  (KeyEvent || Modifiers) -> Expression
+ */  
+
+rules 
+  SwulAs-KeyEvent = 
+      upper-case
+    ; !("VK_", <id>)
+    ; !ExprName(AmbName(Id("KeyEvent")), Id(<conc-strings>))
+
+  SwulAs-Modifiers = !Lit(Deci( <SwulAs-Modifiers-Add ; int-to-string> ))
+  
+  SwulAs-Modifiers-Add = 
+      map(SwulAs-Modifier)
+    ; foldr(!0, add)
+
+  SwulAs-Modifier :
+    f#([ShiftModifier]) -> 1
+        
+  SwulAs-Modifier :
+    f#([CtrlModifier])  -> 2
+
+  SwulAs-Modifier : 
+    f#([MetaModifier])  -> 4   
+    
+  SwulAs-Modifier :
+    f#([AltModifier])   -> 8
+
+}

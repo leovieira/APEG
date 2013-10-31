@@ -1,0 +1,19 @@
+module Java-Swul
+imports Java-15-Prefixed Swul-Prefixed
+
+exports
+  sorts JavaExpr SwulComponent JavaBlock
+  context-free syntax
+    SwulComponent -> JavaExpr { cons("ToExpr")}
+
+    JavaExpr      -> SwulComponent { cons("FromExpr")} 
+
+    JavaBlock     -> SwulComponent { cons("FromBlock")} 
+     
+  context-free priorities
+      JavaExpr -> SwulComponent 
+    > SwulComponent -> JavaExpr
+
+  context-free priorities
+      SwulComponent -> JavaExpr
+    > JavaExpr -> SwulComponent   

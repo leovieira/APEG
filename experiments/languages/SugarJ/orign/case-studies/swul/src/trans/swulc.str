@@ -1,0 +1,79 @@
+/**
+ * Swul2Java assimilator
+ *
+ * @author  Martin Bravenboer <martin@cs.uu.nl>
+ */
+module swulc
+imports
+  Java-EBlock 
+  Swul
+  strategoxt-xtc-tools
+  liblib
+  swul-assimilate
+  javaswul-type-checker
+
+strategies
+
+  io-swulc =
+    xtc-io-wrap( ast-option + tt-option,
+      if not(get-ast-config) then
+        xtc-transform(!"parse-swul", pass-verbose )
+      end
+      ; ?input
+      ; if get-tt-config then 
+            xtc-transform(!"dryad-reclassify-ambnames" , pass-verbose)
+          ; xtc-transform(!"javaswul-type-annotator"  , pass-verbose)
+          ; if not( xtc-transform(!"javaswul-type-checker") )  then 
+                xtc-transform( !"javaswul-vis-tc" )
+              ; xtc-transform(!"abox2text", pass-verbose) => FILE(<read-text-file>)
+              ; debug(!"\nA typing error has occured.\nPlease check the red annotated source.\n")
+              ; <xtc-exit> 1
+            end
+         end
+      ; !input 
+      ; xtc-transform(!"swul-assimilate", pass-verbose )
+      ; xtc-transform(!"core-lift-eblocks",pass-verbose)
+      ; xtc-io-transform(filter-dangling-expressions)
+      ; if not(get-ast-config) then
+          xtc-transform(!"pp-java",pass-verbose )
+        end
+    )
+    
+  ast-option =
+    Option( "--ast" + "-a"
+      , set-ast-config
+      , !"-a | --ast-handle      Input/output should be aterms"
+      )
+  
+  set-ast-config =
+    <set-config> ("--ast-handle", ())
+     
+  get-ast-config =
+    <get-config> "--ast-handle"
+
+  tt-option =
+    Option( "--type-check" + "-t"
+      , set-tt-config
+      , !"-t | --type-check      Type check the regular expressions"
+      )
+  
+  set-tt-config =
+    <set-config> ("--type-check", ())
+     
+  get-tt-config =
+    <get-config> "--type-check"    
+    
+
+    
+  filter-dangling-expressions = alltd( filter-block + filter-constructor-blocks )
+                                     
+  filter-block = ?Block(<do-filtering>)
+               ; !Block(<id>)
+  
+  filter-constructor-blocks = ?ConstrBody(x, <do-filtering>)
+                            ; !ConstrBody(x, <id>)
+
+    
+  do-filtering = filter( not( ?bstm |[ this ; ]| + ?bstm |[ x ; ]| ) )                   
+  
+

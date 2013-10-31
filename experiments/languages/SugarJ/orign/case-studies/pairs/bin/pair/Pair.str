@@ -1,0 +1,45 @@
+module pair/Pair
+
+ imports org/sugarj/java/init/InitTrans org/sugarj/languages/Java concretesyntax/Java
+
+
+signature
+  constructors
+    PType : JavaType() * JavaType() -> JavaType()
+    PExpr : JavaExpr() * JavaExpr() -> JavaExpr()
+
+
+strategies
+  desugar =
+    changed-tree(desugar-pair-type)
+
+  desugar =
+    changed-tree(desugar-pair-expr)
+
+
+rules
+
+  desugar-pair-type :
+    PType(t1, t2) -> ClassOrInterfaceType(
+                       TypeName(
+                         PackageOrTypeName(Id("pair"))
+                       , Id("Pair")
+                       )
+                     , Some(
+                         TypeArgs([t1|[t2]])
+                       )
+                     )
+
+  desugar-pair-expr :
+    PExpr(e1, e2) -> Invoke(
+                       Method(
+                         MethodName(
+                           AmbName(
+                             AmbName(Id("pair"))
+                           , Id("Pair")
+                           )
+                         , Id("create")
+                         )
+                       )
+                     , [e1|[e2]]
+                     )

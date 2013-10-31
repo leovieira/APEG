@@ -1,0 +1,7 @@
+module Stratego-Swul-Java
+imports Stratego-Swul Stratego-Java-EBlock
+
+exports
+  variables
+    "e" [0-9]* -> JavaExpr
+

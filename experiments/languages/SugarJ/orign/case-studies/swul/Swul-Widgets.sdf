@@ -1,0 +1,95 @@
+module Swul-Widgets
+
+exports
+
+%%  Widgets that take the form of components
+sorts ComponentType ComponentPropType Component
+  context-free syntax
+    "button"       -> ComponentType {cons("JButton")}
+    "label"        -> ComponentType {cons("JLabel")}
+    "textarea"     -> ComponentType {cons("JTextArea")}
+    "textfield"    -> ComponentType {cons("JTextField")}
+    "checkbox"     -> ComponentType {cons("JCheckBox")}
+    "radiobutton"  -> ComponentType {cons("JRadioButton")}
+    "combobox"     -> ComponentType {cons("JComboBox")}
+    "tree"         -> ComponentType {cons("JTree")}
+    "progressbar"  -> ComponentType {cons("JProgressBar")}
+    "slider"       -> ComponentType {cons("JSlider")}
+    "togglebutton" -> ComponentType {cons("JToggleButton")}
+    "separator"    -> ComponentType {cons("JSeparator")}
+
+    "document" -> ComponentPropType {cons("Document")}
+    "rows"     -> ComponentPropType {cons("Rows")}
+    "columns"  -> ComponentPropType {cons("Columns")}
+    
+    "plain"   -> Component {cons("PlainDocument")}
+    "html"    -> Component {cons("HtmlDocument")}
+    "styled"  -> Component {cons("StyledDocument")}
+    
+  context-free syntax
+    "model"            -> ComponentPropType {cons("Model")}
+    "rootvisible"      -> ComponentPropType {cons("RootVisible")}
+    "toggleclickcount" -> ComponentPropType {cons("ToggleClickCount")}    
+    "cellrenderer"     -> ComponentPropType {cons("CellRenderer")}
+    "tooltipmanager"   -> ComponentPropType {cons("ToolTipManagerComponent")}
+
+  context-free syntax
+    "minimum" -> ComponentPropType {cons("Minimum")}
+    "maximum" -> ComponentPropType {cons("Maximum")}
+    "value"   -> ComponentPropType {cons("Value")}
+      
+  context-free syntax
+    "text"                 -> ComponentPropType {cons("Text")}
+    "tip"                  -> ComponentPropType {cons("Tip")}
+    "enabled"              -> ComponentPropType {cons("Enabled")}
+    "selected"             -> ComponentPropType {cons("Selected")}
+    "border"               -> ComponentPropType {cons("Border")}
+    "doublebuffered"       -> ComponentPropType {cons("DoubleBuffered")}
+    "opaque"               -> ComponentPropType {cons("Opaque")}
+    "minimumsize"          -> ComponentPropType {cons("Minimumsize")}
+    "debuggraphicsoptions" -> ComponentPropType {cons("DebugGraphicsOptions")}
+    "group"                -> ComponentPropType {cons("Group")}
+    "label for"	           -> ComponentPropType {cons("LabelFor")}
+
+
+  context-free syntax
+    "editable"            -> ComponentPropType {cons("Editable")}
+    "horizontalalignment" -> ComponentPropType {cons("HorizontalAlignment")}
+    "verticalalignment"   -> ComponentPropType {cons("VerticalAlignment")}
+
+%%
+%% Misc values that can be set to properties
+%%
+
+%% Alignments types 
+  context-free syntax
+    "left"     -> Component {cons("Left")}
+    "center"   -> Component {cons("Center")}
+    "right"    -> Component {cons("Right")}
+    "leading"  -> Component {cons("Leading")}
+    "trailing" -> Component {cons("Trailing")}
+    "top"      -> Component {cons("Top")}
+    "bottom"   -> Component {cons("Bottom")}
+
+%% Border types 
+  context-free syntax
+    "empty" "border"          -> ComponentType {cons("EmptyBorder")}
+    "line" "border" Component -> ComponentType {cons("LineBorder")}
+    Level "etched" "border"   -> ComponentType {cons("EtchedBorder")}     
+    Level "bevel" "border"    -> ComponentType {cons("BevelBorder")}
+
+  context-free syntax
+    "raised"                 -> Level {cons("Raised")}
+    "lowered"                -> Level {cons("Lowered")}
+
+%% Colors (or should it be Colours)
+  context-free syntax
+    "red"       -> Component {cons("Red")}
+    "white"     -> Component {cons("White")}
+    "blue"      -> Component {cons("Blue")}
+    "orange"    -> Component {cons("Orange")}
+    "black"     -> Component {cons("Black")}
+    "grey"      -> Component {cons("Grey")}
+    "borggreen" -> Component {cons("BorgGreen")}
+    
+    

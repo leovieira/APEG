@@ -1,0 +1,46 @@
+module Stratego-Swul
+imports StrategoRenamed Swul-Prefixed Java-Swul
+
+exports
+  context-free syntax
+    
+    "swul"             "|[" SwulComponent "]|" -> StrategoPreTerm
+{cons("ToTerm")}
+    "swul" "c"         "|[" SwulComponent "]|" -> StrategoPreTerm
+{cons("ToTerm")}
+    "swul" "component" "|[" SwulComponent "]|" -> StrategoPreTerm
+{cons("ToTerm")}
+    
+    "swul"                 "|[" SwulComponentType "]|" -> StrategoPreTerm
+{cons("ToTerm")}
+    "swul" "ct"            "|[" SwulComponentType "]|" -> StrategoPreTerm
+{cons("ToTerm")}
+    "swul" "componenttype" "|[" SwulComponentType "]|" -> StrategoPreTerm
+{cons("ToTerm")}
+    
+    "swul"                 "|[" SwulComponentProp "]|" -> StrategoPreTerm
+{cons("ToTerm")}
+    "swul" "cp"            "|[" SwulComponentProp "]|" -> StrategoPreTerm
+{cons("ToTerm")}
+    "swul" "componentprop" "|[" SwulComponentProp "]|" -> StrategoPreTerm
+{cons("ToTerm")}
+
+  variables
+    "c"  [0-9]*     -> SwulComponent
+    "c"  [0-9]* "*" -> SwulComponent*
+    "ct" [0-9]*     -> SwulComponentType
+    "ps" [0-9]*     -> SwulComponentProp
+    "ps" [0-9]* "*" -> SwulComponentProp*
+    "ps" [0-9]* "*" -> SwulComponentProps
+    "cpt"[0-9]*     -> SwulComponentPropType
+    "x"  [0-9]*     -> SwulId {prefer}
+    "y"  [0-9]*     -> SwulId {prefer}
+    "z"  [0-9]*     -> SwulId {prefer}
+    "v"  [0-9]*     -> SwulComponentPropValues {prefer}
+    
+    "m"  [0-9]* "*" -> (SwulModifier "-")*
+    "k"  [0-9]*     -> SwulKeyEvent
+
+  lexical syntax
+    "v" [0-9]*               -> JavaID {reject}
+

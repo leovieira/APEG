@@ -1,0 +1,34 @@
+module Swul-Menubar
+
+exports
+
+%%
+ %% How to build a menubar of the things javax.swing.JComponent
+  %% 
+  sorts ComponentType ComponentPropType ComponentProp
+  context-free syntax            
+    "menu"             -> ComponentType {cons("JMenu")}   
+    "menu item"        -> ComponentType {prefer, cons("JMenuItem")}   
+    "menu radiobutton" -> ComponentType {prefer, cons("JRadioButtonMenuItem")}   
+    "menu checkbox"    -> ComponentType {prefer, cons("JCheckBoxMenuItem")}
+    "menu separator"   -> ComponentType {prefer, cons("JSeparator")}
+    
+    "items"            -> ComponentPropType {cons("Items")}  
+
+    "accelerator" "=" (Modifier "-")* KeyEvent -> ComponentProp {cons("Accelerator")}
+    "mnemonic"    "="  KeyEvent                -> ComponentProp {cons("Mnemonic")}
+ 
+%%    
+ %% Keys and their modifiers
+  %%
+  sorts Modifier 
+  context-free syntax    
+
+    "ctrl"  -> Modifier {cons("CtrlModifier")}
+    "alt"   -> Modifier {cons("AltModifier")}
+    "shift" -> Modifier {cons("ShiftModifier")}
+    "meta"  -> Modifier {cons("MetaModifier")}
+
+  sorts KeyEvent
+  lexical syntax
+    [a-zA-Z0-9] -> KeyEvent
