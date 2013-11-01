@@ -12,14 +12,14 @@ NUM_EXEC=30
 
 #################
 
-NAME='all'
-FILES='test/TestAll.sugj test/TestClosureXML.sugj test/TestPairXML.sugj test/TestXML.sugj test/TestPair.sugj test/TestClosure.sugj test/Partial.sugj'
+#NAME='all'
+#FILES='test/TestAll.sugj test/TestClosureXML.sugj test/TestPairXML.sugj test/TestXML.sugj test/TestPair.sugj test/TestClosure.sugj test/Partial.sugj'
 
 #NAME='xml'
 #FILES='xml/Test.sugj'
 
-#NAME='closures'
-#FILES='javaclosure/Test.sugj'
+NAME='closures'
+FILES='javaclosure/Test.sugj'
 
 #NAME='pairs'
 #FILES='pair/TestPair.sugj'
@@ -56,9 +56,9 @@ do
   sleep 120
 done
 
-java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'pair/Pair.sugj' 'xml/XmlSyntax.sugj' 'javaclosure/Syntax.sugj' 'test/TestPair.sugj' 'test/TestXML.sugj' 'test/TestClosure.sugj' 'test/Partial.sugj test/TestPairXML.sugj test/TestClosureXML.sugj test/TestAll.sugj'
+#java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'pair/Pair.sugj' 'xml/XmlSyntax.sugj' 'javaclosure/Syntax.sugj' 'test/TestPair.sugj' 'test/TestXML.sugj' 'test/TestClosure.sugj' 'test/Partial.sugj test/TestPairXML.sugj test/TestClosureXML.sugj test/TestAll.sugj'
 #java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'xml/Test.sugj' 'xml/XmlSyntax.sugj'
-#java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'javaclosure/Test.sugj' 'javaclosure/Syntax.sugj'
+java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'javaclosure/Test.sugj' 'javaclosure/Syntax.sugj'
 #java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'pair/TestPair.sugj' 'pair/Pair.sugj'
 #java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'test/HelloWord.sugj' 'swul/SwulSyntax.sugj'
 

@@ -1036,7 +1036,7 @@ public class Driver{
        * TODO leonardo
        * Constroi um arquivo com as regras SDF
        * Considerei a criacao da string com as regras + geracao do arquivo como tempo de parse
-       *   de moda a uniformizar com a implementacao em APEG
+       *   de moda a uniformizar com a implementacao em APEG <----- Vladimir pediu para alterar isso e considerar como tempo de adapt
        */
       long time = 0;
       long beginTime;
@@ -1136,7 +1136,8 @@ public class Driver{
        */
       try {
         //System.out.println("########## Tempo: " + time + " ###############");
-        DataManager.addParseTime(sourceFile.getAbsolutePath(), time);
+        //DataManager.addParseTime(sourceFile.getAbsolutePath(), time);
+        DataManager.addAdaptabilityTime(sourceFile.getAbsolutePath(), time);
       } catch (DataException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
