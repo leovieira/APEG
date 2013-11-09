@@ -1,12 +1,13 @@
 package trans;
 
 import eblock.EBlock;
+import concretesyntax.Java;
+import concretesyntax.Stratego;
+
+import org.sugarj.languages.Java;
+import org.sugarj.languages.Stratego;
 
 import swul.SwulSyntax;
-
-import org.sugarj.stdlib.StdTrans;
-import org.sugarj.languages.Stratego;
-import org.sugarj.Java;
 
 /*
  * https://svn.strategoxt.org/repos/StrategoXT/java-swul/trunk/trans/swul-assimilate-events.str
@@ -15,8 +16,8 @@ public sugar SwulEvent {
 rules
 // FromBlock
 
-SwulAs-JavaBlock :
-   FromBlock(bstm) -> bstm |[ bstm ]|
+  SwulAs-JavaBlock :
+    FromBlock(bstm) -> bstm |[ bstm ]|
       where log(|Debug,"\nFromExpr: ",<id>)
 
 // All the different actionlisteners

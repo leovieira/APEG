@@ -1,9 +1,11 @@
 package trans;
 
-import org.sugarj.languages.Stratego;
-
-import concretesyntax.Java;
 import eblock.EBlock;
+import concretesyntax.Java;
+import concretesyntax.Stratego;
+
+import org.sugarj.languages.Java;
+import org.sugarj.languages.Stratego;
 
 import trans.SwulEvent;
 import trans.SwulGridbag;

@@ -1,35 +1,34 @@
 File;Adapt;Parse
-execution 2;17846;1272
-execution 3;17089;1022
-execution 1;19507;806
-execution 6;17737;828
-execution 7;20617;1030
-execution 4;17377;1198
-execution 5;16454;1199
-execution 9;17842;1210
-execution 8;18366;1082
-execution 21;17601;1094
-execution 20;17368;1374
-execution 23;19237;1206
-execution 22;17319;975
-execution 25;16452;1014
-execution 24;17258;812
-execution 27;21367;971
-execution 26;19736;1060
-execution 29;19067;1064
-execution 28;22660;1045
-execution 19;17140;832
-execution 10;16229;739
-execution 30;20554;1093
-execution 18;17343;1002
-execution 17;27567;877
-execution 16;16164;854
-execution 15;16570;1089
-execution 14;17236;1148
-execution 13;25024;891
-execution 12;18958;1244
-execution 11;20211;958
-Média;18796,5333333333;1032,9666666667
-Dévio Padrão;2627,1138842691;157,7795238962
-;980,9806179971;58,9158527865
-;1,0521894437;1,0570355798
+execution: xml19;17974;351
+execution: xml18;17502;259
+execution: xml9;17649;256
+execution: xml20;18606;318
+execution: xml21;16243;268
+execution: xml22;19656;331
+execution: xml23;27904;279
+execution: xml24;16492;277
+execution: xml25;17211;272
+execution: xml26;19627;333
+execution: xml27;20559;303
+execution: xml28;18497;331
+execution: xml15;16465;342
+execution: xml14;17109;219
+execution: xml17;18693;273
+execution: xml29;17025;256
+execution: xml16;18074;337
+execution: xml11;16561;280
+execution: xml10;16946;247
+execution: xml13;16431;270
+execution: xml12;19402;311
+execution: xml30;16299;285
+execution: xml6;17188;240
+execution: xml5;16626;218
+execution: xml8;19601;279
+execution: xml7;16932;267
+execution: xml2;16625;264
+execution: xml1;16849;241
+execution: xml4;17288;246
+execution: xml3;16400;257
+average;17947,8;280,3333333333
+des.pad;2232,4986064019;36,6468075792
+error;0,0630535009;0,0662659817

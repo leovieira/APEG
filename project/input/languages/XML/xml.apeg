@@ -129,7 +129,7 @@ DocTypePrologue:
    DocTypeDecl Misc*;
 
 DocTypeDecl:
-   '<!DOCTYPE' spacing QName ExternalID '>';
+   '<!DOCTYPE' spacing QName spacing ExternalID '>';
 
 /**
   XML External Entity Declaration

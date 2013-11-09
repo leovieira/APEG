@@ -7,7 +7,7 @@ DATA_PATH='/home/leo/workspace/APEG/experiments/languages/SugarJ/apeg/data-gener
 SRC='src'
 BIN='bin'
 
-NUM_EXEC=1
+NUM_EXEC=30
 
 #################
 
@@ -23,6 +23,16 @@ FILES='test/TestAll.sugj test/TestClosureXML.sugj test/TestPairXML.sugj test/Tes
 
 #NAME='pairs'
 #FILES='pair/TestPair.sugj'
+
+####
+#NAME='n-pairs'
+#FILES='test/Test01.sugj test/Test02.sugj test/Test03.sugj test/Test04.sugj test/Test05.sugj test/Test06.sugj test/Test07.sugj test/Test08.sugj test/Test09.sugj test/Test10.sugj test/Test11.sugj test/Test12.sugj test/Test13.sugj test/Test14.sugj test/Test15.sugj test/Test16.sugj test/Test17.sugj test/Test18.sugj test/Test19.sugj test/Test20.sugj'
+
+#NAME='n-closures'
+#FILES='test/Test01.sugj test/Test02.sugj test/Test03.sugj test/Test04.sugj test/Test05.sugj test/Test06.sugj test/Test07.sugj test/Test08.sugj test/Test09.sugj test/Test10.sugj test/Test11.sugj test/Test12.sugj test/Test13.sugj test/Test14.sugj test/Test15.sugj test/Test16.sugj test/Test17.sugj test/Test18.sugj test/Test19.sugj test/Test20.sugj'
+
+#NAME='n-xml'
+#FILES='test/Test01.sugj test/Test02.sugj test/Test03.sugj test/Test04.sugj test/Test05.sugj test/Test06.sugj test/Test07.sugj test/Test08.sugj test/Test09.sugj test/Test10.sugj'
 
 PROJECT="$PROJECTS_PATH/$NAME"
 OUTPUT="$DATA_PATH/$NAME/$NAME"

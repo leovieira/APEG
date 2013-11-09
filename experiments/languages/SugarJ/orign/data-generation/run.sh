@@ -8,7 +8,7 @@ DATA_PATH='/home/leo/workspace/APEG/experiments/languages/SugarJ/orign/data-gene
 SRC='src'
 BIN='bin'
 
-NUM_EXEC=30
+NUM_EXEC=1
 
 #################
 
@@ -18,14 +18,27 @@ NUM_EXEC=30
 #NAME='xml'
 #FILES='xml/Test.sugj'
 
-NAME='closures'
-FILES='javaclosure/Test.sugj'
+#NAME='closures'
+#FILES='javaclosure/Test.sugj'
 
 #NAME='pairs'
 #FILES='pair/TestPair.sugj'
 
 #NAME='swul'
 #FILES='test/HelloWord.sugj'
+
+#####
+#NAME='n-pairs'
+#FILES='test/Test01.sugj test/Test02.sugj test/Test03.sugj test/Test04.sugj test/Test05.sugj test/Test06.sugj test/Test07.sugj test/Test08.sugj test/Test09.sugj test/Test10.sugj test/Test11.sugj test/Test12.sugj test/Test13.sugj test/Test14.sugj test/Test15.sugj test/Test16.sugj test/Test17.sugj test/Test18.sugj test/Test19.sugj test/Test20.sugj'
+
+#NAME='n-closures'
+#FILES='test/Test01.sugj test/Test02.sugj test/Test03.sugj test/Test04.sugj test/Test05.sugj test/Test06.sugj test/Test07.sugj test/Test08.sugj test/Test09.sugj test/Test10.sugj test/Test11.sugj test/Test12.sugj test/Test13.sugj test/Test14.sugj test/Test15.sugj test/Test16.sugj test/Test17.sugj test/Test18.sugj test/Test19.sugj test/Test20.sugj'
+
+#NAME='n-xml'
+#FILES='test/Test01.sugj test/Test02.sugj test/Test03.sugj test/Test04.sugj test/Test05.sugj test/Test06.sugj test/Test07.sugj test/Test08.sugj test/Test09.sugj test/Test10.sugj'
+
+NAME='n-xml'
+FILES='test/Test01.sugj test/Test02.sugj'
 
 PROJECT="$PROJECTS_PATH/$NAME"
 OUTPUT="$DATA_PATH/$NAME/$NAME"
@@ -50,7 +63,7 @@ count=0
 until [ $count = $NUM_EXEC ]
 do
   count=`expr $count + 1`
-  java -Xss64m -Xmx1024m -classpath $CP_PATH sugarj.DataGeneration '--sourcepath' "$PROJECT/$SRC" '--binpath' "$PROJECT/$BIN" '-o' "$OUTPUT$count" $FILES
+  java -Xss8m -Xmx1024m -server -XX:MaxPermSize=256m -classpath $CP_PATH sugarj.DataGeneration '--sourcepath' "$PROJECT/$SRC" '--binpath' "$PROJECT/$BIN" '-o' "$OUTPUT$count" $FILES
   rm -rf "$PROJECT/$BIN"
   rm -rf /tmp/sugarj* /tmp/SugarJ* /tmp/.sugarjcache
   sleep 120
@@ -58,9 +71,18 @@ done
 
 #java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'pair/Pair.sugj' 'xml/XmlSyntax.sugj' 'javaclosure/Syntax.sugj' 'test/TestPair.sugj' 'test/TestXML.sugj' 'test/TestClosure.sugj' 'test/Partial.sugj test/TestPairXML.sugj test/TestClosureXML.sugj test/TestAll.sugj'
 #java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'xml/Test.sugj' 'xml/XmlSyntax.sugj'
-java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'javaclosure/Test.sugj' 'javaclosure/Syntax.sugj'
+#java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'javaclosure/Test.sugj' 'javaclosure/Syntax.sugj'
 #java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'pair/TestPair.sugj' 'pair/Pair.sugj'
 #java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'test/HelloWord.sugj' 'swul/SwulSyntax.sugj'
+
+######
+#java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'test/Test01.sugj' 'test/Test02.sugj' 'test/Test03.sugj' 'test/Test04.sugj' 'test/Test05.sugj' 'test/Test06.sugj' 'test/Test07.sugj' 'test/Test08.sugj' 'test/Test09.sugj' 'test/Test10.sugj' 'test/Test11.sugj' 'test/Test12.sugj' 'test/Test13.sugj' 'test/Test14.sugj' 'test/Test15.sugj' 'test/Test16.sugj' 'test/Test17.sugj' 'test/Test18.sugj' 'test/Test19.sugj' 'test/Test20.sugj' 'pair/Pair.sugj'
+
+#java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'test/Test01.sugj' 'test/Test02.sugj' 'test/Test03.sugj' 'test/Test04.sugj' 'test/Test05.sugj' 'test/Test06.sugj' 'test/Test07.sugj' 'test/Test08.sugj' 'test/Test09.sugj' 'test/Test10.sugj' 'test/Test11.sugj' 'test/Test12.sugj' 'test/Test13.sugj' 'test/Test14.sugj' 'test/Test15.sugj' 'test/Test16.sugj' 'test/Test17.sugj' 'test/Test18.sugj' 'test/Test19.sugj' 'test/Test20.sugj' 'javaclosure/Syntax.sugj'
+
+#java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'test/Test01.sugj' 'test/Test02.sugj' 'test/Test03.sugj' 'test/Test04.sugj' 'test/Test05.sugj' 'test/Test06.sugj' 'test/Test07.sugj' 'test/Test08.sugj' 'test/Test09.sugj' 'test/Test10.sugj' 'xml/XmlSyntax.sugj'
+
+java -classpath $CP_PATH sugarj.SumaryData -i "$DATA_PATH/$NAME" 'test/Test01.sugj' 'test/Test02.sugj' 'xml/XmlSyntax.sugj'
 
 echo 'end'
 

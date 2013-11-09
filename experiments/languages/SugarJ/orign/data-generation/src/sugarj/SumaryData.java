@@ -51,8 +51,8 @@ public class SumaryData {
 				String parse_time = csv.get("Parse");
 				String adapt_time = csv.get("Adapt");
 				if(isOneOf(file_name, files) || file_name.equals("init")) {
-					DataManager.addAdaptabilityTime("execution " + i, Long.parseLong(adapt_time));
-					DataManager.addParseTime("execution " + i, Long.parseLong(parse_time));
+					DataManager.addAdaptabilityTime("execution: " + getFileName(file), Long.parseLong(adapt_time));
+					DataManager.addParseTime("execution: " + getFileName(file), Long.parseLong(parse_time));
 				}				
 			}
 			csv.close();
@@ -69,6 +69,13 @@ public class SumaryData {
 				return true;
 		}
 		return false;
+	}
+	
+	private static String getFileName(String file) {
+		String resp;
+		System.out.println(file);
+		resp = file.substring(file.lastIndexOf("/")+1, file.length()-9);
+		return resp;
 	}
 	
 	//*************************************************************************

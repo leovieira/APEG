@@ -50,7 +50,7 @@ public class Util {
 		parser.enableErrorMessageCollection(true);
 		AdaptablePEGParser.grammarDef_return result = parser.grammarDef(grammar);
 		Tree t = (Tree) result.getTree();
-		System.out.println(t.toStringTree());
+		//System.out.println(t.toStringTree());
 		if (parser.hasErrors()) {
 			parser.printErrorMessages();
 			return -2;

@@ -1,4 +1,0 @@
-module concretesyntax/MetaExplode
- imports org/sugarj/java/init/initGrammar
-exports 
-  (/)

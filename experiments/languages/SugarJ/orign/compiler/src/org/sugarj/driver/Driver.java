@@ -377,7 +377,7 @@ public class Driver{
         analyzed = ATermCommands.copyTokens(lastSugaredToplevelDecl, analyzed);
         lastSugaredToplevelDecl = analyzed;
         
-        stepped();
+        //stepped();
         
         // DESUGAR the parsed top-level declaration
         IStrategoTerm desugared = currentDesugar(analyzed);

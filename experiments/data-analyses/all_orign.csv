@@ -1,35 +1,34 @@
 File;Adapt;Parse
-execution 2;50815;1071
-execution 3;51610;667
-execution 1;54923;593
-execution 6;36990;831
-execution 7;36397;638
-execution 4;35929;780
-execution 5;53311;619
-execution 9;34154;559
-execution 8;49489;816
-execution 21;34136;500
-execution 20;37991;731
-execution 23;37804;618
-execution 22;39451;642
-execution 25;47582;505
-execution 24;38668;640
-execution 27;38988;523
-execution 26;37490;524
-execution 29;38659;645
-execution 28;55176;524
-execution 19;33712;712
-execution 10;50886;687
-execution 30;35738;647
-execution 18;33121;639
-execution 17;52187;587
-execution 16;41134;539
-execution 15;36609;692
-execution 14;38269;678
-execution 13;44036;825
-execution 12;48979;634
-execution 11;36883;684
-média;42037,2333333333;658,3333333333
-des. Padrao;7255,5772444772;120,4441015957
-;2709,2775428703;44,9745745416
-;1,0644494732;1,0683158094
+execution: all16;45544;475
+execution: all17;36905;490
+execution: all18;38951;381
+execution: all19;41784;393
+execution: all10;35996;356
+execution: all11;44237;409
+execution: all30;37517;441
+execution: all12;31732;410
+execution: all13;46997;357
+execution: all14;36827;349
+execution: all15;33012;304
+execution: all8;41300;370
+execution: all7;40217;474
+execution: all9;50617;363
+execution: all4;35808;468
+execution: all3;34400;424
+execution: all6;37217;362
+execution: all5;50565;376
+execution: all29;38982;411
+execution: all27;39365;343
+execution: all28;42908;469
+execution: all21;34949;461
+execution: all22;41958;414
+execution: all1;35598;314
+execution: all2;40396;349
+execution: all20;45105;416
+execution: all25;43349;407
+execution: all26;34149;417
+execution: all23;34311;406
+execution: all24;35401;422
+average;39536,5666666667;401,0333333333
+des.pad;4986,4664683752;49,021799045
+error;0,0639327197;0,0619637942
