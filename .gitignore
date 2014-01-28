@@ -1,6 +1,6 @@
-project/bin
-project/antlr-generated
-project/grammar/*.tokens
+project/interpreter/bin
+project/interpreter/antlr-generated
+project/interpreter/grammar/*.tokens
 
 # ignoring all .class files, but does not to ignore .classpath (it is necessary for eclipse project)
 *.class
