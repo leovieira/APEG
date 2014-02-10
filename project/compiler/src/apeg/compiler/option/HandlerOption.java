@@ -28,7 +28,7 @@ public class HandlerOption {
 					opt.getValue();
 					break;
 				default:
-					System.out.println("Invalid option");
+					//System.out.println("Invalid option");
 				}
 			}
 			String[] grammars = line.getArgs();
@@ -47,7 +47,7 @@ public class HandlerOption {
 		options.addOption("o", "output", true, "Specific the output directory");
 		options.addOption("p", "package", true,
 				"The package name of the generated code");
-		options.addOption("h", "help", true, "Print the help message");
+		options.addOption("h", "help", false, "Print the help message");
 
 		return options;
 

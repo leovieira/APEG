@@ -9,6 +9,13 @@ public class Tool {
 		 * Handling the command lines args
 		 */
 		String[] grammars = HandlerOption.handle(args);
-
+		for(String s : grammars) {
+			/**
+			 * Parsing the syntax of the grammar
+			 */
+			
+			
+			System.out.println(s);
+		}
 	}
 }
