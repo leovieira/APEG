@@ -44,31 +44,47 @@ tokens {
     package apeg.syntax;
     //import util.Util;
 }
-
+/***
+ * The preambulo of the grammar
+ ***/
+ 
 // Start symbol for a grammar definition.
-// An APEG grammar is a list of one or more APEG rules
-grammarDef[Grammar g] :
+grammarDef:
     'apeg'! ID ';'!
-	('options' '{' (compiler_opt ';')* '}')?
+	('options' '{' (grammar_opt ';')* '}')?
     functions
     rule+
     ;
 
-compiler_opt :
+/***
+ *  Option Section
+ ***/
+
+grammar_opt:
 	'isAdaptable' '='
 		('true'
 		|
 		'false'
 		)
 	|
-	'envSemantics' '='
+	 'envSemantics' '='
 		('simple'
 		|
 		'discardChangesWhenFail'
 		)
+	|
+	 'memoize' '='
+	  ( 'true'
+	   |
+	    'false'
+	  )
 	;
 
-functions :
+/***
+ * Functions Declaration
+ ***/
+ 
+functions:
   'functions' 
   (
    ID
@@ -87,64 +103,79 @@ functions :
   ;
 */
 
-addrules[Grammar g] :
-	rule+
-	;
+/***
+ * Grammar Rule Section
+ ***/
 
 // A definiton of an APEG rule
-rule :
+rule:
+  annotation
   ID
-  d1=optDecls[Attribute.Category.PARAM]
-  d2=optReturn[Attribute.Category.RETURN]
-  d3=optLocals[Attribute.Category.LOCAL]
+  d1=optDecls
+  d2=optReturn
+  d3=optLocals
   ':' t=peg_expr
   ';'
   -> ^(RULE ID $d1 $d2 $d3 peg_expr)
 ;
 
-// This rule defines the lists of all attributes
-decls[Attribute.Category c] :
-  '[' varDecl[c] (',' varDecl[c])* ']' -> ^(LIST varDecl*)
+annotation:
+   '@memoize' // to use together with the option memoize=false
+  /
+   '@trasient' // to use together with the option memoize=true
   ;
 
+/***
+ * Attributes Definition Section
+ ***/
+
 // This rule defines the list of inhereted attributes
-optDecls[Attribute.Category c] :
-  decls[c] -> decls
+optDecls:
+  decls -> decls
   |
     -> LIST
   ;
 
 // This rule defines the list of synthesized attributes
-optReturn[Attribute.Category c] :
-  'returns' decls[c] -> decls
+optReturn:
+  'returns' decls -> decls
   |
     -> LIST
   ;
 
-optLocals[Attribute.Category c] :
-  'locals'! decls[c]
+optLocals:
+  'locals'! decls
   |
     -> LIST
   ;
 
-varDecl[Attribute.Category c] :
+// This rule defines the lists of all attributes
+decls:
+  '[' varDecl (',' varDecl)* ']' -> ^(LIST varDecl*)
+  ;
+
+varDecl:
   type ID
     -> ^(VARDECL type ID)
   ;
 
-type returns[Type typeSymbol]:
+type:
   ID
   ;
+
+/***
+ * APEG Expressions
+ ***/
 
 // Definition of the right side of a APEG
 // This rule defines that the CHOICE operator has the lowest precedence 
 // The precedence of CHOICE operator is 1
 // CHOICE is an associative operator. We decided for right association because it may be faster to interpret
-peg_expr :
-  peg_seq 
-  ('/' peg_expr -> ^(CHOICE peg_seq peg_expr)
-  |
-    -> peg_seq
+peg_expr:
+  peg_seq
+  ( '/' peg_expr -> ^(CHOICE peg_seq peg_expr)
+   |
+     -> peg_seq
   )
   ;
 
@@ -223,6 +254,10 @@ ntcall :
         -> ^(NONTERM ID LIST)
      )
   ;
+
+/***
+ * Conditional and Semantic Predication Expressions
+ ***/
 
 assign :
   idAssign t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] idAssign expr)
