@@ -1,10 +1,12 @@
 package tests;
+import static org.junit.Assert.assertEquals;
 import util.Util;
 
 
 public class Tests {
 	
 	public static void main(String args[]) throws Exception {
+		/*
 		Util.testeGrammar("input/teste01.txt", "input/teste01_input.txt", "literal");
 		Util.testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S1");
 		Util.testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S2");
@@ -29,6 +31,15 @@ public class Tests {
 		Object args9_1[] = new Object[1];
 		Util.testeGrammar("input/teste09.txt", "input/teste09_input.txt", "a", args9_1);
 		System.out.println("Return value(s) = " + args9_1[0]);
+		*/
+		Object args9_1a[] = new Object[1];
+		int resp = Util.testeGrammar("input/teste09a.txt", "input/teste09_input.txt", "a", args9_1a);
+		System.out.println("Resp = " + resp);
+		System.out.println("Return value(s) = " + args9_1a[0]);
+		resp = Util.testeGrammar("input/teste09a.txt", "input/teste09_input.txt", "c", args9_1a);
+		System.out.println("Resp = " + resp);
+		System.out.println("Return value(s) = " + args9_1a[0]);
+
 	}
 
 }
