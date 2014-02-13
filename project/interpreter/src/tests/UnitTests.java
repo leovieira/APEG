@@ -8,6 +8,7 @@ public class UnitTests {
 
 	@Test
 	public void Test01() {
+		System.out.println("\nTeste01");
 		try {
 			int resp = Util.testeGrammar("input/teste01.txt", "input/teste01_input.txt", "literal");
 			assertEquals(24, resp);
@@ -19,6 +20,7 @@ public class UnitTests {
 
 	@Test
 	public void Test01_1() {
+		System.out.println("\nTeste01_1");
 		try {
 			int resp = Util.testeGrammar("input/teste01a.txt", "input/teste01_input.txt", "literal");
 			assertEquals(24, resp);
@@ -30,6 +32,7 @@ public class UnitTests {
 
 	@Test
 	public void Test02_1() {
+		System.out.println("\nTeste02_1");
 		try {
 			int resp = Util.testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S1");
 			assertEquals(9, resp);
@@ -41,6 +44,7 @@ public class UnitTests {
 
 	@Test
 	public void Test02_2() {
+		System.out.println("\nTeste02_2");
 		try {
 			int resp = Util.testeGrammar("input/teste02.txt", "input/teste02_input.txt", "S2");
 			assertEquals(9, resp);
@@ -52,6 +56,7 @@ public class UnitTests {
 
 	@Test
 	public void Test03() {
+		System.out.println("\nTeste03");
 		try {
 			Object args3[] = new Object[3];
 			args3[0] = 1; args3[1] = 2;
@@ -67,6 +72,7 @@ public class UnitTests {
 	
 	@Test
 	public void Test04() {
+		System.out.println("\nTeste04");
 		try {
 			int resp = Util.testeGrammar("input/teste04.txt", "input/teste04_input.txt", "root");
 			assertEquals(11, resp);
@@ -78,6 +84,7 @@ public class UnitTests {
 	
 	@Test
 	public void Test05() {
+		System.out.println("\nTeste05");
 		try {
 			int resp = Util.testeGrammar("input/teste05.txt", "input/teste05_input.txt", "root");;
 			assertEquals(5, resp);
@@ -89,6 +96,7 @@ public class UnitTests {
 	
 	@Test
 	public void Test06_1() {
+		System.out.println("\nTeste06_1");
 		try {
 			int resp = Util.testeGrammar("input/teste06.txt", "input/teste06_input.txt", "literal3");
 			assertEquals(37, resp);
@@ -100,6 +108,7 @@ public class UnitTests {
 	
 	@Test
 	public void Test06_2() {
+		System.out.println("\nTeste06_2");
 		try {
 			int resp = Util.testeGrammar("input/teste06a.txt", "input/teste06_input.txt", "literal3");
 			assertEquals(37, resp);
@@ -111,6 +120,7 @@ public class UnitTests {
 	
 	@Test
 	public void Test06_3() {
+		System.out.println("\nTeste06_3");
 		try {
 			Object args6[] = new Object[1];
 			int resp = Util.testeGrammar("input/teste06b.txt", "input/teste06_input.txt", "literal3", args6);
@@ -125,6 +135,7 @@ public class UnitTests {
 	
 	@Test
 	public void Test06_4() {
+		System.out.println("\nTeste06_4");
 		try {
 			Object args6[] = new Object[1];
 			int resp = Util.testeGrammar("input/teste06b.txt", "input/teste06_input2.txt", "literal", args6);
@@ -139,6 +150,7 @@ public class UnitTests {
 	
 	@Test
 	public void Test07_1() {
+		System.out.println("\nTeste07_1");
 		try {
 			int resp = Util.testeGrammar("input/teste07.txt", "input/teste07_input.txt", "block");
 			assertEquals(resp, 22);
@@ -150,6 +162,7 @@ public class UnitTests {
 		
 	@Test
 	public void Test07_2() {
+		System.out.println("\nTeste07_2");
 		try {
 			int resp = Util.testeGrammar("input/teste07a.txt", "input/teste07_input.txt", "block");
 			assertEquals(resp, 22);
@@ -161,6 +174,7 @@ public class UnitTests {
 	
 	@Test
 	public void Test08() {
+		System.out.println("\nTeste08");
 		try {
 			Object args8[] = new Object[1];
 			int resp = Util.testeGrammar("input/teste08.txt", "input/teste08_input.txt", "name", args8);
@@ -175,6 +189,7 @@ public class UnitTests {
 
 	@Test
 	public void Test09_1() {
+		System.out.println("\nTeste09_1");
 		try {
 			Object args9_1[] = new Object[1];
 			int resp = Util.testeGrammar("input/teste09.txt", "input/teste09_input.txt", "a", args9_1);
@@ -184,7 +199,7 @@ public class UnitTests {
 			resp = Util.testeGrammar("input/teste09.txt", "input/teste09_input.txt", "c", args9_1);
 			assertEquals(resp, 1);
 			System.out.println("Return value(s) = " + args9_1[0]);
-			assertEquals(args9_1[0], 1);
+			assertEquals(args9_1[0], 2);
 		} catch (Exception e) {
 			System.out.println(e);
 			assertTrue(false);
@@ -193,9 +208,14 @@ public class UnitTests {
 
 	@Test
 	public void Test09_2() {
+		System.out.println("\nTeste09_2");
 		try {
 			Object args9_1[] = new Object[1];
 			int resp = Util.testeGrammar("input/teste09a.txt", "input/teste09_input.txt", "a", args9_1);
+			assertEquals(resp, 1);
+			System.out.println("Return value(s) = " + args9_1[0]);
+			assertEquals(args9_1[0], 1);
+			resp = Util.testeGrammar("input/teste09a.txt", "input/teste09_input.txt", "c", args9_1);
 			assertEquals(resp, 1);
 			System.out.println("Return value(s) = " + args9_1[0]);
 			assertEquals(args9_1[0], 1);
@@ -207,6 +227,7 @@ public class UnitTests {
 
 	@Test
 	public void Test10() {
+		System.out.println("\nTeste10");
 		try {
 			int resp = Util.testeGrammar("input/teste10.txt", "input/teste10_input.txt", "S");
 			assertEquals(resp, 11);

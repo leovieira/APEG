@@ -126,6 +126,9 @@ public class Interpreter {
 		environments.push(env);
 		int ret = process(nt.getPegExpr(), 0);
 		if (ret >= 0) {
+			if (grammar.discardChanges()) {
+				env = environments.pop();
+			}
 			int first = nt.getNumParam();
 			int last = first + nt.getNumRet();
 			for (int i = first; i < last; ++i) {
