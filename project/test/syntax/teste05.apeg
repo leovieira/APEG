@@ -1,0 +1,8 @@
+apeg testmemo;
+
+root : !strN<3> &strN<5> strN<3> / strN<5> ; 
+
+
+strN[int n] : ( {? n > 0 } CHAR { n = n - 1; } )* {? n == 0 } !. ;
+
+CHAR : . ;

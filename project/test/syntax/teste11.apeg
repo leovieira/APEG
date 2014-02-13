@@ -1,0 +1,19 @@
+/***
+ * Testing the annotation of the rules 
+ ***/
+apeg annotation;
+
+options {
+ memoize=true;
+}
+
+a:
+  b '1'
+ /
+  b '2'
+;
+
+@transient
+b:
+ 'b';
+
