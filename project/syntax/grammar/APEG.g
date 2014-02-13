@@ -34,191 +34,61 @@ tokens {
 @parser::header
 {
     package apeg.syntax;
-    import semantics.*;
-    import java.lang.reflect.Method;
-    import java.lang.reflect.Modifier;
-    import java.util.ArrayList;
+    //import semantics.*;
+    //import java.lang.reflect.Method;
+    //import java.lang.reflect.Modifier;
+    //import java.util.ArrayList;
 }
 @lexer::header
 {
     package apeg.syntax;
-    import util.Util;
+    //import util.Util;
 }
-
-@members{
-
-    private static class NTCallInfo {
-        NonTerminal enclosingNT;
-        CommonTree callExpr;
-        public NTCallInfo(NonTerminal enclosingNT, CommonTree callExpr) {
-            this.enclosingNT = enclosingNT;
-            this.callExpr = callExpr;
-        }
-    }
-    
-    Grammar grammar;
-    NonTerminal currNT;
-    ArrayList<NTCallInfo> ntcalls;
-    boolean isAddingRules;
-    boolean isNewRule;
-    
-    private void verifNTCalls() {
-    	for (NTCallInfo ntCallInfo : ntcalls) {
-    	    NonTerminal enclosingNT = ntCallInfo.enclosingNT;
-    	    CommonTree tree = ntCallInfo.callExpr;
-			// I suppose there are exactly 2 children:
-			// - the name of the nonterminal
-			// - the list of arguments
-			SemanticNode sm = (SemanticNode) tree.getChild(0);
-			String name = sm.getText();
-			CommonTree args = (CommonTree) tree.getChild(1);
-			NonTerminal nt = grammar.getNonTerminal(name);
-			if (nt == null) {
-				emitErrorMessage(sm.getToken(), "Nonterminal not found: " + name);
-			} else {
-				sm.setSymbol(nt);
-				if(nt.addedGrammarAttribute()) {
-				// A grammar attribute was automatically inserted at NonTerminal nt.
-				// Now it is necessary to pass the correct new first argument
-				    Attribute grammarAttr = enclosingNT.getParam(0);
-					SemanticNode auxt = (SemanticNode) adaptor.create(AdaptablePEGLexer.ID, grammarAttr.getName());
-					auxt.setSymbol(grammarAttr);
-					args.insertChild(0, auxt);
-				}
-				int i1 = nt.getNumParam() + nt.getNumRet();
-				int i2 = args.getChildCount();
-				if (i1 != i2) {
-					emitErrorMessage(sm.getToken(),
-					"Wrong number of arguments in nonterminal " + name);
-				} else {
-					for (int i = nt.getNumParam(); i < i1; ++i) {
-						CommonTree t = (CommonTree) args.getChild(i);
-						if (t.token.getType() != ID) {
-							emitErrorMessage(sm.getToken(),
-							"Arguments for synthesized attributes must be only an identifier");
-						}
-					}
-				}
-			}
-		}
-	}
-    
-    private boolean mMessageCollectionEnabled = false;
-    private List<String> mMessages;
-
-    /**
-     *  Switches error message collection on or of.
-     *
-     *  The standard destination for parser error messages is <code>System.err</code>.
-     *  However, if <code>true</code> gets passed to this method this default
-     *  behaviour will be switched off and all error messages will be collected
-     *  instead of written to anywhere.
-     *
-     *  The default value is <code>false</code>.
-     *
-     *  @param pNewState  <code>true</code> if error messages should be collected.
-     */
-    public void enableErrorMessageCollection(boolean pNewState) {
-        mMessageCollectionEnabled = pNewState;
-        if (mMessages == null && mMessageCollectionEnabled) {
-            mMessages = new ArrayList<String>();
-        }
-    }
-    
-    /**
-     *  Collects an error message or passes the error message to <code>
-     *  super.emitErrorMessage(...)</code>.
-     *
-     *  The actual behaviour depends on whether collecting error messages
-     *  has been enabled or not.
-     *
-     *  @param pMessage  The error message.
-     */
-     @Override
-    public void emitErrorMessage(String pMessage) {
-        if (mMessageCollectionEnabled) {
-            mMessages.add(pMessage);
-        } else {
-            super.emitErrorMessage(pMessage);
-        }
-    }
-    
-    /**
-     * O token passado como par�metro (atributo token) � usado
-     * para adicionar a linha e coluna na mensagem de erro.
-     */
-    public void emitErrorMessage(Token t, String pMessage) {
-        emitErrorMessage("line " + t.getLine() + ":" + (t.getCharPositionInLine()+1) + " " + pMessage);
-    }
-        
-    /**
-     *  Tells if parsing has caused any error messages.
-     *
-     *  @return  <code>true</code> if parsing has caused at least one error message.
-     */
-    public boolean hasErrors() {
-        return mMessages != null && mMessages.size() > 0;
-    }
-    
-    public void printErrorMessages() {
-      for (String s : mMessages) {
-        System.out.println("  " + s);
-      }
-    }
-
-}
-
-
+/***
+ * The preambulo of the grammar
+ ***/
+ 
 // Start symbol for a grammar definition.
-// An APEG grammar is a list of one or more APEG rules
-grammarDef[Grammar g] :
-    {
-      grammar = g;
-      ntcalls = new ArrayList<NTCallInfo>();
-      isAddingRules = false;
-      isNewRule = true;
-    }
+grammarDef:
     'apeg'! ID ';'!
-	('options' '{' (compiler_opt ';')* '}')?
+	('options' '{' (grammar_opt ';')* '}')?
     functions
     rule+
-    {
-    	verifNTCalls();
-    }
     ;
 
-compiler_opt :
+/***
+ *  Option Section
+ ***/
+
+grammar_opt:
 	'isAdaptable' '='
-		('true' { grammar.setAdaptable(true); }
+		('true'
 		|
-		'false' { grammar.setAdaptable(false); }
+		'false'
 		)
 	|
-	'envSemantics' '='
-		('simple' { grammar.setDiscardChanges(false); }
+	 'envSemantics' '='
+		('simple'
 		|
-		'discardChangesWhenFail' { grammar.setDiscardChanges(true); }
+		'discardChangesWhenFail'
 		)
+	|
+	 'memoize' '='
+	  ( 'true'
+	   |
+	    'false'
+	  )
 	;
 
-functions :
+/***
+ * Functions Declaration
+ ***/
+ 
+functions:
   'functions' 
   (
    ID
   //package_name
-    {
-      try {
-          Class c = Class.forName($ID.text);
-          //Class c = Class.forName($package_name.text);
-          for (Method m : c.getDeclaredMethods()) {
-            if (grammar.addFunction(m) == null) {
-              emitErrorMessage($ID, "Function name duplicated: " + m.getName() + " in file " + $ID.text);
-            }
-          }
-        } catch (Exception e) {
-          emitErrorMessage($ID, "File not found: " + $ID.text);
-        }
-    }
   )+
   ';'
     -> ^(FILES ID+)
@@ -233,116 +103,79 @@ functions :
   ;
 */
 
-addrules[Grammar g] :
-	{
-		grammar = g;
-		isAddingRules = true;
-		ntcalls = new ArrayList<NTCallInfo>();
-	}
-	rule+
-	{
-		verifNTCalls();
-	}
-	;
+/***
+ * Grammar Rule Section
+ ***/
 
 // A definiton of an APEG rule
-rule
-@after{
-	if (currNT != null) {
-		if (isNewRule) {
-			currNT.setPegExpr($t.tree);
-		} else {
-			CommonTree root = (CommonTree) adaptor.create(AdaptablePEGLexer.CHOICE, "CHOICE");
-			root.addChild(currNT.getPegExpr());
-			root.addChild($t.tree);
-			currNT.setPegExpr(root);
-			System.out.println("Rule modified: " + root.toStringTree());
-		}
-		if (grammar.isAdaptable()) {
-			if (currNT.getNumParam() == 0 || currNT.getParam(0).getType().getName().compareTo("Grammar") != 0) {
-				currNT.addGrammarAttribute();
-			}
-		}
-	}
-}
-  :
+rule:
+  annotation
   ID
-	{
-		if (isAddingRules) {
-			currNT = grammar.getNonTerminal($ID.text);
-			if (currNT == null) {
-				isNewRule = true;
-				currNT = grammar.addNonTerminal($ID.text);
-			} else {
-				isNewRule = false;
-			}
-		} else {
-			currNT = grammar.addNonTerminal($ID.text);
-			if (currNT == null) {
-				emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
-			}
-		}
-	}
-  d1=optDecls[Attribute.Category.PARAM]
-  d2=optReturn[Attribute.Category.RETURN]
-  d3=optLocals[Attribute.Category.LOCAL]
+  d1=optDecls
+  d2=optReturn
+  d3=optLocals
   ':' t=peg_expr
   ';'
   -> ^(RULE ID $d1 $d2 $d3 peg_expr)
 ;
 
-// This rule defines the lists of all attributes
-decls[Attribute.Category c] :
-  '[' varDecl[c] (',' varDecl[c])* ']' -> ^(LIST varDecl*)
+annotation:
+   '@memoize' // to use together with the option memoize=false
+  /
+   '@trasient' // to use together with the option memoize=true
   ;
 
+/***
+ * Attributes Definition Section
+ ***/
+
 // This rule defines the list of inhereted attributes
-optDecls[Attribute.Category c] :
-  decls[c] -> decls
+optDecls:
+  decls -> decls
   |
     -> LIST
   ;
 
 // This rule defines the list of synthesized attributes
-optReturn[Attribute.Category c] :
-  'returns' decls[c] -> decls
+optReturn:
+  'returns' decls -> decls
   |
     -> LIST
   ;
 
-optLocals[Attribute.Category c] :
-  'locals'! decls[c]
+optLocals:
+  'locals'! decls
   |
     -> LIST
   ;
 
-varDecl[Attribute.Category c] :
+// This rule defines the lists of all attributes
+decls:
+  '[' varDecl (',' varDecl)* ']' -> ^(LIST varDecl*)
+  ;
+
+varDecl:
   type ID
-  {
-    if (isAddingRules && !isNewRule) {
-        emitErrorMessage($ID, "Declaration of attributes not allowed when extending existing rule.");
-    } else if (currNT != null) {
-      if (currNT.addAttribute($ID.text, $type.typeSymbol, c) == null) {
-        emitErrorMessage($ID, "Symbol duplicated: " + $ID.text);
-      }
-    }
-  } 
     -> ^(VARDECL type ID)
   ;
 
-type returns[Type typeSymbol]:
-  ID { $typeSymbol = new Type($ID.text); }
+type:
+  ID
   ;
+
+/***
+ * APEG Expressions
+ ***/
 
 // Definition of the right side of a APEG
 // This rule defines that the CHOICE operator has the lowest precedence 
 // The precedence of CHOICE operator is 1
 // CHOICE is an associative operator. We decided for right association because it may be faster to interpret
-peg_expr :
-  peg_seq 
-  ('/' peg_expr -> ^(CHOICE peg_seq peg_expr)
-  |
-    -> peg_seq
+peg_expr:
+  peg_seq
+  ( '/' peg_expr -> ^(CHOICE peg_seq peg_expr)
+   |
+     -> peg_seq
   )
   ;
 
@@ -413,13 +246,7 @@ peg_factor :
   '(' peg_expr ')' -> peg_expr
   ;
 
-ntcall
-@after{
-    if (currNT != null) {
-        ntcalls.add(new NTCallInfo(currNT, $ntcall.tree));
-    }
-}
-:
+ntcall :
   ID
      (
       '<' actPars '>' -> ^(NONTERM ID actPars)
@@ -428,23 +255,15 @@ ntcall
      )
   ;
 
+/***
+ * Conditional and Semantic Predication Expressions
+ ***/
+
 assign :
   idAssign t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] idAssign expr)
   ;
   
-idAssign
-@after{
-	if (currNT != null) {
-		Attribute at = currNT.getAttribute($idAssign.text);
-		if (at == null) {
-			emitErrorMessage($t, "Attribute not found: " + $idAssign.text);
-		} else {
-			SemanticNode sm = (SemanticNode) $idAssign.tree;
-			sm.setSymbol(at);
-		}
-	}
-}
-  :
+idAssign :
   t=ID
   ;
  
@@ -486,51 +305,12 @@ factor :
   '('! expr ')'!
   ;
 
-attrORfuncall
-@init{
-	Symbol symbol = null;
-}
-@after{
-    if (symbol != null) {
-    	SemanticNode sm;
-    	if (symbol instanceof Attribute) {
-    		// if the resulting tree is just ID, then ID is at the root of the tree
-    		sm = (SemanticNode) $attrORfuncall.tree;
-    	} else if (symbol instanceof Function) {
-    		// if the resulting tree is CALL, then ID is the first child of the tree
-    		sm = (SemanticNode) ((CommonTree) $attrORfuncall.tree).getChild(0);
-    		// the second child of the tree is the list of arguments
-    		CommonTree t = (CommonTree) ((CommonTree) $attrORfuncall.tree).getChild(1);
-	    	Function f = (Function) symbol;
-	    	if (f.getNumParams() != t.getChildCount()) {
-	    		emitErrorMessage(sm.getToken(), "Wrong number of parameters");
-	    	}
-    	} else {
-    		throw new Error("Unexpected type for symbol at attribute or function call");
-    	}
-    	sm.setSymbol(symbol);
-    }
-}
-  :
+attrORfuncall :
   ID (
-    '(' actPars ')'
-    {
-  		symbol = grammar.getFunction($ID.text);
-        if (symbol == null) {
-          emitErrorMessage($ID, "Function not found: " + $ID.text);
-        }
-    }    
+    '(' actPars ')'    
   -> ^(CALL[$ID,"CALL"] ID actPars)
   |
-    
-    {
-    	if (currNT != null) {
-	    	symbol = currNT.getAttribute($ID.text);
-	        if (symbol == null) {
-	          emitErrorMessage($ID, "Attribute not found: " + $ID.text);
-	        }
-	    }
-    }    
+        
   -> ID
   )
   ;
@@ -578,13 +358,6 @@ OP_MOD : '%';
 STRING_LITERAL:
      '\'' LITERAL_CHAR* '\''
 	// '\'' LITERAL_CHAR LITERAL_CHAR* '\''
-  	{
-  	String s = $text;
-  	s = s.substring(1, s.length()-1);
-  	s = Util.formatString(s);
-  	setText(s);
-//  	System.out.println("STRING : " + $text);
-  	}
   ;
 fragment LITERAL_CHAR
   : ESC
