@@ -1,0 +1,12 @@
+/.cache
+/.classpath
+/.project
+/.settings
+/.sugarjcache
+/COPYING
+/COPYING.LESSER
+/META-INF
+/build.properties
+/build.sh
+/failure-trans.jar
+/org
