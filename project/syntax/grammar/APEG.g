@@ -339,7 +339,26 @@ addOp : OP_ADD | OP_SUB ;
 
 mulOp : OP_MUL | OP_DIV | OP_MOD ;
 
+/*********************** MEU TESTE COM EXPRESSÔES *************/
 
+t_expr: cond_expr;
+
+cond_expr: and_expr (OP_OR^ and_expr)* ;
+
+and_expr: t_cond (OP_AND^ t_cond)* ;
+
+t_cond:
+   OP_NOT! t_expr
+  |
+   arithmetic_expr (relOp^ arithmetic_expr)*
+  |
+   TRUE
+  |
+   FALSE
+  ;
+
+arithmetic_expr:
+   number;
 
 OP_AND : '&&';
 OP_OR : '||';

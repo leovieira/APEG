@@ -6,29 +6,11 @@ options {
 }
 
 tokens {
-  RULE;
   LIST;
-  VARDECL;
   CALL;
-  SEQ;
-  ANY;
   COND;
   ASSIGNLIST;
   UNARY_SUB;
-  CHOICE;
-  NONTERM;
-  REPEAT;
-  NOT_LOOKAHEAD;
-  DOT;
-  ARRAY_REF;
-  ASSIGN;
-  OPTIONAL;
-  ONE_REPEAT;
-  AND_LOOKAHEAD;
-  LAMBDA;
-  RANGE;
-  FILES;
-  CAPTURE_TEXT;
 }
 
 expr: cond_expr;
