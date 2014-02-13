@@ -109,7 +109,7 @@ functions:
 
 // A definiton of an APEG rule
 rule:
-  annotation
+  annotation?
   ID
   d1=optDecls
   d2=optReturn
@@ -121,8 +121,8 @@ rule:
 
 annotation:
    '@memoize' // to use together with the option memoize=false
-  /
-   '@trasient' // to use together with the option memoize=true
+  |
+   '@transient' // to use together with the option memoize=true
   ;
 
 /***
@@ -181,7 +181,7 @@ peg_expr:
 
 // This rule defines a sequence operator: e1 e2 
 // The precedence of sequence operator is 2
-peg_seq : 
+peg_seq: 
   t1=peg_capturetext
   	(
   		-> $t1
@@ -192,7 +192,7 @@ peg_seq :
     -> LAMBDA
   ;
 
-peg_capturetext :
+peg_capturetext:
 	peg_unary_op
 	|
 	idAssign t8='=' peg_unary_op -> ^(CAPTURE_TEXT[$t8, "CAPTURE_TEXT"] idAssign peg_unary_op)
@@ -205,7 +205,7 @@ peg_capturetext :
 // e+ (One-or-more with precedence 4)
 // &e (And-predicate with precedence 3)
 // !e (Not-predicate with porecedence 3)
-peg_unary_op :
+peg_unary_op:
   peg_factor 
     (
       t1='?' -> ^(OPTIONAL[$t1, "OPTIONAL"] peg_factor)
@@ -234,7 +234,7 @@ peg_unary_op :
 // (e) (Grouping with precedence 5)
 // A<...> (non-terminal basic expression)
 // \lambda (empty basic expression)
-peg_factor :
+peg_factor:
   STRING_LITERAL
   |
   ntcall
@@ -246,7 +246,7 @@ peg_factor :
   '(' peg_expr ')' -> peg_expr
   ;
 
-ntcall :
+ntcall:
   ID
      (
       '<' actPars '>' -> ^(NONTERM ID actPars)
@@ -256,40 +256,40 @@ ntcall :
   ;
 
 /***
- * Conditional and Semantic Predication Expressions
+ * Constraint and Update Expressions
  ***/
 
-assign :
-  idAssign t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] idAssign expr)
-  ;
-  
-idAssign :
-  t=ID
-  ;
- 
 cond : cond2 (OP_OR^ cond2)* ;
 
 cond2 : cond3 (OP_AND^ cond3)* ;
 
 cond3 :
-	expr relOp^ expr
-	|
-	TRUE
-	|
-	FALSE
-	;
+  expr relOp^ expr
+  |
+  TRUE
+  |
+  FALSE
+  ;
 
-termOptUnary :
+assign:
+  idAssign t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] idAssign expr)
+  ;
+  
+idAssign:
+  t=ID
+  ;
+
+expr: termOptUnary (addOp^ term)* ;
+
+termOptUnary:
   OP_SUB term -> ^(UNARY_SUB[$OP_SUB] term)
   |
   t1=OP_NOT term -> ^($t1 term)
   |
   term -> term
   ;
-
-expr : termOptUnary (addOp^ term)* ;
-
-term : factor (mulOp^ factor)* ;
+ 
+term : factor (mulOp^ factor)* ; 
 
 factor :
   attrORfuncall
@@ -298,11 +298,11 @@ factor :
   |
   STRING_LITERAL
   |
+  '('! expr ')'!
+  |
   TRUE
   |
   FALSE
-  |
-  '('! expr ')'!
   ;
 
 attrORfuncall :
