@@ -341,24 +341,39 @@ mulOp : OP_MUL | OP_DIV | OP_MOD ;
 
 /*********************** MEU TESTE COM EXPRESSÔES *************/
 
-t_expr: cond_expr;
+m_cond: and_cond (OP_OR and_cond)*;
 
-cond_expr: and_expr (OP_OR^ and_expr)* ;
+and_cond: bool_expr (OP_AND bool_expr)*;
 
-and_expr: t_cond (OP_AND^ t_cond)* ;
+bool_expr: OP_NOT+ bool_factor | bool_factor; 
 
-t_cond:
-   OP_NOT! t_expr
-  |
-   arithmetic_expr (relOp^ arithmetic_expr)*
-  |
+bool_factor: 
    TRUE
   |
    FALSE
+  |
+   '(' m_cond ')'
+  |
+   attrORfuncall
+  |
+   m_expr relOp m_expr
   ;
 
-arithmetic_expr:
-   number;
+m_expr: OP_SUB m_term (addOp m_term)*;
+
+m_term: m_factor (mulOp m_factor)*;
+
+m_factor:
+   STRING_LITERAL
+  |
+   number
+  |
+   '(' m_expr ')'
+  |
+   attrORfuncall
+  ;
+
+/************************************************************/
 
 OP_AND : '&&';
 OP_OR : '||';
