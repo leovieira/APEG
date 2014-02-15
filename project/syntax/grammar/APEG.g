@@ -345,30 +345,26 @@ m_cond: and_cond (OP_OR and_cond)*;
 
 and_cond: bool_expr (OP_AND bool_expr)*;
 
-bool_expr: OP_NOT+ bool_factor | bool_factor; 
-
-bool_factor: 
-   TRUE
-  |
-   FALSE
-  |
-   '(' m_cond ')'
-  |
-   attrORfuncall
-  |
-   m_expr relOp m_expr
+bool_expr:  
+   m_expr (relOp m_expr)?
   ;
 
-m_expr: OP_SUB m_term (addOp m_term)*;
+m_expr: m_term (addOp m_term)*;
 
 m_term: m_factor (mulOp m_factor)*;
 
 m_factor:
+   TRUE
+  |
+   FALSE
+  |
    STRING_LITERAL
   |
    number
   |
-   '(' m_expr ')'
+   OP_NOT m_cond
+  |
+   '(' m_cond ')'
   |
    attrORfuncall
   ;
