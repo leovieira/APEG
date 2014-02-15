@@ -359,7 +359,7 @@ bool_factor:
    m_expr relOp m_expr
   ;
 
-m_expr: OP_SUB m_term (addOp m_term)*;
+m_expr: OP_SUB? m_term (addOp m_term)*;
 
 m_term: m_factor (mulOp m_factor)*;
 
