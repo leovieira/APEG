@@ -259,37 +259,26 @@ ntcall:
  * Constraint and Update Expressions
  ***/
 
-cond : cond2 (OP_OR^ cond2)* ;
-
-cond2 : cond3 (OP_AND^ cond3)* ;
-
-cond3 :
-  expr relOp^ expr
-  |
-  TRUE
-  |
-  FALSE
-  ;
-
 assign:
-  idAssign t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] idAssign expr)
+  idAssign t='=' cond ';' -> ^(ASSIGN[$t,"ASSIGN"] idAssign cond)
   ;
   
 idAssign:
   t=ID
   ;
 
-expr: termOptUnary (addOp^ term)* ;
+cond : and_cond (OP_OR^ and_cond)* ;
 
-termOptUnary:
-  OP_SUB term -> ^(UNARY_SUB[$OP_SUB] term)
-  |
-  t1=OP_NOT term -> ^($t1 term)
-  |
-  term -> term
+and_cond : bool_expr (OP_AND^ bool_expr)* ;
+
+bool_expr:  
+   expr (relOp^ expr)?
   ;
+
+expr: OP_SUB? term (addOp^ term)*;
+
  
-term : factor (mulOp^ factor)* ; 
+term : factor (mulOp^ factor)*; 
 
 factor :
   attrORfuncall
@@ -298,7 +287,9 @@ factor :
   |
   STRING_LITERAL
   |
-  '('! expr ')'!
+  '('! cond ')'!
+  |
+  '!'! cond
   |
   TRUE
   |
@@ -338,38 +329,6 @@ relOp : OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE ;
 addOp : OP_ADD | OP_SUB ;
 
 mulOp : OP_MUL | OP_DIV | OP_MOD ;
-
-/*********************** MEU TESTE COM EXPRESSÔES *************/
-
-m_cond: and_cond (OP_OR and_cond)*;
-
-and_cond: bool_expr (OP_AND bool_expr)*;
-
-bool_expr:  
-   m_expr (relOp m_expr)?
-  ;
-
-m_expr: OP_SUB? m_term (addOp m_term)*;
-
-m_term: m_factor (mulOp m_factor)*;
-
-m_factor:
-   TRUE
-  |
-   FALSE
-  |
-   STRING_LITERAL
-  |
-   number
-  |
-   OP_NOT m_cond
-  |
-   '(' m_cond ')'
-  |
-   attrORfuncall
-  ;
-
-/************************************************************/
 
 OP_AND : '&&';
 OP_OR : '||';
