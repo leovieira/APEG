@@ -239,7 +239,7 @@ peg_factor:
   |
   ntcall
   |
-  '[' RANGE_PAIR+ ']' -> ^(RANGE RANGE_PAIR+)
+  '[' range_pair+ ']' -> ^(RANGE range_pair+)
   |
   '.' -> ANY
   |
@@ -254,6 +254,17 @@ ntcall:
         -> ^(NONTERM ID LIST)
      )
   ;
+
+range_pair:
+   single_pair
+  |
+   LETTER '-' LETTER
+  |
+   DIGIT '-' DIGIT
+  |
+   ESC '-' ESC;
+
+single_pair: LETTER | DIGIT | ESC;
 
 /***
  * Constraint and Update Expressions
@@ -352,7 +363,7 @@ fragment LITERAL_CHAR
   : ESC
   | ~('\''|'\\')
   ;
-fragment ESC : '\\'
+ESC : '\\'
     ( 'n'
     | 'r'
     | 't'
