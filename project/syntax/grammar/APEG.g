@@ -6,6 +6,8 @@ options {
 }
 
 tokens {
+  GRAMMAR;
+  GRAMMAR_REF;
   RULE;
   LIST;
   VARDECL;
@@ -27,8 +29,15 @@ tokens {
   AND_LOOKAHEAD;
   LAMBDA;
   RANGE;
+  SINGLE_PAIR;
+  DOUBLE_PAIR;
   FILES;
   CAPTURE_TEXT;
+  TRANSIENT;
+  MEMOIZE;
+  ADAPTABLE;
+  MEMOIZATION;
+  ENV_DISCARDING;
 }
 
 @parser::header
@@ -47,36 +56,41 @@ tokens {
 /***
  * The preambulo of the grammar
  ***/
- 
-// Start symbol for a grammar definition.
+
 grammarDef:
-    'apeg'! ID ';'!
-	('options' '{' (grammar_opt ';')* '}')?
+    'apeg' ID ';'
+    t1=option
     functions
-    rule+
+    rule+ -> ^(GRAMMAR ID $t1 functions ^(LIST rule+))
     ;
 
 /***
  *  Option Section
  ***/
 
+option:
+   'options' '{' (opt=grammar_opt ';')* '}' -> ^(LIST $opt*)
+  |
+   -> LIST
+  ;
+
 grammar_opt:
 	'isAdaptable' '='
-		('true'
+		('true' -> ADAPTABLE["true"]
 		|
-		'false'
+		'false' -> ADAPTABLE["false"]
 		)
 	|
 	 'envSemantics' '='
-		('simple'
+		('simple' -> ENV_DISCARDING["false"]
 		|
-		'discardChangesWhenFail'
+		'discardChangesWhenFail' -> ENV_DISCARDING["true"]
 		)
 	|
 	 'memoize' '='
-	  ( 'true'
+	  ( 'true' -> MEMOIZATION["true"]
 	   |
-	    'false'
+	    'false' -> MEMOIZATION["false"]
 	  )
 	;
 
@@ -109,20 +123,20 @@ functions:
 
 // A definiton of an APEG rule
 rule:
-  annotation?
+  a=annotation?
   ID
   d1=optDecls
   d2=optReturn
   d3=optLocals
   ':' t=peg_expr
   ';'
-  -> ^(RULE ID $d1 $d2 $d3 peg_expr)
+  -> ^(RULE ID $a? $d1 $d2 $d3 peg_expr)
 ;
 
 annotation:
-   '@memoize' // to use together with the option memoize=false
+   '@memoize' -> MEMOIZE // to use together with the option memoize=false
   |
-   '@transient' // to use together with the option memoize=true
+   '@transient' -> TRANSIENT // to use together with the option memoize=true
   ;
 
 /***
@@ -256,13 +270,14 @@ ntcall:
   ;
 
 range_pair:
-   single_pair
+   single_pair -> ^(SINGLE_PAIR single_pair)
   |
-   LETTER '-' LETTER
+   t1=LETTER '-' t2=LETTER -> ^(DOUBLE_PAIR $t1 $t2)
   |
-   DIGIT '-' DIGIT
+   t1=DIGIT '-' t1=DIGIT -> ^(DOUBLE_PAIR $t1 $t2)
   |
-   ESC '-' ESC;
+   t1=ESC '-' t1=ESC -> ^(DOUBLE_PAIR $t1 $t2)
+  ;
 
 single_pair: LETTER | DIGIT | ESC;
 
@@ -286,8 +301,13 @@ bool_expr:
    expr (relOp^ expr)?
   ;
 
-expr: OP_SUB? term (addOp^ term)*;
+expr: termOptUnary (addOp^ term)*;
 
+termOptUnary:
+   OP_SUB term -> ^(UNARY_SUB[$OP_SUB] term)
+  |
+   term -> term
+  ;
  
 term : factor (mulOp^ factor)*; 
 
@@ -311,6 +331,8 @@ attrORfuncall :
   ID (
     '(' actPars ')'    
   -> ^(CALL[$ID,"CALL"] ID actPars)
+  |
+  '$g' -> GRAMMAR_REF
   |
         
   -> ID
@@ -355,10 +377,7 @@ OP_SUB : '-';
 OP_MUL : '*';
 OP_DIV : '/';
 OP_MOD : '%';
-STRING_LITERAL:
-     '\'' LITERAL_CHAR* '\''
-	// '\'' LITERAL_CHAR LITERAL_CHAR* '\''
-  ;
+STRING_LITERAL: '\'' LITERAL_CHAR* '\'';
 fragment LITERAL_CHAR
   : ESC
   | ~('\''|'\\')
@@ -387,7 +406,6 @@ TRUE : 'true';
 FALSE : 'false';
 ID : LETTER (LETTER | DIGIT | '_')*;
 INT_NUMBER : DIGIT+;
-RANGE_PAIR : LETTER '-' LETTER | DIGIT '-' DIGIT;
 REAL_NUMBER :
   DIGIT+ ('.' DIGIT*)? EXPONENT?
   |
