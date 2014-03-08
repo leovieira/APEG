@@ -61,7 +61,7 @@ grammarDef:
     'apeg' ID ';'
     t1=option
     functions
-    rule+ -> ^(GRAMMAR ID $t1 functions ^(LIST rule+))
+    rule+ -> ^(GRAMMAR ID $t1 functions rule+)
     ;
 
 /***
@@ -78,19 +78,19 @@ grammar_opt:
 	'isAdaptable' '='
 		('true' -> ADAPTABLE["true"]
 		|
-		'false' -> ADAPTABLE["false"]
+		'false' -> 
 		)
 	|
 	 'envSemantics' '='
 		('simple' -> ENV_DISCARDING["false"]
 		|
-		'discardChangesWhenFail' -> ENV_DISCARDING["true"]
+		'discardChangesWhenFail' ->
 		)
 	|
 	 'memoize' '='
 	  ( 'true' -> MEMOIZATION["true"]
 	   |
-	    'false' -> MEMOIZATION["false"]
+	    'false' ->
 	  )
 	;
 
