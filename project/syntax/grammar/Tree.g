@@ -1,0 +1,165 @@
+tree grammar Tree;
+
+options {
+  tokenVocab=APEG;
+  ASTLabelType=CommonTree;
+}
+
+/***
+ * The preambulo of the grammar
+ ***/
+
+grammarDef: ^(GRAMMAR ID option functions rule+);
+
+/***
+ *  Option Section
+ ***/
+
+option:
+   ^(LIST grammar_opt*)
+  |
+   LIST
+  ;
+
+grammar_opt:
+	ADAPTABLE
+ |
+	ENV_DISCARDING
+ |
+	MEMOIZATION
+ ;
+
+/***
+ * Functions Declaration
+ ***/
+ 
+functions:
+  ^(FILES ID*)
+ ;
+
+/***
+ * Grammar Rule Section
+ ***/
+
+// A definiton of an APEG rule
+rule:
+  ^(RULE ID annotation? decls decls decls peg_expr)
+;
+
+annotation:
+   MEMOIZE // to use together with the option memoize=false
+  |
+   TRANSIENT // to use together with the option memoize=true
+  ;
+
+decls: ^(LIST varDecl*);
+
+varDecl: ^(VARDECL ID ID);
+
+/***
+ * APEG Expressions
+ ***/
+
+peg_expr:
+  ^(CHOICE peg_expr peg_expr)
+ |
+  ^(SEQ peg_expr+)
+ |
+  ^(CAPTURE_TEXT ID peg_expr)
+ |
+  ^(OPTIONAL peg_expr)
+ |
+  ^(REPEAT peg_expr)
+ |
+  ^(ONE_REPEAT peg_expr)
+ |
+  ^(AND_LOOKAHEAD peg_expr)
+ |
+  ^(NOT_LOOKAHEAD peg_expr)
+ |
+  ^(COND cond)
+ |
+  ^(ASSIGNLIST assign+)
+ |
+  ^(RANGE range_pair+)
+ |
+  ^(NONTERM ID actPars)
+ |
+  ^(NONTERM ID LIST)
+ |
+  ANY
+ |
+  LAMBDA
+ |
+  STRING_LITERAL
+ ;
+
+assign: ^(ASSIGN ID expr);
+
+range_pair:
+   ^(DOUBLE_PAIR LETTER LETTER)
+  |
+   ^(DOUBLE_PAIR DIGIT DIGIT)
+  |
+   ^(DOUBLE_PAIR ESC ESC)
+  |
+   LETTER
+  |
+   DIGIT
+  |
+   ESC
+  ;
+
+/***
+ * Conditionals and Expressions
+ ***/
+
+cond:
+   ^(OP_OR cond cond)
+  |
+   ^(OP_AND cond cond)
+  |
+   ^(relOp expr expr)
+  |
+   ^(OP_NOT cond)
+  |
+   ^(CALL ID actPars)
+  |
+   ID
+  |
+   TRUE
+  |
+   FALSE
+  ;
+
+expr:
+  ^(UNARY_SUB expr)
+ |
+  ^(addOp expr expr)
+ |
+  ^(mulOp expr expr)
+ /*|
+  cond*/
+ |
+  ^(CALL ID actPars)
+ |
+  GRAMMAR_REF
+ |
+  ID
+ |
+  INT_NUMBER
+ |
+  REAL_NUMBER
+ |
+  STRING_LITERAL
+ ;
+
+actPars: 
+  ^(LIST expr*)
+; 
+
+relOp : OP_EQ | OP_NE | OP_LT | OP_GT | OP_LE | OP_GE ;
+
+addOp : OP_ADD | OP_SUB ;
+
+mulOp : OP_MUL | OP_DIV | OP_MOD ;

@@ -29,7 +29,6 @@ tokens {
   AND_LOOKAHEAD;
   LAMBDA;
   RANGE;
-  SINGLE_PAIR;
   DOUBLE_PAIR;
   FILES;
   CAPTURE_TEXT;
@@ -82,7 +81,7 @@ grammar_opt:
 		)
 	|
 	 'envSemantics' '='
-		('simple' -> ENV_DISCARDING["false"]
+		('simple' -> ENV_DISCARDING["simple"]
 		|
 		'discardChangesWhenFail' ->
 		)
@@ -165,7 +164,7 @@ optLocals:
 
 // This rule defines the lists of all attributes
 decls:
-  '[' varDecl (',' varDecl)* ']' -> ^(LIST varDecl*)
+  '[' varDecl (',' varDecl)* ']' -> ^(LIST varDecl+)
   ;
 
 varDecl:
@@ -270,7 +269,7 @@ ntcall:
   ;
 
 range_pair:
-   single_pair -> ^(SINGLE_PAIR single_pair)
+   single_pair
   |
    t1=LETTER '-' t2=LETTER -> ^(DOUBLE_PAIR $t1 $t2)
   |
@@ -320,7 +319,7 @@ factor :
   |
   '('! cond ')'!
   |
-  '!'! cond
+  '!' cond -> ^(OP_NOT cond)
   |
   TRUE
   |
@@ -332,11 +331,11 @@ attrORfuncall :
     '(' actPars ')'    
   -> ^(CALL[$ID,"CALL"] ID actPars)
   |
-  '$g' -> GRAMMAR_REF
-  |
         
   -> ID
   )
+  |
+  '$g' -> GRAMMAR_REF
   ;
 
 number : INT_NUMBER | REAL_NUMBER ;
