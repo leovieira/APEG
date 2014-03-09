@@ -138,12 +138,16 @@ expr:
   ^(addOp expr expr)
  |
   ^(mulOp expr expr)
- /*|
-  cond*/
  |
   ^(CALL ID actPars)
  |
   GRAMMAR_REF
+ /*|
+  cond*/
+ |
+  TRUE
+ |
+  FALSE
  |
   ID
  |
