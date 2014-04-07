@@ -1,8 +1,13 @@
-tree grammar Tree;
+tree grammar APEGTree;
 
 options {
   tokenVocab=APEG;
   ASTLabelType=CommonTree;
+}
+
+@header
+{
+    package apeg.syntax;
 }
 
 /***

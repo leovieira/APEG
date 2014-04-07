@@ -11,6 +11,7 @@ public class AbsolutePath extends Path {
 			throw new IllegalArgumentException(
 					"AbsolutePath constructed on unacceptable argument: "
 							+ path);
+		this.path = path;
 	}
 
 	private static boolean isAbsolute(String path) {

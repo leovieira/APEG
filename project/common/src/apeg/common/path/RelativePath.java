@@ -15,7 +15,7 @@ public class RelativePath extends Path {
 
 	@Override
 	public String getAbsolutePath() {
-		return getBasePath() + File.pathSeparator + getRelativePath();
+		return getBasePath().getAbsolutePath() + File.pathSeparator + getRelativePath();
 	}
 
 	public String getRelativePath() {
