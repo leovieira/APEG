@@ -77,7 +77,7 @@ peg_expr:
  |
   ^(NOT_LOOKAHEAD peg_expr)
  |
-  ^(COND cond)
+  ^(COND expr)
  |
   ^(ASSIGNLIST assign+)
  |
@@ -114,24 +114,6 @@ range_pair:
  * Conditionals and Expressions
  ***/
 
-cond:
-   ^(OP_OR cond cond)
-  |
-   ^(OP_AND cond cond)
-  |
-   ^(relOp expr expr)
-  |
-   ^(OP_NOT cond)
-  |
-   ^(CALL ID actPars)
-  |
-   ID
-  |
-   TRUE
-  |
-   FALSE
-  ;
-
 expr:
   ^(UNARY_SUB expr)
  |
@@ -142,21 +124,46 @@ expr:
   ^(CALL ID actPars)
  |
   GRAMMAR_REF
- /*|
-  cond*/
- |
-  TRUE
- |
-  FALSE
- |
-  ID
  |
   INT_NUMBER
  |
   REAL_NUMBER
  |
   STRING_LITERAL
+ |
+  ^(OP_OR expr expr)
+ |
+  ^(OP_AND expr expr)
+ |
+  ^(relOp expr expr)
+ |
+  ^(OP_NOT expr)
+ |
+  ID
+ |
+  TRUE
+ |
+  FALSE
  ;
+
+/*condExpr:
+   ^(OP_OR condExpr condExpr)
+  |
+   ^(OP_AND condExpr condExpr)
+  |
+   ^(relOp expr expr)
+  |
+   ^(OP_NOT condExpr)
+  |
+   ^(CALL ID actPars)
+  |
+   ID
+  |
+   TRUE
+  |
+   FALSE
+  ;
+*/
 
 actPars: 
   ^(LIST expr*)

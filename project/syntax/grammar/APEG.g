@@ -234,7 +234,7 @@ peg_unary_op:
    |
    t5='!' peg_factor -> ^(NOT_LOOKAHEAD[$t5,"NOT_LOOKAHEAD"] peg_factor)
    |
-   t6='{?' cond '}' -> ^(COND[$t6,"COND"] cond)
+   t6='{?' condExpr '}' -> ^(COND[$t6,"COND"] condExpr)
    |
    t7='{' assign+ '}' -> ^(ASSIGNLIST[$t7,"ASSIGNLIST"] assign+)
    ;
@@ -285,22 +285,24 @@ single_pair: LETTER | DIGIT | ESC;
  ***/
 
 assign:
-  idAssign t='=' cond ';' -> ^(ASSIGN[$t,"ASSIGN"] idAssign cond)
+  idAssign t='=' expr ';' -> ^(ASSIGN[$t,"ASSIGN"] idAssign expr)
   ;
   
 idAssign:
   t=ID
   ;
 
-cond : and_cond (OP_OR^ and_cond)* ;
+expr: condExpr;
+
+condExpr : and_cond (OP_OR^ and_cond)* ;
 
 and_cond : bool_expr (OP_AND^ bool_expr)* ;
 
 bool_expr:  
-   expr (relOp^ expr)?
+   aexpr (relOp^ aexpr)?
   ;
 
-expr: termOptUnary (addOp^ term)*;
+aexpr: termOptUnary (addOp^ term)*;
 
 termOptUnary:
    OP_SUB term -> ^(UNARY_SUB[$OP_SUB] term)
@@ -317,9 +319,9 @@ factor :
   |
   STRING_LITERAL
   |
-  '('! cond ')'!
+  '('! expr ')'!
   |
-  '!' cond -> ^(OP_NOT cond)
+  '!' condExpr -> ^(OP_NOT condExpr)
   |
   TRUE
   |
