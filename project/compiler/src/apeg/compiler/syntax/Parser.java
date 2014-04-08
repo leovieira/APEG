@@ -1,4 +1,4 @@
-package apeg.syntax;
+package apeg.compiler.syntax;
 
 import java.io.IOException;
 
@@ -9,8 +9,12 @@ import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 
 import apeg.common.path.Path;
+import apeg.syntax.APEGLexer;
+import apeg.syntax.APEGParser;
+import apeg.syntax.APEGTree;
+import apeg.syntax.APEGParser.grammarDef_return;
 
-public class Main {
+public class Parser {
 
 	public static void parse(Path path) throws RecognitionException,
 			IOException {

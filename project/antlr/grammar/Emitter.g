@@ -7,7 +7,7 @@ options {
 
 @header
 {
-    package apeg.syntax;
+    package apeg.compiler.codegen;
 }
 
 /***

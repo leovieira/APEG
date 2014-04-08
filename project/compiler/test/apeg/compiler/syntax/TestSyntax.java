@@ -1,4 +1,4 @@
-package apeg.syntax;
+package apeg.compiler.syntax;
 
 import java.io.IOException;
 
@@ -7,6 +7,7 @@ import org.antlr.runtime.RecognitionException;
 import apeg.common.path.AbsolutePath;
 import apeg.common.path.Path;
 import apeg.common.path.RelativePath;
+import apeg.compiler.syntax.Parser;
 
 public class TestSyntax {
 
@@ -14,7 +15,7 @@ public class TestSyntax {
 		String grammarFileName="./../test/syntax/teste00.apeg";
 		
 		Path path = new AbsolutePath(grammarFileName);
-		Main.parse(path);
+		Parser.parse(path);
 		
 		System.out.println("------------- END -------------------");
 	}
