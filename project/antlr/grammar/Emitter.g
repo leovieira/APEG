@@ -3,6 +3,7 @@ tree grammar Emitter;
 options {
   tokenVocab=APEG;
   ASTLabelType=CommonTree;
+  output=template;
 }
 
 @header
