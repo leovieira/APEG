@@ -5,5 +5,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/apeg.common"/>
 	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/apeg.syntax"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/apeg.antlr"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
