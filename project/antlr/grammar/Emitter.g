@@ -15,7 +15,8 @@ options {
  * The preambulo of the grammar
  ***/
 
-grammarDef: ^(GRAMMAR ID option functions rule+);
+grammarDef[String module]:
+  ^(GRAMMAR ID option functions rule+);
 
 /***
  *  Option Section

@@ -16,7 +16,13 @@ import apeg.syntax.APEGParser.grammarDef_return;
 
 public class Parser {
 
-	public static void parse(Path path) throws RecognitionException,
+	private static CommonTokenStream tokens;
+	
+	public static CommonTokenStream getTokensStream() {
+		return tokens;
+	}
+	
+	public static Tree parse(Path path) throws RecognitionException,
 			IOException {
 		/**
 		 * Parsing and building the AST
@@ -26,7 +32,7 @@ public class Parser {
 		// Create a lexer attached to that input stream
 		APEGLexer lexer = new APEGLexer(input);
 		// Create a stream of tokens pilled from the lexer
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
+		tokens = new CommonTokenStream(lexer);
 
 		// Create a parser attached to the token stream
 		APEGParser parser = new APEGParser(tokens);
@@ -46,6 +52,7 @@ public class Parser {
 		APEGTree walker = new APEGTree(node);
 		// Invoke the Walker start symbol (do nothing)
 		walker.grammarDef();
-
+		
+		return t; //TODO check this
 	}
 }

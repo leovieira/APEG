@@ -14,7 +14,7 @@ public class AbsolutePath extends Path {
 		this.path = path;
 	}
 
-	private static boolean isAbsolute(String path) {
+	public static boolean isAbsolute(String path) {
 		return new File(path).isAbsolute() || path.startsWith("./")
 				|| path.startsWith("." + File.separator) || path.equals(".");
 	}
