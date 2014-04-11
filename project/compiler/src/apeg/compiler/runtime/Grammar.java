@@ -1,5 +1,7 @@
 package apeg.compiler.runtime;
 
+import generated.DataDependent;
+
 public abstract class Grammar {
 
 	protected APEGInputStream input;
@@ -29,16 +31,29 @@ public abstract class Grammar {
 	//TODO
 	protected Result interpreteChoice(int pos) {
 		//return null;
+		if(pos == 2) {
+			DataDependent g = (DataDependent) this;
+			try {
+				g.CHAR(g);
+				g.CHAR(g);
+				g.CHAR(g);
+				return new Result(g.currentPos);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		return fail_result;
 	}
 	
 	//TODO
 	public Grammar copy() {
-		return null;
+		return this;
 	}
 	
 	//TODO
 	public Grammar addRule(String rule) {
-		return null;
+		return this;
 	}
 }

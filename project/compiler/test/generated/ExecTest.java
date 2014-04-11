@@ -19,8 +19,8 @@ public class ExecTest {
 		// Run
 		//Result result = parser.literal3(parser);
 		
-		//Result result = parser.number(parser);
-		//System.out.println(result.getAttribute(0).toString());
+		Result result = parser.literal(parser);
+		System.out.println(result.getNext_pos());
 
 	}
 

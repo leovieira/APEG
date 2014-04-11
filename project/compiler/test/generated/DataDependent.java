@@ -7,71 +7,74 @@ import apeg.compiler.runtime.Grammar;
 //file APEG/project/test/syntax/teste06.apeg
 public class DataDependent extends Grammar { 
 
-	protected DataDependent(APEGInputStream input) {
+	public DataDependent(APEGInputStream input) {
 		super(input);
 	}
 
 	public Result literal3(DataDependent g) throws Exception {
 		// code for the expression literal<g> literal<g> literal<g> !.
 		
-		g.literal(g);
-		// algum teste para verificar falha
-		g.literal(g);
-		// algum teste para verificar falha
-		g.literal(g);
-		
-		// if (resultado anterior for falha) {
-		     return g.interpreteChoice(0); // supor que a posição de literal3 no vetor de choices adicionadas no final é 0
-		// }
-		// else
-		     // resultado da parsing expression
+		Result result = g.literal(g);
+		if(!result.isFail()) {
+			currentPos = result.getNext_pos();
+			result = g.literal(g);
+			if(!result.isFail()) {
+				currentPos = result.getNext_pos();
+				result = g.literal(g);
+				if(!result.isFail()) {
+					currentPos = result.getNext_pos();
+					if(g.read(currentPos) < 0)
+						return new Result(currentPos);
+				}
+			}
+		}
+		return g.interpreteChoice(0); // supor que a posição de literal3 no vetor de choices é 0
 	}
 
 	public Result literal(DataDependent g) throws Exception {
 		// code for locals[Grammar g1, int n]
-		//int n;
-		//DataDependent g1;
+		int n;
+		DataDependent g1;
 		
 		// Code for the parsing expression number<g,n>
-		g.number(g);
-		// verifica se a expressao anterior falhou
-		// atualiza o valor com o resultado da expressao anteior
-		
-		// Codigo para a expressao g1 = addRule(copyGrammar(g), concat(concat('strN : ', concatN('CHAR<g> ', n)), ';')) ;  }
-		DataDependent g1 = (DataDependent) g.copy().addRule("strN: CHAR<g> CHAR<g> CHAR<g>"); // <- simplifiquei
-		
-		// codigo para a expressao '['
-		
-		g.strN(g1); // chama a regra strN buscando na gramatica g, mas passa como language attribute a g1
-		
-		// codigo para a expressao ']'
-		
-	// if (resultado anterior for falha) {
-	     return g.interpreteChoice(1); // supor que a posição de literal no vetor de 1
-	// }
-	// else
-	     // resultado da parsing expression
+		Result result = g.number(g);
+		if(!result.isFail()) {
+			n = (int) result.getAttribute(0);
+			g1 = (DataDependent) g.copy().addRule("strN: "
+					         + functions.AdaptableFunctions.concatN("CHAR<g> ", n)
+					         + ";");
+			if(g.match("[", currentPos) > 0) { // nao falhou
+				currentPos++;
+				result = g.strN(g1);
+				if(!result.isFail()) {
+					currentPos = result.getNext_pos();
+					if(g.match("]", currentPos) > 0) { // nao falhou
+						currentPos++;
+						return new Result(currentPos);
+					}
+				}
+			};
+		}
+		return g.interpreteChoice(1); // supor que a posição de literal no vetor de 1
 	}
 	
 	public Result strN(DataDependent g) {
 		//codigo para a expressao {? false }
 		
-	// if (resultado anterior for falha) {
-	     return g.interpreteChoice(2); // supor que a posição de strN no vetor de 2
-	// }
-	// else
-	     // resultado da parsing expression
+		return g.interpreteChoice(2); // supor que a posição de strN no vetor de 2
 	}
 
-	public Result CHAR(DataDependent g) {
+	public Result CHAR(DataDependent g) throws Exception {
 		//codigo para a expressao .
 		
-	// if (resultado anterior for falha) {
-	     return g.interpreteChoice(3); // supor que a posição de CHAR no vetor de 3
-	// }
-	// else
-	     // resultado da parsing expression
+		char ch = g.read(currentPos);
+		if(!APEGInputStream.isEOF(ch)) {
+			currentPos++;
+			return new Result(currentPos);
+		} // else
+	    return g.interpreteChoice(3); // supor que a posição de CHAR no vetor de 3
 	}
+	
 	public Result number(DataDependent g) throws Exception {
 		/*
 		 * digit<g,r> ( digit<g,aux> { r = r * 10 + aux; } )*

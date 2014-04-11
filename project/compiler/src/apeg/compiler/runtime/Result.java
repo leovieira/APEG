@@ -11,6 +11,10 @@ public class Result {
 	private int next_pos;
 	private Object[] returns_attr;
 	
+	public Result(int pos) {
+		this(pos, null);
+	}
+	
 	public Result(int pos, Object[] attr) {
 		this.next_pos = pos;
 		if(attr == null)
