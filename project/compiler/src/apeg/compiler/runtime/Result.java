@@ -43,4 +43,8 @@ public class Result {
 		else
 			return -1; //TODO msg de erro para posicao invalida
 	}
+	
+	public boolean isFail() {
+		return next_pos < 0;
+	}
 }
