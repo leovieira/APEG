@@ -2,3 +2,5 @@
 /APEGLexer.java
 /APEGParser.java
 /Emitter.java
+/APEG_OldParser.java
+/APEG_OldLexer.java

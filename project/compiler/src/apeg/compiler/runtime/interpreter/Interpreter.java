@@ -1,12 +1,15 @@
 package apeg.compiler.runtime.interpreter;
 
+import java.lang.reflect.Method;
 import java.util.Stack;
 
 import org.antlr.runtime.tree.CommonTree;
 
+import srcparser.AdaptablePEGLexer;
+import apeg.compiler.runtime.APEGInputStream;
 import apeg.compiler.runtime.Grammar;
 import apeg.compiler.runtime.Result;
-import apeg.compiler.runtime.semantics.NonTerminal;
+import apeg.compiler.syntax.tree.NonTerminal;
 
 public class Interpreter {
 	
@@ -26,6 +29,11 @@ public class Interpreter {
 		return env;
 	}
 	
+	public Environment buildEnvironment(semantics.NonTerminal nt) {
+		Environment env = new Environment(nt.numAttrs());
+		return env;
+	}
+	
 	public Environment currEnvironment() {
 		return environments.peek();
 	}
@@ -39,9 +47,9 @@ public class Interpreter {
 	 * @return Object representing the return value of the nonterminal interpretation. 
 	 * @throws Exception 
 	 */
-	public Result execute(int nonTerminal, CommonTree expr, Environment env) throws Exception {
+	public Result execute(int nonTerminal, CommonTree expr, Environment env, int currentPos) throws Exception {
 		environments.push(env);
-		int ret = process(expr, grammar.getCurrentPos());
+		int ret = process(expr, currentPos);
 		
 		if (ret >= 0) {
 			// Only if the option discardchanges is not set to false
@@ -81,18 +89,14 @@ public class Interpreter {
 	private int process(CommonTree tree, int pos) throws Exception {
 		switch (tree.token.getType()) {
 		
-		case AdaptablePEGLexer.NONTERM: {
+		case AdaptablePEGLexer.NONTERM: { // change to APEGLexer.NONTERM
 			// I suppose there are 2 children
-			NonTerminal nt = (NonTerminal) ((SemanticNode) tree.getChild(0)).getSymbol(); // name of nonterminal
+			semantics.NonTerminal nt = 
+					(semantics.NonTerminal) ((semantics.SemanticNode) tree.getChild(0)).getSymbol(); // name of nonterminal
 			CommonTree t = (CommonTree) tree.getChild(1); // list of arguments
 			
-//			System.out.print(nt.getName() + " - " + "pos_ent: " + pos + " Param:");
-//			System.out.println(nt.getName() + "<" + t.toStringTree() + ">");
 			
-			/**
-			 * Code for memoization
-			 * creating a list with the values of the attributes
-			 */
+			// creating a list with the values of the attributes			 
 			// List of inherited attributes
 			Object[] attr = new Object[nt.getNumParam()];
 			
@@ -100,30 +104,26 @@ public class Interpreter {
 			for(int i = 0; i < nt.getNumParam(); ++i) {
 				Object x = eval((CommonTree)t.getChild(i));
 				attr[i] = x;
-//				System.out.print(" " + x);
 			}
-//			System.out.println();
 			
-			Result result = memoization.getMemoization(nt.getName(), attr, pos);
-			if(result != null) {
-//				System.out.print("Memoization - next_pos: " + result.getNext_pos() + " Return: ");
-				
-				// Atualiza os valores do ambiente
-				int first = nt.getNumParam();
-				int last = first + nt.getNumRet();
-				Object[] list = result.getReturns_attr();				
-				for(int i = first; i < last; i++) {
-					Object x = list[i-first];
-//					System.out.print(x + " ");
-					SemanticNode y = (SemanticNode) t.getChild(i);
-					currEnvironment().setValue(((Attribute) y.getSymbol()).getIndex(), x);
-				}
-//				System.out.println("----------------");
-				return result.getNext_pos();
+			//TODO code for memoization here
+			
+			// Check if there is the code for this nonterminal in the grammar
+			Object language_attribute = attr[0]; // suppose that always there is the language attribute
+			                                     // as the first inherited attribute
+			
+			for(Method  mt : language_attribute.getClass().getMethods()) {
+				if(mt.getName().equals(nt.getName())) {
+					// call from language attribute.
+					// We do not check the number of attributes because I suppose it was done before in the syntax analysis
+					Object result = mt.invoke(language_attribute, attr);
+					//TODO code for memoization here
+					return ((Result) result).getNext_pos(); // return the next position
+					                                        // every nonterminal method has the Result return type
+				}	                                         
 			}
 			// else
-			
-//			System.out.println("No Memoization\n");
+			// it is a new nonterminal			
 			
 			// Creating a environment and populate it
 			Environment env = buildEnvironment(nt);		
@@ -132,46 +132,14 @@ public class Interpreter {
 
 			environments.push(env);
 	
-			CommonTree pegExpr;
-			if (grammar.isAdaptable()) {
-				pegExpr = ((Grammar) environments.peek().getValue(0)).getNonTerminal(nt.getName()).getPegExpr();
-			} else {
-				pegExpr = nt.getPegExpr();
-			}
-			
-//			System.out.println(pegExpr.toStringTree());
+			CommonTree pegExpr = // take the peg expression of the new nonterminal, whose does not have a function code
+					((Grammar) environments.peek().getValue(0)).getNewNonterminal(nt.getName()).getPegExpr();	
 
 			int ret = process(pegExpr, pos);
-			
 			env = environments.pop();
-			// env may be a different enviroment, because a copy may be pushed
-			// when the semantics of CHOICE is pushEnv
+
+			//TODO code for memoization here
 			
-//			System.out.println("Memoization: " + nt.getName() + " pos: " + pos + " - next_pos: " + ret + " Return: ");
-			
-			/**
-			 * create a List of returns values
-			 */
-			Object[] result_attr = new Object[nt.getNumRet()];
-			if (ret >= 0) {
-				int first = nt.getNumParam();
-				int last = first + nt.getNumRet();
-				for (int i = first; i < last; ++i) {
-					Object x = env.getValue(i);		
-//					System.out.print(x + " ");
-					SemanticNode y = (SemanticNode) t.getChild(i);
-					currEnvironment().setValue(((Attribute) y.getSymbol()).getIndex(), x);
-					/**
-					 * adding Object x on the List
-					 */
-					result_attr[i-first] = x;
-				}
-			}
-//			System.out.println("----------------");
-			/**
-			 * memoizationing the value
-			 */
-			memoization.addMemoization(nt.getName(), attr, pos, ret, result_attr);
 			return ret;
 		}
 		
@@ -180,19 +148,20 @@ public class Interpreter {
 		}
 		
 		case AdaptablePEGLexer.ANY: {
-			char ch = read(pos);
-			if (ch != EOF) {
+			char ch = grammar.read(pos);
+			if (!APEGInputStream.isEOF(ch)) {
 				return pos + 1;
 			}
 			return -1;
 		}
 		
 		case AdaptablePEGLexer.STRING_LITERAL: {
-			return match(tree.token.getText(), pos);
+			return grammar.match(tree.token.getText(), pos);
 		}
 		
 		case AdaptablePEGLexer.RANGE: {
-			char ch = read(pos);
+			//TODO
+			char ch = grammar.read(pos);
 			for (int i = 0; i < tree.getChildCount(); ++i) {
 				CommonTree t = (CommonTree) tree.getChild(i);
 				char ch1 = t.token.getText().charAt(0);
@@ -207,17 +176,17 @@ public class Interpreter {
 		case AdaptablePEGLexer.SEQ: {
 			int ret = pos;
 			Environment env = null;
-			if (grammar.discardChanges()) {
+			//if (grammar.discardChanges()) { TODO
 				env = environments.peek().copy();
-			}
+			//}
 			for (int i = 0; i < tree.getChildCount(); ++i) {
 				CommonTree t = (CommonTree) tree.getChild(i);
 				ret = process(t, ret);
 				if (ret < 0) {
-					if (grammar.discardChanges()) {
+					//if (grammar.discardChanges()) { TODO
 						environments.pop();
 						environments.push(env);
-					}
+					//}
 					return -1;
 				}
 			}
@@ -233,15 +202,15 @@ public class Interpreter {
 			int ret1;
 			Environment env = null;
 			while (true) {
-				if (grammar.discardChanges()) {
+				//if (grammar.discardChanges()) { TODO
 					env = environments.peek().copy();
-				}
+				//}
 				ret1 = process(t, ret);
 				if (ret1 < 0) {
-					if (grammar.discardChanges()) {
+					//if (grammar.discardChanges()) { TODO
 						environments.pop();
 						environments.push(env);
-					}
+					//}
 					return ret;
 				}
 				ret = ret1;
@@ -290,28 +259,20 @@ public class Interpreter {
 			// I suppose there are 2 children
 			CommonTree t = (CommonTree) tree.getChild(0);
 			Environment env = null;
-			if (grammar.discardChanges()) {
+			//if (grammar.discardChanges()) { TODO
 				env = environments.peek().copy();
-			}
+			//}
 			int ret = process(t, pos);
 			if (ret >= 0) {
 				return ret;
 			}
-			if (grammar.discardChanges()) {
+			//if (grammar.discardChanges()) { TODO
 				environments.pop();
 				environments.push(env);
-			}
+			//}
 			t = (CommonTree) tree.getChild(1);
 			return process(t, pos);
-/*
-			for (int i = 0; i < tree.getChildCount(); ++i) {
-				CommonTree t = (CommonTree) tree.getChild(i);
-				int ret = process(t, pos);
-				if (ret >= 0) {
-					return ret;
-				}
-			}
-			return -1;*/
+
 		}
 			
 		case AdaptablePEGLexer.ASSIGNLIST: {
@@ -325,25 +286,25 @@ public class Interpreter {
 			
 		case AdaptablePEGLexer.ASSIGN: {
 			// I suppose (until now) first child is only ID
-			SemanticNode left = (SemanticNode) tree.getChild(0);
+			semantics.SemanticNode left = (semantics.SemanticNode) tree.getChild(0);
 			CommonTree right = (CommonTree) tree.getChild(1);
 			Object r = eval(right);
-			currEnvironment().setValue((Attribute) left.getSymbol(), r);
+			currEnvironment().setValue((semantics.Attribute) left.getSymbol(), r);
 			return pos;
 		}
 		
 		case AdaptablePEGLexer.CAPTURE_TEXT: {
 			// I suppose there are 2 children: the iD and a PEG expression
-			SemanticNode left = (SemanticNode) tree.getChild(0);
+			semantics.SemanticNode left = (semantics.SemanticNode) tree.getChild(0);
 			CommonTree right = (CommonTree) tree.getChild(1);
 			int ret = process(right, pos);
 			if (ret >= 0) {
 				char aux[] = new char[ret - pos];
 				for (int i = pos; i < ret; ++i) {
-					aux[i - pos] = buf.get(i);
+					aux[i - pos] = grammar.read(i);
 				}
 				String s = new String(aux);
-				currEnvironment().setValue((Attribute) left.getSymbol(), s);
+				currEnvironment().setValue((semantics.Attribute) left.getSymbol(), s);
 			}
 			return ret;
 		}
@@ -395,8 +356,8 @@ public class Interpreter {
 
 		case AdaptablePEGLexer.CALL: {
 			//I suppose there are 2 children, the name of the function and the list of arguments
-			SemanticNode nameNode = (SemanticNode) tree.getChild(0);
-			Function f = (Function) nameNode.getSymbol(); 
+			semantics.SemanticNode nameNode = (semantics.SemanticNode) tree.getChild(0);
+			semantics.Function f = (semantics.Function) nameNode.getSymbol(); 
 			Method m = f.getMethod();
 			CommonTree t1 = (CommonTree) tree.getChild(1);
 			int nArgs = t1.getChildCount();
@@ -442,13 +403,11 @@ public class Interpreter {
 			Object i0 = eval((CommonTree) tree.getChild(0));
 			Object i1 = eval((CommonTree) tree.getChild(1));
 			return i0.equals(i1);
-			/*int i0 = (Integer) eval((CommonTree) tree.getChild(0));
-			int i1 = (Integer) eval((CommonTree) tree.getChild(1));
-			return new Boolean(i0 == i1);*/
+
 		}
 			
 		case AdaptablePEGLexer.ID: {
-			return currEnvironment().getValue((Attribute) ((SemanticNode) tree).getSymbol());
+			return currEnvironment().getValue(((semantics.Attribute) ((semantics.SemanticNode) tree).getSymbol()).getIndex());
 		}
 
 		default:

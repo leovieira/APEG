@@ -1,6 +1,6 @@
 package apeg.compiler.runtime.interpreter;
 
-import apeg.compiler.runtime.semantics.Attribute;
+import apeg.compiler.syntax.tree.Attribute;
 
 public class Environment {
 
@@ -46,6 +46,11 @@ public class Environment {
 	 * @param x
 	 */
 	public void setValue(Attribute attr, Object x) {
+		values[attr.getIndex()] = x;
+	}
+	
+	//TODO
+	public void setValue(semantics.Attribute attr, Object x) {
 		values[attr.getIndex()] = x;
 	}
 	

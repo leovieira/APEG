@@ -1,18 +1,25 @@
 package generated;
 
+import org.antlr.runtime.tree.CommonTree;
+
 import apeg.compiler.runtime.APEGInputStream;
 import apeg.compiler.runtime.Result;
 import apeg.compiler.runtime.Grammar;
 import apeg.compiler.runtime.interpreter.Environment;
-import apeg.compiler.runtime.semantics.Attribute;
-import apeg.compiler.runtime.semantics.NonTerminal;
-import apeg.compiler.runtime.semantics.Type;
+import apeg.compiler.syntax.tree.Attribute;
+import apeg.compiler.syntax.tree.NonTerminal;
+import apeg.compiler.syntax.tree.Type;
 
 //file APEG/project/test/syntax/teste06.apeg
 public class DataDependent extends Grammar { 
 
 	public DataDependent(APEGInputStream input) {
 		super(input);
+		
+		// create the nonterminal vector - the size is known during the syntax analysis
+		nonterminals = new NonTerminal[6];
+		// Create the set of possible new choices for every nonterminal
+		adapt = new CommonTree[6];
 		
 		/**
 		 * Insert information for every nonterminal
@@ -22,6 +29,7 @@ public class DataDependent extends Grammar {
 		nt = new NonTerminal("literal3", 1, 0, 0);
 		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
 		nonterminals[0] = nt;
+		ntIndex.put("litera3", 0);
 		
 		// nonterminal literal
 		nt = new NonTerminal("literal", 1, 0, 2);
@@ -29,16 +37,19 @@ public class DataDependent extends Grammar {
 		addAttribute(nt, "n", new Type("int"), Attribute.Category.LOCAL, 0);
 		addAttribute(nt, "g1", new Type("Grammar"), Attribute.Category.LOCAL, 1);
 		nonterminals[1] = nt;
+		ntIndex.put("literal", 1);
 
 		// nonterminal strN
 		nt = new NonTerminal("strN", 1, 0, 0);
 		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
 		nonterminals[2] = nt;
+		ntIndex.put("strN", 2);
 		
 		// nonterminal CHAR
 		nt = new NonTerminal("CHAR", 1, 0, 0);
 		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
 		nonterminals[3] = nt;
+		ntIndex.put("CHAR", 3);
 		
 		// nonterminal number
 		nt = new NonTerminal("number", 1, 1, 1);
@@ -46,13 +57,14 @@ public class DataDependent extends Grammar {
 		addAttribute(nt, "r", new Type("int"), Attribute.Category.RETURN, 0);
 		addAttribute(nt, "aux", new Type("int"), Attribute.Category.LOCAL, 0);
 		nonterminals[4] = nt;
+		ntIndex.put("number", 4);
 		
 		// nonterminal digit
 		nt = new NonTerminal("digit", 1, 1, 0);
 		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
 		addAttribute(nt, "x1", new Type("int"), Attribute.Category.RETURN, 0);
 		nonterminals[5] = nt;
-		
+		ntIndex.put("digit", 5);
 	}
 
 	public Result literal3(DataDependent g) throws Exception {

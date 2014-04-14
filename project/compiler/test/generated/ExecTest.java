@@ -17,10 +17,11 @@ public class ExecTest {
 		DataDependent parser = new DataDependent(input);
 		
 		// Run
-		//Result result = parser.literal3(parser);
+		Result result = parser.literal3(parser);
+		System.out.println("Portion consumed of the input: " + result.getNext_pos());
 		
-		Result result = parser.literal(parser);
-		System.out.println(result.getNext_pos());
+		//Result result = parser.literal(parser);
+		//System.out.println(result.getNext_pos());
 
 	}
 

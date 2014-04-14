@@ -1,8 +1,8 @@
-package apeg.compiler.runtime.semantics;
+package apeg.compiler.syntax.tree;
 
 import org.antlr.runtime.tree.CommonTree;
 
-import apeg.compiler.runtime.semantics.Attribute.Category;
+import apeg.compiler.syntax.tree.Attribute.Category;
 
 /**
  * A class to represent a Nonterminal symbol.
@@ -54,7 +54,7 @@ public class NonTerminal extends Symbol {
 	
 	public Attribute getAttribute(String  name) {
 		for (Attribute a : attrs) {
-			if (a.getName().compareTo(name) == 0) {
+			if (a != null && a.getName().compareTo(name) == 0) {
 				return a;
 			}
 		}

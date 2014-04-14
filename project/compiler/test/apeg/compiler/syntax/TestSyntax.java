@@ -12,7 +12,7 @@ import apeg.compiler.syntax.Parser;
 public class TestSyntax {
 
 	public static void main(String[] args) throws IOException, RecognitionException {
-		String grammarFileName="./../test/syntax/teste01.apeg";
+		String grammarFileName="./../test/syntax/teste02.apeg";
 		
 		Path path = new AbsolutePath(grammarFileName);
 		Parser.parse(path);

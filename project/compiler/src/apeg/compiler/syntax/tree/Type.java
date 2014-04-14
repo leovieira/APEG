@@ -1,4 +1,5 @@
-package apeg.compiler.runtime.semantics;
+package apeg.compiler.syntax.tree;
+
 
 public class Type extends Symbol {
 

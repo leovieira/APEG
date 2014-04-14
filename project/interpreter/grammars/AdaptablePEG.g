@@ -233,6 +233,9 @@ functions :
   ;
 */
 
+new_rules:
+  rule+;
+
 addrules[Grammar g] :
 	{
 		grammar = g;
