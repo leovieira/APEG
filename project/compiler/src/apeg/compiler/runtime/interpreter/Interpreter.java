@@ -5,11 +5,17 @@ import java.util.Stack;
 
 import org.antlr.runtime.tree.CommonTree;
 
-import srcparser.AdaptablePEGLexer;
 import apeg.compiler.runtime.APEGInputStream;
 import apeg.compiler.runtime.Grammar;
 import apeg.compiler.runtime.Result;
+
 import apeg.compiler.syntax.tree.NonTerminal;
+import apeg.compiler.syntax.tree.APEGNode;
+import apeg.compiler.syntax.tree.Attribute;
+import apeg.compiler.syntax.tree.Function;
+
+import apeg.syntax.APEG_OldLexer;
+
 
 public class Interpreter {
 	
@@ -25,11 +31,6 @@ public class Interpreter {
 	}
 
 	public Environment buildEnvironment(NonTerminal nt) {
-		Environment env = new Environment(nt.numAttrs());
-		return env;
-	}
-	
-	public Environment buildEnvironment(semantics.NonTerminal nt) {
 		Environment env = new Environment(nt.numAttrs());
 		return env;
 	}
@@ -89,10 +90,10 @@ public class Interpreter {
 	private int process(CommonTree tree, int pos) throws Exception {
 		switch (tree.token.getType()) {
 		
-		case AdaptablePEGLexer.NONTERM: { // change to APEGLexer.NONTERM
+		case APEG_OldLexer.NONTERM: { // change to APEGLexer.NONTERM
 			// I suppose there are 2 children
-			semantics.NonTerminal nt = 
-					(semantics.NonTerminal) ((semantics.SemanticNode) tree.getChild(0)).getSymbol(); // name of nonterminal
+			NonTerminal nt = 
+					(NonTerminal) ((APEGNode) tree.getChild(0)).getSymbol(); // name of nonterminal
 			CommonTree t = (CommonTree) tree.getChild(1); // list of arguments
 			
 			
@@ -143,11 +144,11 @@ public class Interpreter {
 			return ret;
 		}
 		
-		case AdaptablePEGLexer.LAMBDA: {
+		case APEG_OldLexer.LAMBDA: {
 			return pos;
 		}
 		
-		case AdaptablePEGLexer.ANY: {
+		case APEG_OldLexer.ANY: {
 			char ch = grammar.read(pos);
 			if (!APEGInputStream.isEOF(ch)) {
 				return pos + 1;
@@ -155,11 +156,11 @@ public class Interpreter {
 			return -1;
 		}
 		
-		case AdaptablePEGLexer.STRING_LITERAL: {
+		case APEG_OldLexer.STRING_LITERAL: {
 			return grammar.match(tree.token.getText(), pos);
 		}
 		
-		case AdaptablePEGLexer.RANGE: {
+		case APEG_OldLexer.RANGE: {
 			//TODO
 			char ch = grammar.read(pos);
 			for (int i = 0; i < tree.getChildCount(); ++i) {
@@ -173,7 +174,7 @@ public class Interpreter {
 			return -1;
 		}
 		
-		case AdaptablePEGLexer.SEQ: {
+		case APEG_OldLexer.SEQ: {
 			int ret = pos;
 			Environment env = null;
 			//if (grammar.discardChanges()) { TODO
@@ -195,7 +196,7 @@ public class Interpreter {
 		
 		//TODO
 		// insert code for discarding changes in environments, in several operations
-		case AdaptablePEGLexer.REPEAT: {
+		case APEG_OldLexer.REPEAT: {
 			// I suppose there is exactly one child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			int ret = pos;
@@ -217,7 +218,7 @@ public class Interpreter {
 			}
 		}
 		
-		case AdaptablePEGLexer.ONE_REPEAT: {
+		case APEG_OldLexer.ONE_REPEAT: {
 			// I suppose there is exactly one child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			int ret = process(t, pos);
@@ -234,7 +235,7 @@ public class Interpreter {
 			}
 		}
 		
-		case AdaptablePEGLexer.OPTIONAL: {
+		case APEG_OldLexer.OPTIONAL: {
 			// I suppose there is exactly one child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			int ret = process(t, pos);
@@ -244,7 +245,7 @@ public class Interpreter {
 			return ret;
 		}
 		
-		case AdaptablePEGLexer.COND: {
+		case APEG_OldLexer.COND: {
 			// I suppose there is exactly one child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			Boolean b = (Boolean) eval(t);
@@ -255,7 +256,7 @@ public class Interpreter {
 			}
 		}
 
-		case AdaptablePEGLexer.CHOICE: {
+		case APEG_OldLexer.CHOICE: {
 			// I suppose there are 2 children
 			CommonTree t = (CommonTree) tree.getChild(0);
 			Environment env = null;
@@ -275,7 +276,7 @@ public class Interpreter {
 
 		}
 			
-		case AdaptablePEGLexer.ASSIGNLIST: {
+		case APEG_OldLexer.ASSIGNLIST: {
 			// I suppose all children are ASSIGN
 			for (int i = 0; i < tree.getChildCount(); ++i) {
 				CommonTree t = (CommonTree) tree.getChild(i);
@@ -284,18 +285,18 @@ public class Interpreter {
 			return pos;
 		}
 			
-		case AdaptablePEGLexer.ASSIGN: {
+		case APEG_OldLexer.ASSIGN: {
 			// I suppose (until now) first child is only ID
-			semantics.SemanticNode left = (semantics.SemanticNode) tree.getChild(0);
+			APEGNode left = (APEGNode) tree.getChild(0);
 			CommonTree right = (CommonTree) tree.getChild(1);
 			Object r = eval(right);
-			currEnvironment().setValue((semantics.Attribute) left.getSymbol(), r);
+			currEnvironment().setValue((Attribute) left.getSymbol(), r);
 			return pos;
 		}
 		
-		case AdaptablePEGLexer.CAPTURE_TEXT: {
+		case APEG_OldLexer.CAPTURE_TEXT: {
 			// I suppose there are 2 children: the iD and a PEG expression
-			semantics.SemanticNode left = (semantics.SemanticNode) tree.getChild(0);
+			APEGNode left = (APEGNode) tree.getChild(0);
 			CommonTree right = (CommonTree) tree.getChild(1);
 			int ret = process(right, pos);
 			if (ret >= 0) {
@@ -304,12 +305,12 @@ public class Interpreter {
 					aux[i - pos] = grammar.read(i);
 				}
 				String s = new String(aux);
-				currEnvironment().setValue((semantics.Attribute) left.getSymbol(), s);
+				currEnvironment().setValue((Attribute) left.getSymbol(), s);
 			}
 			return ret;
 		}
 		
-		case AdaptablePEGLexer.AND_LOOKAHEAD: {
+		case APEG_OldLexer.AND_LOOKAHEAD: {
 			// I suppose there is exactly 1 child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			int ret = process(t, pos);
@@ -319,7 +320,7 @@ public class Interpreter {
 			return pos;
 		}
 		
-		case AdaptablePEGLexer.NOT_LOOKAHEAD: {
+		case APEG_OldLexer.NOT_LOOKAHEAD: {
 			// I suppose there is exactly 1 child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			int ret = process(t, pos);
@@ -338,26 +339,26 @@ public class Interpreter {
 	private Object eval(CommonTree tree) throws Exception {
 		switch (tree.token.getType()) {
 		
-		case AdaptablePEGLexer.TRUE: {
+		case APEG_OldLexer.TRUE: {
 			return new Boolean(true);
 		}
 		
-		case AdaptablePEGLexer.FALSE: {
+		case APEG_OldLexer.FALSE: {
 			return new Boolean(false);
 		}
 		
-		case AdaptablePEGLexer.INT_NUMBER: {
+		case APEG_OldLexer.INT_NUMBER: {
 			return new Integer(Integer.parseInt(tree.getText()));
 		}
 		
-		case AdaptablePEGLexer.STRING_LITERAL: {
+		case APEG_OldLexer.STRING_LITERAL: {
 			return tree.getText();
 		}
 
-		case AdaptablePEGLexer.CALL: {
+		case APEG_OldLexer.CALL: {
 			//I suppose there are 2 children, the name of the function and the list of arguments
-			semantics.SemanticNode nameNode = (semantics.SemanticNode) tree.getChild(0);
-			semantics.Function f = (semantics.Function) nameNode.getSymbol(); 
+			APEGNode nameNode = (APEGNode) tree.getChild(0);
+			Function f = (Function) nameNode.getSymbol();
 			Method m = f.getMethod();
 			CommonTree t1 = (CommonTree) tree.getChild(1);
 			int nArgs = t1.getChildCount();
@@ -370,35 +371,35 @@ public class Interpreter {
 			return m.invoke(null, args);
 		}
 
-		case AdaptablePEGLexer.OP_ADD: {
+		case APEG_OldLexer.OP_ADD: {
 			//I suppose there are 2 children
 			int i0 = (Integer) eval((CommonTree) tree.getChild(0));
 			int i1 = (Integer) eval((CommonTree) tree.getChild(1));
 			return new Integer(i0 + i1);
 		}
 
-		case AdaptablePEGLexer.OP_SUB: {
+		case APEG_OldLexer.OP_SUB: {
 			//I suppose there are 2 children
 			int i0 = (Integer) eval((CommonTree) tree.getChild(0));
 			int i1 = (Integer) eval((CommonTree) tree.getChild(1));
 			return new Integer(i0 - i1);
 		}
 
-		case AdaptablePEGLexer.OP_MUL: {
+		case APEG_OldLexer.OP_MUL: {
 			//I suppose there are 2 children
 			int i0 = (Integer) eval((CommonTree) tree.getChild(0));
 			int i1 = (Integer) eval((CommonTree) tree.getChild(1));
 			return new Integer(i0 * i1);
 		}
 		
-		case AdaptablePEGLexer.OP_GT: {
+		case APEG_OldLexer.OP_GT: {
 			//I suppose there are 2 children
 			int i0 = (Integer) eval((CommonTree) tree.getChild(0));
 			int i1 = (Integer) eval((CommonTree) tree.getChild(1));
 			return new Boolean(i0 > i1);
 		}
 		
-		case AdaptablePEGLexer.OP_EQ: {
+		case APEG_OldLexer.OP_EQ: {
 			//I suppose there are 2 children
 			Object i0 = eval((CommonTree) tree.getChild(0));
 			Object i1 = eval((CommonTree) tree.getChild(1));
@@ -406,8 +407,8 @@ public class Interpreter {
 
 		}
 			
-		case AdaptablePEGLexer.ID: {
-			return currEnvironment().getValue(((semantics.Attribute) ((semantics.SemanticNode) tree).getSymbol()).getIndex());
+		case APEG_OldLexer.ID: {
+			return currEnvironment().getValue(((Attribute) ((APEGNode) tree).getSymbol()).getIndex());
 		}
 
 		default:

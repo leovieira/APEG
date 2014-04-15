@@ -42,15 +42,10 @@ tokens {
 @parser::header
 {
     package apeg.syntax;
-    //import semantics.*;
-    //import java.lang.reflect.Method;
-    //import java.lang.reflect.Modifier;
-    //import java.util.ArrayList;
 }
 @lexer::header
 {
     package apeg.syntax;
-    //import util.Util;
 }
 /***
  * The preambulo of the grammar
@@ -321,7 +316,7 @@ factor :
   |
   '('! expr ')'!
   |
-  '!' condExpr -> ^(OP_NOT condExpr)
+  '!' factor -> ^(OP_NOT factor)
   |
   TRUE
   |

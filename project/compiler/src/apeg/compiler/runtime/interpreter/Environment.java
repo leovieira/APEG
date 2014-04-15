@@ -49,11 +49,6 @@ public class Environment {
 		values[attr.getIndex()] = x;
 	}
 	
-	//TODO
-	public void setValue(semantics.Attribute attr, Object x) {
-		values[attr.getIndex()] = x;
-	}
-	
 	/**
 	 * To be used when the position of the attribute is know (e.g. parameter passing).
 	 * @param i
