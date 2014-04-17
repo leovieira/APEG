@@ -35,8 +35,11 @@ tokens {
   TRANSIENT;
   MEMOIZE;
   ADAPTABLE;
+  NOT_ADAPTABLE;
   MEMOIZATION;
+  NOT_MEMOIZATION;
   ENV_DISCARDING;
+  NOT_ENV_DISCARDING;
 }
 
 @parser::header
@@ -55,7 +58,7 @@ grammarDef:
     'apeg' ID ';'
     t1=option
     functions
-    rule+ -> ^(GRAMMAR ID $t1 functions rule+)
+    rules -> ^(GRAMMAR ID $t1 functions rules)
     ;
 
 /***
@@ -63,28 +66,28 @@ grammarDef:
  ***/
 
 option:
-   'options' '{' (opt=grammar_opt ';')* '}' -> ^(LIST $opt*)
+   'options' '{' (grammar_opt ';')* '}' -> ^(LIST grammar_opt*)
   |
    -> LIST
   ;
 
 grammar_opt:
 	'isAdaptable' '='
-		('true' -> ADAPTABLE["true"]
+		('true' -> ADAPTABLE
 		|
-		'false' -> 
+		'false' -> NOT_ADAPTABLE
 		)
 	|
 	 'envSemantics' '='
-		('simple' -> ENV_DISCARDING["simple"]
+		('simple' -> NOT_ENV_DISCARDING
 		|
-		'discardChangesWhenFail' ->
+		'discardChangesWhenFail' -> ENV_DISCARDING
 		)
 	|
 	 'memoize' '='
-	  ( 'true' -> MEMOIZATION["true"]
+	  ( 'true' -> MEMOIZATION
 	   |
-	    'false' ->
+	    'false' -> NOT_MEMOIZATION
 	  )
 	;
 
@@ -114,6 +117,8 @@ functions:
 /***
  * Grammar Rule Section
  ***/
+
+rules: rule+;
 
 // A definiton of an APEG rule
 rule:
@@ -264,16 +269,22 @@ ntcall:
   ;
 
 range_pair:
-   single_pair
-  |
-   t1=LETTER '-' t2=LETTER -> ^(DOUBLE_PAIR $t1 $t2)
-  |
-   t1=DIGIT '-' t1=DIGIT -> ^(DOUBLE_PAIR $t1 $t2)
-  |
-   t1=ESC '-' t1=ESC -> ^(DOUBLE_PAIR $t1 $t2)
+   single_pair ( -> single_pair
+          | ('-' single_pair)+ -> ^(DOUBLE_PAIR single_pair+)
+         )
   ;
 
-single_pair: LETTER | DIGIT | ESC;
+/*range_pair:
+   t1=LETTER '-' t2=LETTER -> ^(DOUBLE_PAIR $t1 $t2)
+  |
+   t1=DIGIT '-' t2=DIGIT -> ^(DOUBLE_PAIR $t1 $t2)
+  |
+   t1=ESC '-' t2=ESC -> ^(DOUBLE_PAIR $t1 $t2)
+  |
+   LETTER | DIGIT | ESC
+  ;*/
+
+single_pair: ID | INT_NUMBER | ESC;
 
 /***
  * Constraint and Update Expressions
@@ -344,7 +355,7 @@ designator :
     (
     t1='.' ID -> ^(DOT[$t1,"DOT"] $designator ID)
     |
-    t2='[' expr ']' -> ^(ARRAY_REF[$t2,"ARRAY_REF"] $designator expr)
+    t2='[' aexpr ']' -> ^(ARRAY_REF[$t2,"ARRAY_REF"] $designator aexpr)
     )*
     ;
 
