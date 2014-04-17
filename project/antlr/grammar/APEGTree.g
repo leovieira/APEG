@@ -29,9 +29,15 @@ option:
 grammar_opt:
 	ADAPTABLE
  |
+  NOT_ADAPTABLE
+ |
 	ENV_DISCARDING
  |
+  NOT_ENV_DISCARDING
+ |
 	MEMOIZATION
+ |
+  NOT_MEMOIZATION
  ;
 
 /***
@@ -102,18 +108,12 @@ peg_expr:
 assign: ^(ASSIGN ID expr);
 
 range_pair:
-   ^(DOUBLE_PAIR LETTER LETTER)
+   ^(DOUBLE_PAIR single_pair single_pair+)
   |
-   ^(DOUBLE_PAIR DIGIT DIGIT)
-  |
-   ^(DOUBLE_PAIR ESC ESC)
-  |
-   LETTER
-  |
-   DIGIT
-  |
-   ESC
+   single_pair
   ;
+
+single_pair: ID | INT_NUMBER | ESC;
 
 /***
  * Conditionals and Expressions

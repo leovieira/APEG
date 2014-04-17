@@ -6,8 +6,6 @@ import org.antlr.runtime.RecognitionException;
 
 import apeg.common.path.AbsolutePath;
 import apeg.common.path.Path;
-import apeg.common.path.RelativePath;
-import apeg.compiler.syntax.Parser;
 
 public class TestSyntax {
 
