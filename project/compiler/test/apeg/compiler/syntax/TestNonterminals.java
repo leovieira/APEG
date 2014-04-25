@@ -47,11 +47,11 @@ public class TestNonterminals {
 		assertEquals(tree.toStringTree(), "char");		
 		
 		// Test a basic type double
-		String t3 = "double";
+		String t3 = "float";
 		parser = createParser(t3);
 
 		tree = parser.type().getTree();
-		assertEquals(tree.toStringTree(), "double");		
+		assertEquals(tree.toStringTree(), "float");		
 		
 		// Test a basic type boolean
 		String t4 = "boolean";

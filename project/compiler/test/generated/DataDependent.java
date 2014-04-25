@@ -34,8 +34,8 @@ public class DataDependent extends Grammar {
 		// nonterminal literal
 		nt = new NonTerminal("literal", 1, 0, 2);
 		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
-		addAttribute(nt, "n", new Type("int"), Attribute.Category.LOCAL, 0);
-		addAttribute(nt, "g1", new Type("Grammar"), Attribute.Category.LOCAL, 1);
+		addAttribute(nt, "n", new Type("int"), Attribute.Category.LOCAL, 1);
+		addAttribute(nt, "g1", new Type("Grammar"), Attribute.Category.LOCAL, 2);
 		nonterminals[1] = nt;
 		ntIndex.put("literal", 1);
 
@@ -54,15 +54,15 @@ public class DataDependent extends Grammar {
 		// nonterminal number
 		nt = new NonTerminal("number", 1, 1, 1);
 		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
-		addAttribute(nt, "r", new Type("int"), Attribute.Category.RETURN, 0);
-		addAttribute(nt, "aux", new Type("int"), Attribute.Category.LOCAL, 0);
+		addAttribute(nt, "r", new Type("int"), Attribute.Category.RETURN, 1);
+		addAttribute(nt, "aux", new Type("int"), Attribute.Category.LOCAL, 2);
 		nonterminals[4] = nt;
 		ntIndex.put("number", 4);
 		
 		// nonterminal digit
 		nt = new NonTerminal("digit", 1, 1, 0);
 		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
-		addAttribute(nt, "x1", new Type("int"), Attribute.Category.RETURN, 0);
+		addAttribute(nt, "x1", new Type("int"), Attribute.Category.RETURN, 1);
 		nonterminals[5] = nt;
 		ntIndex.put("digit", 5);
 	}
@@ -79,7 +79,7 @@ public class DataDependent extends Grammar {
 				result = g.literal(g);
 				if(!result.isFail()) {
 					currentPos = result.getNext_pos();
-					if(g.read(currentPos) < 0)
+					if(APEGInputStream.isEOF(g.read(currentPos)))
 						return new Result(currentPos);
 				}
 			}
@@ -100,11 +100,13 @@ public class DataDependent extends Grammar {
 		Result result = g.number(g);
 		if(!result.isFail()) {
 			n = (int) result.getAttribute(0);
+			currentPos = result.getNext_pos();
 			g1 = (DataDependent) g.copy().addRule("strN: "
 					         + functions.AdaptableFunctions.concatN("CHAR<g> ", n)
 					         + ";");
 			if(g.match("[", currentPos) > 0) { // nao falhou
 				currentPos++;
+				g1.setCurrentPos(currentPos);
 				result = g.strN(g1);
 				if(!result.isFail()) {
 					currentPos = result.getNext_pos();

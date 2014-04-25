@@ -54,7 +54,9 @@ functions:
 
 // A definiton of an APEG rule
 rule:
-  ^(RULE ID annotation? decls decls decls peg_expr)
+  ^(RULE ID annotation decls decls decls peg_expr)
+ |
+  ^(RULE ID decls decls decls peg_expr)
 ;
 
 annotation:

@@ -12,12 +12,14 @@ import apeg.compiler.syntax.tree.Attribute.Category;
  */
 public class NonTerminal extends Symbol {
 	
-	private int numParam;
-	private int numRet;
-	private int numLocal;
-	private Attribute[] attrs;
+	private int numParam; // number of inherited attributes
+	private int numRet; // number of synthesized attributes
+	private int numLocal; // number of local attributes
+	private Attribute[] attrs; // Vector which contains all attributes in the follow order:
+	                          //          first all the inherited, followed by the synthesized and at the end the local ones. 
 	
-	private CommonTree pegExpr;
+	private CommonTree pegExpr; // it is null if the nonterminal has the code generated. 
+	                            // Otherwise, it has the parsing expression of the nonterminal (used only during runtime).
 	
 	public NonTerminal(String name, int numParam, int numRet, int numLocal) {
 		super(name);
@@ -62,28 +64,34 @@ public class NonTerminal extends Symbol {
 	}
 	
 	public Attribute addAttribute(String name, Type type, Category category, int num) {
-		if (getAttribute(name) != null) {
+		return addAttribute(new Attribute(name, type, category, num));
+	}
+	
+	public Attribute addAttribute(Attribute attr) {
+		if (getAttribute(attr.getName()) != null) {
 			return null;
 		}
+		Category category = attr.getCategory();
+		int index = attr.getIndex();
 		
 		if (category == Attribute.Category.PARAM) {
-			if (num < 0 || num >= numParam) {
+			if (index < 0 || index >= numParam) {
 				throw new Error("Invalid number of inherited attribute");
 			}
-			attrs[num] = new Attribute(name, type, category, num);
-			return attrs[num];
+			attrs[index] = attr;
+			return attrs[index];
 		} else if (category == Attribute.Category.RETURN) {
-			if (num < 0 || num >= numRet) {
+			if (index < numParam || index >= numRet + numParam) {
 				throw new Error("Invalid number of return attribute");
 			}
-			attrs[numParam + num] = new Attribute(name, type, category, numParam + num);
-			return attrs[numParam + num];
+			attrs[index] = attr;
+			return attrs[index];
 		} else if (category == Attribute.Category.LOCAL) {
-			if(num < 0 || num >= numLocal) {
+			if(index < numParam + numRet || index >= numParam + numRet + numLocal) {
 				throw new Error("Invalid number of local attribute");
 			}
-			attrs[numParam + numRet + num] = new Attribute(name, type, category, numParam + numRet + num);
-			return attrs[numParam + numRet + num];
+			attrs[index] = attr;
+			return attrs[index];
 		}
 		return null; // only to compile. The code never will reach this
 	}
@@ -127,4 +135,19 @@ public class NonTerminal extends Symbol {
 		this.pegExpr = pegExpr;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(this == obj) // if point to the same objects
+			return true;		
+		if(obj instanceof NonTerminal) {
+			NonTerminal nt = (NonTerminal) obj;
+			if(!this.getName().equals(nt) || nt.numParam != this.numParam || nt.numRet != this.numRet || nt.numLocal != this.numLocal)
+				return false;
+			for(int i = 0; i < attrs.length; ++i) {
+				if(!this.attrs[i].equals(nt.attrs[i]))
+					return false;
+			}
+		}
+		return false;
+	}
 }

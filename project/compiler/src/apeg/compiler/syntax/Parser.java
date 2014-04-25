@@ -12,7 +12,6 @@ import apeg.common.path.Path;
 import apeg.syntax.APEGLexer;
 import apeg.syntax.APEGParser;
 import apeg.syntax.APEGTree;
-import apeg.syntax.APEGParser.grammarDef_return;
 
 public class Parser {
 

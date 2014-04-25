@@ -42,6 +42,10 @@ tokens {
   NOT_ENV_DISCARDING;
 }
 
+@parser::members
+{
+    { this.adaptor = new apeg.compiler.syntax.tree.APEGTreeAdaptor(); }
+}
 @parser::header
 {
     package apeg.syntax;
@@ -127,9 +131,9 @@ rule:
   d1=optDecls
   d2=optReturn
   d3=optLocals
-  ':' t=peg_expr
+  ':' peg=peg_expr
   ';'
-  -> ^(RULE ID $a? $d1 $d2 $d3 peg_expr)
+  -> ^(RULE ID $a? $d1 $d2 $d3 $peg)
 ;
 
 annotation:

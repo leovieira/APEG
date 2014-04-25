@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 
 import apeg.compiler.runtime.interpreter.Environment;
@@ -13,63 +14,95 @@ import apeg.compiler.syntax.tree.APEGTreeAdaptor;
 import apeg.compiler.syntax.tree.Attribute;
 import apeg.compiler.syntax.tree.NonTerminal;
 import apeg.compiler.syntax.tree.Type;
-
-import apeg.syntax.APEG_OldLexer;
-import apeg.syntax.APEG_OldParser;
+import apeg.syntax.APEGLexer;
+import apeg.syntax.APEGParser;
+import apeg.compiler.adapt.AddRulesTree;
 
 public abstract class Grammar implements Cloneable {
 
-	protected static final Result fail_result = new Result(-1, null); // represent
-																		// a
-																		// fail
-																		// result
+	// represent a fail result
+	protected static final Result fail_result = new Result(-1, null);
 
 	protected APEGInputStream input; // the input stream
-	protected int currentPos = 0; // Current position on the input
+	protected int currentPos = 0; // current position on the input
 
+	protected APEGTreeAdaptor adaptor;
+	
 	/**
 	 * Information of nonterminals
 	 */
-	protected NonTerminal[] nonterminals;
+	protected NonTerminal[] nonterminals; // information of all predefined nonterminals
+	// map to get the position of a nonterminal on the vector nonterminals
 	protected HashMap<String, Integer> ntIndex = new HashMap<String, Integer>();
 
 	/**
 	 * Fields related to adaptability on runtime
 	 */
-	protected CommonTree[] adapt; // vector of possible new choices of any
-									// nonterminal
-	protected Interpreter interpreter; // the interpreter for new rules or
-										// choices
+	protected CommonTree[] adapt; // vector of possible new choices of any predefined nonterminal
 
-	protected HashMap<String, NonTerminal> nonMap; // map of new nonterminals
+	protected HashMap<String, NonTerminal> nonMap; // map of new nonterminals (added during adaptability)
 
+	/**
+	 * Grammar constructor
+	 * @param input stream of character
+	 */
 	protected Grammar(APEGInputStream input) {
 		this.input = input;
-		interpreter = new Interpreter(this);
 		nonMap = new HashMap<String, NonTerminal>();
+		
+		adaptor = new APEGTreeAdaptor();
 	}
 
+	/**
+	 * Function that match a string on the input starting from a specific position
+	 * @param string
+	 * @param pos
+	 * @return the next position if the match succeed or failure position
+	 * @throws Exception
+	 */
 	public int match(String string, int pos) throws Exception {
 		return input.match(string, pos);
 	}
 
+	/**
+	 * Function to read a character from a specific position
+	 * @param pos
+	 * @return the character read
+	 * @throws Exception
+	 */
 	public char read(int pos) throws Exception {
 		return input.read(pos);
 	}
 
+	/**
+	 * Function to return a result which represents a failure
+	 * @return
+	 */
 	public Result failResult() {
 		return fail_result;
 	}
 
+	/**
+	 * Function to interpreter a new choice
+	 * @param pos
+	 * @param env
+	 * @return
+	 * @throws Exception
+	 */
 	protected Result interpreteChoice(int pos, Environment env)
 			throws Exception {
 		if (adapt[pos] != null) { // there is a new alternative
+			Interpreter interpreter = new Interpreter(this);
 			return interpreter.execute(pos, adapt[pos], env, currentPos);
 		} // else
 
 		return fail_result;
 	}
 
+	/**
+	 * Funtion to copy the grammar
+	 * @return
+	 */
 	public Grammar copy() {
 		try {
 			return (Grammar) this.clone();
@@ -83,65 +116,64 @@ public abstract class Grammar implements Cloneable {
 	// TODO
 	public Grammar addRule(String rule) throws Exception {
 		ANTLRStringStream input = new ANTLRStringStream(rule);
-		APEG_OldLexer lexer = new APEG_OldLexer(input);
+		APEGLexer lexer = new APEGLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		APEG_OldParser parser = new APEG_OldParser(tokens);
-		APEGTreeAdaptor adaptor = new APEGTreeAdaptor();
-		parser.setTreeAdaptor(adaptor);
+		APEGParser parser = new APEGParser(tokens);
 
 		System.out.println("Trying to add rules: " + rule);
 
-		APEG_OldParser.addrules_return result = parser.addrules();
+		APEGParser.rules_return result = parser.rules();
 		Tree t = (Tree) result.getTree();
 
+		// Check the AST, set the pointers and adapt the grammar
+		CommonTreeNodeStream node = new CommonTreeNodeStream(t);
+		node.setTokenStream(tokens);
+		AddRulesTree walker = new AddRulesTree(node);
+		walker.rules(this);
+		
 		// TODO check for errors
 
-		Tree ntName, param, rets, locals, pegExpr;
-		if (APEG_OldLexer.RULE == t.getType()) { // there is only one rule
-			// Create a new tree if just one rule. Only to avoid duplicate code
-			Tree aux = new CommonTree();
-			aux.addChild(t);
-			t = aux;
-		}
-		// Now, this code should work even when have only one rule
-		for (int i = 0; i < t.getChildCount(); ++i) { // to each rule
-			Tree child = t.getChild(i); // it must be a RULE child type
-			ntName = child.getChild(0); // the nonterminal name
-			param = child.getChild(1); // list of parameters
-			rets = child.getChild(2); // list of returns
-			locals = t.getChild(3); // list of locals
-			pegExpr = child.getChild(4); // peg expression of the nonterminal
-
-			//TODO - não verifiquei se os parametros estão todos corretos!
-			
-			Integer index = ntIndex.get(ntName.toString());
-			if(index != null) { // it is an generated nonterminal
-				int v = index.intValue();
-				if(nonterminals[v] == null) {
-					adapt[v] = (CommonTree) pegExpr;
-				} else {
-					CommonTree root = (CommonTree) adaptor.create(APEG_OldLexer.CHOICE, "CHOICE");
-					root.addChild(adapt[v]);
-					root.addChild(pegExpr);
-					
-					adapt[v] = (CommonTree) pegExpr;
-				}
-			} else { // it does have a function code generate
-				NonTerminal nt = nonMap.get(ntName.toString());
-				if(nt == null) { // it is a new nonterminal
-					//TODO - I must to put the new nonterminal in the map nonMap
-				} else { // it already has the nonterminal
-					CommonTree root = (CommonTree) adaptor.create(APEG_OldLexer.CHOICE, "CHOICE");
-					root.addChild(nt.getPegExpr());
-					root.addChild(pegExpr);
-					
-					nt.setPegExpr(root);
-				}
-			}
-		}
 		return this;
 	}
 
+	public void addChoice(NonTerminal nt, CommonTree choice) {
+		Integer index = ntIndex.get(nt.getName());
+		if(index != null) { // it is a predefined nonterminal
+			int v = index.intValue();
+			
+			if(adapt[v] == null)
+				adapt[v] = choice;
+			else {
+				CommonTree root = (CommonTree) adaptor.create(APEGLexer.CHOICE, "CHOICE");
+				root.addChild(adapt[v]); // the left child is the old expression
+				root.addChild(choice); // the right child is the new choice
+				
+				adapt[v] = root;
+			}
+			if(!nonterminals[v].equals(nt)) { // if the nonterminals are different: the set of attributes are different
+				// TODO emit an error
+				throw new Error("It is not possible to change the set of nonterminal attributes");
+			}
+		} else { // it is not a predefined nonterminal
+			NonTerminal n = nonMap.get(nt.getName());
+			if(n == null) { // it is a new nonterminal
+				nt.setPegExpr(choice); // Assure that nt has the correct choice
+				nonMap.put(nt.getName(), nt); //  put it in the map of nonterminals
+			} else { // it already has the nonterminal
+				CommonTree root = (CommonTree) adaptor.create(APEGLexer.CHOICE, "CHOICE");
+				root.addChild(n.getPegExpr());
+				root.addChild(choice);
+				
+				n.setPegExpr(root);
+				
+				if(!n.equals(nt)) { // if the two nonterminal are not equals: the set of attributes are different
+					// TODO emit an error
+					throw new Error("It is not possible to change the set of nonterminal attributes");
+				}
+			}
+		}
+	}
+	
 	public int getCurrentPos() {
 		return currentPos;
 	}
@@ -150,12 +182,38 @@ public abstract class Grammar implements Cloneable {
 		currentPos = pos;
 	}
 
+	/**
+	 * Return the predefined nonterminal of a given position
+	 * @param pos
+	 * @return
+	 */
 	public NonTerminal getNonterminal(int pos) {
 		if (pos >= nonterminals.length || pos < 0)
 			return null;
 		return nonterminals[pos];
 	}
+	
+	/**
+	 * Return a nonterminal with the this name.
+	 *  Can be a predefined one or a new one, added during adaptability 
+	 * @param name
+	 * @return
+	 */
+	public NonTerminal getNonterminal(String name) {
+		Integer i = ntIndex.get(name);
+		if(i != null) {
+			int index = i;
+			return nonterminals[index]; // return a predefined nonterminal
+		} else
+			return nonMap.get(name); // return a nonterminal defined during runtime
+		                             // maybe a null value if it was not defined yet
+	}
 
+	/**
+	 * Return a nonterminal which was added during adaptability
+	 * @param name
+	 * @return
+	 */
 	public NonTerminal getNewNonterminal(String name) {
 		return nonMap.get(name);
 	}
@@ -163,17 +221,12 @@ public abstract class Grammar implements Cloneable {
 	/**
 	 * Function to add a attribute to a given nonterminal
 	 * 
-	 * @param nt
-	 *            nonterminal that will insert the attribute
-	 * @param name
-	 *            the name of the attribute
-	 * @param type
-	 *            the type of the attribute
-	 * @param category
-	 *            the category of the attribute
-	 * @param num
-	 *            the relative position of the attribute inside its category. If
-	 *            it has 3 attribute of locals category, then 0 <= num < 3
+	 * @param nt nonterminal that will insert the attribute
+	 * @param name the name of the attribute
+	 * @param type the type of the attribute
+	 * @param category the category of the attribute
+	 * @param num the relative position of the attribute inside its category. If
+	 *             it has 3 attribute of locals category, then 0 <= num < 3
 	 */
 	protected void addAttribute(NonTerminal nt, String name, Type type,
 			Attribute.Category category, int num) {
@@ -184,6 +237,9 @@ public abstract class Grammar implements Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		Grammar resp = (Grammar) super.clone();
 
+		// use the same tree adaptor
+		resp.adaptor = this.adaptor;
+		
 		// copy the current position on the input
 		resp.currentPos = this.currentPos;
 		/**
@@ -203,8 +259,6 @@ public abstract class Grammar implements Cloneable {
 		resp.adapt = new CommonTree[this.adapt.length];
 		for (int i = 0; i < resp.adapt.length; i++)
 			resp.adapt[i] = this.adapt[i];
-
-		resp.interpreter = new Interpreter(resp); // set the interpreter
 
 		// Create a new map of new nonterminal with the same values of the
 		// old one

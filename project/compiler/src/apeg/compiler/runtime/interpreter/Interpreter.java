@@ -8,13 +8,12 @@ import org.antlr.runtime.tree.CommonTree;
 import apeg.compiler.runtime.APEGInputStream;
 import apeg.compiler.runtime.Grammar;
 import apeg.compiler.runtime.Result;
-
 import apeg.compiler.syntax.tree.NonTerminal;
 import apeg.compiler.syntax.tree.APEGNode;
 import apeg.compiler.syntax.tree.Attribute;
 import apeg.compiler.syntax.tree.Function;
 
-import apeg.syntax.APEG_OldLexer;
+import apeg.syntax.APEGLexer;
 
 
 public class Interpreter {
@@ -90,10 +89,9 @@ public class Interpreter {
 	private int process(CommonTree tree, int pos) throws Exception {
 		switch (tree.token.getType()) {
 		
-		case APEG_OldLexer.NONTERM: { // change to APEGLexer.NONTERM
+		case APEGLexer.NONTERM: { // change to APEGLexer.NONTERM
 			// I suppose there are 2 children
-			NonTerminal nt = 
-					(NonTerminal) ((APEGNode) tree.getChild(0)).getSymbol(); // name of nonterminal
+			NonTerminal nt = grammar.getNonterminal(tree.getChild(0).getText()); // get the nonterminal from the grammar
 			CommonTree t = (CommonTree) tree.getChild(1); // list of arguments
 			
 			
@@ -144,11 +142,11 @@ public class Interpreter {
 			return ret;
 		}
 		
-		case APEG_OldLexer.LAMBDA: {
+		case APEGLexer.LAMBDA: {
 			return pos;
 		}
 		
-		case APEG_OldLexer.ANY: {
+		case APEGLexer.ANY: {
 			char ch = grammar.read(pos);
 			if (!APEGInputStream.isEOF(ch)) {
 				return pos + 1;
@@ -156,11 +154,11 @@ public class Interpreter {
 			return -1;
 		}
 		
-		case APEG_OldLexer.STRING_LITERAL: {
+		case APEGLexer.STRING_LITERAL: {
 			return grammar.match(tree.token.getText(), pos);
 		}
 		
-		case APEG_OldLexer.RANGE: {
+		case APEGLexer.RANGE: {
 			//TODO
 			char ch = grammar.read(pos);
 			for (int i = 0; i < tree.getChildCount(); ++i) {
@@ -174,7 +172,7 @@ public class Interpreter {
 			return -1;
 		}
 		
-		case APEG_OldLexer.SEQ: {
+		case APEGLexer.SEQ: {
 			int ret = pos;
 			Environment env = null;
 			//if (grammar.discardChanges()) { TODO
@@ -196,7 +194,7 @@ public class Interpreter {
 		
 		//TODO
 		// insert code for discarding changes in environments, in several operations
-		case APEG_OldLexer.REPEAT: {
+		case APEGLexer.REPEAT: {
 			// I suppose there is exactly one child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			int ret = pos;
@@ -218,7 +216,7 @@ public class Interpreter {
 			}
 		}
 		
-		case APEG_OldLexer.ONE_REPEAT: {
+		case APEGLexer.ONE_REPEAT: {
 			// I suppose there is exactly one child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			int ret = process(t, pos);
@@ -235,7 +233,7 @@ public class Interpreter {
 			}
 		}
 		
-		case APEG_OldLexer.OPTIONAL: {
+		case APEGLexer.OPTIONAL: {
 			// I suppose there is exactly one child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			int ret = process(t, pos);
@@ -245,7 +243,7 @@ public class Interpreter {
 			return ret;
 		}
 		
-		case APEG_OldLexer.COND: {
+		case APEGLexer.COND: {
 			// I suppose there is exactly one child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			Boolean b = (Boolean) eval(t);
@@ -256,7 +254,7 @@ public class Interpreter {
 			}
 		}
 
-		case APEG_OldLexer.CHOICE: {
+		case APEGLexer.CHOICE: {
 			// I suppose there are 2 children
 			CommonTree t = (CommonTree) tree.getChild(0);
 			Environment env = null;
@@ -276,7 +274,7 @@ public class Interpreter {
 
 		}
 			
-		case APEG_OldLexer.ASSIGNLIST: {
+		case APEGLexer.ASSIGNLIST: {
 			// I suppose all children are ASSIGN
 			for (int i = 0; i < tree.getChildCount(); ++i) {
 				CommonTree t = (CommonTree) tree.getChild(i);
@@ -285,7 +283,7 @@ public class Interpreter {
 			return pos;
 		}
 			
-		case APEG_OldLexer.ASSIGN: {
+		case APEGLexer.ASSIGN: {
 			// I suppose (until now) first child is only ID
 			APEGNode left = (APEGNode) tree.getChild(0);
 			CommonTree right = (CommonTree) tree.getChild(1);
@@ -294,7 +292,7 @@ public class Interpreter {
 			return pos;
 		}
 		
-		case APEG_OldLexer.CAPTURE_TEXT: {
+		case APEGLexer.CAPTURE_TEXT: {
 			// I suppose there are 2 children: the iD and a PEG expression
 			APEGNode left = (APEGNode) tree.getChild(0);
 			CommonTree right = (CommonTree) tree.getChild(1);
@@ -310,7 +308,7 @@ public class Interpreter {
 			return ret;
 		}
 		
-		case APEG_OldLexer.AND_LOOKAHEAD: {
+		case APEGLexer.AND_LOOKAHEAD: {
 			// I suppose there is exactly 1 child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			int ret = process(t, pos);
@@ -320,7 +318,7 @@ public class Interpreter {
 			return pos;
 		}
 		
-		case APEG_OldLexer.NOT_LOOKAHEAD: {
+		case APEGLexer.NOT_LOOKAHEAD: {
 			// I suppose there is exactly 1 child
 			CommonTree t = (CommonTree) tree.getChild(0);
 			int ret = process(t, pos);
@@ -339,23 +337,23 @@ public class Interpreter {
 	private Object eval(CommonTree tree) throws Exception {
 		switch (tree.token.getType()) {
 		
-		case APEG_OldLexer.TRUE: {
+		case APEGLexer.TRUE: {
 			return new Boolean(true);
 		}
 		
-		case APEG_OldLexer.FALSE: {
+		case APEGLexer.FALSE: {
 			return new Boolean(false);
 		}
 		
-		case APEG_OldLexer.INT_NUMBER: {
+		case APEGLexer.INT_NUMBER: {
 			return new Integer(Integer.parseInt(tree.getText()));
 		}
 		
-		case APEG_OldLexer.STRING_LITERAL: {
+		case APEGLexer.STRING_LITERAL: {
 			return tree.getText();
 		}
 
-		case APEG_OldLexer.CALL: {
+		case APEGLexer.CALL: { //TODO look it
 			//I suppose there are 2 children, the name of the function and the list of arguments
 			APEGNode nameNode = (APEGNode) tree.getChild(0);
 			Function f = (Function) nameNode.getSymbol();
@@ -371,35 +369,35 @@ public class Interpreter {
 			return m.invoke(null, args);
 		}
 
-		case APEG_OldLexer.OP_ADD: {
+		case APEGLexer.OP_ADD: {
 			//I suppose there are 2 children
 			int i0 = (Integer) eval((CommonTree) tree.getChild(0));
 			int i1 = (Integer) eval((CommonTree) tree.getChild(1));
 			return new Integer(i0 + i1);
 		}
 
-		case APEG_OldLexer.OP_SUB: {
+		case APEGLexer.OP_SUB: {
 			//I suppose there are 2 children
 			int i0 = (Integer) eval((CommonTree) tree.getChild(0));
 			int i1 = (Integer) eval((CommonTree) tree.getChild(1));
 			return new Integer(i0 - i1);
 		}
 
-		case APEG_OldLexer.OP_MUL: {
+		case APEGLexer.OP_MUL: {
 			//I suppose there are 2 children
 			int i0 = (Integer) eval((CommonTree) tree.getChild(0));
 			int i1 = (Integer) eval((CommonTree) tree.getChild(1));
 			return new Integer(i0 * i1);
 		}
 		
-		case APEG_OldLexer.OP_GT: {
+		case APEGLexer.OP_GT: {
 			//I suppose there are 2 children
 			int i0 = (Integer) eval((CommonTree) tree.getChild(0));
 			int i1 = (Integer) eval((CommonTree) tree.getChild(1));
 			return new Boolean(i0 > i1);
 		}
 		
-		case APEG_OldLexer.OP_EQ: {
+		case APEGLexer.OP_EQ: {
 			//I suppose there are 2 children
 			Object i0 = eval((CommonTree) tree.getChild(0));
 			Object i1 = eval((CommonTree) tree.getChild(1));
@@ -407,7 +405,7 @@ public class Interpreter {
 
 		}
 			
-		case APEG_OldLexer.ID: {
+		case APEGLexer.ID: { // TODO - check
 			return currEnvironment().getValue(((Attribute) ((APEGNode) tree).getSymbol()).getIndex());
 		}
 
