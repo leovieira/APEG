@@ -154,26 +154,24 @@ rule[Grammar g]:
 		      // create a new nonterminal	      
 		      
 		      // Insert the language attribute, if the nonterminal does not have
-		      int index, j = param.getChildCount();
+		      int j = param.getChildCount();
 		      if(j > 0 && param.getChild(0).getChild(0).getText().equals("Grammar")) { // it has the language attribute
-		        index = 0;
-		        nt = new NonTerminal($ID.text, j, ret.getChildCount(), locals.getChildCount());
+		        nt = new NonTerminal($ID.text, j + ret.getChildCount());
 		        
 		        //System.out.println("Nonterminal " + name + " has the language attribute");
 		      } else { // it does not have the language attribute 
-		        index = 1;
-		        nt = new NonTerminal($ID.text, j+1, ret.getChildCount(), locals.getChildCount());
-		        nt.addAttribute("$g", new Type("Grammar"), Attribute.Category.PARAM, 0);
+		        nt = new NonTerminal($ID.text, (j+1) + ret.getChildCount());
+		        nt.addAttribute("$g", new Type("Grammar"), Attribute.Category.PARAM);
 		        
 		        //System.out.println("Nonterminal " + name + " does not have the language attribute");
 		      }      
 		      
 		      // Set the attribute list
-		      for(int i = 0; i < j; ++i, index++) { // set the inherited attributes
+		      for(int i = 0; i < j; ++i) { // set the inherited attributes
 		        Tree t = (Tree) param.getChild(i);
 		        Type type = new Type(t.getChild(0).getText());
 		        String attrName = t.getChild(1).getText();
-		        Attribute attr = nt.addAttribute(attrName, type, Attribute.Category.PARAM, index);
+		        Attribute attr = nt.addAttribute(attrName, type, Attribute.Category.PARAM);
 		        if(attr == null) {
 		          emitErrorMessage(param.getLine(), "duplicated attribute name " + attrName);
 		        }
@@ -183,7 +181,7 @@ rule[Grammar g]:
 		        Tree t = (Tree) ret.getChild(i);
 		        Type type = new Type(t.getChild(0).getText());
 		        String attrName = t.getChild(1).getText();
-		        Attribute attr = nt.addAttribute(attrName, type, Attribute.Category.RETURN, i + nt.getNumParam());
+		        Attribute attr = nt.addAttribute(attrName, type, Attribute.Category.RETURN);
 		        if(attr == null) {
               emitErrorMessage(ret.getLine(), "duplicated attribute name " + attrName);
             }
@@ -193,8 +191,7 @@ rule[Grammar g]:
 		        Tree t = (Tree) locals.getChild(i);
 		        Type type = new Type(t.getChild(0).getText());
 		        String attrName = t.getChild(1).getText();
-		        Attribute attr = nt.addAttribute(attrName, type, Attribute.Category.LOCAL,
-		                                          i + nt.getNumParam() + nt.getNumRet());
+		        Attribute attr = nt.addAttribute(attrName, type, Attribute.Category.LOCAL);
 		        if(attr == null) {
               emitErrorMessage(locals.getLine(), "duplicated attribute name " + attrName);
             }
@@ -254,7 +251,7 @@ rule[Grammar g]:
 		        for(; i < n; ++i) { // check the locals attributes
 		          Tree tree = (Tree) locals.getChild(i);
 		          Attribute attr = nt.getLocal(i);
-		          if(!attr.getName().equals(tree.getChild(1).getText())
+		          if(attr == null || !attr.getName().equals(tree.getChild(1).getText())
 		             || !attr.getType().getName().equals(tree.getChild(0).getText())) {
 		            break; // There is at least one local attributes different
 		          } else {
@@ -275,14 +272,28 @@ rule[Grammar g]:
 		              emitErrorMessage(locals.getLine(), "attribute " + attr.getName() + " is already defined");
 		            }
 		          }
-		        } else {
-		          // i is equals to zero
-		          // I must to check if all attributes if different and create a new nonterminal with the extended locals		          
+		        } else if (i != n){ // i is zero (must add new locals attributes)
+		          // add the new local attributes
+		          for(int j = 0; j < locals.getChildCount(); ++j) {
+		            Tree tree = (Tree) locals.getChild(j);
+		            Attribute attr = nt.addAttribute(tree.getChild(1).getText(), new Type(tree.getChild(0).getText()),
+		                                   Attribute.Category.LOCAL);
+		            if(attr == null)
+		              emitErrorMessage(locals.getLine(), "attribute " + tree.getChild(1).getText()
+		                                + " is already defined");
+		          }
 		        }
 		      } else {
-		        //System.out.println("Number of locals is different: " + n);
-		        // Exteded the list of locals
-		      }
+		        // Add new locals attributes
+		        for(int j = 0; j < locals.getChildCount(); ++j) {
+		          Tree tree = (Tree) locals.getChild(j);
+		          Attribute attr = nt.addAttribute(tree.getChild(1).getText(), new Type(tree.getChild(0).getText()),
+		                                            Attribute.Category.LOCAL);
+		          if(attr == null)
+		            emitErrorMessage(locals.getLine(), "attribute " + tree.getChild(1).getText()
+		                              + " is already defined");
+		        }
+		       }
 		      
 		    }
 		  }

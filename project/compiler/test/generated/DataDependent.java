@@ -26,43 +26,43 @@ public class DataDependent extends Grammar {
 		 */
 		NonTerminal nt;
 		// nonterminal literal3
-		nt = new NonTerminal("literal3", 1, 0, 0);
-		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
+		nt = new NonTerminal("literal3", 1); // size of inherited plus synthesized attributes is 1
+		nt.addAttribute("g", new Type("Grammar"), Attribute.Category.PARAM);
 		nonterminals[0] = nt;
 		ntIndex.put("litera3", 0);
 		
 		// nonterminal literal
-		nt = new NonTerminal("literal", 1, 0, 2);
-		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
-		addAttribute(nt, "n", new Type("int"), Attribute.Category.LOCAL, 1);
-		addAttribute(nt, "g1", new Type("Grammar"), Attribute.Category.LOCAL, 2);
+		nt = new NonTerminal("literal", 1); // size of inherited plus synthesized attributes is 1
+		nt.addAttribute("g", new Type("Grammar"), Attribute.Category.PARAM);
+		nt.addAttribute("n", new Type("int"), Attribute.Category.LOCAL);
+		nt.addAttribute("g1", new Type("Grammar"), Attribute.Category.LOCAL);
 		nonterminals[1] = nt;
 		ntIndex.put("literal", 1);
 
 		// nonterminal strN
-		nt = new NonTerminal("strN", 1, 0, 0);
-		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
+		nt = new NonTerminal("strN", 1); // size of inherited plus synthesized attributes is 1
+		nt.addAttribute("g", new Type("Grammar"), Attribute.Category.PARAM);
 		nonterminals[2] = nt;
 		ntIndex.put("strN", 2);
 		
 		// nonterminal CHAR
-		nt = new NonTerminal("CHAR", 1, 0, 0);
-		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
+		nt = new NonTerminal("CHAR", 1); // size of inherited plus synthesized attributes is 1
+		nt.addAttribute("g", new Type("Grammar"), Attribute.Category.PARAM);
 		nonterminals[3] = nt;
 		ntIndex.put("CHAR", 3);
 		
 		// nonterminal number
-		nt = new NonTerminal("number", 1, 1, 1);
-		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
-		addAttribute(nt, "r", new Type("int"), Attribute.Category.RETURN, 1);
-		addAttribute(nt, "aux", new Type("int"), Attribute.Category.LOCAL, 2);
+		nt = new NonTerminal("number", 2); // size of inherited plus synthesized attributes is 2
+		nt.addAttribute("g", new Type("Grammar"), Attribute.Category.PARAM);
+		nt.addAttribute("r", new Type("int"), Attribute.Category.RETURN);
+		nt.addAttribute("aux", new Type("int"), Attribute.Category.LOCAL);
 		nonterminals[4] = nt;
 		ntIndex.put("number", 4);
 		
 		// nonterminal digit
-		nt = new NonTerminal("digit", 1, 1, 0);
-		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
-		addAttribute(nt, "x1", new Type("int"), Attribute.Category.RETURN, 1);
+		nt = new NonTerminal("digit", 2); // size of inherited plus synthesized attributes is 2
+		nt.addAttribute("g", new Type("Grammar"), Attribute.Category.PARAM);
+		nt.addAttribute("x1", new Type("int"), Attribute.Category.RETURN);
 		nonterminals[5] = nt;
 		ntIndex.put("digit", 5);
 	}
@@ -85,7 +85,9 @@ public class DataDependent extends Grammar {
 			}
 		}
 		// Create the correspondent environment of the nonterminal
-		Environment env = new Environment(1); // It has only one variable, the language attribute
+		Environment env = new Environment(nonterminals[0].getNumParam() // this set is known and fixed
+                                          + nonterminals[0].getNumRet() // this set is known and fixed
+                                          + nonterminals[0].getNumLocal()); // this set can change
 		env.setValue(0, g); // set the value of the language attribute
 		
 		return g.interpreteChoice(0, env); // supor que a posição de literal3 no vetor de choices é 0
@@ -118,7 +120,9 @@ public class DataDependent extends Grammar {
 			};
 		}
 		// Create the correspondent environment of the nonterminal
-		Environment env = new Environment(3); // It has three variables
+		Environment env = new Environment(nonterminals[1].getNumParam() // this set is known and fixed
+                + nonterminals[1].getNumRet() // this set is known and fixed
+                + nonterminals[1].getNumLocal()); // this set can change
 		env.setValue(0, g); // set the value of the language attribute. It is always the first one
 		// The semantics of choice allow us only to set the inherited attributes.
 		// If we use the alternative semantics of choice, we must to set all values 
@@ -130,7 +134,9 @@ public class DataDependent extends Grammar {
 		//codigo para a expressao {? false }
 		
 		// Create the correspondent environment of the nonterminal
-		Environment env = new Environment(1); // It has only one variables, the language attribute
+		Environment env = new Environment(nonterminals[2].getNumParam() // this set is known and fixed
+                + nonterminals[2].getNumRet() // this set is known and fixed
+                + nonterminals[2].getNumLocal()); // this set can change
 		env.setValue(0, g); // set the value of the language attribute. It is always the first one
 		
 		return g.interpreteChoice(2, env); // supor que a posição de strN no vetor de 2
@@ -160,7 +166,9 @@ public class DataDependent extends Grammar {
 		} // else
 		
 		// Create the correspondent environment of the nonterminal
-		Environment env = new Environment(1); // It has only one variables, the language attribute
+		Environment env = new Environment(nonterminals[3].getNumParam() // this set is known and fixed
+                + nonterminals[3].getNumRet() // this set is known and fixed
+                + nonterminals[3].getNumLocal()); // this set can change
 		env.setValue(0, g); // set the value of the language attribute. It is always the first one
 		
 	    return g.interpreteChoice(3, env); // supor que a posição de CHAR no vetor de 3
@@ -200,7 +208,9 @@ public class DataDependent extends Grammar {
 			// o resultado da sequencia falhou, entao interpreta a possivel nova alternativa
 		
 		// Create the correspondent environment of the nonterminal
-		Environment env = new Environment(3); // It has three variables
+		Environment env = new Environment(nonterminals[4].getNumParam() // this set is known and fixed
+                + nonterminals[4].getNumRet() // this set is known and fixed
+                + nonterminals[4].getNumLocal()); // this set can change
 		env.setValue(0, g); // set the value of the language attribute. It is always the first one
 		// The semantics of choice allow us only to set the inherited attributes.
 		// If we use the alternative semantics of choice, we must to set all values 
@@ -269,7 +279,9 @@ public class DataDependent extends Grammar {
 		}
 
 		// Create the correspondent environment of the nonterminal
-		Environment env = new Environment(2); // It has three variables
+		Environment env = new Environment(nonterminals[5].getNumParam() // this set is known and fixed
+                + nonterminals[5].getNumRet() // this set is known and fixed
+                + nonterminals[5].getNumLocal()); // this set can change
 		env.setValue(0, g); // set the value of the language attribute. It is always the first one
 		// The semantics of choice allow us only to set the inherited attributes.
 		// If we use the alternative semantics of choice, we must to set all values 

@@ -1,22 +1,25 @@
 package apeg.compiler.runtime;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
+
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 
+import apeg.compiler.adapt.AddRulesTree;
+
 import apeg.compiler.runtime.interpreter.Environment;
 import apeg.compiler.runtime.interpreter.Interpreter;
+
 import apeg.compiler.syntax.tree.APEGTreeAdaptor;
-import apeg.compiler.syntax.tree.Attribute;
 import apeg.compiler.syntax.tree.NonTerminal;
-import apeg.compiler.syntax.tree.Type;
+
 import apeg.syntax.APEGLexer;
 import apeg.syntax.APEGParser;
-import apeg.compiler.adapt.AddRulesTree;
 
 public abstract class Grammar implements Cloneable {
 
@@ -230,21 +233,6 @@ public abstract class Grammar implements Cloneable {
 		return nonMap.get(name);
 	}
 
-	/**
-	 * Function to add a attribute to a given nonterminal
-	 * 
-	 * @param nt nonterminal that will insert the attribute
-	 * @param name the name of the attribute
-	 * @param type the type of the attribute
-	 * @param category the category of the attribute
-	 * @param num the relative position of the attribute inside its category. If
-	 *             it has 3 attribute of locals category, then 0 <= num < 3
-	 */
-	protected void addAttribute(NonTerminal nt, String name, Type type,
-			Attribute.Category category, int num) {
-		nt.addAttribute(name, type, category, num);
-	}
-
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Grammar resp = (Grammar) super.clone();
@@ -254,13 +242,21 @@ public abstract class Grammar implements Cloneable {
 		
 		// copy the current position on the input
 		resp.currentPos = this.currentPos;
+		
 		/**
-		 * point to the same set of nonterminal, because it is the information
-		 * from functions that has been generated and it will not change during
-		 * the execution
+		 * It is possible to change the list of locals attributes.
+		 * So, we duplicate the list of nonterminals information
+		 * point to the same set of nonterminal
 		 */
-		resp.nonterminals = this.nonterminals; // point to the same set of
-												// nonterminals
+		resp.nonterminals = new NonTerminal[this.nonterminals.length];
+		for(int i = 0; i < resp.nonterminals.length; ++i) {
+			resp.nonterminals[i] = this.nonterminals[i].copy();
+		}
+		
+		/**
+		 * Point to the same set of index, because it will not change during runtime
+		 *  * even when adapt
+		 */
 		resp.ntIndex = this.ntIndex; // point to the same set of index
 
 		/**
@@ -272,12 +268,15 @@ public abstract class Grammar implements Cloneable {
 		for (int i = 0; i < resp.adapt.length; i++)
 			resp.adapt[i] = this.adapt[i];
 
-		// Create a new map of new nonterminal with the same values of the
-		// old one
-		// Only when adding a new rule we will change the Nonterminal value
-		// (to save space)
-		resp.nonMap = new HashMap<String, NonTerminal>(this.nonMap);
-
+		/**
+		 * The list of new nonterminals can have the local attributes changed
+		 *  * or its parsing expression. So, we duplicate it
+		 */
+		Set<String> key = this.nonMap.keySet();
+		resp.nonMap = new HashMap<String, NonTerminal>();
+		for(String s : key) {
+			resp.nonMap.put(s, (this.nonMap.get(s)).copy());
+		}
 		return resp;
 	}
 }

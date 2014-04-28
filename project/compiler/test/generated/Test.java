@@ -20,17 +20,17 @@ public class Test extends Grammar {
 
 		NonTerminal nt;
 		// informations of the nonterminal nt01
-		nt = new NonTerminal("nt01", 1, 0, 0);
-		addAttribute(nt, "$g", new Type("Grammar"), Attribute.Category.PARAM, 0);
+		nt = new NonTerminal("nt01", 1); // size of inherited plus synthesized attributes is 1
+		nt.addAttribute("$g", new Type("Grammar"), Attribute.Category.PARAM);
 		nonterminals[0] = nt;
 		ntIndex.put("nt01", 0);
 		
 		// informations of the nonterminal nt02
-		nt = new NonTerminal("nt02", 3, 1, 0);
-		addAttribute(nt, "g", new Type("Grammar"), Attribute.Category.PARAM, 0);
-		addAttribute(nt, "i", new Type("int"), Attribute.Category.PARAM, 1);
-		addAttribute(nt, "c", new Type("char"), Attribute.Category.PARAM, 2);
-		addAttribute(nt, "s", new Type("String"), Attribute.Category.RETURN, 3);
+		nt = new NonTerminal("nt02", 4); // size of inherited plus synthesized attributes is 4
+		nt.addAttribute("g", new Type("Grammar"), Attribute.Category.PARAM);
+		nt.addAttribute("i", new Type("int"), Attribute.Category.PARAM);
+		nt.addAttribute("c", new Type("char"), Attribute.Category.PARAM);
+		nt.addAttribute("s", new Type("String"), Attribute.Category.RETURN);
 		nonterminals[1] = nt;
 		ntIndex.put("nt02", 1);
 	}
@@ -39,7 +39,8 @@ public class Test extends Grammar {
 		
 		// Add rules
 		Test g1 = (Test) g.copy();
-		g1.addRule("nt02: nt<g>; nt locals[int i, String s]: !.; nt locals[int i, String s]: 'nothing';");
+		g1.addRule("nt02: nt<g>; nt locals[int i, Grammar g1]: !.;"
+				+ "nt locals[int x]: {i = 0;} 'nothing' {x = i; g1 = g;} {? x == 0};");
 		
 		// Call nonterminal nt02
 		Result result = g.nt02(g1, 0, 'c');
