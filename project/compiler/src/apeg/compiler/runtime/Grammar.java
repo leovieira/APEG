@@ -125,13 +125,25 @@ public abstract class Grammar implements Cloneable {
 		APEGParser.rules_return result = parser.rules();
 		Tree t = (Tree) result.getTree();
 
+		// check for errors
+		if(parser.getNumberOfSyntaxErrors() > 0) {
+			//TODO - do better
+			throw new Error("Error when trying to add rules");
+		}
+		
 		// Check the AST, set the pointers and adapt the grammar
 		CommonTreeNodeStream node = new CommonTreeNodeStream(t);
 		node.setTokenStream(tokens);
 		AddRulesTree walker = new AddRulesTree(node);
+		walker.enableErrorMessageCollection(true);
 		walker.rules(this);
 		
-		// TODO check for errors
+		// check for errors
+		if(walker.hasErrors()) {
+			//TODO - do better
+			walker.printErrorMessages();
+			throw new Error("Error when trying to add rules");
+		}
 
 		return this;
 	}

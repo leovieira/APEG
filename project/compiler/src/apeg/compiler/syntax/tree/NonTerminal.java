@@ -105,7 +105,7 @@ public class NonTerminal extends Symbol {
 	}
 
 	public int getNumLocal() {
-		return numRet;
+		return numLocal;
 	}
 	
 	public NonTerminal copy() {

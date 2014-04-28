@@ -149,8 +149,8 @@ public class TestNonterminals {
 
 		tree = parser.rules().getTree();
 		assertEquals(tree.toStringTree(), "(RULE literal LIST LIST (LIST (VARDECL int n)) "
-						+ "(SEQ (NONTERM number (LIST n)) '[' "
-						+ "(NONTERM strN (LIST n)) ']' (NOT_LOOKAHEAD ANY)))");
+						+ "(SEQ (NONTERM number (LIST n)) [ "
+						+ "(NONTERM strN (LIST n)) ] (NOT_LOOKAHEAD ANY)))");
 		
 		// Test more than one rule
 		String t2 = "strN[int n] : ( {? n > 0 } CHAR { n = n - 1; } )* {? n == 0 } ;"
@@ -471,7 +471,7 @@ public class TestNonterminals {
 		parser = createParser(t2);
 
 		tree = parser.peg_seq().getTree();
-		assertEquals(tree.toStringTree(), "(CAPTURE_TEXT x 'symbol')");
+		assertEquals(tree.toStringTree(), "(CAPTURE_TEXT x symbol)");
 
 		// Test a sequence of more than one peg expressions
 		String t3 = "x = 'symbol' . { x = 1;}"; // it must have a follow symbol
@@ -479,7 +479,7 @@ public class TestNonterminals {
 
 		tree = parser.peg_seq().getTree();
 		assertEquals(tree.toStringTree(),
-				"(SEQ (CAPTURE_TEXT x 'symbol') ANY (ASSIGNLIST (ASSIGN x 1)))");
+				"(SEQ (CAPTURE_TEXT x symbol) ANY (ASSIGNLIST (ASSIGN x 1)))");
 	}
 
 	@Test
@@ -489,7 +489,7 @@ public class TestNonterminals {
 		parser = createParser(t1);
 
 		tree = parser.peg_factor().getTree();
-		assertEquals(tree.toStringTree(), "'APEG'");
+		assertEquals(tree.toStringTree(), "APEG");
 
 		// Test a nonterminal call as a peg expression
 		String t2 = "digit<x1>";
@@ -538,8 +538,8 @@ public class TestNonterminals {
 		tree = parser.peg_expr().getTree();
 		assertEquals(
 				tree.toStringTree(),
-				"(CHOICE (SEQ '0' (ASSIGNLIST (ASSIGN x 0))) "
-						+ "(CHOICE (SEQ '1' (ASSIGNLIST (ASSIGN x 1))) (CAPTURE_TEXT x ANY)))");
+				"(CHOICE (SEQ 0 (ASSIGNLIST (ASSIGN x 0))) "
+						+ "(CHOICE (SEQ 1 (ASSIGNLIST (ASSIGN x 1))) (CAPTURE_TEXT x ANY)))");
 	}
 
 	@Test
@@ -911,7 +911,7 @@ public class TestNonterminals {
 		parser = createParser(t6);
 
 		tree = parser.factor().getTree();
-		assertEquals(tree.toStringTree(), "'string literal'");
+		assertEquals(tree.toStringTree(), "string literal");
 
 		// Test an expression between parenthesis
 		String t7 = "(1 + 2 * 3 + 4)";

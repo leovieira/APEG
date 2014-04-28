@@ -1,23 +1,31 @@
 package apeg.compiler.runtime;
 
 import java.io.FileReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 
 import apeg.common.path.Path;
 
 public class APEGInputStream {
-	private FileReader input;
+	private Reader input;
 	private ArrayList<Character> buf;
 	
 	private static final char EOF = (char) -1;
 	
-	public APEGInputStream() {
+	public APEGInputStream(String input) {
 		buf = new ArrayList<Character>();
+		this.input = new StringReader(input);
 	}
 	
-	public APEGInputStream(Path path) throws Exception {
+	public APEGInputStream(Reader reader) {
 		buf = new ArrayList<Character>();
-		setInputFile(path);
+		input = reader;
+	}
+	
+	public APEGInputStream(Path filePath) throws Exception {
+		buf = new ArrayList<Character>();
+		setInputFile(filePath);
 	}
 	
 	public void setInputFile(Path filePath) throws Exception {

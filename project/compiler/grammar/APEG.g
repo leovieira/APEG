@@ -45,6 +45,12 @@ tokens {
 @parser::members
 {
     { this.adaptor = new apeg.compiler.syntax.tree.APEGTreeAdaptor(); }
+    
+    @Override
+    public String getErrorMessage(RecognitionException e, String[] tokenNames) {
+      String msg = super.getErrorMessage(e, tokenNames);
+      return "syntax error - " + msg;
+    }
 }
 @parser::header
 {
@@ -54,6 +60,54 @@ tokens {
 {
     package apeg.syntax;
 }
+@lexer::members
+{
+  protected String formatString(String s) {
+    StringBuilder sb = new StringBuilder();
+    int i = 0;
+    while (i < s.length()) {
+      char ch = s.charAt(i);
+      if (ch != '\\') {
+        sb.append(ch);
+        ++i;
+      } else {        
+        ++i;
+        if (i == s.length()) {
+          break;
+        }
+        ch = s.charAt(i);
+        ++i;
+        switch (ch) {
+        case '\\':
+          sb.append('\\');
+          break;
+        case 'n':
+          sb.append('\n');
+          break;
+        case 'r':
+          sb.append('\r');
+          break;
+        case 'f':
+          sb.append('\f');
+          break;
+        case 't':
+          sb.append('\t');
+          break;
+        case '\"':
+          sb.append('\"');
+          break;
+        case '\'':
+          sb.append('\'');
+          break;
+        default :
+          --i;
+        }
+      }
+    }
+    return sb.toString();
+  }
+}
+
 /***
  * The preambulo of the grammar
  ***/
@@ -388,7 +442,14 @@ OP_SUB : '-';
 OP_MUL : '*';
 OP_DIV : '/';
 OP_MOD : '%';
-STRING_LITERAL: '\'' LITERAL_CHAR* '\'';
+STRING_LITERAL: '\'' LITERAL_CHAR* '\''
+ {
+    String s = $text;
+    s = s.substring(1, s.length()-1);
+    s = formatString(s);
+    setText(s);
+ }
+;
 fragment LITERAL_CHAR
   : ESC
   | ~('\''|'\\')
