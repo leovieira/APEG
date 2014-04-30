@@ -115,6 +115,8 @@ public class Interpreter {
 				if(mt.getName().equals(nt.getName())) {
 					// call from language attribute.
 					// We do not check the number of attributes because I suppose it was done before in the syntax analysis
+					Grammar grammar = (Grammar) attr[0];
+					grammar.setCurrentPos(pos); // I must set the current position
 					Object result = mt.invoke(language_attribute, attr);
 					//TODO code for memoization here
 					return ((Result) result).getNext_pos(); // return the next position

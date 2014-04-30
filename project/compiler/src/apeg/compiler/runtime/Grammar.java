@@ -165,10 +165,6 @@ public abstract class Grammar implements Cloneable {
 				
 				adapt[v] = root;
 			}
-			if(!nonterminals[v].equals(nt)) { // if the nonterminals are different: the set of attributes are different
-				// TODO emit an error
-				throw new Error("It is not possible to change the set of nonterminal attributes");
-			}
 		} else { // it is not a predefined nonterminal
 			NonTerminal n = nonMap.get(nt.getName());
 			if(n == null) { // it is a new nonterminal
@@ -180,11 +176,6 @@ public abstract class Grammar implements Cloneable {
 				root.addChild(choice);
 				
 				n.setPegExpr(root);
-				
-				if(!n.equals(nt)) { // if the two nonterminal are not equals: the set of attributes are different
-					// TODO emit an error
-					throw new Error("It is not possible to change the set of nonterminal attributes");
-				}
 			}
 		}
 	}
