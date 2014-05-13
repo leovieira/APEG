@@ -123,7 +123,7 @@ public abstract class Grammar implements Cloneable {
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		APEGParser parser = new APEGParser(tokens);
 
-		System.out.println("Trying to add rules: " + rule);
+		//System.out.println("Trying to add rules: " + rule);
 
 		APEGParser.rules_return result = parser.rules();
 		Tree t = (Tree) result.getTree();

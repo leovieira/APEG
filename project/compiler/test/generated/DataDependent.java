@@ -2,6 +2,8 @@ package generated;
 
 import org.antlr.runtime.tree.CommonTree;
 
+import apeg.common.path.AbsolutePath;
+import apeg.common.path.Path;
 import apeg.compiler.runtime.APEGInputStream;
 import apeg.compiler.runtime.Result;
 import apeg.compiler.runtime.Grammar;
@@ -288,5 +290,30 @@ public class DataDependent extends Grammar {
 		
 		// Resultado anterior falhou
 		return g.interpreteChoice(5, env); // supor que a posição de digit no vetor eh 5
+	}
+	
+	/****************************************************
+	 * **************************************************
+	 * **************************************************
+	 */
+	public static void main(String[] args) throws Exception {
+		// Teste DataDependent (teste06.apeg)
+		String inputName = "./../test/syntax/input/teste06_input3.txt";
+		Path inputPath = new AbsolutePath(inputName);
+		
+		// Parser
+		APEGInputStream input = new APEGInputStream(inputPath);
+		DataDependent parser = new DataDependent(input);
+		
+		// Run
+		long beginTime = System.currentTimeMillis();		
+		Result result = parser.literal(parser);
+		long endTime = System.currentTimeMillis();
+		System.out.println("Time: " + (endTime - beginTime));
+		System.out.println("Portion consumed of the input: " + result.getNext_pos());
+		
+		//Result result = parser.literal(parser);
+		//System.out.println(result.getNext_pos());
+
 	}
 }
