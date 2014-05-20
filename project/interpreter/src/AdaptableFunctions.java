@@ -50,7 +50,7 @@ public class AdaptableFunctions {
 		SemanticTreeAdaptor adaptor = new SemanticTreeAdaptor();
 		parser.setTreeAdaptor(adaptor);
 		parser.enableErrorMessageCollection(true);
-		System.out.println("Trying to add rules: " + rule);
+		//System.out.println("Trying to add rules: " + rule);
 		AdaptablePEGParser.addrules_return result = parser.addrules(g);
 		Tree t = (Tree) result.getTree();
 //		System.out.println(t.toStringTree());

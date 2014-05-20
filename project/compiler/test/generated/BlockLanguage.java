@@ -1,5 +1,7 @@
 package generated;
 
+import java.lang.reflect.Method;
+
 import org.antlr.runtime.tree.CommonTree;
 
 import apeg.common.path.AbsolutePath;
@@ -21,6 +23,8 @@ public class BlockLanguage extends Grammar {
 		nonterminals = new NonTerminal[8];
 		adapt = new CommonTree[8];
 		
+		methods = new Method[8];
+		
 		NonTerminal nt;
 		// Nonterminal block
 		nt = new NonTerminal("block", 1); // only one attribute (inherited or synthesized)
@@ -28,6 +32,13 @@ public class BlockLanguage extends Grammar {
 		nt.addAttribute("g1", new Type("Grammar"), Attribute.Category.LOCAL);
 		nonterminals[0] = nt;
 		ntIndex.put("block", 0);
+		try { // put the block method for using during interpretation
+			methods[0] = BlockLanguage.class.getMethod("block", BlockLanguage.class);
+			//System.out.println(methods[0].getName());
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// Nonterminal dlist
 		nt = new NonTerminal("dlist", 2); // it has two attributes (inherited or synthesized)
@@ -35,6 +46,13 @@ public class BlockLanguage extends Grammar {
 		nt.addAttribute("g1", new Type("Grammar"), Attribute.Category.RETURN);
 		nonterminals[1] = nt;
 		ntIndex.put("dlist", 1);
+		try { // put the block method for using during interpretation
+			methods[1] = BlockLanguage.class.getMethod("dlist", BlockLanguage.class);
+			//System.out.println(methods[1].getName());
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// Nonterminal decl
 		nt = new NonTerminal("decl", 2); // it has two attributes (inherited or synthesized)
@@ -43,6 +61,13 @@ public class BlockLanguage extends Grammar {
 		nt.addAttribute("s", new Type("String"), Attribute.Category.LOCAL);
 		nonterminals[2] = nt;
 		ntIndex.put("decl", 2);
+		try { // put the block method for using during interpretation
+			methods[2] = BlockLanguage.class.getMethod("decl", BlockLanguage.class);
+			//System.out.println(methods[2].getName());
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// Nonterminal var
 		nt = new NonTerminal("var", 1); // it has one attributes (inherited or synthesized)
@@ -50,18 +75,39 @@ public class BlockLanguage extends Grammar {
 		nt.addAttribute("ch", new Type("char"), Attribute.Category.LOCAL);
 		nonterminals[3] = nt;
 		ntIndex.put("var", 3);
+		try { // put the block method for using during interpretation
+			methods[3] = BlockLanguage.class.getMethod("var", BlockLanguage.class);
+			//System.out.println(methods[3].getName());
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// Nonterminal slist
 		nt = new NonTerminal("slist", 1); // it has one attributes (inherited or synthesized)
 		nt.addAttribute("g", new Type("Grammar"), Attribute.Category.PARAM);
 		nonterminals[4] = nt;
 		ntIndex.put("slist", 4);
+		try { // put the block method for using during interpretation
+			methods[4] = BlockLanguage.class.getMethod("slist", BlockLanguage.class);
+			//System.out.println(methods[4].getName());
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// Nonterminal stmt
 		nt = new NonTerminal("stmt", 1); // it has one attributes (inherited or synthesized)
 		nt.addAttribute("g", new Type("Grammar"), Attribute.Category.PARAM);
 		nonterminals[5] = nt;
 		ntIndex.put("stmt", 5);
+		try { // put the block method for using during interpretation
+			methods[5] = BlockLanguage.class.getMethod("stmt", BlockLanguage.class);
+			//System.out.println(methods[5].getName());
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// Nonterminal id
 		nt = new NonTerminal("id", 2); // it has two attributes (inherited or synthesized)
@@ -71,6 +117,13 @@ public class BlockLanguage extends Grammar {
 		nt.addAttribute("ch2", new Type("String"), Attribute.Category.LOCAL);
 		nonterminals[6] = nt;
 		ntIndex.put("id", 6);
+		try { // put the block method for using during interpretation
+			methods[6] = BlockLanguage.class.getMethod("id", BlockLanguage.class);
+			//System.out.println(methods[6].getName());
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// Nonterminal alpha
 		nt = new NonTerminal("alpha", 2); // it has two attributes (inherited or synthesized)
@@ -78,7 +131,13 @@ public class BlockLanguage extends Grammar {
 		nt.addAttribute("ch", new Type("String"), Attribute.Category.RETURN);
 		nonterminals[7] = nt;
 		ntIndex.put("alpha", 7);
-		
+		try { // put the block method for using during interpretation
+			methods[7] = BlockLanguage.class.getMethod("alpha", BlockLanguage.class);
+			//System.out.println(methods[7].getName());
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public Result block(BlockLanguage g) throws Exception {
@@ -120,12 +179,11 @@ public class BlockLanguage extends Grammar {
 		Result result;
 		result = g.decl(g);
 		if(!result.isFail()) {
-			int position;
-			position = result.getNext_pos();
+			int position = result.getNext_pos();
 			g1 = (BlockLanguage) result.getAttribute(0); // the return value
 			g = g1;
 			do {
-				position = result.getNext_pos();
+				//position = result.getNext_pos();
 				g.currentPos = position;
 				result = g.decl(g);
 				if(!result.isFail()) {
@@ -312,7 +370,7 @@ public class BlockLanguage extends Grammar {
 	
 	public static void main(String args[]) throws Exception {
 		// Teste DataDependent (teste06.apeg)
-		String inputName = "./../test/syntax/input/teste07_input.txt";
+		String inputName = "./../test/syntax/input/teste07_input7.txt";
 		Path inputPath = new AbsolutePath(inputName);
 				
 		// Parser
@@ -320,7 +378,10 @@ public class BlockLanguage extends Grammar {
 		BlockLanguage parser = new BlockLanguage(input);
 				
 		// Run
+		long beginTime = System.currentTimeMillis();
 		Result result = parser.block(parser);
+		long endTime = System.currentTimeMillis();
+		System.out.println("Time: " + (endTime - beginTime));
 		System.out.println("Portion consumed of the input: " + result.getNext_pos());
 	}
 }

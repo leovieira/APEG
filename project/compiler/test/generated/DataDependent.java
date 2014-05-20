@@ -298,7 +298,7 @@ public class DataDependent extends Grammar {
 	 */
 	public static void main(String[] args) throws Exception {
 		// Teste DataDependent (teste06.apeg)
-		String inputName = "./../test/syntax/input/teste06_input3.txt";
+		String inputName = "./../test/syntax/input/teste06_input5.txt";
 		Path inputPath = new AbsolutePath(inputName);
 		
 		// Parser

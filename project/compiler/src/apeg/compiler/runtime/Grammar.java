@@ -1,23 +1,20 @@
 package apeg.compiler.runtime;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Set;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
-
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 
 import apeg.compiler.adapt.AddRulesTree;
-
 import apeg.compiler.runtime.interpreter.Environment;
 import apeg.compiler.runtime.interpreter.Interpreter;
-
 import apeg.compiler.syntax.tree.APEGTreeAdaptor;
 import apeg.compiler.syntax.tree.NonTerminal;
-
 import apeg.syntax.APEGLexer;
 import apeg.syntax.APEGParser;
 
@@ -45,6 +42,8 @@ public abstract class Grammar implements Cloneable {
 
 	protected HashMap<String, NonTerminal> nonMap; // map of new nonterminals (added during adaptability)
 
+	protected Method methods[]; // a vector with the method for each nonterminal to use during interpretation
+	
 	/**
 	 * Grammar constructor
 	 * @param input stream of character
@@ -224,6 +223,15 @@ public abstract class Grammar implements Cloneable {
 		return nonMap.get(name);
 	}
 
+	public Method getMethod(String name) {
+		Integer i = ntIndex.get(name);
+		if(i != null) {
+			int index = i;
+			return methods[index];
+		}
+		return null;
+	}
+	
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Grammar resp = (Grammar) super.clone();
@@ -234,6 +242,9 @@ public abstract class Grammar implements Cloneable {
 		// copy the current position on the input
 		resp.currentPos = this.currentPos;
 		
+		// use the same methods
+		resp.methods = this.methods;
+		
 		/**
 		 * It is possible to change the list of locals attributes.
 		 * So, we duplicate the list of nonterminals information
@@ -243,6 +254,7 @@ public abstract class Grammar implements Cloneable {
 		for(int i = 0; i < resp.nonterminals.length; ++i) {
 			resp.nonterminals[i] = this.nonterminals[i].copy();
 		}
+		//resp.nonterminals = this.nonterminals; // to check performance if it does not allow change attributes anyway
 		
 		/**
 		 * Point to the same set of index, because it will not change during runtime

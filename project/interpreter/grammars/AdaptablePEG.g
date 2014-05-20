@@ -259,7 +259,7 @@ rule
 			root.addChild(currNT.getPegExpr());
 			root.addChild($t.tree);
 			currNT.setPegExpr(root);
-			System.out.println("Rule modified: " + root.toStringTree());
+			//System.out.println("Rule modified: " + root.toStringTree());
 		}
 		if (grammar.isAdaptable()) {
 			if (currNT.getNumParam() == 0 || currNT.getParam(0).getType().getName().compareTo("Grammar") != 0) {

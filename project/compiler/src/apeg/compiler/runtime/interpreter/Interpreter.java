@@ -111,7 +111,7 @@ public class Interpreter {
 			Object language_attribute = attr[0]; // suppose that always there is the language attribute
 			                                     // as the first inherited attribute
 			
-			for(Method  mt : language_attribute.getClass().getMethods()) {
+			/*for(Method  mt : language_attribute.getClass().getMethods()) {
 				if(mt.getName().equals(nt.getName())) {
 					// call from language attribute.
 					// We do not check the number of attributes because I suppose it was done before in the syntax analysis
@@ -122,7 +122,17 @@ public class Interpreter {
 					return ((Result) result).getNext_pos(); // return the next position
 					                                        // every nonterminal method has the Result return type
 				}	                                         
+			}*/
+			Method mt = ((Grammar) language_attribute).getMethod(nt.getName());
+			if(mt != null) {
+				Grammar grammar = (Grammar) attr[0];
+				grammar.setCurrentPos(pos); // I must set the current position
+				Object result = mt.invoke(language_attribute, attr);
+				//TODO code for memoization here
+				return ((Result) result).getNext_pos(); // return the next position
+				                                        // every nonterminal method has the Result return type
 			}
+			
 			// else
 			// it is a new nonterminal			
 			
